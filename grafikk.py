@@ -338,3 +338,26 @@ def skrivRegnbue():
      ,abccdd'                    'ddccba.
     ,abcdd'                        'ddcba.
     abccd'                          'dccba""")
+
+def skrivStein():
+    print("""                   ooo OOO OOO ooo
+               oOO                 OOo
+           oOO                         OOo
+        oOO                               OOo
+      oOO                                   OOo
+    oOO                                       OOo
+   oOO                                         OOo
+  oOO         __                  ___           OOo
+ oOO          \ \_____      _____/ /             OOo
+ oOO           \______\    /______/              OOo
+ oOO                                             OOo
+ oOO                                             OOo
+ oOO                                             OOo
+  oOO               ___________                  OOo
+   oOO            /             \               OOo
+    oOO         /                 \           OOo;;;;
+      oOO                                   OOo;;;;;;;;;
+        oO                                OOo;;;;;;;;;;;;;
+           oOO                         OOo;;;;;;;;;;;;;;;;;;;;
+               oOO                 OOo;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   ooo OOO OOO ooo ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;""")
