@@ -33,11 +33,11 @@ klasser.legg_til_questlog(gnomeQlog)
 item = Item("Onepiece", "robe", d=1)
 inv.legg_til_item(item, True)
 
-#spiller.sett_sted_tilgjengelig(0)
+spiller.sett_sted_tilgjengelig(0)
 spiller.sett_sted_tilgjengelig(1)
 
 heltFerdig = False
-valg = "gargyl"
+valg = "tutorial"
 
 skrivTittel()
 while not heltFerdig:
