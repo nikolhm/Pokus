@@ -84,9 +84,16 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
 
             if fiender > randint(5, 8):
                 print(spiller.navn(), "har nådd bunnen av fangekjelleren, og har funnet en mystisk kiste!")
+
                 if not qlog.hent_quest(1).ferdig():
                     qlog.hent_quest(1).progresser()
                     print(spiller.navn(), "fant noen gamle, uforståelige skrifter i kisten.")
+
+                    #bq1
+                    if randint(0, 10) > 7 and qlog.hent_quest(6).progresjon() == 0:
+                        qlog.hent_quest(6).progresser()
+                        print(spiller.navn(), "fant en levende kosebamse i kisten! Hvem kan det være sin?")
+
                     input("Trykk enter for å dra tilbake\n> ")
                     fangekjeller = False
                 else:
@@ -101,6 +108,12 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                         item = Item("Konsentrasjonspulver", "restoring", kp=200)
                         inv.legg_til_item(item)
                         inv.penger(350)
+
+                        #bq1
+                        if randint(0, 10) > 6 and qlog.hent_quest(6).progresjon() == 0:
+                            qlog.hent_quest(6).progresser()
+                            print(spiller.navn(), "fant en levende kosebamse i kisten! Hvem kan det være sin?")
+
                         input("Trykk enter for å dra tilbake\n> ")
                     fangekjeller = False
             else:
@@ -109,37 +122,38 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
 
         while utkikk:
             if not qlog.hent_quest(2).ferdig():
-                angrip(spiller, generer_gargyl(spiller), inv, klasser, spellbook)
                 qlog.hent_quest(2).progresser()
+                angrip(spiller, generer_gargyl(spiller), inv, klasser, spellbook)
                 utkikk = False
             else:
                 tall = randint(1, 10)
                 if tall <= 7:
                     fiende = generer_gargyl(spiller)
-                    print(spiller.navn(), "har møtt en gargyl!")
                 else:
                     fiende = generer_statue(spiller)
-                    print(spiller.navn(), "har møtt en levende statue!")
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
                     utikk = False
                     break
                 if fiende.race() == "gargyl":
                     qlog.hent_quest(5).progresser()
-                if qlog.hent_quest(5).progresjon() == 5 and not qlog.hent_quest(5).ferdig():
+                if qlog.hent_quest(5).progresjon() == 7 and not qlog.hent_quest(5).ferdig():
                     print("\n\n    * " + spiller.navn(), "har møtt Guri Gargyl! *\n\n")
                     input("Trykk enter for å fortsette\n> ")
-                    fiende = Fiende("Guri Gargyl", "gargyl", 7000, 400, 250, kp=300, bonusKp=7, weapon=70)
+                    loot = Loot()
+                    guriLoot(loot)
+                    fiende = Fiende("Guri Gargyl", "gargyl", loot, 7000, 400, 250, kp=300, bonusKp=7, weapon=70)
                     if angrip(spiller, fiende, inv, klasser, spellbook):
-                        qlog.hent_quest(6).progresser_liste(0)
+                        qlog.hent_quest(5).progresser_liste(0)
+                        utkikk = False
 
     if ferdig:
         return verdenskart(spiller)
 
 def intro_loop(spiller, inv, klasser, spellbook):
 
-    print("    "+spiller.navn(), """kommer til et mørkt og dystert slott! Store steiner
+    print("\n    "+spiller.navn(), """kommer til et mørkt og dystert slott! Store steiner
     ligger strødt rundt omkring. Den nærmeste begynner å bevege på seg, og sakte
-    flyr rundt i sirkel, før den suser rett mot""", spiller.navn()+"!")
+    flyr rundt i sirkel, før den suser rett mot""", spiller.navn()+"!\n")
 
     print(spiller.navn(), "har møtt en stein!")
     fiende = Fiende("Stein", "objekt", Loot(), hp=300, a=130, d=100, weapon=60)
@@ -162,16 +176,15 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
             qlog.hent_quest(4).sett_tilgjengelig()
             qlog.snakk(4, spiller, inv)
             qlog.hent_quest(4).sett_tilgjengelig(False)
+            qlog.hent_quest(3).progresser()
             if qlog.hent_quest(4).ferdig():
-                qlog.hent_quest(3).progresser()
+                qlog.hent_quest(3).progresser_liste(0)
 
         if inn == "s":
             while True:
-                print(spiller.navn(), "har møtt en stein!")
                 fiende = Fiende("Stein", "objekt", Loot(), hp=300, a=130, d=100, weapon=60)
                 fiende.return_loot().legg_til_item(70, 100)
                 print(spiller.navn(), "har møtt en stein!")
-                skriv_ut(spiller, fiende)
 
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
                     break
@@ -201,8 +214,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 
         if forsteinet:
             print("\n" + fiende.navn() + fiende.ending(), "er blitt til stein!")
-            if (inn == "kj" or inn == "kjøttifiser") and spiller.kp() >= 100 and qlog.hent_quest(3).ferdig():
-                runder = -3
+            if (inn == "kj" or inn == "kjøttifiser") and spiller.kons_igjen() >= 100 and qlog.hent_quest(3).ferdig():
+                runder = -4
                 forsteinet = False
                 tur = False
                 spiller.bruk_kons(100)
@@ -231,12 +244,14 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 print(fiende.navn() + fiende.ending(), "er blitt til stein!")
                 fiende.bruk_kons(100)
                 forsteinet = True
-                runder = 5
-            elif fiende.race() != "gargyl" and fiende.kp() >= 50 and randint(0, 2) == 1:
+                runder = 10
+            elif fiende.race() != "gargyl" and fiende.kp() >= 50 and randint(0, 2) == 1 \
+            and fiende.xHp() - fiende.hp() > 80:
                 print(fiende.navn() + fiende.ending(), "kastet restituer!")
                 print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp!")
                 fiende.bruk_kons(50)
-            elif fiende.race() == "gargyl" and fiende.kp() >= 40 and randint(0, 10) == 1:
+            elif fiende.race() == "gargyl" and fiende.kp() >= 40 and randint(0, 10) == 1 \
+            and fiende.xHp() - fiende.hp() > 100:
                 print(fiende.navn() + fiende.ending(), "kastet restituer!")
                 print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp!")
                 fiende.bruk_kons(40)
@@ -278,12 +293,12 @@ def generer_gargyl(spiller):
     a = 180 + randint(spiller.lvl() - 10, spiller.lvl() + 10)
     d = 120 + 2 * spiller.lvl()
     kp = 130 + 5 * round(spiller.lvl() / 4) + randint(-10, 10)
-    bkp = randint(3, 4)
+    bkp = randint(4, 6)
     w = randint(65, 75)
     fiende = Fiende("Gargyl", "gargyl", loot, hp, a, d, kp=kp, bonusKp=bkp, weapon=w, ending="en")
     gargylLoot(loot, fiende, spiller)
-    print("\n" + spiller.navn(), "har møtt på en gargyl!")
     skrivGargouille()
+    print("\n" + spiller.navn(), "har møtt på en gargyl!")
     return fiende
 
 def dynamiskLoot(loot, fiende, spiller):
@@ -349,6 +364,19 @@ def gargylLoot(loot, fiende, spiller):
     item = Item("Stein", "trinket", xHp=hp, kp=kp, ekstraKp=ekp)
     loot.legg_til_item(item, 5)
 
+def guriLoot(loot):
+    loot.legg_til_item(2000, 25)
+
+    item = Item("Steinsko", "shoes", xHp=-30, d=100, lvl=18)
+    item.sett_loot_tekst("et par sko av stein")
+    loot.legg_til_item(item, 25)
+
+    item = Item("Stein-hatt", "hat", xHp=-30, d=125, lvl=18)
+    loot.legg_til_item(item, 25)
+
+    item = Item("Krystallkule", "trinket", xHp=125, lvl=18)
+    loot.legg_til_item(item, 25)
+
 def garg_kart(qlog):
     print("""
     Velkommen til slottet! Her er stedene du kan dra:
@@ -367,6 +395,8 @@ def intro_kart(qlog):
     Slottsporten (s)           Rydd bort steiner foran slottsporten""")
     if not qlog.hent_quest(0).ferdig():
         print("    Fontenen (q)               Snakk med Zap")
+    if qlog.hent_quest(3).startet() and not qlog.hent_quest(4).ferdig():
+        print("    Fontenen (q)               Snakk med Kent Kokk")
     if qlog.hent_quest(0).ferdig():
         print("    Slottet (t)                Dra til slottet")
     print("    Verdenskart (f)            Se på verdenskartet")
@@ -410,56 +440,104 @@ def garg_q1(navn):
     vi komme oss inn på slottet. Klar en vei for steiner, så vi har fri passasje!
 
     -- Klar en fri vei til slottet ved å "rydde" bort steiner. 7 burde holde."""
-
 def garg_q1_ferdig(navn):
-    return "    Fort! Vi må kjappe oss inn! Håper de andre er like hel..."
+    return "    Fort! Vi må kjappe oss inn! Håper beboerne her er like hele!\n"
 
 def garg_q2(navn):
     return "    Hei " + navn + """!
-    Du må ned i fangekjelleren for å finne hint
+    Noen her har skremt beboerne fra vettet, de tørr ikke bevege seg ut av
+    møtehallen her. Det påstås at det finnes skapninger på slottet her som
+    kan manipulere og skape liv til steiner og metall, og til og med gjøre
+    seg selv om til ugjennomtrengbar stein! Hvis det er disse skapningene
+    som har skapt ubalansen Overtrollmann Vassle snakket om, må dette
+    undersøkes! Såvidt jeg har forstått fra beboerne her, finnes det en
+    slu orm i fangekjelleren som av sikkerhetsgrunner loggfører all aktivitet
+    på slottet. Naturligvis. Alle slott har jo en loggfører. Finn loggene til
+    ormen i fangekjelleren!
 
-    -- Finn spor etter hva som har skjedd i fangekjelleren."""
-
+    -- Finn loggene til ormen i fangekjelleren."""
 def garg_q2_ferdig(navn):
-    return "    Fort! Vi må kjappe oss inn! Håper de andre er like hel..."
+    return "    Strålende " + navn + """!
+    Dette skal ta meg rundt 3 sekunder å oversette! Snakk med meg om litt,
+    så skal jeg ha en plan for hvordan vi skal gå videre. Forresten, om du
+    skulle være på jakt etter skatter, tror jeg at hvis du drar ned til
+    fangekjelleren igjen kan du sikkert finne noe av verdi. Jeg kan ikke
+    garantere at loggfører-ormen er villig til å la deg stikke av med det
+    da... Meeen så har jeg også hørt at ormeskinn gir usedvanlig bra
+    defensivbonus.\n"""
 
 def garg_q3(navn):
-    return "    Hei " + navn + """!
-    Utforsk utkikkstårnet
+    return "    OK " + navn + """!
+    Jeg har nå oversatt loggen fra skriftlig ormtunge. Det viser seg at
+    rett før den magiske ubalansen her oppsto, kom det en kraftig magiker
+    på besøk. Etter besøket, begynte steiner og statuer å komme til live
+    i og rundt slottet. Det ser  ut til at ubalansen har sitt episenter i
+    utkikkstårnet her på slottet. Kan du dra opp og utforske? Og husk, om
+    du møter noe uvanlig, løp vekk og rapporter til meg!
 
     -- Utforsk utkikkstårnet."""
-
 def garg_q3_ferdig(navn):
-    return "    Fort! Vi må kjappe oss inn! Håper de andre er like hel..."
+    return "    Gargyler? Som blir til stein? Her må noe gjøres " + navn + "!\n"
 
 def garg_q4(navn):
-    return "    Hei " + navn + """!
-    Du må finne en måte å avvergen gargylenes RockNoRoll-magi.
-    Snakk med Kent Kokk, han pleier å kunne koke opp ganske gode
-    steinsupper til kvelds.
+    return "    " + navn + """!
+    Du må finne en måte å avvergen gargylenes RockNoRoll-magi. Snakk
+    med Kent Kokk, han pleier å kunne koke opp ganske gode steinsupper
+    til kvelds, når det ikke er annet å spise i nærheten. Altså, ikke at
+    man koker suppe på steinene, men spiser steinene. Ganske godt med
+    litt ekstra salt! Kanskje du kan overtale Kent Kokk til å lære deg
+    hans hemmelige trylleformel som gjør steiner spiselige? Jeg skal sende
+    bud på ham, gå og møt ham i slottsgården!
 
     -- Hør med Kent Kokk om han kan hjelpe."""
-
 def garg_q4_ferdig(navn):
-    return "    Fort! Vi må kjappe oss inn! Håper de andre er like hel..."
+    return """    'Kjøttifiser' sier du? Jaja, det får vel duge! Jeg skal studere
+    loggene ytterligere, og koke opp en slagplan!\n"""
 
 def garg_q5(navn):
     return "    Hei " + navn + """!
-    Finn steiner jeg kan prøve på
+    Steinsupper ja! Det var alltid en klassiker i gode gamle dager. Dessverre
+    er det ganske lenge siden jeg har gjort noe slikt nå, så jeg husker ikke
+    nøyaktig hva det var jeg gjorde... Det er kanskje best om jeg repeterer
+    litt for meg selv før jeg lærer det videre, men til det trenger jeg steiner,
+    og her virker alle steinene noe... motvillige? Kan du gjøre dem mer
+    medgjørlige og samle inn 10 stykk?
 
     -- Finn 10 steiner."""
-
 def garg_q5_ferdig(navn):
-    return "    Fort! Vi må kjappe oss inn! Håper de andre er like hel..."
+    return "    Strålende " + navn + """!
+    Med disse skal jeg kunne lære deg en trygg og brukbar trylleformel for
+    å gjøre stein om til kjøtt! Husk at du kun kan bruke den når fienden
+    består av stein! Etter at du har kastet formelen, skal fienden også ha
+    problem med å bli til stein igjen i iallefall noen få runder etterpå.\n"""
 
 def garg_q6(navn):
     return "    Hei " + navn + """!
-    Eliminer sjefsgargylen!
+    Det ser ut til at det er gargylene som skaper trøbbel og ubalanse her.
+    Dermed må vi eliminere dem! Jeg har en teori om at det er en sjefsgargyl
+    som leder alle de andre. Om vi bare utsletter denne sjefsgargylen, vil
+    problemet løse seg selv, og vi kan rapportere gode nyheter til Vassle.
+    Denne sjefsgargylen går under navnet Guri Gargyl, og holder seg for seg
+    selv. Vi må prøve å lure henne frem! Hvis du setter i gang med å slakte
+    andre gargyler, burde hun før eller siden dukke opp.
 
     -- Eliminer Guri Gargyl."""
-
 def garg_q6_ferdig(navn):
-    return "    Fort! Vi må kjappe oss inn! Håper de andre er like hel..."
+    return "    Fantastisk! Strålende! Godt jobbet " + navn + """!
+    Dra tilbake til Magi-borgen og rapporter suksessen vår til Overtrollmann
+    Vassle!\n"""
+
+def garg_bq1(navn):
+    return "    Hei " + navn + """!
+    Jeg har klart å havne på feil side med slottets loggfører, og som straff
+    for stygg ordbruk har den ormen tatt kosebamsen min! Kosebamsen min
+    er den eneste som virkelig forstår meg! Hva snakker du om, selvfølgelig
+    kan den snakke. Om du noen gang finner skattekisten til loggføreren,
+    kan du se om du finner kosebamsen min der? Det kan være den har vandret
+    avgårde, men før eller siden kommer den til å være i kisten!
+    """
+def garg_bq1_ferdig(navn):
+    return "    Bamse!!! Gi meg bamse!\n"
 
 def garg_quest(qlog, spiller):
     navn = spiller.navn()
@@ -478,7 +556,7 @@ def garg_quest(qlog, spiller):
     ferdigDesk2 = garg_q2_ferdig(navn)
     q2 = Quest(desk2, ferdigDesk2, 1, 15, "Zap")
     q2.legg_til_reward(xp=6000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=2)
-    q2.legg_til_progresjonTekst("Spor funnet: ")
+    q2.legg_til_progresjonTekst("Logg funnet: ")
     q2.legg_til_svarTekst("\nVil du hjelpe?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
 
@@ -495,7 +573,7 @@ def garg_quest(qlog, spiller):
     desk4 = garg_q4(navn)
     ferdigDesk4 = garg_q4_ferdig(navn)
     q4 = Quest(desk4, ferdigDesk4, 1, 15, "Zap", tilgjengelig=False)
-    q4.legg_til_reward(xp=5000, gull=2000)
+    q4.legg_til_reward(xp=5000, gull=2000, settTilgjengelig=True, settTilgjengeligIndeks=5)
     q4.legg_til_progresjonTekst("Kent Kokk snakket med: ")
     q4.legg_til_progresjon(1)
     q4.legg_til_progresjonTekstListe("Trylleformel lært: ", 0)
@@ -505,17 +583,31 @@ def garg_quest(qlog, spiller):
     #q5
     desk5 = garg_q5(navn)
     ferdigDesk5 = garg_q5_ferdig(navn)
-    q5 = Quest(desk5, ferdigDesk5, 10, 16, "Kent Kokk", tilgjengelig=False)
+    q5 = Quest(desk5, ferdigDesk5, 10, 16, "Kent Kokk", tilgjengelig=False, resetIfDead=True)
     q5.legg_til_reward(xp=5000, gull=2000)
     q5.legg_til_progresjonTekst("Steiner samlet inn: ")
+    q5.legg_til_ekstra_tekst("Du har lært et nytt trylletriks, 'kjøttifiser' ('kj')!")
     q5.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q5)
 
     #q6
     desk6 = garg_q6(navn)
     ferdigDesk6 = garg_q6_ferdig(navn)
-    q6 = Quest(desk6, ferdigDesk6, 10, 16, "Kent Kokk", tilgjengelig=False)
+    q6 = Quest(desk6, ferdigDesk6, 7, 17, "Zap", tilgjengelig=False)
     q6.legg_til_reward(xp=5000, gull=2000)
-    q6.legg_til_progresjonTekst("Steiner samlet inn: ")
+    q6.legg_til_progresjonTekst("Gargyler tillintetgjort: ")
+    q6.legg_til_progresjon(1)
+    q6.legg_til_progresjonTekstListe("Guri Gargyl slaktet: ", 0)
     q6.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q6)
+
+    #bq1
+    deskBq1 = garg_bq1(navn)
+    ferdigDeskBq1 = garg_bq1_ferdig(navn)
+    bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Besynderlige Berit", bonus=True, resetIfDead=True)
+    item = Item("Berits skjegg", "beard", kp=50, ekstraKp=5)
+    bq1.legg_til_reward(xp=10000, item=item)
+    bq1.legg_til_ekstra_tekst("Dette betyr så mye for oss! Her, ta det magiske skjegget mitt!.\n")
+    bq1.legg_til_progresjonTekst("Kosebamse funnet: ")
+    bq1.legg_til_svarTekst("Vil du gi kosebamsen til Besynderlige Berit?   (ja/nei)\n> ")
+    qlog.legg_til_quest(bq1)

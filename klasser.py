@@ -746,6 +746,24 @@ class Fiende:
     def race(self):
         return self._race
 
+    def hp(self):
+        return self._hp
+
+    def xHp(self):
+        return self._xHp
+
+    #returnerer fiendens a. Brukes når fienden skal angripe.
+    def a(self):
+        return self._a
+
+    #returnerer fiendens kp. Brukes til spells
+    def kp(self):
+        return self._kp
+
+    #returnerer fiendens xp. Brukes når fienden er død.
+    def xp(self):
+        return self._xp
+
     #Tar imot skade gjort av spilleren som parameter. Parameteret er altså max
     #skade som kan bli gjort, men hvor mye som faktisk blir gjort avhenger av randint
     #og fiendens d.
@@ -770,14 +788,6 @@ class Fiende:
         self._hp -= skade
         return skade
 
-    #returnerer fiendens a. Brukes når fienden skal angripe.
-    def a(self):
-        return self._a
-
-    #returnerer fiendens kp. Brukes til spells
-    def kp(self):
-        return self._kp
-
     def restorer(self, hp):
         self._hp += hp
         if self._hp > self._xHp:
@@ -793,10 +803,6 @@ class Fiende:
             return True
         else:
             return False
-
-    #returnerer fiendens xp. Brukes når fienden er død.
-    def xp(self):
-        return self._xp
 
     #Skriver ut fiendens stats. Gjøres hver runde samtidig som karakterens stats skrives ut.
     def skriv_ut(self):
@@ -867,12 +873,15 @@ class Spellbook:
             print("super restituer (sr)     gir deg 220 helsepoeng\n\
                          Krever 100 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.")
 
-        if len(self._klasser.alle_questlogger()) > 1:
-            gnomeqlog = self._klasser.questlog(1)
-            #Dette spesialangrepet krever å ha fullført et bestemt quest.
-            if gnomeqlog.hent_quest(4).ferdig():
-                print("konsentrer energi (ke)   stjeler 300 helsepoeng\n\
-                             Krever 150 konsentrasjonspoeng, tryllestav gir ekstra effekt.")
+        gnomeqlog = self._klasser.questlog(1)
+        gargyllog = self._klasser.questlog(2)
+        #Disse spesialangrepet krever å ha fullført et bestemt quest.
+        if gnomeqlog.hent_quest(4).ferdig():
+            print("konsentrer energi (ke)   stjeler 300 helsepoeng\n\
+                         Krever 150 konsentrasjonspoeng, tryllestav gir ekstra effekt.")
+        if gargyllog.hent_quest(4).ferdig():
+            print("kjøttifiser (kj)         gjør forsteinede fiender om til kjøtt\n\
+                         Krever 100 konsentrasjonspoeng.")
 
     def tryllepulver(self, fiende):
         harPulver = None
@@ -1270,7 +1279,7 @@ class Inventory:
         for ting in self._various:
             print("Du har en", ting.navn())
 
-
+        #Gnom
         qListeGnom = self._klasser.questlog(1).hent_qLog()
         if not qListeGnom[2].ferdig() and qListeGnom[2].progresjon() != 0:
             print("Du har", qListeGnom[2].progresjon(), "sminkeartikler.")
@@ -1278,6 +1287,13 @@ class Inventory:
             print("Du har en magisk sopp.")
         if not qListeGnom[7].ferdig() and qListeGnom[7].progresjon() != 0:
             print("Du har en magisk trylleformel for å rette oppgaver.")
+
+        #Gargyl
+        qListeGargyl = self._klasser.questlog(2).hent_qLog()
+        if not qListeGargyl[4].ferdig() and qListeGargyl[4].progresjon() != 0:
+            print("Du har", qListeGargyl[4].progresjon(), "steiner.")
+        if not qListeGargyl[6].ferdig() and qListeGargyl[6].progresjon() != 0:
+            print("Du har en levende kosebamse.")
 
     #Resetter inventory til å inneholde ingenting
     def reset(self):
