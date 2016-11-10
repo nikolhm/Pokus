@@ -155,6 +155,7 @@ def intro_loop(spiller, inv, klasser, spellbook):
     ligger strødt rundt omkring. Den nærmeste begynner å bevege på seg, og sakte
     flyr rundt i sirkel, før den suser rett mot""", spiller.navn()+"!\n")
 
+    skrivStein()
     print(spiller.navn(), "har møtt en stein!")
     fiende = Fiende("Stein", "objekt", Loot(), hp=300, a=130, d=100, weapon=60)
     fiende.return_loot().legg_til_item(50, 100)
@@ -182,6 +183,7 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
 
         if inn == "s":
             while True:
+                skrivStein()
                 fiende = Fiende("Stein", "objekt", Loot(), hp=300, a=130, d=100, weapon=60)
                 fiende.return_loot().legg_til_item(70, 100)
                 print(spiller.navn(), "har møtt en stein!")
@@ -284,6 +286,7 @@ def generer_statue(spiller):
     d=30 + randint(0, 10 * spiller.lvl()), \
     kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
     dynamiskLoot(loot, fiende, spiller)
+    skrivStatue()
     print("\n" + spiller.navn(), "har møtt på en levende statue!")
     return fiende
 
@@ -378,6 +381,7 @@ def guriLoot(loot):
     loot.legg_til_item(item, 25)
 
 def garg_kart(qlog):
+    skrivGargylslott()
     print("""
     Velkommen til slottet! Her er stedene du kan dra:
     Slottsgården (s)           Dra til slottsgården
