@@ -185,11 +185,6 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
                 fiende = Fiende("Stein", "objekt", Loot(), hp=300, a=130, d=100, weapon=60)
                 fiende.return_loot().legg_til_item(70, 100)
                 print(spiller.navn(), "har møtt en stein!")
-<<<<<<< HEAD
-=======
-                skriv_ut(spiller, fiende)
-                skrivStein()
->>>>>>> f1df6d980743099acee79c49f869d11e88410b96
 
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
                     break
