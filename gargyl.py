@@ -11,13 +11,6 @@ from prosedyrer import *
 
 #Mainloop:
 def gargyl_loop(spiller, inv, klasser, spellbook):
-    butikk = Butikk("Skattekammeret")
-    garg_butikk(butikk)
-    klasser.legg_til_butikk(butikk)
-
-    gargQlog = Questlog()
-    garg_quest(gargQlog, spiller)
-    klasser.legg_til_questlog(gargQlog)
     qlog = klasser.questlog(2)
 
     ferdig = False

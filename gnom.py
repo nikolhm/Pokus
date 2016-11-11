@@ -11,9 +11,6 @@ def gnomeloop(spiller, inv, klasser, spellbook):
     ferdig = False
 
     while spiller.dead() == False and ferdig == False:
-        if qlog.hent_quest(5).ferdig():
-            spiller.sett_sted_tilgjengelig(2)
-
         #Gir informasjon om hvilke valg man har.
         kart(qlog.hent_qLog())
 

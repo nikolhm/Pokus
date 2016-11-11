@@ -30,11 +30,22 @@ gnomeQlog = Questlog()
 gnom.gnomequest(gnomeQlog, spiller)
 klasser.legg_til_questlog(gnomeQlog)
 
+butikk = Butikk("Skattekammeret")
+gargyl.garg_butikk(butikk)
+klasser.legg_til_butikk(butikk)
+
+gargQlog = Questlog()
+gargyl.garg_quest(gargQlog, spiller)
+klasser.legg_til_questlog(gargQlog)
+
 item = Item("Onepiece", "robe", d=1)
 inv.legg_til_item(item, True)
 
-spiller.sett_sted_tilgjengelig(0)
+#spiller.sett_sted_tilgjengelig(0)
 spiller.sett_sted_tilgjengelig(1)
+spiller.sett_sted_tilgjengelig(2)
+spiller.sett_sted_tilgjengelig(3)
+spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
 valg = "tutorial"
