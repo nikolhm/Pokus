@@ -130,8 +130,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                 if fiende.race() == "gargyl":
                     qlog.hent_quest(5).progresser()
                 if qlog.hent_quest(5).progresjon() == 7 and not qlog.hent_quest(5).ferdig():
-                    print("\n\n    * " + spiller.navn(), "har møtt Guri Gargyl! *\n\n")
-                    input("Trykk enter for å fortsette\n> ")
+                    guri_dialog(spiller)
                     loot = Loot()
                     guriLoot(loot)
                     fiende = Fiende("Guri Gargyl", "gargyl", loot, 7000, 400, 250, kp=300, bonusKp=7, weapon=70)
@@ -409,7 +408,7 @@ def garg_quest(qlog, spiller):
     desk1 = garg_q1(navn)
     ferdigDesk1 = garg_q1_ferdig(navn)
     q1 = Quest(desk1, ferdigDesk1, 7, 15, "Zap")
-    q1.legg_til_reward(xp=2000, gull=200)
+    q1.legg_til_reward(xp=4000, gull=300)
     q1.legg_til_progresjonTekst("Steiner ryddet: ")
     q1.legg_til_svarTekst("\nKan jeg regne med din hjelp?     (ja/nei)\n> ")
     qlog.legg_til_quest(q1)
@@ -418,7 +417,7 @@ def garg_quest(qlog, spiller):
     desk2 = garg_q2(navn)
     ferdigDesk2 = garg_q2_ferdig(navn)
     q2 = Quest(desk2, ferdigDesk2, 1, 15, "Zap")
-    q2.legg_til_reward(xp=6000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=2)
+    q2.legg_til_reward(xp=10000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=2)
     q2.legg_til_progresjonTekst("Logg funnet: ")
     q2.legg_til_svarTekst("\nVil du hjelpe?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
@@ -426,8 +425,8 @@ def garg_quest(qlog, spiller):
     #q3
     desk3 = garg_q3(navn)
     ferdigDesk3 = garg_q3_ferdig(navn)
-    q3 = Quest(desk3, ferdigDesk3, 1, 15, "Zap", tilgjengelig=False)
-    q3.legg_til_reward(xp=6000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=3)
+    q3 = Quest(desk3, ferdigDesk3, 1, 16, "Zap", tilgjengelig=False)
+    q3.legg_til_reward(xp=2000, hp=10, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Utkikkstårn utforsket: ")
     q3.legg_til_svarTekst("\nVil du hjelpe?    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)
@@ -435,8 +434,8 @@ def garg_quest(qlog, spiller):
     #q4
     desk4 = garg_q4(navn)
     ferdigDesk4 = garg_q4_ferdig(navn)
-    q4 = Quest(desk4, ferdigDesk4, 1, 15, "Zap", tilgjengelig=False)
-    q4.legg_til_reward(xp=5000, gull=2000, settTilgjengelig=True, settTilgjengeligIndeks=5)
+    q4 = Quest(desk4, ferdigDesk4, 1, 16, "Zap", tilgjengelig=False)
+    q4.legg_til_reward(xp=12000, gull=1000, kp=20, settTilgjengelig=True, settTilgjengeligIndeks=5)
     q4.legg_til_progresjonTekst("Kent Kokk snakket med: ")
     q4.legg_til_progresjon(1)
     q4.legg_til_progresjonTekstListe("Trylleformel lært: ", 0)
@@ -447,7 +446,7 @@ def garg_quest(qlog, spiller):
     desk5 = garg_q5(navn)
     ferdigDesk5 = garg_q5_ferdig(navn)
     q5 = Quest(desk5, ferdigDesk5, 10, 16, "Kent Kokk", tilgjengelig=False, resetIfDead=True)
-    q5.legg_til_reward(xp=5000, gull=2000)
+    q5.legg_til_reward(xp=8000, gull=100)
     q5.legg_til_progresjonTekst("Steiner samlet inn: ")
     q5.legg_til_ekstra_tekst("Du har lært et nytt trylletriks, 'kjøttifiser' ('kj')!")
     q5.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
@@ -457,7 +456,7 @@ def garg_quest(qlog, spiller):
     desk6 = garg_q6(navn)
     ferdigDesk6 = garg_q6_ferdig(navn)
     q6 = Quest(desk6, ferdigDesk6, 7, 17, "Zap", tilgjengelig=False)
-    q6.legg_til_reward(xp=5000, gull=2000)
+    q6.legg_til_reward(xp=20000, gull=1000, hp=50, kp=20, ekstraKp=1)
     q6.legg_til_progresjonTekst("Gargyler tillintetgjort: ")
     q6.legg_til_progresjon(1)
     q6.legg_til_progresjonTekstListe("Guri Gargyl slaktet: ", 0)
@@ -474,3 +473,15 @@ def garg_quest(qlog, spiller):
     bq1.legg_til_progresjonTekst("Kosebamse funnet: ")
     bq1.legg_til_svarTekst("Vil du gi kosebamsen til Besynderlige Berit?   (ja/nei)\n> ")
     qlog.legg_til_quest(bq1)
+
+def guri_dialog(spiller):
+    navn = spiller.navn()
+    print("\n\n    ***", spiller.navn(), "har møtt Guri Gargyl! ***\n\n")
+    skrivGuri()
+    input("Trykk enter for å fortsette\n> ")
+    print("""
+    Guri Gargyl: Så det er du som har kjøttifisert kreasjonene mine!
+                 Dette ender nå! Jeg fikk ikke magiske evner og et så
+                 stort ansvar og bare for å miste det hele til et usselt
+                 menneske. Forbered deg på det verste,""", navn + "!\n")
+    input("Trykk enter for å fortsette\n> ")
