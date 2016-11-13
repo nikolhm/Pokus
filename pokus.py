@@ -18,18 +18,23 @@ spiller = Spiller(input("Velg et navn til karakteren din:\n> "))
 inv = Inventory(spiller, klasser)
 spellbook = Spellbook(klasser, spiller, inv)
 
-butikk = Butikk("Kåres hokus og andre hokuspokus")
-gnom.kaaresButikk(butikk)
-klasser.legg_til_butikk(butikk)
-
+# Tutorial
 tutorialQlog = Questlog()
 tutorial.tutorial_quest(tutorialQlog, spiller)
 klasser.legg_til_questlog(tutorialQlog)
+
+# Gnom
+butikk = Butikk("Kåres hokus og andre hokuspokus")
+gnom.kaaresButikk(butikk)
+klasser.legg_til_butikk(butikk)
 
 gnomeQlog = Questlog()
 gnom.gnomequest(gnomeQlog, spiller)
 klasser.legg_til_questlog(gnomeQlog)
 
+#Troll (Kommer snart)
+
+# Gargyl
 butikk = Butikk("Skattekammeret")
 gargyl.garg_butikk(butikk)
 klasser.legg_til_butikk(butikk)
@@ -62,8 +67,8 @@ while not heltFerdig:
         skrivSlott()
         valg = gnom.gnomeloop(spiller, inv, klasser, spellbook)
 
+    #Del 1.1: Trollfjellet
     if valg == "troll":
-        #Expansion: *coming soon*
         pass
 
     #Del 1.3: Slottet med gargyler
