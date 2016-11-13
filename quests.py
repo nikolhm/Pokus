@@ -218,4 +218,24 @@ def garg_bq1(navn):
 def garg_bq1_ferdig(navn):
     return "    Bamse!!! Gi meg bamse!\n"
 
+def troll_q1(navn):
+    return "    Hei " + navn + """!
+    Det er uhyre mange troll rundt i dette området. Ettersom tiden har gått
+    har vi blitt vant til det, men de har blitt mer og mer uredde i det siste.
+    De har til og med gått så nærme som å pisse på bålet gjennom pipa. Vet du
+    hvor mye ammoniak det der lukter!? Uansett, skjønner vi at for å sette litt
+    brems på selvsikkerheten deres, bør vi true dem litt. Jeg tenker et lite
+    folkemord bør gjøre dem litt redde. Gå ut og drep 25 troll. Menn, kvinner
+    og barn. Det er ikke så vanskelig. Man ser ikke forskjell på dem uansett!
+
+    -- Myrd 25 troll uten nåde."""
+
+def troll_q1_ferdig(navn):
+    return "    Tusen takk " + navn + """!
+    Det er så fint å kjenne en magiker som ikke bøyer til slike ubrukelige ting
+    som "moral og etikk". Det er oss eller dem. De angriper oss uansett om de er
+    kvinner eller barn og da må vi beskytte oss selv. Jeg lurer på hvorfor de gjør
+    det i det første uansett...
+    """
+
 #Flere quest (coming soon)
