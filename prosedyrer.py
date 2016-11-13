@@ -97,7 +97,6 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
             for qlogs in klasser.alle_questlogger():
                 qlogs.skriv_ut(spiller)
 
-
     #viser inventory
     elif inn == "i" or inn == "inventar":
         inv.skriv_inv()
@@ -134,11 +133,16 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
 
     #angriper fienden på vanlig måte
     elif inn == "a" or inn == "angrip":
-        weapon = inv.har_type("weapon")
-        if weapon and weapon.blade():
-            fiende.angrepet(spiller.a(), inv.hent_weaponA())
+        if not fiende.untouchable():
+            weapon = inv.har_type("weapon")
+            if weapon and weapon.blade():
+                skade = fiende.angrepet(spiller.a(), inv.hent_weaponA())
+                if spellbook.utforsk():
+                    print(spiller.navn(), "fikk", spiller.restorer(skade), "liv!")
+            else:
+                fiende.angrepet(spiller.a())
         else:
-            fiende.angrepet(spiller.a())
+            print("Angrep er nyttesløst i fiendens nåværende form.")
         tur = False
 
     #angriper fienden med tryllepulver.
@@ -165,8 +169,15 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
         tur = spellbook.super_restituer()
 
     #kaster konsentrer energi. Krever fullførelse av quest.
-    elif inn=="ke" or inn=="konsentrer energi":
+    elif inn == "ke" or inn == "konsentrer energi":
         tur = spellbook.konsentrer_energi(fiende)
+
+    elif inn == "kj" or inn == "kjøttifiser":
+        tur = spellbook.meatify(fiende)
+
+    #kaster utforsk. Krever lvl 17
+    elif inn == "u" or inn == "utforsk":
+        tur = spellbook.brukUtforsk()
 
     #gir liste over kommandoer.
     elif inn == "h" or inn == "hjelp":

@@ -197,8 +197,6 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
 def angrip(spiller, fiende, inv, klasser, spellbook):
     qlog = klasser.questlog(2)
     skriv_ut(spiller, fiende)
-    forsteinet = False
-    runder = 0
     tur = True
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
@@ -207,21 +205,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             print(spiller.navn(), "drar tilbake til slottsgården.")
             return False
 
-        if forsteinet:
-            print("\n" + fiende.navn() + fiende.ending(), "er blitt til stein!")
-            if (inn == "kj" or inn == "kjøttifiser") and spiller.kons_igjen() >= 100 and qlog.hent_quest(3).ferdig():
-                runder = -4
-                forsteinet = False
-                tur = False
-                spiller.bruk_kons(100)
-                print(spiller.navn(), "kastet kjøttifiser!", fiende.navn() + fiende.ending(), "kan nå angripes igjen.")
-            else:
-                print("Alle angrep er nyttesløse!")
-                tur = False
-        else:
-            tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
-            if inn == "kj" or inn == "kjøttifiser" and qlog.hent_quest(3).ferdig():
-                print(fiende.navn() + fiende.ending(), "er ikke lenger stein!")
+        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
         if fiende.dead():
@@ -234,12 +218,11 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
-            if fiende.race() == "gargyl" and fiende.kp() >= 100 and randint(0, 1) == 1 and runder >= 0:
+            if fiende.race() == "gargyl" and fiende.kp() >= 100 and randint(0, 1) == 1 and fiende.untouchableCD() >= 0:
                 print(fiende.navn() + fiende.ending(), "kastet RockNoRoll!")
                 print(fiende.navn() + fiende.ending(), "er blitt til stein!")
                 fiende.bruk_kons(100)
-                forsteinet = True
-                runder = 10
+                fiende.set_untouchable(True, 10)
             elif fiende.race() != "gargyl" and fiende.kp() >= 50 and randint(0, 2) == 1 \
             and fiende.xHp() - fiende.hp() > 80:
                 print(fiende.navn() + fiende.ending(), "kastet restituer!")
@@ -261,12 +244,6 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 
             #skriver ut hp og kp til karakteren og hp til fienden til neste runde.
             else:
-                if runder > 0:
-                    runder -= 1
-                if runder < 0:
-                    runder += 1
-                if runder == 0:
-                    forsteinet = False
                 spiller.kons()
                 fiende.gen_kons()
                 skriv_ut(spiller, fiende)
@@ -277,7 +254,7 @@ def generer_statue(spiller):
     hp=60 + 20 * randint(1, spiller.lvl()), \
     a=20 + randint(0, 10 * spiller.lvl()), \
     d=30 + randint(0, 10 * spiller.lvl()), \
-    kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
+    kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="n")
     dynamiskLoot(loot, fiende, spiller)
     skrivStatue()
     print("\n" + spiller.navn(), "har møtt på en levende statue!")
@@ -417,7 +394,7 @@ def garg_butikk(butikk):
     vare = Vare(item, 1000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Sverd", "weapon", a=100, xHp=20)
+    item = Item("Sverd", "weapon", a=100, xHp=20, blade=True)
     vare = Vare(item, 3000, "v")
     butikk.legg_til_vare(vare)
 

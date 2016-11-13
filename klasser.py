@@ -532,6 +532,7 @@ class Spiller:
     def lvl(self):
         return self._lvl
 
+    #setter eller returnerer spesialiseringen
     def spesialisering(self, spesialisering=None):
         if spesialisering:
             self._spesialisering = spesialisering
@@ -615,7 +616,9 @@ class Spiller:
             if self._lvl == 5:
                 print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke vind! (v)")
             if self._lvl == 10:
-                print(self._navn,"har lært et nytt trylletriks! Du kan nå bruke super restorasjon! (sr)")
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke super restorasjon! (sr)")
+            if self._lvl == 17:
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke utforsk! (u)")
 
     #angir om karakteren er død eller ikke.
     def dead(self):
@@ -731,6 +734,10 @@ class Fiende:
         self._ending = ending
         self._loot = loot
 
+        #skill-relaterte variabler
+        self._untouchable = False
+        self._untouchableCD = 0
+
     def navn(self):
         return self._navn
 
@@ -764,6 +771,19 @@ class Fiende:
     def xp(self):
         return self._xp
 
+    #returnerer untouchable.
+    def untouchable(self):
+        return self._untouchable
+
+    #returnerer aktiveringstiden eller cooldown til untouchable
+    def untouchableCD(self):
+        return self._untouchableCD
+
+    #Tar inn True og cooldown når untouchable skal aktiveres eller deaktiveres.
+    def set_untouchable(self, u, uCD):
+        self._untouchable = u
+        self._untouchableCD = uCD
+
     #Tar imot skade gjort av spilleren som parameter. Parameteret er altså max
     #skade som kan bli gjort, men hvor mye som faktisk blir gjort avhenger av randint
     #og fiendens d.
@@ -774,11 +794,13 @@ class Fiende:
         skade -= int(randint(0, self._d) / 4)
         if skade <= 0:
             print("Du bommet!")
+            return 0
         else:
             if skade > self._hp:
                 skade = self._hp
             print(self._navn, "mistet", skade, "liv!")
             self._hp -= skade
+            return skade
 
     #Skriver ut hvor mye skade fienden tar.
     def mist_liv(self, skade):
@@ -815,11 +837,18 @@ class Fiende:
     def bruk_kons(self, mengde):
         self._kp -= mengde
 
-    #genererer kp etter hver runde.
+    #genererer kp etter hver runde. Oppdaterer også cooldown for untouchable.
     def gen_kons(self):
         self._kp += 5 + self._bonusKp
         if self._kp > self._xKp:
             self._kp = self._xKp
+
+        if self._untouchableCD > 0:
+            self._untouchableCD -= 1
+        elif self._untouchableCD < 0:
+            self._untouchableCD += 1
+        elif self._untouchableCD == 0:
+            self._untouchable = False
 
     def loot(self, spiller, inv):
         item = self._loot.hent_loot()
@@ -859,6 +888,9 @@ class Spellbook:
         self._spiller = spiller
         self._inv = inv
 
+        self._utforsk = False
+        self._utforskRunder = 0
+
     def skriv_spellbook(self):
         print("Her er følgende angrep du kan bruke:")
         print("angrep (eller a)         angriper vanlig")
@@ -872,6 +904,9 @@ class Spellbook:
         if self._spiller.lvl() >= 10:
             print("super restituer (sr)     gir deg 220 helsepoeng\n\
                          Krever 100 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.")
+        if self._spiller.lvl() >= 17:
+            print("utforsk (u)              de neste 5 vanlige angrepene stjeler liv.\n\
+                         Krever 195 konsentrasjonspoeng.")
 
         gnomeqlog = self._klasser.questlog(1)
         gargyllog = self._klasser.questlog(2)
@@ -891,7 +926,10 @@ class Spellbook:
         if harPulver:
             self._inv.bruk_item(harPulver)
             print(self._spiller.navn(), "kastet tryllepulver!")
-            fiende.mist_liv(100)
+            if not fiende.untouchable():
+                fiende.mist_liv(100)
+            else:
+                fiende.mist_liv(0)
             return False
         else:
             print("Du har ikke mer tryllepulver igjen!")
@@ -969,25 +1007,31 @@ class Spellbook:
         return True
 
     def vind(self, fiende):
-        if self._spiller.lvl() >= 5 and self._spiller.kons_igjen() >= 100 \
-        and self._inv.har_type("weapon") and not self._inv.har_type("weapon").blade():
-            self._spiller.bruk_kons(100)
+        if self._spiller.lvl() >= 5 and self._spiller.kons_igjen() >= 100 and self._inv.har_type("weapon"):
+            if not self._inv.har_type("weapon").blade():
+                self._spiller.bruk_kons(100)
 
-            #etter fullførelse av quest tar dette angrepet 150 ekstra liv.
-            qlog = self._klasser.questlog(1)
-            print(self._spiller.navn(), "kastet Vindkast!")
-            if qlog.hent_quest(3).ferdig():
-                fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 300)
+                #etter fullførelse av quest tar dette angrepet 150 ekstra liv.
+                qlog = self._klasser.questlog(1)
+                print(self._spiller.navn(), "kastet Vindkast!")
+                if fiende.untouchable():
+                    fiende.mist_liv(0)
+                else:
+                    if qlog.hent_quest(3).ferdig():
+                        fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 300)
+                    else:
+                        fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 150)
+
+                #oppdaterer quest-variabel
+                if qlog.hent_quest(3).startet() and not qlog.hent_quest(3).ferdig():
+                    qlog.hent_quest(3).progresser()
+                return False
+
             else:
-                fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 150)
-
-            #oppdaterer quest-variabel
-            if qlog.hent_quest(3).startet() and not qlog.hent_quest(3).ferdig():
-                qlog.hent_quest(3).progresser()
-            return False
+                print("Du trenger en tryllestav!")
 
         #man trenger en tryllestav for å bruke dette angrepet.
-        elif self._spiller.lvl() >= 5 and (self._inv.har_type("weapon").blade() or not self._inv.har_type("weapon")):
+        elif self._spiller.lvl() >= 5 and not self._inv.har_type("weapon"):
             print("Du trenger en tryllestav!")
 
         #ikke nok kp
@@ -997,23 +1041,26 @@ class Spellbook:
         return True
 
     def super_restituer(self):
-        if self._spiller.lvl() >= 10 and self._spiller.kons_igjen() >= 100 \
-        and self._inv.har_type("weapon") and not self._inv.har_type("weapon").blade():
-            self._spiller.bruk_kons(100)
-            r = self._spiller.restorer(140 + self._spiller.lvl() * 8 + self._inv.hent_weaponKp())
-            print("Du kastet super restituer!")
-            print(self._spiller.navn(), "restituerte", r, "helsepoeng.")
+        if self._spiller.lvl() >= 10 and self._spiller.kons_igjen() >= 100 and self._inv.har_type("weapon"):
+            if not self._inv.har_type("weapon").blade():
+                self._spiller.bruk_kons(100)
+                r = self._spiller.restorer(140 + self._spiller.lvl() * 8 + self._inv.hent_weaponKp())
+                print("Du kastet super restituer!")
+                print(self._spiller.navn(), "restituerte", r, "helsepoeng.")
 
-            #oppdaterer quest-variabel
-            qlog = self._klasser.questlog(1)
-            if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
-                qlog.hent_quest(1).progresser(r)
-            if qlog.hent_quest(4).startet() and not qlog.hent_quest(4).ferdig():
-                qlog.hent_quest(4).progresser()
-            return False
+                #oppdaterer quest-variabel
+                qlog = self._klasser.questlog(1)
+                if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
+                    qlog.hent_quest(1).progresser(r)
+                if qlog.hent_quest(4).startet() and not qlog.hent_quest(4).ferdig():
+                    qlog.hent_quest(4).progresser()
+                return False
+
+            else:
+                print("Du trenger en tryllestav!")
 
         #krever tryllestav
-        elif self._spiller.lvl() >= 10 and not self._inv.har_type("weapon") or self._inv.har_type("weapon").blade():
+        elif self._spiller.lvl() >= 10 and not self._inv.har_type("weapon"):
             print("Du trenger en tryllestav!")
 
         #Ikke nok kp
@@ -1027,13 +1074,69 @@ class Spellbook:
             if self._spiller.kons_igjen() >= 150:
                 self._spiller.bruk_kons(150)
                 print(self._spiller.navn(), "kastet Konsentrer Energi!")
-                skadeGjort = fiende.mist_liv(300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp())
+                if fiende.untouchable():
+                    skadeGjort = fiende.mist_liv(0)
+                else:
+                    skadeGjort = fiende.mist_liv(300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp())
                 print(self._spiller.navn(), "fikk", self._spiller.restorer(skadeGjort), "liv.")
                 return False
             else:
                 print("Du har ikke nok konsentrasjonspoeng!")
                 return True
         return True
+
+    def meatify(self, fiende):
+        qlog = self._klasser.questlog(2)
+        if qlog.hent_quest(4).ferdig():
+            if self._spiller.kons_igjen() >= 100 and fiende.race() == "gargyl":
+                self._spiller.bruk_kons(100)
+                print(self._spiller.navn(), "kastet Kjøttifiser!")
+                if fiende.untouchable():
+                    print(fiende.navn() + fiende.ending(), "er tvunget tilbake til sin kjøttlige form!")
+                    fiende.set_untouchable(False, -2)
+                else:
+                    print(fiende.navn() + fiende.ending(), "vil være i sin kjøttlige form en stund til!")
+                    fiende.set_untouchable(False, -6)
+                return False
+
+            elif self._spiller.kons_igjen() >= 100 and fiende.navn() == "Stein":
+                self._spiller.bruk_kons(100)
+                print(self._spiller.navn(), "kastet Kjøttifiser!")
+                print("Du gjorde steinen om til en velsmakende kjøttbolle.")
+                print("Steinen mistet", fiende.mist_liv(1000000), "liv.")
+                print(spiller.navn(), "fikk", spiller.restorer(300), "liv.")
+                return False
+
+            elif self._spiller.kons_igjen() >= 100:
+                print("Denne fienden er ikke forsteinet.")
+            else:
+                print("Du har ikke nok konsentrasjonspoeng!")
+        return True
+
+    def brukUtforsk(self):
+        if self._spiller.lvl() >= 17 and self._spiller.kons_igjen() >= 195 and self._inv.har_type("weapon"):
+            if self._inv.har_type("weapon").blade():
+                self._spiller.bruk_kons(195)
+                print(self._spiller.navn(), "kastet Utforsk!")
+                self._utforsk = True
+                self._utforskRunder = 5
+                return False
+            else:
+                print("Du trenger et sverd!")
+        elif self._spiller.lvl() >= 17 and self._spiller.kons_igjen() >= 195:
+            print("Du trenger et sverd!")
+        elif self._spiller.lvl() >= 17:
+            print("Du har ikke nok konsentrasjonspoeng!")
+        return True
+
+    def utforsk(self):
+        utforsk = False
+        if self._utforsk:
+            self._utforskRunder -= 1
+            utforsk = True
+        if self._utforskRunder == 0:
+            self._utforsk = False
+        return utforsk
 
 class Inventory:
     def __init__(self, spiller, klasser):
