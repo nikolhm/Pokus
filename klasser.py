@@ -1103,8 +1103,8 @@ class Spellbook:
                 self._spiller.bruk_kons(100)
                 print(self._spiller.navn(), "kastet Kjøttifiser!")
                 print("Du gjorde steinen om til en velsmakende kjøttbolle.")
-                print("Steinen mistet", fiende.mist_liv(1000000), "liv.")
-                print(spiller.navn(), "fikk", spiller.restorer(300), "liv.")
+                fiende.mist_liv(1000000)
+                print(self._spiller.navn(), "fikk", self._spiller.restorer(300), "liv.")
                 return False
 
             elif self._spiller.kons_igjen() >= 100:
@@ -1222,7 +1222,10 @@ class Inventory:
 
     def bytt_til(self, kategori, i):
         item = self._categoryList[kategori - 1][i - 1]
+        if item.bruker():
+            item = Item("ingenting", item.type())
         self.bytt(item)
+
         return item
 
     def check_requirements(self, item):
@@ -1403,9 +1406,6 @@ class Inventory:
         for x in range(len(self._items)):
             self.selg(0)
         self._penger = 3
-        self._magiskSopp = 0
-        self._magiskOppgaveRetter = 0
-        self._sminkeartikler = 0
 
 class Item:
     def __init__(self, navn, typeObjekt, a=0, d=0, hp=0, kp=0, xHp=0, xKp=0, \
