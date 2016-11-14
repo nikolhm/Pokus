@@ -11,6 +11,8 @@ def verdenskart(spiller):
             print("    Magi-borgen (Gnomer)                    (1)")
         if spiller.kart()[2]:
             print("    Slottet (Gargyler)                      (2)")
+        if spiller.kart()[3]:
+            print("    Fjellhytta (Troll)                      (3)")
 
         #test-eksempel
         if spiller.kart()[0]:
@@ -24,6 +26,8 @@ def verdenskart(spiller):
             return "gnom"
         if inn == "2" and spiller.kart()[2]:
             return "gargyl"
+        if inn == "3" and spiller.kart()[3]:
+            return "troll"
 
 #Skriver ut hvilke kommandoer man kan gjøre i angrepsmodus.
 def hjelp():

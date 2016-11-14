@@ -8,7 +8,7 @@ from random import randint
 from grafikk import *
 import tutorial
 import gnom
-#import troll
+import troll
 #import cerburus
 import gargyl
 import example_expansion
@@ -32,7 +32,14 @@ gnomeQlog = Questlog()
 gnom.gnomequest(gnomeQlog, spiller)
 klasser.legg_til_questlog(gnomeQlog)
 
-#Troll (Kommer snart)
+#Troll
+butikk = Butikk("Fe Fi Fo - Familiebutikk")
+troll.trollButikk(butikk)
+klasser.legg_til_butikk(butikk)
+
+trollQlog = Questlog()
+troll.trollQuest(trollQlog, spiller)
+klasser.legg_til_questlog(trollQlog)
 
 # Gargyl
 butikk = Butikk("Skattekammeret")
@@ -53,7 +60,7 @@ spiller.sett_sted_tilgjengelig(3)
 spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
-valg = "tutorial"
+valg = "troll"
 
 skrivTittel()
 while not heltFerdig:
@@ -69,7 +76,7 @@ while not heltFerdig:
 
     #Del 1.1: Trollfjellet
     if valg == "troll":
-        pass
+        valg = troll.troll_loop(spiller, inv, klasser, spellbook)
 
     #Del 1.3: Slottet med gargyler
     if valg == "gargyl":
