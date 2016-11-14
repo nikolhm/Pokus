@@ -499,9 +499,9 @@ class Spiller:
 
         #Lager en liste som holder styr på hvor mye xp som trengs for neste lvl (nivå)
         #Listen begynner med 80 og øker med et tall som øker med et tall som øker med gjennomsnittlig 9.
-        #Setter etterpå max lvl lik 50
-        self._xpListe = [int(80 * x + (80 * (x - 1) / 10) * (x * x / 5 + x / 1.5)) for x in range(1, 51)]
-        self._xpListe[49] = 100000000
+        #Setter etterpå max lvl lik 70
+        self._xpListe = [int(80 * x + (80 * (x - 1) / 10) * (x * x / 5 + x / 1.5)) for x in range(1, 71)]
+        self._xpListe[69] = 100000000
         self._lvl = 1
 
         #Kart
@@ -594,7 +594,7 @@ class Spiller:
         #Del 1/2: lvl-up
         #Verdien til det første elementet i _xpListe er mengden xp som trengs for å
         #komme til lvl 2.
-        if self._xp >= self._xpListe[self._lvl - 1]:
+        while self._xp >= self._xpListe[self._lvl - 1]:
             self._xp -= self._xpListe[self._lvl - 1]
             self._lvl += 1
             print(self._navn, "har gått opp et nivå!", self._navn,"er nå nivå", self._lvl)
@@ -620,6 +620,21 @@ class Spiller:
             if self._lvl == 17:
                 print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke utforsk! (u)")
 
+        #Skulle man miste xp, kan man potensielt miste en lvl.
+        while self._xp < 0:
+            self._xp += self._xpListe[self._lvl - 2]
+
+            self._xHp -= 10 + self._lvl * 5
+            self._hp -= 10 + self._lvl * 5
+
+            self._xKp -= 10
+            self._kp -= 10
+
+            self._a -= 10
+            self._d -= 5
+
+            self._lvl -= 1
+
     #angir om karakteren er død eller ikke.
     def dead(self):
         if self._hp <= 0:
@@ -639,9 +654,9 @@ class Spiller:
         print(self._navn, "er på nivå", self._lvl)
         print(self._navn, " har ", self._xp, "/", self._xpListe[self._lvl - 1], " erfaringspoeng.", sep="")
 
-    #egen metode for å skrive ut total mengde xp
+    #returnerer total xp (xXp)
     def total_xp(self):
-        print(self._navn, "har totalt fått",self._xXp, "erfaringspoeng.")
+        return self._xXp
 
     #Skriver ut karakterens hp/xHp og kp/xKp. Dette skjer hver runde så brukeren
     #alltid er oppdatert på hvor mange hp og kp som gjenstår. Dette er det nærmeste

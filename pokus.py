@@ -11,6 +11,7 @@ import gnom
 import troll
 #import cerberus
 import gargyl
+import shroom
 import example_expansion
 
 klasser = Klasser()
@@ -42,6 +43,10 @@ troll.trollQuest(trollQlog, spiller)
 klasser.legg_til_questlog(trollQlog)
 
 #Cerberus
+butikk = Butikk("Navn")
+#cerberus.cerberusButikk(butikk)
+klasser.legg_til_butikk(butikk)
+
 cerberusQlog = Questlog()
 #cerberus.cerberusQuest(cerberusQlog, spiller)
 klasser.legg_til_questlog(cerberusQlog)
@@ -59,6 +64,16 @@ klasser.legg_til_questlog(gargQlog)
 vassleQlog = Questlog()
 gnom.vassle_quest(vassleQlog, spiller)
 klasser.legg_til_questlog(vassleQlog)
+
+#Shroom
+butikk = Butikk("Skogens skatter")
+shroom.shroom_butikk(butikk)
+klasser.legg_til_butikk(butikk)
+
+skogQlog = Questlog()
+shroom.skog_quest(skogQlog, spiller)
+klasser.legg_til_questlog(skogQlog)
+
 
 item = Item("Onepiece", "robe", d=1)
 inv.legg_til_item(item, True)
@@ -88,13 +103,18 @@ while not heltFerdig:
     if valg == "troll":
         valg = troll.troll_loop(spiller, inv, klasser, spellbook)
 
-    #Del 1.2 Vulkanen
+    #Del 1.2: Vulkanen
     if valg == "cerberus":
-        pass
+        print("\n\n    ***coming soon*** \n\n")
+        valg = "gnom"
 
     #Del 1.3: Slottet med gargyler
     if valg == "gargyl":
         valg = gargyl.gargyl_loop(spiller, inv, klasser, spellbook)
+
+    #Del 2: Den fortapte ekspedisjonen og shrooms
+    if valg == "shroom":
+        valg = shroom.shroom_loop(spiller, inv, klasser, spellbook)
 
     #Test-expansion
     if valg == "test":

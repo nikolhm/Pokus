@@ -69,7 +69,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                 vassleQlog.hent_quest(2).progresser()
 
         while gaaTilButikk:
-            klasser.butikk(1).interaksjon(inv)
+            klasser.butikk(3).interaksjon(inv)
             gaaTilButikk = False
 
         fiender = 0
@@ -148,9 +148,10 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
 
 def intro_loop(spiller, inv, klasser, spellbook):
 
-    print("\n    "+spiller.navn(), """kommer til et mørkt og dystert slott! Store steiner
-    ligger strødt rundt omkring. Den nærmeste begynner å bevege på seg, og sakte
-    flyr rundt i sirkel, før den suser rett mot""", spiller.navn()+"!\n")
+    print("\n    "+spiller.navn(), """kommer til et mørkt og dystert slott! Store steiner ligger
+    strødt rundt omkring. Den nærmeste begynner å bevege på seg, og
+    sakte flyr rundt i sirkel, før den suser rett mot""", spiller.navn()+"!\n")
+    input("Trykk enter for å fortsette\n> ")
 
     skrivStein()
     print(spiller.navn(), "har møtt en stein!")
@@ -344,14 +345,14 @@ def gargylLoot(loot, fiende, spiller):
 def guriLoot(loot):
     loot.legg_til_item(2000, 25)
 
-    item = Item("Steinsko", "shoes", xHp=-30, d=100, lvl=18)
+    item = Item("Steinsko", "shoes", xHp=-30, d=100, lvl=19)
     item.sett_loot_tekst("et par sko av stein")
     loot.legg_til_item(item, 25)
 
-    item = Item("Stein-hatt", "hat", xHp=-30, d=125, lvl=18)
+    item = Item("Stein-hatt", "hat", xHp=-30, d=125, lvl=19)
     loot.legg_til_item(item, 25)
 
-    item = Item("Krystallkule", "trinket", xHp=125, lvl=18)
+    item = Item("Krystallkule", "trinket", xHp=125, lvl=19)
     loot.legg_til_item(item, 25)
 
 def garg_kart(qlog):
@@ -413,7 +414,7 @@ def garg_quest(qlog, spiller):
     desk1 = garg_q1(navn)
     ferdigDesk1 = garg_q1_ferdig(navn)
     q1 = Quest(desk1, ferdigDesk1, 7, 15, "Zap")
-    q1.legg_til_reward(xp=4000, gull=300)
+    q1.legg_til_reward(xp=2000, gull=300)
     q1.legg_til_progresjonTekst("Steiner ryddet: ")
     q1.legg_til_svarTekst("\nKan jeg regne med din hjelp?     (ja/nei)\n> ")
     qlog.legg_til_quest(q1)
@@ -422,7 +423,7 @@ def garg_quest(qlog, spiller):
     desk2 = garg_q2(navn)
     ferdigDesk2 = garg_q2_ferdig(navn)
     q2 = Quest(desk2, ferdigDesk2, 1, 15, "Zap")
-    q2.legg_til_reward(xp=10000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=2)
+    q2.legg_til_reward(xp=4000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=2)
     q2.legg_til_progresjonTekst("Logg funnet: ")
     q2.legg_til_svarTekst("\nVil du hjelpe?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
@@ -431,7 +432,7 @@ def garg_quest(qlog, spiller):
     desk3 = garg_q3(navn)
     ferdigDesk3 = garg_q3_ferdig(navn)
     q3 = Quest(desk3, ferdigDesk3, 1, 16, "Zap", tilgjengelig=False)
-    q3.legg_til_reward(xp=2000, hp=10, settTilgjengelig=True, settTilgjengeligIndeks=3)
+    q3.legg_til_reward(xp=1000, hp=10, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Utkikkstårn utforsket: ")
     q3.legg_til_svarTekst("\nVil du hjelpe?    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)
@@ -440,7 +441,7 @@ def garg_quest(qlog, spiller):
     desk4 = garg_q4(navn)
     ferdigDesk4 = garg_q4_ferdig(navn)
     q4 = Quest(desk4, ferdigDesk4, 1, 16, "Zap", tilgjengelig=False)
-    q4.legg_til_reward(xp=12000, gull=1000, kp=20, settTilgjengelig=True, settTilgjengeligIndeks=5)
+    q4.legg_til_reward(xp=6500, gull=1000, kp=20, settTilgjengelig=True, settTilgjengeligIndeks=5)
     q4.legg_til_progresjonTekst("Kent Kokk snakket med: ")
     q4.legg_til_progresjon(1)
     q4.legg_til_progresjonTekstListe("Trylleformel lært: ", 0)
@@ -451,7 +452,7 @@ def garg_quest(qlog, spiller):
     desk5 = garg_q5(navn)
     ferdigDesk5 = garg_q5_ferdig(navn)
     q5 = Quest(desk5, ferdigDesk5, 10, 16, "Kent Kokk", tilgjengelig=False, resetIfDead=True)
-    q5.legg_til_reward(xp=8000, gull=100)
+    q5.legg_til_reward(xp=2500, gull=100)
     q5.legg_til_progresjonTekst("Steiner samlet inn: ")
     q5.legg_til_ekstra_tekst("Du har lært et nytt trylletriks, 'kjøttifiser' ('kj')!")
     q5.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
@@ -461,7 +462,7 @@ def garg_quest(qlog, spiller):
     desk6 = garg_q6(navn)
     ferdigDesk6 = garg_q6_ferdig(navn)
     q6 = Quest(desk6, ferdigDesk6, 7, 17, "Zap", tilgjengelig=False)
-    q6.legg_til_reward(xp=20000, gull=1000, hp=50, kp=20, ekstraKp=1)
+    q6.legg_til_reward(xp=10000, gull=1000, hp=50, kp=20, ekstraKp=1)
     q6.legg_til_progresjonTekst("Gargyler tillintetgjort: ")
     q6.legg_til_progresjon(1)
     q6.legg_til_progresjonTekstListe("Guri Gargyl slaktet: ", 0)

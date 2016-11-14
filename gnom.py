@@ -13,9 +13,9 @@ def gnomeloop(spiller, inv, klasser, spellbook):
 
     while spiller.dead() == False and ferdig == False:
         #Gir informasjon om hvilke valg man har.
-        kart(qlog.hent_qLog())
+        kart(qlog.hent_qLog(), vassleQlog.hent_qLog())
 
-        #Deklererer tre variabler som brukes i de tre while-løkkene.
+        #Deklererer variabler som brukes i while-løkkene.
         velg = False
         run = True
         butikk = False
@@ -85,6 +85,8 @@ def gnomeloop(spiller, inv, klasser, spellbook):
                     print("\nDu må skrive et tall!\n")
             else:
                 spir = False
+                if vassleQlog.hent_quest(3).startet():
+                    spiller.sett_sted_tilgjengelig(5)
 
         #Denne løkken omhandler angrepsmodus og interaksjon mellom de to klassene.
         #Løkken kjører så lenge karakteren er i livet og brukeren ikke har skrevet
@@ -400,8 +402,7 @@ def gnomequest(qlog, spiller):
     desk6 = quests.q6(spiller.navn())
     ferdigDesk6 = quests.q6ferdig(spiller.navn())
     q6 = Quest(desk6, ferdigDesk6, 5, 15, "Symmetriske Sara", resetIfDead=True)
-    q6.legg_til_reward(xp=15000, gull=2000, hp=50, kp=40, ekstraKp=2)
-    q6.legg_til_ekstra_tekst("Gratulerer! Du har vunnet spillet!")
+    q6.legg_til_reward(xp=10000, gull=2000, hp=50, kp=40, ekstraKp=2)
     q6.legg_til_progresjonTekst("Gautes gnomevakter bekjempet: ")
     q6.legg_til_svarTekst("Vil konfrontere Gaute Gnome den Grusomme?    (ja/nei)\n> ")
     q6.legg_til_progresjon(1)
@@ -450,7 +451,7 @@ def gauteDialog(spiller):
     input("Trykk enter for å slåss mot Gaute Gnom den Grusomme\n> ")
 
 #Skriver ut hvilke steder man kan dra når man er i borgen (hvilemodus).
-def kart(qListe):
+def kart(qListe, qListeVassle):
     print("""
     Velkommen til magi-borgen! Her er stedene du kan dra:
     Skogen (s)                 Dra ut i skogen og bekjemp de onde gnomene
@@ -459,32 +460,45 @@ def kart(qListe):
     if qListe[5].startet():
         print("    Gaute Gnom's hule (g)      Konfronter Gaute Gnom den Grusomme!")
     if qListe[5].ferdig():
+        print("    Det høyeste spiret (h)     Besøk kontoret til Overtrollmann Vassle")
+    if qListeVassle[0].startet() or qListeVassle[1].startet() or qListeVassle[2].startet():
         print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra")
 
 def vassle_quest(qlog, spiller):
     #troll
     desk1 = quests.vassle_troll(spiller.navn())
     ferdigDesk1 = quests.vassle_troll_ferdig(spiller.navn())
-    q1 = Quest(desk1, ferdigDesk1, 1, 15, "Overtrollmann Vassle")
-    q1.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2)
+    q1 = Quest(desk1, ferdigDesk1, 1, 15, "O.Tr. Vassle: Troll")
+    q1.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q1.legg_til_progresjonTekst("Ubalanse med fjellhytta gjennbalansert: ")
-    q1.legg_til_svarTekst("Vil undersøke ubalansen med fjellhytta?    (ja/nei)\n> ")
+    q1.legg_til_svarTekst("Vil du undersøke ubalansen med fjellhytta?    (ja/nei)\n> ")
     qlog.legg_til_quest(q1)
 
     #cerberus
     desk2 = quests.vassle_cerberus(spiller.navn())
     ferdigDesk2 = quests.vassle_cerberus_ferdig(spiller.navn())
-    q2 = Quest(desk2, ferdigDesk2, 1, 15, "Overtrollmann Vassle")
-    q2.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2)
+    q2 = Quest(desk2, ferdigDesk2, 1, 15, "O.Tr. Vassle: Cerberus")
+    q2.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q2.legg_til_progresjonTekst("Ubalanse med vulkanen gjennbalansert: ")
-    q2.legg_til_svarTekst("Vil undersøke ubalansen med vulkanen?    (ja/nei)\n> ")
+    q2.legg_til_svarTekst("Vil du undersøke ubalansen med vulkanen?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
 
     #gargyl
     desk3 = quests.vassle_gargyl(spiller.navn())
     ferdigDesk3 = quests.vassle_gargyl_ferdig(spiller.navn())
-    q3 = Quest(desk3, ferdigDesk3, 1, 15, "Overtrollmann Vassle")
-    q3.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2)
+    q3 = Quest(desk3, ferdigDesk3, 1, 15, "O.Tr. Vassle: Gargyl")
+    q3.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Ubalanse med slottet gjennbalansert: ")
-    q3.legg_til_svarTekst("Vil undersøke ubalansen med slottet?    (ja/nei)\n> ")
+    q3.legg_til_svarTekst("Vil du undersøke ubalansen med slottet?    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)
+
+    #shroom
+    desk4 = quests.vassle_shroom(spiller.navn())
+    ferdigDesk4 = quests.vassle_shroom_ferdig(spiller.navn())
+    q4 = Quest(desk3, ferdigDesk3, 1, 20, "Overtrollmann Vassle", tilgjengelig=False)
+    q4.legg_til_reward(xp=30000, gull=5000, hp=100, kp=70, ekstraKp=2)
+    q4.legg_til_progresjonTekst("Ekspedisjon funnet: ")
+    q4.legg_til_progresjon(1)
+    q4.legg_til_progresjonTekstListe("Ubalanse i skogen gjennbalansert: ", 0)
+    q4.legg_til_svarTekst("Vil du redde dagen, skogen og kanskje verden?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q4)
