@@ -11,7 +11,8 @@ from prosedyrer import *
 
 #Mainloop:
 def gargyl_loop(spiller, inv, klasser, spellbook):
-    qlog = klasser.questlog(3)
+    qlog = klasser.questlog(4)
+    vassleQlog = klasser.questlog(5)
 
     ferdig = False
     if not qlog.hent_quest(0).ferdig():
@@ -62,6 +63,10 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                     print("\nDu må skrive et tall!\n")
             else:
                 quest = False
+
+            #oppdaterer vasslequests
+            if qlog.hent_quest(5).ferdig():
+                vassleQlog.hent_quest(2).progresser()
 
         while gaaTilButikk:
             klasser.butikk(1).interaksjon(inv)
@@ -157,7 +162,7 @@ def intro_loop(spiller, inv, klasser, spellbook):
     return slottsgaard_loop(spiller, inv, klasser, spellbook)
 
 def slottsgaard_loop(spiller, inv, klasser, spellbook):
-    qlog = klasser.questlog(3)
+    qlog = klasser.questlog(4)
     while True:
         intro_kart(qlog)
         inn = input("\nHvor vil du dra?\n> ").lower()
@@ -194,7 +199,7 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
             return False
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
-    qlog = klasser.questlog(3)
+    qlog = klasser.questlog(4)
     skriv_ut(spiller, fiende)
     tur = True
     while True:

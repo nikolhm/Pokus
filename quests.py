@@ -218,6 +218,7 @@ def garg_bq1(navn):
 def garg_bq1_ferdig(navn):
     return "    Bamse!!! Gi meg bamse!\n"
 
+#Troll:
 def troll_q1(navn):
     return "    Hei " + navn + """!
     Det er uhyre mange troll rundt i dette området. Ettersom tiden har gått
@@ -229,7 +230,6 @@ def troll_q1(navn):
     og barn. Det er ikke så vanskelig. Man ser ikke forskjell på dem uansett!
 
     -- Myrd 25 troll uten nåde."""
-
 def troll_q1_ferdig(navn):
     return "    Tusen takk " + navn + """!
     Det er så fint å kjenne en magiker som ikke bøyer til slike ubrukelige ting
@@ -239,3 +239,68 @@ def troll_q1_ferdig(navn):
     """
 
 #Flere quest (coming soon)
+
+#Overtrollmann Vassles quests:
+def vassle_troll(navn):
+    return "    Hei " + navn + """!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i det første.
+
+    Jeg har sendt ut ... til fjellhytta for å utforske ubalansen som har
+    oppstått i fjellkjeden der. Området er kjent for å være en typisk
+    samleplass for troll. Kan du hjelpe ... i å finne og rette opp
+    ubalansen der?
+
+    -- Hjelp ... å finne og rette opp ubalansen med fjellhytta"""
+def vassle_troll_ferdig(navn):
+    return "    Du har vært en uvurderlig hjelp " + navn + """!
+    Dette du sier er rart... stuff stuff stuff"""
+
+def vassle_cerberus(navn):
+    return "    Hei " + navn + """!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i det første.
+
+    Jeg har sendt ut ... til vulkanen for å utforske ubalansen som har
+    oppstått der. Det har blitt sett svære hunder med opptil flere hoder
+    i den regionen før, så vær klar! Kan du hjelpe ... i å finne og rette
+    opp ubalansen der?
+
+    -- Hjelp ... å finne og rette opp ubalansen med vulkanen"""
+def vassle_cerberus_ferdig(navn):
+    return "    Du har vært en uvurderlig hjelp " + navn + """!
+    Dette du sier er rart... stuff stuff stuff"""
+
+def vassle_gargyl(navn):
+    return "    Hei " + navn + """!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i det første.
+
+    Jeg har sendt ut Zap til slottet i enden av skogen her for å utforske
+    ubalansen som har oppstått der. Vi er ikke helt sikker på hva som
+    er senter for ubalansen, men vi har hørt merkelige rapporter om
+    livløse objekter komme til live og skade beboerne av slottet der.
+    Dessuten har all kontakt blitt brutt for noen dager siden. Kan du
+    hjelpe Zap i å finne og rette opp ubalansen med slottet?
+
+    -- Hjelp Zap å finne og rette opp ubalansen med slottet"""
+def vassle_gargyl_ferdig(navn):
+    return "    Tusen takk " + navn + """!
+    Med dette problemet løst, har vi en mindre ting å tenke på. Likevel
+    er urovekkende å høre at det kanskje er en mystisk magiker som står
+    bak det hele. Hva kan motivet være? Noe sier meg at disse problemene
+    ikke vil ta en slutt før vi får stoppet denne magikeren. Men det må
+    vi ta senere, for vi har flere problemer! En stor ubalanse har oppstått
+    midt inne i skogen her, og det truer magi-borgen!\n"""

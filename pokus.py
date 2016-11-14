@@ -9,7 +9,7 @@ from grafikk import *
 import tutorial
 import gnom
 import troll
-#import cerburus
+#import cerberus
 import gargyl
 import example_expansion
 
@@ -41,6 +41,11 @@ trollQlog = Questlog()
 troll.trollQuest(trollQlog, spiller)
 klasser.legg_til_questlog(trollQlog)
 
+#Cerberus
+cerberusQlog = Questlog()
+#cerberus.cerberusQuest(cerberusQlog, spiller)
+klasser.legg_til_questlog(cerberusQlog)
+
 # Gargyl
 butikk = Butikk("Skattekammeret")
 gargyl.garg_butikk(butikk)
@@ -49,6 +54,11 @@ klasser.legg_til_butikk(butikk)
 gargQlog = Questlog()
 gargyl.garg_quest(gargQlog, spiller)
 klasser.legg_til_questlog(gargQlog)
+
+#Overtrollmann Vassle
+vassleQlog = Questlog()
+gnom.vassle_quest(vassleQlog, spiller)
+klasser.legg_til_questlog(vassleQlog)
 
 item = Item("Onepiece", "robe", d=1)
 inv.legg_til_item(item, True)
@@ -60,7 +70,7 @@ spiller.sett_sted_tilgjengelig(3)
 spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
-valg = "troll"
+valg = "tutorial"
 
 skrivTittel()
 while not heltFerdig:
@@ -77,6 +87,10 @@ while not heltFerdig:
     #Del 1.1: Trollfjellet
     if valg == "troll":
         valg = troll.troll_loop(spiller, inv, klasser, spellbook)
+
+    #Del 1.2 Vulkanen
+    if valg == "cerberus":
+        pass
 
     #Del 1.3: Slottet med gargyler
     if valg == "gargyl":

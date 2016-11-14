@@ -909,7 +909,7 @@ class Spellbook:
                          Krever 195 konsentrasjonspoeng.")
 
         gnomeqlog = self._klasser.questlog(1)
-        gargyllog = self._klasser.questlog(2)
+        gargyllog = self._klasser.questlog(4)
         #Disse spesialangrepet krever å ha fullført et bestemt quest.
         if gnomeqlog.hent_quest(4).ferdig():
             print("konsentrer energi (ke)   stjeler 300 helsepoeng\n\
@@ -1086,7 +1086,7 @@ class Spellbook:
         return True
 
     def meatify(self, fiende):
-        qlog = self._klasser.questlog(2)
+        qlog = self._klasser.questlog(4)
         if qlog.hent_quest(4).ferdig():
             if self._spiller.kons_igjen() >= 100 and fiende.race() == "gargyl":
                 self._spiller.bruk_kons(100)
@@ -1395,7 +1395,7 @@ class Inventory:
             print("Du har en magisk trylleformel for å rette oppgaver.")
 
         #Gargyl
-        qListeGargyl = self._klasser.questlog(2).hent_qLog()
+        qListeGargyl = self._klasser.questlog(4).hent_qLog()
         if not qListeGargyl[4].ferdig() and qListeGargyl[4].progresjon() != 0:
             print("Du har", qListeGargyl[4].progresjon(), "steiner.")
         if not qListeGargyl[6].ferdig() and qListeGargyl[6].progresjon() != 0:
