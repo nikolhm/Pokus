@@ -5,7 +5,7 @@ def install(package):
     try:
         importlib.import_module(package)
     except ImportError:
-        pip.main(['install', package])
+        pip.main(['install', "--user", package])
     finally:
         globals()[package] = importlib.import_module(package)
 
@@ -454,3 +454,5 @@ def skrivGargylslott():
                            (_)) \(_)  `---.__  ` \/\/\  (
                               `-'            `---._  /   \
                                                    `(     )""")
+
+skrivRegnbue()
