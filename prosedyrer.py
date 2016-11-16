@@ -4,15 +4,19 @@ from grafikk import *
 def verdenskart(spiller):
     while True:
         print("""
-        ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
-                    ~   VERDENSKART   ~
+    ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
+                ~   VERDENSKART   ~
                                                 """)
         if spiller.kart()[1]:
             print("    Magi-borgen (Gnomer)                    (1)")
         if spiller.kart()[2]:
-            print("    Slottet (Gargyler)                      (2)")
+            print("    Fjellhytta (Troll)                      (2)")
         if spiller.kart()[3]:
-            print("    Fjellhytta (Troll)                      (3)")
+            print("    Vulkanen (Cerberus)                     (3)")
+        if spiller.kart()[4]:
+            print("    Slottet (Gargyler)                      (4)")
+        if spiller.kart()[5]:
+            print("    Skogen (Shrooms)                        (5)")
 
         #test-eksempel
         if spiller.kart()[0]:
@@ -25,9 +29,13 @@ def verdenskart(spiller):
         if inn == "1" and spiller.kart()[1]:
             return "gnom"
         if inn == "2" and spiller.kart()[2]:
-            return "gargyl"
-        if inn == "3" and spiller.kart()[3]:
             return "troll"
+        if inn == "3" and spiller.kart()[3]:
+            return "cerberus"
+        if inn == "4" and spiller.kart()[4]:
+            return "gargyl"
+        if inn == "5" and spiller.kart()[5]:
+            return "shroom"
 
 #Skriver ut hvilke kommandoer man kan gjøre i angrepsmodus.
 def hjelp():
@@ -87,7 +95,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
 
     #gir total xp
     elif inn == "total xp":
-        spiller.total_xp()
+        print(spiller.navn(), "har totalt fått", spiller.total_xp(), "erfaringspoeng.")
 
     #viser Questlog
     elif inn == "q" or inn == "oppdrag":
@@ -187,6 +195,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     elif inn == "h" or inn == "hjelp":
         hjelp()
 
+    elif inn == "ingenting":
+        print(spiller.navn(), "gjør ingenting.")
+        tur = False
+
     #Intet spill er komplett uten en juksekode. Dessuten særdeles
     #brukbart for å teste programmet. Dreper en fiende på første forsøk.
     elif inn == "j" or inn == "juks":
@@ -194,7 +206,12 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
 
     #Juksekode nr. 2: gir 10000 xp.
     elif inn == "j2" or inn == "juks2":
-        spiller.gi_xp(10000)
+        liste = [int(80*x+(80*(x-1)/10)*(x*x/5+x/1.5)) for x in range(1, 71)]
+        try:
+            lvl = int(input("Hvilken lvl vil du til?\n> "))
+            spiller.gi_xp(sum(liste[0:lvl - 1]) -spiller.total_xp())
+        except ValueError:
+            print("Du må skrive et tall!")
 
     return tur
 

@@ -12,7 +12,9 @@ def q1(navn):
 
     -- Myrd 10 gnomer.""")
 def q1ferdig(navn):
-    return "Takk for hjelpen " + navn + "! Dessverre ser det ut til at gnomene fortsetter å herje så lenge Gaute Gnom den Grusomme er her. Kanskje Symmetriske Sara har løsningen?\n"
+    return "    Takk for hjelpen " + navn + """!
+    Dessverre ser det ut til at gnomene fortsetter å herje så lenge
+    Gaute Gnom den Grusomme er her. Kanskje Symmetriske Sara har løsningen?\n"""
 
 def q2(navn):
     return ("    Hei "+navn+"""!
@@ -25,7 +27,9 @@ def q2(navn):
 
     -- Restorer 300 helsepoeng på deg selv.""")
 def q2ferdig(navn):
-    return "Glimrende "+navn+"! Ingen skader på kroppen? Så skuffende, det ser ut til at trylleformelen er uskadelig og kjedelig. Kanskje hvis jeg modifiserer formelen litt?\n"
+    return "    Glimrende "+navn+"""!
+    Ingen skader på kroppen? Så skuffende, det ser ut til at trylleformelen
+    er uskadelig og kjedelig. Kanskje hvis jeg modifiserer formelen litt?\n"""
 
 def q3(navn):
     return ("    Hei "+navn+"""!
@@ -38,7 +42,8 @@ def q3(navn):
 
     -- Finn 6 sminkeartikler.""")
 def q3ferdig(navn):
-    return "Fantastisk "+navn+"! Nå kan jeg endelig vise meg offentlig igjen! Hva mener du overfladisk? meg?\n"
+    return "    Fantastisk "+navn+"""! Nå kan jeg endelig vise meg offentlig igjen!
+    Hva mener du overfladisk? meg?\n"""
 
 def q4(navn):
     return ("    Hei "+navn+"""!
@@ -51,7 +56,7 @@ def q4(navn):
 
     -- Kast "vind" 5 ganger""")
 def q4ferdig(navn):
-    return "Godt jobbet "+navn+"! Nå skal du se hvordan en mester gjør det!\n"
+    return "    Godt jobbet "+navn+"! Nå skal du se hvordan en mester gjør det!\n"
 
 def q5(navn):
     return ("    Hei igjen "+navn+"""!
@@ -67,7 +72,9 @@ def q5(navn):
 
     -- Kast "super restituer" tre ganger.""")
 def q5ferdig(navn):
-    return "Supert "+navn+"! Med denne teknikken skal man kunne skade gnomen man slåss mot samtidig som man helbreder seg selv! Ja, jeg er et geni!\n"
+    return "    Supert "+navn+"""!
+    Med denne teknikken skal man kunne skade gnomen man slåss mot samtidig
+    som man helbreder seg selv! Ja, jeg er et geni!\n"""
 
 def q6(navn):
     return ("    Hei "+navn+"""!
@@ -82,7 +89,12 @@ def q6(navn):
 
     -- Bekjemp Gaute Gnom den Grusomme""")
 def q6ferdig(navn):
-    return "Hurra! Tusen takk "+navn+"! Nå er endelig monsteret borte! Borgen er trygg igjen, og skogen vil snart nok bli et rolig og fint sted å være! Igjen, tusen tusen takk!\n"
+    return "    Hurra! Tusen takk "+navn+"""!
+    Nå er endelig monsteret borte! Borgen er trygg igjen, og skogen vil
+    snart nok bli et rolig og fint sted å være! Igjen, tusen tusen takk!
+    Dine heltedåder har ikke gått umerket hen, Overtrollmann Vassle spurte
+    om deg personlig. Dra opp til kontoret hans og hør hva han har å si!
+    Kontoret ligger i det øverste spiret her i borgen.\n"""
 
 def bonus_q1(navn):
     return ("    Hei "+navn+"""!
@@ -90,8 +102,9 @@ def bonus_q1(navn):
     soppen min? Jeg hadde gitt hatten min for å se min magiske sopp en siste gang!
     """)
 def bonus_q1ferdig(navn):
-    return "Har du funnet den? Gi den til meg! Straks!\nEhh, det var ikke meningen å "+\
-    "pushe deg slik, men om du gir den til meg skal jeg gi deg hatten min!\n"
+    return """    Har du funnet den? Gi den til meg! Straks!
+    Ehh, det var ikke meningen å pushe deg slik, men om du gir den til meg
+    skal jeg gi deg hatten min!\n"""
 
 def bonus_q2(navn):
     return ("    Hei "+navn+"""!
@@ -104,7 +117,7 @@ def bonus_q2(navn):
     alle oppgavene for meg! Har du hørt om noe slikt?
     """)
 def bonus_q2ferdig(navn):
-    return "Er det sant? Det finnes faktisk? Dette vil gjøre livet mitt så mye lettere!\n"
+    return "    Er det sant? Det finnes faktisk? Dette vil gjøre livet mitt så mye lettere!\n"
 
 #Gargyl:
 def garg_q1(navn):
@@ -218,6 +231,7 @@ def garg_bq1(navn):
 def garg_bq1_ferdig(navn):
     return "    Bamse!!! Gi meg bamse!\n"
 
+#Troll:
 def troll_q1(navn):
     return "    Hei " + navn + """!
     Det er uhyre mange troll rundt i dette området. Ettersom tiden har gått
@@ -229,7 +243,6 @@ def troll_q1(navn):
     og barn. Det er ikke så vanskelig. Man ser ikke forskjell på dem uansett!
 
     -- Myrd 25 troll uten nåde."""
-
 def troll_q1_ferdig(navn):
     return "    Tusen takk " + navn + """!
     Det er så fint å kjenne en magiker som ikke bøyer til slike ubrukelige ting
@@ -239,3 +252,86 @@ def troll_q1_ferdig(navn):
     """
 
 #Flere quest (coming soon)
+
+#Overtrollmann Vassles quests:
+def vassle_troll(navn):
+    return "    Hei " + navn + """!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i det første.
+
+    Jeg har sendt ut ... til fjellhytta for å utforske ubalansen som har
+    oppstått i fjellkjeden der. Området er kjent for å være en typisk
+    samleplass for troll. Kan du hjelpe ... i å finne og rette opp
+    ubalansen der?
+
+    -- Hjelp ... å finne og rette opp ubalansen med fjellhytta"""
+def vassle_troll_ferdig(navn):
+    return "    Du har vært en uvurderlig hjelp " + navn + """!
+    Dette du sier er rart... stuff stuff stuff"""
+
+def vassle_cerberus(navn):
+    return "    Hei " + navn + """!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i det første.
+
+    Jeg har sendt ut ... til vulkanen for å utforske ubalansen som har
+    oppstått der. Det har blitt sett svære hunder med opptil flere hoder
+    i den regionen før, så vær klar! Kan du hjelpe ... i å finne og rette
+    opp ubalansen der?
+
+    -- Hjelp ... å finne og rette opp ubalansen med vulkanen"""
+def vassle_cerberus_ferdig(navn):
+    return "    Du har vært en uvurderlig hjelp " + navn + """!
+    Dette du sier er rart... stuff stuff stuff"""
+
+def vassle_gargyl(navn):
+    return "    Hei " + navn + """!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i det første.
+
+    Jeg har sendt ut Zap til slottet i enden av skogen her for å utforske
+    ubalansen som har oppstått der. Vi er ikke helt sikker på hva som
+    er senter for ubalansen, men vi har hørt merkelige rapporter om
+    livløse objekter komme til live og skade beboerne av slottet der.
+    Dessuten har all kontakt blitt brutt for noen dager siden. Kan du
+    hjelpe Zap i å finne og rette opp ubalansen med slottet?
+
+    -- Hjelp Zap å finne og rette opp ubalansen med slottet"""
+def vassle_gargyl_ferdig(navn):
+    return "    Tusen takk " + navn + """!
+    Med dette problemet løst, har vi en mindre ting å tenke på. Likevel
+    er urovekkende å høre at det kanskje er en mystisk magiker som står
+    bak det hele. Hva kan motivet være? Noe sier meg at disse problemene
+    ikke vil ta en slutt før vi får stoppet denne magikeren. Men det må
+    vi ta senere, for vi har flere problemer! En stor ubalanse har oppstått
+    midt inne i skogen her, og det truer magi-borgen!\n"""
+
+def vassle_shroom(navn):
+    return "    Hei " + navn + """!
+    Det har hendt noe svært mystisk. Et nytt utbrudd av ubalanse
+    innen magien hendte i skogen her mens du var borte. Vi trodde
+    først det var noen av Gaute Gnom den Grusommes mest trofaste
+    følgere som hadde funnet en måte å tilnærme seg magi på, og
+    sendte en liten gruppe for å undersøke saken. Vi har ikke sett
+    dem siden, men det kom nettopp en budskapsrotte med beskjeden
+    "skogen lever". Vi har prøvd å sende rotter tilbake, men ingen
+    har overlevd turen, og nå streiker de igjen grunnet 'for høy
+    yrkesrisiko'. Alt håp henger på dine skuldre """ + navn + """! Finn
+    ut hva som har skjedd med ekspedisjonen, og rett opp i ubalansen!
+
+    -- Finn ekspedisjonen og rett den magiske ubalansen i skogen."""
+def vassle_shroom_ferdig(navn):
+    return "    Du er en helt " + navn + """!
+    Denne magikeren er en pest og en plage og må stanses omgåelig!\n"""

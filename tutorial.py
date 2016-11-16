@@ -2,7 +2,7 @@ from prosedyrer import *
 from klasser import *
 from grafikk import *
 
-#VIKTIG! Ikke bruk denne filen som mal for senere exspansions!
+#VIKTIG! Ikke bruk denne filen som mal for senere expansions!
 
 def mainloop(spiller, inv, klasser, spellbook):
     inn = input("\nVil du spille tutorial?\n> ").lower()

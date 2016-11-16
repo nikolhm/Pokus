@@ -9,8 +9,9 @@ from grafikk import *
 import tutorial
 import gnom
 import troll
-#import cerburus
+#import cerberus
 import gargyl
+import shroom
 import example_expansion
 
 klasser = Klasser()
@@ -41,6 +42,15 @@ trollQlog = Questlog()
 troll.trollQuest(trollQlog, spiller)
 klasser.legg_til_questlog(trollQlog)
 
+#Cerberus
+butikk = Butikk("Navn")
+#cerberus.cerberusButikk(butikk)
+klasser.legg_til_butikk(butikk)
+
+cerberusQlog = Questlog()
+#cerberus.cerberusQuest(cerberusQlog, spiller)
+klasser.legg_til_questlog(cerberusQlog)
+
 # Gargyl
 butikk = Butikk("Skattekammeret")
 gargyl.garg_butikk(butikk)
@@ -49,6 +59,21 @@ klasser.legg_til_butikk(butikk)
 gargQlog = Questlog()
 gargyl.garg_quest(gargQlog, spiller)
 klasser.legg_til_questlog(gargQlog)
+
+#Overtrollmann Vassle
+vassleQlog = Questlog()
+gnom.vassle_quest(vassleQlog, spiller)
+klasser.legg_til_questlog(vassleQlog)
+
+#Shroom
+butikk = Butikk("Skogens skatter")
+shroom.shroom_butikk(butikk)
+klasser.legg_til_butikk(butikk)
+
+skogQlog = Questlog()
+shroom.skog_quest(skogQlog, spiller)
+klasser.legg_til_questlog(skogQlog)
+
 
 item = Item("Onepiece", "robe", d=1)
 inv.legg_til_item(item, True)
@@ -60,7 +85,7 @@ spiller.sett_sted_tilgjengelig(3)
 spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
-valg = "troll"
+valg = "tutorial"
 
 skrivTittel()
 while not heltFerdig:
@@ -78,9 +103,18 @@ while not heltFerdig:
     if valg == "troll":
         valg = troll.troll_loop(spiller, inv, klasser, spellbook)
 
+    #Del 1.2: Vulkanen
+    if valg == "cerberus":
+        print("\n\n    ***coming soon*** \n\n")
+        valg = "gnom"
+
     #Del 1.3: Slottet med gargyler
     if valg == "gargyl":
         valg = gargyl.gargyl_loop(spiller, inv, klasser, spellbook)
+
+    #Del 2: Den fortapte ekspedisjonen og shrooms
+    if valg == "shroom":
+        valg = shroom.shroom_loop(spiller, inv, klasser, spellbook)
 
     #Test-expansion
     if valg == "test":
