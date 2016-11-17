@@ -12,6 +12,10 @@ from prosedyrer import *
 #Mainloop:
 def shroom_loop(spiller, inv, klasser, spellbook):
     qlog = klasser.questlog(6)
+    vassleQlog = klasser.questlog(5)
+
+    if not vassleQlog.hent_quest(3).progresjon():
+        ferdig = intro_loop(spiller, inv, klasser, spellbook)
 
     ferdig = False
     while not ferdig:
@@ -66,6 +70,19 @@ def shroom_loop(spiller, inv, klasser, spellbook):
 
     if ferdig:
         return verdenskart(spiller)
+
+def intro_loop(spiller, inv, klasser, spellbook):
+    qlog = klasser.questlog(6)
+
+    print("    **", spiller.navn(), """kommer til et utbrent leirbål. Det er blod på bakken, og
+    spor etter kamp. Det virker ikke som om det er lenge siden noen var her,
+    men det er vanskelig å si hvor de gikk. Hovedstien deler seg til høyre
+    og venstre.
+    """)
+
+    valg1 = input("Hvor vil du gå? (h/v)\n> ")
+    valg2 = input("Hvor vil du gå? (h/v)\n> ")
+    valg3 = input("Hvor vil du gå? (h/v)\n> ")
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
     while True:

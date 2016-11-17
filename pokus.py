@@ -9,7 +9,7 @@ from grafikk import *
 import tutorial
 import gnom
 import troll
-#import cerberus
+import cerberus
 import gargyl
 import shroom
 import example_expansion
@@ -43,12 +43,12 @@ troll.trollQuest(trollQlog, spiller)
 klasser.legg_til_questlog(trollQlog)
 
 #Cerberus
-butikk = Butikk("Navn")
-#cerberus.cerberusButikk(butikk)
+butikk = Butikk("Sleipe Max: Magi og Porno")
+cerberus.cerberusButikk(butikk)
 klasser.legg_til_butikk(butikk)
 
 cerberusQlog = Questlog()
-#cerberus.cerberusQuest(cerberusQlog, spiller)
+cerberus.cerberusQuest(cerberusQlog, spiller)
 klasser.legg_til_questlog(cerberusQlog)
 
 # Gargyl
@@ -85,7 +85,7 @@ spiller.sett_sted_tilgjengelig(3)
 spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
-valg = "tutorial"
+valg = "cerberus"
 
 skrivTittel()
 while not heltFerdig:
@@ -105,8 +105,7 @@ while not heltFerdig:
 
     #Del 1.2: Vulkanen
     if valg == "cerberus":
-        print("\n\n    ***coming soon*** \n\n")
-        valg = "gnom"
+        valg = cerberus.cerberus_loop(spiller, inv, klasser, spellbook)
 
     #Del 1.3: Slottet med gargyler
     if valg == "gargyl":
