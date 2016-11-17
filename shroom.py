@@ -13,11 +13,11 @@ from prosedyrer import *
 def shroom_loop(spiller, inv, klasser, spellbook):
     qlog = klasser.questlog(6)
     vassleQlog = klasser.questlog(5)
+    ferdig = False
 
     if not vassleQlog.hent_quest(3).progresjon():
         ferdig = intro_loop(spiller, inv, klasser, spellbook)
 
-    ferdig = False
     while not ferdig:
         skog_kart(qlog)
 
@@ -80,11 +80,83 @@ def intro_loop(spiller, inv, klasser, spellbook):
     og venstre.
     """)
 
-    valg1 = input("Hvor vil du gå? (h/v)\n> ")
-    valg2 = input("Hvor vil du gå? (h/v)\n> ")
-    valg3 = input("Hvor vil du gå? (h/v)\n> ")
+    input("Trykk enter for å fortsette\n> ")
+    print("""\n*En banditt kommer løpende ut fra ingensteds*
+
+    Banditt: Du er en av dem, er du ikke? Jeg skal finne dem! Jeg har fått
+    torturert ut noen veibeskrivelser av en ynkelig rotte, og nå slipper
+    ingen av dere unna! Og min enmanns-massakre starter med deg!\n""")
+
+    if not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
+        return True
+    print("\n*" + spiller.navn() + "finner en lapp på banditten! På den står det:")
+    print("\n    Hold høyre!\n\nForan deg har du to stier, og du må velge en.")
+
+    return sti(spiller, inv, klasser, spellbook)
+
+def sti(spiller, inv, klasser, spellbook):
+    while True:
+        #Sti 1
+        print("\nStien deler seg")
+        valg1 = input("Hvor vil du gå? (h/v)\n> ")
+        while valg1.lower() not in {"h", "v", "høyre", "venstre"}:
+            valg1 = input("Hvor vil du gå? Skriv 'høyre' eller 'venstre':\n> ")
+        h1 = False
+        tekst = spiller.navn() + " tar til venstre med første veideling\n"
+        if valg1.lower() in {"h", "høyre"}:
+            h1 = True
+            tekst =  spiller.navn() + " tar til høyre med første veideling\n"
+        print(tekst)
+        if randint(1, 3) == 3 and not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
+            return True
+
+        #Sti 2
+        print("Stien deler seg igjen.")
+        valg2 = input("Hvor vil du gå? (h/v)\n> ")
+        while valg2.lower() not in {"h", "v", "høyre", "venstre"}:
+            valg2 = input("Hvor vil du gå? Skriv 'høyre' eller 'venstre':\n> ")
+        h2 = False
+        tekst = spiller.navn() + " tar til venstre med andre veideling\n"
+        if valg2.lower() in {"h", "høyre"}:
+            h2 = True
+            tekst =  spiller.navn() + " tar til høyre med andre veideling\n"
+        print(tekst)
+        if randint(1, 3) == 3 and not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
+            return True
+
+        #Sti 3
+        print("Stien deler seg igjen.")
+        valg3 = input("Hvor vil du gå? (h/v)\n> ")
+        while valg3.lower() not in {"h", "v", "høyre", "venstre"}:
+            valg3 = input("Hvor vil du gå? Skriv 'høyre' eller 'venstre':\n> ")
+        h3 = False
+        tekst = spiller.navn() + " tar til venstre med tredje veideling\n"
+        if valg3.lower() in {"h", "høyre"}:
+            h3 = True
+            tekst =  spiller.navn() + " tar til høyre med tredje veideling\n"
+        print(tekst)
+        if randint(1, 3) == 3 and not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
+            return True
+
+        if not h1 and not h2 and not h3:
+            print("\n\n    **Du fant stien som fører til ekspedisjonsleiren!**\n\n")
+            input("Trykk enter for å fortsette\n> ")
+            return False
+
+        elif h1 and h2 and h3:
+            print("""\n\n        **Du fant en avrevet side fra en gammel bok! På den står det:
+            ---
+            ...Rotter har en tendens til å glemme forskjellen på høyre og venstre
+            når de blir utsatt for smerte. En som f.eks sier "hold høyre" mener
+            da egentlig "hold venstre". En annen nyttig faktaopplysning omhandler...
+            ---
+            På en eller annen måte finner du veien tilbake til leirbålet du var med
+            sist.**""")
+        else:
+            print("Blindvei! På en eller annen måte finner du veien tilbake til leirbålet.")
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
+    skriv_ut(spiller, fiende)
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
 
@@ -139,12 +211,12 @@ def generer_enhjorning(spiller):
     skrivEnhjorning()
     return fiende
 
-def generer_fisk(spiller):
+def generer_banditt(spiller):
     loot = Loot()
-    fiende = Fiende("Fisk", "fisk", loot, 700, 200, 150, weapon=50, ending="en")
-    statiskLoot(loot)
-    print("\n" + spiller.navn(), "har møtt på en kampklar fisk!")
-    skrivFisk()
+    loot.legg_til_item(500, 50)
+    fiende = Fiende("Banditt", "menneske", loot, hp=1400, a=250, d=170, ending="en")
+    print("\n" + spiller.navn(), "har møtt på en banditt!")
+    #skrivBanditt()
     return fiende
 
 def dynamiskLoot(loot, fiende, spiller):
@@ -178,16 +250,6 @@ def dynamiskLoot(loot, fiende, spiller):
     d = randint(0, 2 * spiller.lvl())
     item = Item("Spiss Hatt", "hat", xHp=xHp, d=d)
     loot.legg_til_item(item, 5)
-
-def statiskLoot(loot):
-    loot.legg_til_item(500, 50)
-
-    item = Item("Fiskehode", "hat", xHp=70, d=60)
-    item.sett_loot_tekst("et fiskehode")
-    loot.legg_til_item(item, 25)
-
-    item = Item("Fiskeskjell-kjole", "robe", xHp=20, d=100)
-    loot.legg_til_item(item, 25)
 
 def skog_kart(qlog):
     print("""
