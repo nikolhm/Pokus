@@ -19,6 +19,9 @@ import troll
 import gargyl
 import shroom
 import example_expansion
+import os
+
+os.system("cls")
 
 klasser = Klasser()
 spiller = Spiller(input("Velg et navn til karakteren din:\n> "))
