@@ -775,12 +775,22 @@ class Fiende:
         return self._xHp
 
     #returnerer fiendens a. Brukes når fienden skal angripe.
-    def a(self):
+    def a(self, a=0):
+        self._a += a
         return self._a
 
     #returnerer fiendens kp. Brukes til spells
-    def kp(self):
+    def kp(self, kp=0):
+        self._kp += kp
         return self._kp
+
+    def d(self, d=0):
+        self._d += d
+        return self._d
+
+    def bonusKp(self, bKp=0):
+        self._bonusKp += bKp
+        return self._bonusKp
 
     #returnerer fiendens xp. Brukes når fienden er død.
     def xp(self):
