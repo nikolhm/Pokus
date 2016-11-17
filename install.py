@@ -7,11 +7,8 @@ def install(package):
 For å spille må du installere Colorama og starte spillet på nytt.""")
     if input("Vil du installere colorama nå?\n> ").lower() in {"ja", "j"}:
         osys = platform.system()
-        if osys == "Linux":
+        if osys == "Linux" or osys == "Darwin":
             os.system("pip3 install --user colorama")
-            os.system("clear")
-        elif osys == "Darwin":
-            os.system("pip install --user colorama")
             os.system("clear")
         else:
             os.system("pip install --user colorama")

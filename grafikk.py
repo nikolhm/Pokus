@@ -697,5 +697,3 @@ abccd'                          'dccba"""
     print(bue)
 
     print(Style.RESET_ALL)
-
-skrivRegnbue()
