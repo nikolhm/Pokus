@@ -1,8 +1,40 @@
 from random import randint
+from colorama import *
+import os
+import time
 
+init()
 
 def skrivTittel():
-    print("""
+    frames = ["""
+**********************************************************************************************************************************************
+
+                                                                                                                            ____
+                                                                                                                          .'* *.'
+                                                                                                                       __/_*_*(_
+                                                                                                                      / _______ \\
+                                                                                                                     _\_)/___\(_/_
+                                                                                                                    / _((\o o/))_ \\
+                                                                                                                    \ \())(-)(()/ /
+                                                                                                                     ' \(((()))/ '
+                                                                                                                    / ' \)).))/ ' \\
+                                                                                                                    / _ \ - | - /_  \\
+                                                                                                                   (   ( .;''';. .'  )
+                                                                                                                   _\\"__ /    )\ __"/_
+                                                                                                                     \/  \   ' /  \/
+                                                                                                                      .'  '...' ' )
+                                                                                                                      / /  |  \ \\
+                                                                                                                     / .   .   . \\
+                                                                                                                    /   .     .   \\
+                                                                                                                   /   /   |   \   \\
+                                                                                                                 .'   /    b    '.  '.
+                                                                                                             _.-'    /     Db     '-. '-._
+                                                                                                         _.-'       |      DDb       '-.  '-.
+                                                                                                        (_______mrf/\____.dDDDb.________)____)
+**********************************************************************************************************************************************
+"""]
+
+    ferdig = """
 **********************************************************************************************************************************************
 
 PPPPPPPPPPPPPPPPP         OOOOOOOOO      KKKKKKKKK    KKKKKKK UUUUUUUU     UUUUUUUU   SSSSSSSSSSSSSSS                       ____
@@ -28,7 +60,27 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
                                                                                                          _.-'       |      DDb       '-.  '-.
                                                                                                         (_______mrf/\____.dDDDb.________)____)
 **********************************************************************************************************************************************
-""")
+    """
+    os.system("cls")
+    pokusB = list("POKUS:")
+    pokusListe = list(frames[0])
+
+    for b in pokusB:
+        for x in range(len(ferdig)):
+            if ferdig[x] == b:
+                if ferdig[x + 1] != "r":
+                    pokusListe[x] = b
+            if b == "U" and ferdig[x] == "D":
+                pokusListe[x] = "D"
+        frames.append("".join(pokusListe))
+    frames.append(ferdig)
+
+    for f in frames:
+        print(f)
+        time.sleep(1/12)
+        os.system("cls")
+    print(ferdig)
+
 def skriv_ekorn1():
     print(""" ,;;:;,
    ;;;;;
@@ -656,3 +708,42 @@ lc/%%%%%%%/%%%%\/%%/%%\%%%/%%%%\%%%%\/%%%%%%\__===______====_]   ,~,  _-
             _-    ,`|`,         ************\/**   _-          _-
   _-               \ /           _-         _-   ~~
                   ~***~""")
+
+def skrivRegnbue():
+    bue = """               ,aaaaaa.
+            ,aaabbbbbbaaa.
+         ,aaabbbccccccbbbaaa.
+       ,aabbbcccddddddcccbbbaa.
+     ,aabbcccddd'    'dddcccbbaa.
+   ,aabbccddd'          'dddccbbaa.
+  ,abbccdd'                'ddccbba.
+ ,abccdd'                    'ddccba.
+,abcdd'                        'ddcba.
+abccd'                          'dccba"""
+
+    bue = list(bue)
+    indeks = 0
+    while indeks < len(bue):
+        if bue[indeks] == "a":
+            bue.insert(indeks, Fore.RED)
+            indeks += 1
+
+        if bue[indeks] == "b":
+            bue.insert(indeks, Fore.GREEN)
+            indeks += 1
+
+        if bue[indeks] == "c":
+            bue.insert(indeks, Fore.BLUE)
+            indeks += 1
+
+        if bue[indeks] == "d":
+            bue.insert(indeks, Fore.YELLOW)
+            indeks += 1
+
+        indeks += 1
+
+    bue = "".join(bue)
+
+    print(bue)
+
+    print(Style.RESET_ALL)

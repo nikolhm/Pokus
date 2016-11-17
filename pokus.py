@@ -3,6 +3,12 @@
                            October 2016
                       Magic Wand Productions
 """
+from install import *
+try:
+    from colorama import *
+except ImportError:
+    install("colorama")
+init()
 from klasser import *
 from random import randint
 from grafikk import *
@@ -13,6 +19,9 @@ import cerberus
 import gargyl
 import shroom
 import example_expansion
+import os
+
+os.system("cls")
 
 klasser = Klasser()
 spiller = Spiller(input("Velg et navn til karakteren din:\n> "))
