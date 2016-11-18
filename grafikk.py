@@ -2,6 +2,7 @@ from random import randint
 from colorama import *
 import os
 import time
+import platform
 
 init()
 
@@ -61,7 +62,12 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
                                                                                                         (_______mrf/\____.dDDDb.________)____)
 **********************************************************************************************************************************************
     """
-    os.system("cls")
+
+    if platform.system() == "Windows":
+        ccom = "cls"
+    else:
+        ccom = "clear"
+    os.system(ccom)
     pokusB = list("POKUS:")
     pokusListe = list(frames[0])
 
@@ -78,7 +84,7 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
     for f in frames:
         print(f)
         time.sleep(1/12)
-        os.system("cls")
+        os.system(ccom)
     print(ferdig)
 
 def skriv_ekorn1():

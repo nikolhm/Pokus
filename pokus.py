@@ -21,8 +21,6 @@ import shroom
 import example_expansion
 import os
 
-os.system("cls")
-
 klasser = Klasser()
 spiller = Spiller(input("Velg et navn til karakteren din:\n> "))
 inv = Inventory(spiller, klasser)
@@ -94,7 +92,7 @@ spiller.sett_sted_tilgjengelig(3)
 spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
-valg = "shroom"
+valg = "tutorial"
 
 skrivTittel()
 while not heltFerdig:
