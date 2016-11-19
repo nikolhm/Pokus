@@ -92,37 +92,36 @@ spiller.sett_sted_tilgjengelig(3)
 spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
-valg = "tutorial"
 
 skrivTittel()
 while not heltFerdig:
 
     #Tutorial
-    if valg == "tutorial":
-        valg = tutorial.mainloop(spiller, inv, klasser, spellbook)
+    if spiller.hentSted() == "tutorial":
+        spiller.byttSted(tutorial.mainloop(spiller, inv, klasser, spellbook))
 
     #Del 1: Magi-borgen og Gaute Gnom den Grusomme
-    if valg == "gnom":
+    if spiller.hentSted() == "gnom":
         skrivSlott()
-        valg = gnom.gnomeloop(spiller, inv, klasser, spellbook)
+        spiller.byttSted(gnom.gnomeloop(spiller, inv, klasser, spellbook))
 
     #Del 1.1: Trollfjellet
-    if valg == "troll":
-        valg = troll.troll_loop(spiller, inv, klasser, spellbook)
+    if spiller.hentSted() == "troll":
+        spiller.byttSted(troll.troll_loop(spiller, inv, klasser, spellbook))
 
     #Del 1.2: Vulkanen
-    if valg == "cerberus":
-        valg = cerberus.cerberus_loop(spiller, inv, klasser, spellbook)
+    if spiller.hentSted() == "cerberus":
+        spiller.byttSted(cerberus.cerberus_loop(spiller, inv, klasser, spellbook))
 
     #Del 1.3: Slottet med gargyler
-    if valg == "gargyl":
-        valg = gargyl.gargyl_loop(spiller, inv, klasser, spellbook)
+    if spiller.hentSted() == "gargyl":
+        spiller.byttSted(gargyl.gargyl_loop(spiller, inv, klasser, spellbook))
 
     #Del 2: Den fortapte ekspedisjonen og shrooms
-    if valg == "shroom":
-        valg = shroom.shroom_loop(spiller, inv, klasser, spellbook)
+    if spiller.hentSted() == "shroom":
+        spiller.byttSted(shroom.shroom_loop(spiller, inv, klasser, spellbook))
 
     #Test-expansion
-    if valg == "test":
+    if spiller.hentSted() == "test":
         skrivRegnbue()
-        valg = example_expansion.enhjorning_loop(spiller, inv, klasser, spellbook)
+        spiller.byttSted(example_expansion.enhjorning_loop(spiller, inv, klasser, spellbook))
