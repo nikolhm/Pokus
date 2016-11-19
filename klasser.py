@@ -495,6 +495,7 @@ class Spiller:
         self._xXp = 0
         self._xp = 0
         self._spesialisering = None
+        self._sted = "tutorial"
         self._fuglelukt = False
 
         #Lager en liste som holder styr på hvor mye xp som trengs for neste lvl (nivå)
@@ -712,6 +713,12 @@ class Spiller:
 
     def sett_sted_tilgjengelig(self, indeks):
         self._kartListe[indeks] = True
+
+    def hentSted(self):
+        return self._sted
+
+    def byttSted(self, plass):
+        self._sted = plass
 
 class Loot:
     def __init__(self):

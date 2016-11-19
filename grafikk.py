@@ -2,6 +2,7 @@ from random import randint
 from colorama import *
 import os
 import time
+import platform
 
 init()
 
@@ -61,7 +62,12 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
                                                                                                         (_______mrf/\____.dDDDb.________)____)
 **********************************************************************************************************************************************
     """
-    os.system("cls")
+
+    if platform.system() == "Windows":
+        ccom = "cls"
+    else:
+        ccom = "clear"
+    os.system(ccom)
     pokusB = list("POKUS:")
     pokusListe = list(frames[0])
 
@@ -78,7 +84,7 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
     for f in frames:
         print(f)
         time.sleep(1/12)
-        os.system("cls")
+        os.system(ccom)
     print(ferdig)
 
 def skriv_ekorn1():
@@ -685,7 +691,7 @@ def skrivBirdman():
       ,=`~| |~`=,jgs""")
 
 def skrivHytte():
-    print("""                                            /\\
+    hytte = """                                            /\\
 /\                                         /%%\  /\\
 %%\\            ,                          /%%%%\/%%\\
 %%%\\          ,~,                /\\       /%%%%/%%%%\\    ,   /\\
@@ -701,13 +707,31 @@ lc/%%%%%%%/%%%%\/%%/%%\%%%/%%%%\%%%%\/%%%%%%\__===______====_]   ,~,  _-
 **/%%%%%%/%%%%%%,%%/%%\%%/%%%%%%\%%%/%%%%%%%%\_|_|______|  |_]  ,~~~,
  /%%%%%%%/%%%%%,~,/%%%%\/%%%%%%%%\%/%%%%%%%%%%\_________|- |_] ,~~~~~,
  /%%%%%%/%%%%%,~~~,%%%%\/%%%%%%%%\%/%%%%%%%%%%\___#__#__|__|_],~~~~~~~,
-/%%%%%#%/#%%%,~~~~~,%%%/%%%%%%%%%%/%%%%%%%%%%%%\\***\/***/  \"  ,~~;~~,
-*******\/''',~~~~~~~,""/%%%%%%%%%/%%%%%%%%%%%%%%\\   _-            |
+/%%%%%#%/#%%%,~~~~~,%%%/%%%%%%%%%%/%%%%%%%%%%%%\\***\/***/  \\*  ,~~;~~,
+*******\/***,~~~~~~~,**/%%%%%%%%%/%%%%%%%%%%%%%%\\   _-            |
  -_          ,~~;~~,   **********/%%%%%%%%%%%%%%\       ^^      ~***~
       ^^        |   ,    _-     /%%%%%%%%%%%%#%%#\        _-
             _-    ,`|`,         ************\/**   _-          _-
   _-               \ /           _-         _-   ~~
-                  ~***~""")
+                  ~***~"""
+
+    hytte = list(hytte)
+    t = 0
+    while t < len(hytte):
+        if hytte[t] in {"%", "/", "\\", "~", ",", ";", "*", "#", "^", "`"}:
+            hytte.insert(t, Fore.GREEN)
+            t += 1
+        elif hytte[t] in {"_", "-", "=", "[", "]", "|"}:
+            hytte.insert(t, Fore.YELLOW)
+            t += 1
+        else:
+            hytte.insert(t, Style.RESET_ALL)
+            t += 1
+
+        t += 1
+
+    print("".join(hytte), Style.RESET_ALL)
+
 
 def skrivRegnbue():
     bue = """               ,aaaaaa.
