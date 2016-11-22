@@ -1,4 +1,8 @@
 from grafikk import *
+from os import listdir
+from os import system
+import platform
+import sys
 
 #Verdenskart.
 def verdenskart(spiller):
@@ -303,3 +307,220 @@ def finn_stats(item):
         returnListe[i] = listetekst[i] + ":" + str(listestats[i])
         i += 1
     return returnListe
+
+#Prosedyrer og funksjoner knyttet til lagring og lasting av filer:
+def minnestein(spiller, inv, klasser):
+    pris = 100
+    sPris = 500
+    if spiller.lvl() >= 10:
+        pris = 300
+        sPris = 2000
+    if spiller.lvl() >= 20:
+        pris = 500
+        sPris = 10000
+    if spiller.lvl() >= 30:
+        pris = 2000
+        sPris = 30000
+    if spiller.lvl() >= 40:
+        pris = 10000
+        sPris = 60000
+
+    print("""                 *** MINNESTEIN ***
+
+    Du er ved en minnestein! Her kan du bevare sjelen din, og
+    hente den ut igjen ved et senere tidspunkt. Å bevare sjelen
+    kommer ikke uten en pris. For å bevare din sjel, krever
+    minnesteinen et offer på""", pris, "gullstykker.\n")
+    inn = ""
+    while inn not in {"j", "ja", "n", "nei"}:
+        inn = input("Ønsker du å bevare sjelen din?    (ja/nei)\n> ").lower()
+    if inn == "j" or inn == "ja":
+        if inv.penger() >= pris:
+            inv.penger(-pris)
+            lagre(spiller, inv, klasser)
+            input("\nBevaring av sjelen er vellykket! Trykk enter for å fortsette\n> ")
+        else:
+            print("\n    Du har ikke nok gullstykker til å bevare sjelen din.")
+            print("    Minnesteinen kan likevel godta et offer i form av", sPris, "erfaringspoeng.")
+            inn = ""
+            while inn not in {"j", "ja", "n", "nei"}:
+                inn = input("\nØnsker du å bevare sjelen din for denne prisen?    (ja/nei)\n> ").lower()
+            if (inn == "j" or inn == "ja") and spiller.total_xp() >= sPris:
+                spiller.gi_xp(-sPris)
+                lagre(spiller, inv, klasser)
+                input("\nBevaring av sjelen er vellykket! Trykk enter for å fortsette\n> ")
+            elif inn == "j" or inn == "ja":
+                print("\n    Du har ikke nok erfaringspoeng å ofre til minnesteinen.")
+                print("    Er du sikker på at ditt eventyr er verdt å lagre?")
+                print("    Kom tilbake når du har noe verdifult å ofre til minnesteinen,")
+                print("    som f.eks. livet ditt. Ikke verdt noe nå iallefall.")
+                input("\nTrykk enter for å dra tilbake\n> ")
+    return
+
+def load_screen():
+    osys = platform.system()
+    inn = ""
+    print("""    *********************************************************
+
+    Velkommen til Pokus! Skriv 1 for å starte ett nytt spill,
+    eller skriv 2 for å laste et spill du har lagret fra før.
+
+    Start et nytt spill                                  (1)
+    Last tidligere spill                                 (2)
+    Avslutt programmet                                   (3)
+
+    *********************************************************""")
+    while inn != "1" and inn != "2" and inn != "3":
+        inn = input("Hva vil du gjøre?\n> ")
+    if inn == "1":
+        if osys == "Windows":
+            system("cls")
+        else:
+            system("clear")
+        return False
+    elif inn == "2":
+        filer = listdir("Save")
+        if filer == []:
+            print("Du har ingen lagrede filer!")
+            input("\nTrykk enter for å fortsette\n> ")
+            load_screen()
+        else:
+            if osys == "Windows":
+                system("cls")
+            else:
+                system("clear")
+            print("""    *********************************************
+            Her er spillene du kan laste:
+    - - - - - - - - - - - - - - - - - - - - - - -""")
+            i = 1
+            for fil in filer:
+                print("{:4}{:40}({})".format("", fil[0:len(fil)-4], i))
+                i += 1
+            print("    - - - - - - - - - - - - - - - - - - - - - - -")
+            print("    Skriv tallet til høyre for å laste spillet.")
+            print("    Skriv 0 for å gå tilbake.")
+            print("    *********************************************")
+            inn = input("Hvilket spill vil du laste?\n> ")
+            while inn != "0":
+                try:
+                    if osys == "Windows":
+                        return "Save\\" + filer[int(inn) -1]
+                    else:
+                        return "Save/" + filer[int(inn) -1]
+                except ValueError:
+                    print("\nDu må skrive et tall!\n")
+                except IndexError:
+                    print("\nDu har ikke så mange filer!\n")
+                inn = input("Hvilket spill vil du laste?\n> ")
+            load_screen()
+    elif inn == "3":
+        sys.exit("\nVelkommen tilbake!")
+
+def lagre(spiller, inv, klasser, nr=0):
+    osys = platform.system()
+    if osys == "Windows":
+        filnavn = "Save\\" + spiller.navn() + ".txt"
+        if nr:
+            filnavn = "Save\\" + spiller.navn() + "(" + str(nr) + ")" ".txt"
+    else:
+        filnavn = "Save/" + spiller.navn() + ".txt"
+        if nr:
+            filnavn = "Save/" + spiller.navn() + "(" + str(nr) + ")" ".txt"
+
+    try:
+        fil = open(filnavn)
+        fil.close()
+        if spiller.first_save():
+            fil = open("012bsd13ryvjbkuj54ub7.txt")
+            fil.close()
+        lagre(spiller, inv, klasser, nr +1)
+    except FileNotFoundError:
+        spiller.first_save(True)
+        with open(filnavn, "w") as fil:
+            fil.write("")
+
+        lagreListe = ["Spiller\n"]
+
+        spillerinf = spiller.lagre_stats()
+        kartListe = spillerinf.pop()
+        tekst = ""
+        for x in range(len(spillerinf)):
+            tekst += str(spillerinf[x]) + ","
+        lagreListe.append(tekst.strip(",") + "\n")
+        tekst = ""
+        for x in range(len(kartListe)):
+            tekst += str(int(kartListe[x])) + ","
+        lagreListe.append(tekst.strip(",") + "\n")
+
+        lagreListe.append("Inventory\n")
+        lagreListe.append(str(inv.penger()) + "\n")
+        itemListe = inv.itemListe()
+        for item in itemListe:
+            infListe = [item.navn(), item.type()]
+            for stat in item.statliste():
+                infListe.append(str(stat))
+            infListe.append(str(int(item.bruker())))
+            infListe.append(item.spesialisering())
+            infListe.append(str(item.lvl()))
+            infListe.append(str(int(item.blade())))
+            tekst = ""
+            for inf in infListe:
+                tekst += inf + ","
+            lagreListe.append(tekst.strip(",") + "\n")
+
+        lagreListe.append("Questlog\n")
+        for qlog in klasser.alle_questlogger():
+            for q in qlog.hent_qLog():
+                if q.startet() or q.progresjon():
+                    tekst = str(klasser.alle_questlogger().index(qlog)) + ","
+                    tekst += str(qlog.hent_qLog().index(q)) + ","
+                    tekst += str(int(q.startet())) + ","
+                    tekst += str(int(q.ferdig())) + ","
+                    tekst += str(q.progresjon())
+                    for progresjon in q.progresjon_liste():
+                        tekst += "," + str(progresjon)
+                    lagreListe.append(tekst + "\n")
+
+        with open(filnavn, "a") as fil:
+            for linje in lagreListe:
+                fil.write(linje)
+
+def last_navn(filnavn):
+    with open(filnavn) as fil:
+        linje = fil.readline()
+        return fil.readline().strip().split(",")[0]
+
+def last_fil(spiller, inv, klasser, filnavn):
+    with open(filnavn) as fil:
+        linje = fil.readline()
+        linje = fil.readline().strip()
+        spillerInf = linje.split(",")
+        spillerInf.pop(0)
+        linje = fil.readline().strip()
+        kartliste = linje.split(",")
+        i = 0
+        while i < len(kartliste):
+            kartliste[i] = bool(int(kartliste[i]))
+            i += 1
+        spiller.last_stats(spillerInf, kartliste)
+
+        linje = fil.readline()
+        inv.penger(int(fil.readline().strip()) - 100)
+        linje = fil.readline().strip()
+        while linje != "Questlog":
+            itemInf = linje.split(",")
+            inv.last_inn(itemInf)
+            linje = fil.readline().strip()
+
+        linje = fil.readline().strip()
+        while linje != "":
+            questInf = linje.split(",")
+            qlog = klasser.questlog(int(questInf[0]))
+            q = qlog.hent_quest(int(questInf[1]))
+            q.start()
+            q.sett_ferdig(bool(int(questInf[3])))
+            q.progresser(int(questInf[4]))
+            if q.progresjon_liste():
+                for x in range(5, 5 + len(q.progresjon_liste())):
+                    q.progresser_liste(x - 5, int(questInf[x]))
+            linje = fil.readline().strip()

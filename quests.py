@@ -253,6 +253,15 @@ def troll_q1_ferdig(navn):
 
 #Flere quest (coming soon)
 
+#Shroom:
+def shroom_q1(navn):
+    return "    Hei " + navn + """!
+    Virkelig godt å se deg igjen, vi har havnet i en heller uheldig situasjon
+    her. Vassle sendte oss for å undersøke den magiske ubalansen i skogen
+    her, da vi brått ble angrepet av en gjeng banditter. De """
+def shroom_q1_ferdig(navn):
+    return ""
+
 #Overtrollmann Vassles quests:
 def vassle_troll(navn):
     return "    Hei " + navn + """!

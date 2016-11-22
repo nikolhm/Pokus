@@ -314,6 +314,9 @@ class Quest:
     def xProgresjon(self):
         return self._xProgresjon
 
+    def progresjon_liste(self):
+        return self._progresjonListe
+
     def lvl(self):
         return self._lvl
 
@@ -378,8 +381,8 @@ class Quest:
             else:
                 return False
 
-    def sett_ferdig(self):
-        self._ferdig = True
+    def sett_ferdig(self, boolsk=True):
+        self._ferdig = boolsk
 
     def legg_til_progresjonTekst(self, tekst):
         self._progresjonTekst = tekst
@@ -402,8 +405,8 @@ class Quest:
     def legg_til_progresjonTekstListe(self, tekst, indeks):
         self._progresjonTekstListe[indeks] = tekst
 
-    def progresser_liste(self, indeks):
-        self._progresjonListe[indeks] += 1
+    def progresser_liste(self, indeks, antall=1):
+        self._progresjonListe[indeks] += antall
         if self._progresjonListe[indeks] > self._xProgresjonListe[indeks]:
             self._progresjonListe[indeks] = self._xProgresjonListe[indeks]
 
@@ -494,9 +497,10 @@ class Spiller:
         self._d = 10
         self._xXp = 0
         self._xp = 0
-        self._spesialisering = None
+        self._spesialisering = ""
         self._sted = "tutorial"
         self._fuglelukt = False
+        self._firstSave = False
 
         #Lager en liste som holder styr på hvor mye xp som trengs for neste lvl (nivå)
         #Listen begynner med 80 og øker med et tall som øker med et tall som øker med gjennomsnittlig 9.
@@ -506,7 +510,29 @@ class Spiller:
         self._lvl = 1
 
         #Kart
-        self._kartListe = [False for x in range(10)]
+        self._kartListe = [False for x in range(20)]
+
+    def lagre_stats(self):
+        return [self._navn, self._xHp, self._hp, self._kp, self._xKp, self._ekstraKp, \
+        self._a, self._d, self._xXp, self._xp, self._spesialisering, self._sted, \
+        int(self._fuglelukt), self._lvl, int(self._firstSave), self._kartListe]
+
+    def last_stats(self, statliste, kartliste):
+        self._xHp = int(statliste[0])
+        self._hp = int(statliste[1])
+        self._kp = int(statliste[2])
+        self._xKp = int(statliste[3])
+        self._ekstraKp = int(statliste[4])
+        self._a = int(statliste[5])
+        self._d = int(statliste[6])
+        self._xXp = int(statliste[7])
+        self._xp = int(statliste[8])
+        self._spesialisering = statliste[9]
+        self._sted = statliste[10]
+        self._fuglelukt = bool(int(statliste[11]))
+        self._lvl = int(statliste[12])
+        self._firstSave = bool(int(statliste[13]))
+        self._kartListe = kartliste
 
     #Denne metoden gir total a fra spilleren og brukes til å angripe fienden.
     def a(self):
@@ -534,10 +560,16 @@ class Spiller:
         return self._lvl
 
     #setter eller returnerer spesialiseringen
-    def spesialisering(self, spesialisering=None):
+    def spesialisering(self, spesialisering=""):
         if spesialisering:
             self._spesialisering = spesialisering
         return self._spesialisering
+
+    #Angir om brukeren har lagret en gang før.
+    def first_save(self, boolsk=False):
+        if boolsk:
+            self._firstSave = True
+        return self._firstSave
 
     #gir brukeren informasjon om hvilke stats de har, samt lvl og xp til neste lvl.
     def stats(self):
@@ -1439,9 +1471,15 @@ class Inventory:
             self.selg(0)
         self._penger = 3
 
+    def last_inn(self, l):
+        item = Item(l[0], l[1], a=int(l[2]), xKp=int(l[3]), xHp=int(l[4]), d=int(l[5]), \
+        ekstraKp=int(l[6]), dmg=int(l[7]), hp=int(l[8]), kp=int(l[9]), bruk=bool(int(l[10])), \
+        spesialisering=l[11], lvl=int(l[12]), blade=bool(int(l[13])))
+        self.legg_til_item(item, item.bruker())
+
 class Item:
     def __init__(self, navn, typeObjekt, a=0, d=0, hp=0, kp=0, xHp=0, xKp=0, \
-    ekstraKp=0, dmg=0, bruk=False, spesialisering=None, lvl=0, blade=False):
+    ekstraKp=0, dmg=0, bruk=False, spesialisering="", lvl=0, blade=False):
         self._navn = navn
         self._type = typeObjekt
         self._blade = blade
