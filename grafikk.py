@@ -373,7 +373,7 @@ def skrivFisk():
                            '     '""")
 
 def skrivSlott():
-    print("""                      ___                                                    ___
+    slott = """                      ___                                                    ___
                       T)))                       __,___,_                    T)))
                       |                          TT  )   )                   |
                      /T\                         ||  )   )                  /T\\
@@ -396,25 +396,27 @@ def skrivSlott():
       [_].\_I_/.[_].\_I_/.[_].\_I_/.[_]\II/[].\_\%%/_/.[]\II/[_].\_I_/.[_].\_I_/.[_].\_I_/.[_]
       L_J./   \.L_J./   \.L_J./   \.L_JI  I[]./      \.[]I  IL_J./   \.L_J./   \.L_J./   \.L_J
       L_J|     |L_J|     |L_J|     |L_J|  |[]|        |[]|  |L_J|     |L_J|     |L_J|     |L_J
-      L_J|_____|L_J|_____|L_J|_____|L_J|__|[]|        |[]|__|L_J|_____|L_J|_____|L_J|_____|L_J""")
+      L_J|_____|L_J|_____|L_J|_____|L_J|__|[]|        |[]|__|L_J|_____|L_J|_____|L_J|_____|L_J"""
 
-def skrivRegnbue():
-        print("""                                . . . ;
-                                         .';
-                                    '  '   ';
-                                     .  . . ';;.
-                                      .  .  . ';;
-                                        .  .  ' .
-                   ,aaaaaa.               .  .
-                ,aaabbbbbbaaa.              .  .
-             ,aaabbbccccccbbbaaa.
-           ,aabbbcccddddddcccbbbaa.           '
-         ,aabbcccddd'    'dddcccbbaa.
-       ,aabbccddd'          'dddccbbaa.
-      ,abbccdd'                'ddccbba.
-     ,abccdd'                    'ddccba.
-    ,abcdd'                        'ddcba.
-    abccd'                          'dccba""")
+    slott = list(slott)
+    t = 0
+    while t < len(slott):
+        if slott[t] in {"[", "]", "L", "J", "|", "_", "/", "\\"}:
+            slott.insert(t, Fore.YELLOW)
+            t += 1
+        elif slott[t] in {"T", "I", "o", "O", "+", "=", "-", ",", "(", ")", ".", "^", "'"}:
+            slott.insert(t, Fore.BLUE)
+            t += 1
+        elif slott[t] in {"%"}:
+            slott.insert(t, Fore.GREEN)
+            t += 1
+        else:
+            slott.insert(t, Style.RESET_ALL)
+            t += 1
+
+        t += 1
+
+    print("".join(slott), Style.RESET_ALL)
 
 def skrivStein():
     print("""                   ooo OOO OOO ooo
