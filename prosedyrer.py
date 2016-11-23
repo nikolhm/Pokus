@@ -435,6 +435,10 @@ def lagre(spiller, inv, klasser, nr=0):
             fil.close()
         lagre(spiller, inv, klasser, nr +1)
     except FileNotFoundError:
+        try:
+            dekrypt(filnavn)
+        except FileNotFoundError:
+            pass
         spiller.first_save(True)
         with open(filnavn, "w") as fil:
             fil.write("")
@@ -485,7 +489,10 @@ def lagre(spiller, inv, klasser, nr=0):
             for linje in lagreListe:
                 fil.write(linje)
 
+    krypt(filnavn)
+
 def last_navn(filnavn):
+    dekrypt(filnavn)
     with open(filnavn) as fil:
         linje = fil.readline()
         return fil.readline().strip().split(",")[0]
@@ -524,3 +531,34 @@ def last_fil(spiller, inv, klasser, filnavn):
                 for x in range(5, 5 + len(q.progresjon_liste())):
                     q.progresser_liste(x - 5, int(questInf[x]))
             linje = fil.readline().strip()
+    krypt(filnavn)
+
+def krypt(filnavn):
+    skalSkrive =  []
+    tekst = ""
+    with open(filnavn) as fil:
+        for linje in fil:
+            bokstaver = list(linje.strip())
+            for x in range(len(bokstaver)):
+                bokstaver[x] = chr(ord(bokstaver[x]) + 3)
+            skalSkrive.append("".join(bokstaver))
+    for linje in skalSkrive:
+        tekst += linje + "\n"
+
+    with open(filnavn, "w") as fil:
+        fil.write(tekst)
+
+def dekrypt(filnavn):
+    skalSkrive =  []
+    tekst = ""
+    with open(filnavn) as fil:
+        for linje in fil:
+            bokstaver = list(linje.strip())
+            for x in range(len(bokstaver)):
+                bokstaver[x] = chr(ord(bokstaver[x]) - 3)
+            skalSkrive.append("".join(bokstaver))
+    for linje in skalSkrive:
+        tekst += linje + "\n"
+
+    with open(filnavn, "w") as fil:
+        fil.write(tekst)
