@@ -62,7 +62,7 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
                                                                                                         (_______mrf/\____.dDDDb.________)____)
 **********************************************************************************************************************************************
     """
-
+    """
     # Farge
     ferdig = list(ferdig)
     f1 = list(frames[0])
@@ -111,7 +111,7 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
     frames[0] = "".join(f1)
 
     ferdig += Style.RESET_ALL
-
+    """
     # Animasjon
     if platform.system() == "Windows":
         ccom = "cls"
