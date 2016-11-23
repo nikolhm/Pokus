@@ -173,7 +173,7 @@ def skriv_ekorn3():
        "" jb""")
 
 def skrivGnom():
-    print("""       ,      ,
+    print(Fore.GREEN + """       ,      ,
       /(.-""-.)\\
   |\  \/      \/  /|
   | \ / =.  .= \ / |
@@ -183,7 +183,7 @@ def skrivGnom():
      \ \__/\__/ /
    ___\ \|--|/ /___
  /`    \      /    `\\
-/  jgs  '----'       \\""")
+/  jgs  '----'       \\""" + Style.RESET_ALL)
 
 def skrivTrollmann():
     print("""                    ____
