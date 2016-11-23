@@ -21,6 +21,7 @@ def gnomeloop(spiller, inv, klasser, spellbook):
         butikk = False
         quest = False
         spir = False
+        lagre = False
 
         #I denne while-løkken bestemmer brukeren hvor man man vil dra.
         #Man har i hovedsak tre alternativer: skogen (slåss med gnomer),
@@ -51,15 +52,19 @@ def gnomeloop(spiller, inv, klasser, spellbook):
                 velg = True
                 spir = True
 
-            if inn == "f" and qlog.hent_quest(5).ferdig():
+            if inn == "f" and (vassleQlog.hent_quest(0).startet() or \
+            vassleQlog.hent_quest(1).startet() or vassleQlog.hent_quest(2).startet()):
                 velg = True
                 ferdig = True
+
+            if inn == "l":
+                velg = True
+                lagre = True
 
         #Denne løkken lar brukeren kjøpe ting i butikken.
         while butikk == True:
             klasser.butikk(0).interaksjon(inv)
             butikk = False
-
 
         #Denne løkken begynner med å liste opp alle tilgjengelige quest. Etterpå
         #kan man velge hvilke quest man vil høre mer om. Om man ikke møter kravene
@@ -87,6 +92,11 @@ def gnomeloop(spiller, inv, klasser, spellbook):
                 spir = False
                 if vassleQlog.hent_quest(3).startet():
                     spiller.sett_sted_tilgjengelig(5)
+
+        #Denne løkken lagrer spillet.
+        while lagre:
+            minnestein(spiller, inv, klasser)
+            lagre = False
 
         #Denne løkken omhandler angrepsmodus og interaksjon mellom de to klassene.
         #Løkken kjører så lenge karakteren er i livet og brukeren ikke har skrevet
@@ -461,6 +471,7 @@ def kart(qListe, qListeVassle):
         print("    Gaute Gnom's hule (g)      Konfronter Gaute Gnom den Grusomme!")
     if qListe[5].ferdig():
         print("    Det høyeste spiret (h)     Besøk kontoret til Overtrollmann Vassle")
+    print("    Minnesteinen (l)           Lagre sjelen din i borgens lokale minnestein")
     if qListeVassle[0].startet() or qListeVassle[1].startet() or qListeVassle[2].startet():
         print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra")
 

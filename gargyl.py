@@ -26,12 +26,17 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
         gaaTilButikk = False
         fangekjeller = False
         utkikk = False
+        lagre = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
             if inn == "f":
                 valg = True
                 ferdig = True
+
+            if inn == "l":
+                valg = True
+                lagre = True
 
             if inn == "q":
                 quest = True
@@ -142,6 +147,10 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                     if angrip(spiller, fiende, inv, klasser, spellbook):
                         qlog.hent_quest(5).progresser_liste(0)
                         utkikk = False
+
+        while lagre:
+            minnestein(spiller, inv, klasser)
+            lagre = False
 
     if ferdig:
         return verdenskart(spiller)
@@ -366,6 +375,7 @@ def garg_kart(qlog):
         print("    Fangekjelleren (a)         Dra til fangekjelleren og finn skjulte skatter!")
     if qlog.hent_qLog()[2].startet():
         print("    Utkikkstårnet (u)          Bekjemp gargyler i de øvre delene av slottet!")
+    print("    Minnesteinen (l)           Bevar sjelen din i slottets forfalne minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 def intro_kart(qlog):

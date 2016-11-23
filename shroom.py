@@ -44,6 +44,13 @@ def shroom_loop(spiller, inv, klasser, spellbook):
                 fight = True
                 valg = True
 
+            if inn == "l":
+                sti = True
+                valg = True
+
+        if sti:
+            sti = False
+            ferdig = sti(spiller, inv, klasser, spellbook)
 
         while quest:
             inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "stuffs").lower()
@@ -72,8 +79,6 @@ def shroom_loop(spiller, inv, klasser, spellbook):
         return verdenskart(spiller)
 
 def intro_loop(spiller, inv, klasser, spellbook):
-    qlog = klasser.questlog(6)
-
     print("    **", spiller.navn(), """kommer til et utbrent leirbål. Det er blod på bakken, og
     spor etter kamp. Det virker ikke som om det er lenge siden noen var her,
     men det er vanskelig å si hvor de gikk. Hovedstien deler seg til høyre
@@ -95,6 +100,7 @@ def intro_loop(spiller, inv, klasser, spellbook):
     return sti(spiller, inv, klasser, spellbook)
 
 def sti(spiller, inv, klasser, spellbook):
+    vassleQlog = klasser.questlog(5)
     while True:
         #Sti 1
         print("\nStien deler seg")
@@ -141,6 +147,7 @@ def sti(spiller, inv, klasser, spellbook):
         if not h1 and not h2 and not h3:
             print("\n\n    **Du fant stien som fører til ekspedisjonsleiren!**\n\n")
             input("Trykk enter for å fortsette\n> ")
+            vassleQlog.hent_quest(3).progresser()
             return False
 
         elif h1 and h2 and h3:

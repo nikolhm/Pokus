@@ -76,7 +76,7 @@ def enhjorning_loop(spiller, inv, klasser, spellbook):
     """Questlog blir laget utenfor loopen, og lagres i klasser-objektet.
     For å enkelt kunne referere til dette, lagrer vi vårt Questlog-objekt
     som en variabel:"""
-    qlog = klasser.questlog(2)
+    qlog = klasser.questlog(len(klasser.alle_questlogger())-1)
 
     """Vi begynner med en valgløkke. Her bestemmes alle stedene karakteren kan
     gå, og består gjerne av et sted man får quest, en butikk, og diverse

@@ -21,8 +21,15 @@ import shroom
 import example_expansion
 import os
 
+skrivTittel()
+input("Trykk enter for å fortsette\n> ")
+lastTidligere = load_screen()
+if lastTidligere:
+    spiller = Spiller(last_navn(lastTidligere))
+else:
+    spiller = Spiller(input("Velg et navn til karakteren din:\n> "))
+
 klasser = Klasser()
-spiller = Spiller(input("Velg et navn til karakteren din:\n> "))
 inv = Inventory(spiller, klasser)
 spellbook = Spellbook(klasser, spiller, inv)
 
@@ -81,19 +88,19 @@ skogQlog = Questlog()
 shroom.skog_quest(skogQlog, spiller)
 klasser.legg_til_questlog(skogQlog)
 
+if lastTidligere:
+    last_fil(spiller, inv, klasser, lastTidligere)
+else:
+    item = Item("Onepiece", "robe", d=1)
+    inv.legg_til_item(item, True)
 
-item = Item("Onepiece", "robe", d=1)
-inv.legg_til_item(item, True)
-
-#spiller.sett_sted_tilgjengelig(0)
-spiller.sett_sted_tilgjengelig(1)
-spiller.sett_sted_tilgjengelig(2)
-spiller.sett_sted_tilgjengelig(3)
-spiller.sett_sted_tilgjengelig(4)
+    #spiller.sett_sted_tilgjengelig(0)
+    spiller.sett_sted_tilgjengelig(1)
+    spiller.sett_sted_tilgjengelig(2)
+    spiller.sett_sted_tilgjengelig(3)
+    spiller.sett_sted_tilgjengelig(4)
 
 heltFerdig = False
-
-skrivTittel()
 while not heltFerdig:
 
     #Tutorial
