@@ -63,6 +63,56 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
 **********************************************************************************************************************************************
     """
 
+    # Farge
+    ferdig = list(ferdig)
+    f1 = list(frames[0])
+    indeks = 0
+    while indeks < len(ferdig):
+        if (ferdig[indeks] == "P") and (ferdig[indeks + 1] != "r"):
+            ferdig.insert(indeks, Fore.RED)
+            f1.insert(indeks, Fore.RED)
+            indeks += 1
+
+        if ferdig[indeks] == "O":
+            ferdig.insert(indeks, Fore.YELLOW)
+            f1.insert(indeks, Fore.YELLOW)
+            indeks += 1
+
+        if ferdig[indeks] == "K":
+            ferdig.insert(indeks, Fore.BLUE)
+            f1.insert(indeks, Fore.BLUE)
+            indeks += 1
+
+        if (ferdig[indeks] == "U") or (ferdig[indeks] == "D" and (ferdig[indeks - 1] == ":" or ferdig[indeks + 1] == ":")):
+            ferdig.insert(indeks, Fore.GREEN)
+            f1.insert(indeks, Fore.GREEN)
+            indeks += 1
+
+        if ferdig[indeks] == "S":
+            ferdig.insert(indeks, Fore.MAGENTA)
+            f1.insert(indeks, Fore.MAGENTA)
+            indeks += 1
+
+        if ferdig[indeks] == " ":
+            ferdig.insert(indeks, Fore.WHITE)
+            f1.insert(indeks, Fore.WHITE)
+            indeks += 1
+
+        if ferdig[indeks] == "*":
+            ferdig.insert(indeks, Fore.WHITE)
+            f1.insert(indeks, Fore.WHITE)
+            indeks += 1
+
+        indeks += 1
+
+    print(ferdig)
+
+    ferdig = "".join(ferdig)
+    frames[0] = "".join(f1)
+
+    ferdig += Style.RESET_ALL
+
+    # Animasjon
     if platform.system() == "Windows":
         ccom = "cls"
     else:
