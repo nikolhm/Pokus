@@ -1,6 +1,7 @@
 import quests
 from random import randint
 from prosedyrer import *
+from colorama import *
 
 class Butikk:
     def __init__(self, navn):
@@ -350,8 +351,8 @@ class Quest:
                 i += 1
             return liste
 
-    def start(self):
-        self._startet = True
+    def start(self, boolsk=True):
+        self._startet = boolsk
 
     def sett_tilgjengelig(self, tilgjengelig=True):
         self._tilgjengelig = tilgjengelig
@@ -695,7 +696,9 @@ class Spiller:
     #alltid er oppdatert på hvor mange hp og kp som gjenstår. Dette er det nærmeste
     #jeg kommer en "health bar" / "energy bar" med terminal-grafikk.
     def skriv_ut(self):
-        print(self._navn, " HP: ", self._hp, "/", self._xHp, ", KP: ", self._kp, "/", self._xKp, sep="")
+        print(self._navn, " HP: ", self._hp, "/" + Style.BRIGHT + Fore.RED, \
+        self._xHp, Style.RESET_ALL,  ", KP: ", self._kp, "/" + \
+        Style.BRIGHT + Fore.BLUE, self._xKp, Style.RESET_ALL, sep="")
 
     #Hever max hp
     def hev_hp(self, hp):
@@ -893,9 +896,10 @@ class Fiende:
     #Skriver ut fiendens stats. Gjøres hver runde samtidig som karakterens stats skrives ut.
     def skriv_ut(self):
         if self._xKp == 0:
-            print(self._navn, " HP: ", self._hp, "/", self._xHp, sep="")
+            print(self._navn, " HP: ", self._hp, "/", Style.BRIGHT + Fore.RED, self._xHp, Style.RESET_ALL, sep="")
         else:
-            print(self._navn, " HP: ", self._hp, "/", self._xHp, ", KP: ", self._kp, "/", self._xKp, sep="")
+            print(self._navn, " HP: ", self._hp, "/", Style.BRIGHT + Fore.RED, self._xHp, \
+            Style.RESET_ALL, ", KP: ", self._kp, "/", Style.BRIGHT + Fore.BLUE, self._xKp, Style.RESET_ALL, sep="")
 
     #bruker en gitt mengde kp.
     def bruk_kons(self, mengde):

@@ -27,7 +27,10 @@ lastTidligere = load_screen()
 if lastTidligere:
     spiller = Spiller(last_navn(lastTidligere))
 else:
-    spiller = Spiller(input("Velg et navn til karakteren din:\n> "))
+    navn = ""
+    while len(navn) == 0:
+        navn = input("Velg et navn til karakteren din:\n> ")
+    spiller = Spiller(navn)
 
 klasser = Klasser()
 inv = Inventory(spiller, klasser)

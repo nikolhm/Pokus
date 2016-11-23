@@ -524,7 +524,7 @@ def last_fil(spiller, inv, klasser, filnavn):
             questInf = linje.split(",")
             qlog = klasser.questlog(int(questInf[0]))
             q = qlog.hent_quest(int(questInf[1]))
-            q.start()
+            q.start((bool(int(questInf[2]))))
             q.sett_ferdig(bool(int(questInf[3])))
             q.progresser(int(questInf[4]))
             if q.progresjon_liste():
