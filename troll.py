@@ -80,8 +80,9 @@ def troll_loop(spiller, inv, klasser, spellbook):
         quest = False
         gaaTilButikk = False
         fjell = False
-        questInstans1 = False
-        questInstans2 = False
+        cave = False
+        helvete = False
+        lagre = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -101,14 +102,18 @@ def troll_loop(spiller, inv, klasser, spellbook):
                 fjell = True
                 valg = True
 
-            """Skal kun gå i denne løkken hvis man har startet, men ikke er ferdig med,
-            quest nummer 2. Merk opptelling begynner med 0."""
-            if inn == "1" and qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
-                questInstans1 = True
+            if inn == "l":
+                lagre = True
                 valg = True
 
-            if inn == "2" and qlog.hent_quest(2).startet():
-                questInstans2 = True
+            """Skal kun gå i denne løkken hvis man har startet, men ikke er ferdig med,
+            quest nummer 2. Merk opptelling begynner med 0."""
+            if inn == "c" and qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
+                cave = True
+                valg = True
+
+            if inn == "h" and qlog.hent_quest(2).startet():
+                helvete = True
                 valg = True
 
         """Questlog-klassen sin oppdrag_tilgjengelige-metode viser lvl og stedet
@@ -155,37 +160,43 @@ def troll_loop(spiller, inv, klasser, spellbook):
             if fjell and qlog.hent_quest(0).startet():
                 qlog.hent_quest(0).progresser()
 
+        #Denne løkken lagrer spillet.
+        while lagre:
+            minnestein(spiller, inv, klasser)
+            lagre = False
+
         "Quest nummer 2 er satt i en egen instans, og har tre progresjoner som følges."
-        while questInstans1:
+        while cave:
             #Fiende 1
             fiende = generer_troll(spiller)
             skriv_ut(spiller, fiende)
             if not angrip(spiller, fiende, inv, klasser, spellbook):
-                questInstans1 = False
+                cave = False
                 break
-            qlog.hent_quest(1).progresser()
+            #qlog.hent_quest(1).progresser()
 
             #Fiende 2
             fiende = generer_troll(spiller)
             skriv_ut(spiller, fiende)
             if not angrip(spiller, fiende, inv, klasser, spellbook):
-                questInstans1 = False
+                cave = False
                 break
             "progresserer her den første av de ekstra progresjonene som ble lagt til."
-            qlog.hent_quest(1).progresser_liste(0)
+            #qlog.hent_quest(1).progresser_liste(0)
 
             #Fiende 3
-            print(spiller.navn(), "har møtt en digert troll! Kanskje den har svaret?")
+            skrivTrollBoss()
+            print(spiller.navn(), "har møtt en enormt troll!")
             fiende = Fiende("Enormt troll", "troll", Loot(), 1000, 200, 200, kp=150)
             fiende.return_loot().legg_til_item(500, 100)
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
-                qlog.hent_quest(1).progresser_liste(1)
+                qlog.hent_quest(1).progresser()
                 print("\n*Du klarte det! Nå har du svaret!*\n")
-            questInstans1 = False
+            cave = False
 
         "Quest nummer 3 skal slå en boss, og er satt i egen instans."
-        while questInstans2:
+        while helvete:
             loot = Loot()
             item = Item("Overpowered ting", "trinket", a=200, d=200, ekstraKp=10)
             loot.legg_til_item(item, 50)
@@ -199,7 +210,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             if angrip(spiller, fiende, inv, klasser, spellbook):
                 qlog.hent_quest(2).progresser()
 
-            questInstans2 = False
+            helvete = False
 
     """Man havner i her når brukeren vil se verdenskartet. Da går man ut av
     hovedløkken, og går til løkken i pokus.py. """
@@ -353,9 +364,10 @@ def trollKart(qlog):
     Butikken (k)               Kjøp det du trenger hos "Fe Fi Fo - Familiebutikk"
     Badstua (q)                Se om de rynkete gamle trollmennene trenger noe hjelp""")
     if qlog.hent_qLog()[1].startet() and not qlog.hent_qLog()[1].ferdig():
-        print("    Minen (1)                  Invader det mørke, dype hjemmet til trollfolket!")
+        print("    Minen (c)                  Invader det mørke, dype hjemmet til trollfolket!")
     if qlog.hent_qLog()[2].startet():
-        print("    Helvetesgapet (2)          Konfronter trollkongen!")
+        print("    Helvetesgapet (h)          Konfronter trollkongen!")
+    print("    Minnesteinen (l)           Lagre sjelen din i borgens lokale minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 """Her settes en butikk opp. Alt som trengs er å opprete Item-objekter, og legge
@@ -405,8 +417,6 @@ def trollButikk(butikk):
 def trollQuest(qlog, spiller):
     navn = spiller.navn()
 
-    #q1
-    "Her skal 5 fiender bekjempes."
     desk1 = quests.troll_q1(navn)
     ferdigDesk1 = quests.troll_q1_ferdig(navn)
     q1 = Quest(desk1, ferdigDesk1, 25, 15, "Rolf Rynkerumpe")
@@ -419,17 +429,19 @@ def trollQuest(qlog, spiller):
     #q2
     """Her skal tre forskjellige fiender bekjempes. Hver har sin egen progresjon.
     Ved fullførelse av dette questet, skal det neste questet settes tilgjengelig (Quest-chains)."""
-    desk2 = "    Hei " + navn + "!\n    Dette er nok et quest! Progresser ved å dra et annet sted og drepe noe!"
+    desk2 = quests.troll_q2(navn)
     ferdigDesk2 = "Takk igjen " + navn + "!"
-    q2 = Quest(desk2, ferdigDesk2, 1, 16, "Questholder 2")
-    item = Item("Hvitt skjegg", "beard", xKp=20, ekstraKp=3)
+    q2 = Quest(desk2, ferdigDesk2, 1, 16, "Zip")
+    item = Item("Trollskjegg", "beard", xKp=80, ekstraKp=20)
     q2.legg_til_reward(xp=1000, gull=2500, item=item, settTilgjengelig=True, settTilgjengeligIndeks=2)
     q2.legg_til_ekstra_tekst("Her kommer ekstra tekst. Noe som involverer skjegget som blir gitt i reward kanskje?")
+    """
     q2.legg_til_progresjonTekst("Stor fiende 1 bekjempet: ")
     q2.legg_til_progresjon(1)
     q2.legg_til_progresjonTekstListe("Stor fiende 2 bekjempet: ", 0)
     q2.legg_til_progresjon(1)
-    q2.legg_til_progresjonTekstListe("Stor fiende 3 bekjempet: ", 1)
+    """
+    q2.legg_til_progresjonTekst("Digert troll drept: ")
     q2.legg_til_svarTekst("\nVil legge ut på et eventyr for å finne svaret?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
 
