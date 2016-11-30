@@ -233,7 +233,7 @@ def garg_bq1_ferdig(navn):
 
 #Troll:
 def troll_q1(navn):
-    return "    Hei " + navn + """!
+    return "    Hei, " + navn + """!
     Det er uhyre mange troll rundt i dette området. Ettersom tiden har gått
     har vi blitt vant til det, men de har blitt mer og mer uredde i det siste.
     De har til og med gått så nærme som å pisse på bålet gjennom pipa. Vet du
@@ -244,14 +244,27 @@ def troll_q1(navn):
 
     -- Myrd 25 troll uten nåde."""
 def troll_q1_ferdig(navn):
-    return "    Tusen takk " + navn + """!
+    return "    Tusen takk, " + navn + """!
     Det er så fint å kjenne en magiker som ikke bøyer til slike ubrukelige ting
     som "moral og etikk". Det er oss eller dem. De angriper oss uansett om de er
     kvinner eller barn og da må vi beskytte oss selv. Jeg lurer på hvorfor de gjør
     det i det første uansett...
     """
 
-#Flere quest (coming soon)
+def troll_q2(navn):
+    return "    Hei, pssst! " + navn + """!
+    Det er meg! Zip! Ikke vær lurt av forkledningen min. Jeg må late som jeg er en
+    gammel trollmann for å komme inn i badstua. Trollmennene her er sjåvinistiske
+    relikker med foreldete verdier. Hvis jeg ikke later som jeg er mann, blir jeg
+    bare ignorert. "Lag meg en sandwich, heks!" "Jeg har lyst til å bruke vinden
+    min i det der, hvis du skjønner hva jeg mener!" De er absolutt motbydelige!
+
+    Likevel må jeg finne ut hva de vet om trollene. Jeg har overhørt noe prat om
+    å dra ned til den gamle minen å rydde ut noen av de sterkere trollene. Disse
+    gamle fjertene snakker om å gjøre det, men de bare snakker og snakker og gjør
+    niks. Kan du gå ned i minen og drepe et digert troll? Jeg tror du kan finne
+    noen informasjon om lederen av trollene. Vi vet overraskende lite om ham...
+    """
 
 #Shroom:
 def shroom_q1(navn):
