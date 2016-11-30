@@ -395,6 +395,9 @@ class Quest:
     d=0, item=None, settTilgjengelig=False, settTilgjengeligIndeks=0):
         self._reward = [xp, gull, hp, kp, ekstraKp, a, d, item, settTilgjengelig, settTilgjengeligIndeks]
 
+    def hent_sett_tilgjengelig_reward(self):
+        return [self._reward[8], self._reward[9]]
+
     def legg_til_ekstra_tekst(self, tekst):
         self._ekstraTekst = tekst
 

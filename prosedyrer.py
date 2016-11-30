@@ -480,6 +480,8 @@ def lagre(spiller, inv, klasser, nr=0):
                     tekst += str(qlog.hent_qLog().index(q)) + ","
                     tekst += str(int(q.startet())) + ","
                     tekst += str(int(q.ferdig())) + ","
+                    tekst += str(int(q.hent_sett_tilgjengelig_reward()[0])) + ","
+                    tekst += str(q.hent_sett_tilgjengelig_reward()[1]) + ","
                     tekst += str(q.progresjon())
                     for progresjon in q.progresjon_liste():
                         tekst += "," + str(progresjon)
@@ -526,10 +528,12 @@ def last_fil(spiller, inv, klasser, filnavn):
             q = qlog.hent_quest(int(questInf[1]))
             q.start((bool(int(questInf[2]))))
             q.sett_ferdig(bool(int(questInf[3])))
-            q.progresser(int(questInf[4]))
+            if int(questInf[4]):
+                qlog.hent_quest(int(questInf[5])).sett_tilgjengelig()
+            q.progresser(int(questInf[6]))
             if q.progresjon_liste():
-                for x in range(5, 5 + len(q.progresjon_liste())):
-                    q.progresser_liste(x - 5, int(questInf[x]))
+                for x in range(7, 7 + len(q.progresjon_liste())):
+                    q.progresser_liste(x - 7, int(questInf[x]))
             linje = fil.readline().strip()
     krypt(filnavn)
 
