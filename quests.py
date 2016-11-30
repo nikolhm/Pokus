@@ -258,7 +258,20 @@ def shroom_q1(navn):
     return "    Hei " + navn + """!
     Virkelig godt å se deg igjen, vi har havnet i en heller uheldig situasjon
     her. Vassle sendte oss for å undersøke den magiske ubalansen i skogen
-    her, da vi brått ble angrepet av en gjeng banditter. De """
+    her, da vi brått ble angrepet av en gjeng banditter. De virket helt fra
+    seg av sinne, og sa at våre magiske eksperimenter hadde gått over streken!
+    Som regel pleier bare en eller to banditter vise seg i disse traktene om
+    gangen, men nå var det mange av dem! Vi har ikke klart å fokusere på
+    oppgaven vår i det hele tatt, siden vi stadig må flykte fra bandittene!
+    Vi har hørt rykter om at bandittene er en del av en organisert kriminal-
+    bande som holder til dypere inn i skogen. Kan du, som den modigste av
+    oss, dra til bandittenes leir og finne ut hvorfor de jakter oss sånn?
+
+    En av våre stakkers torturerte rotter sa man burde gå VENSTRE HØYRE
+    VENSTRE i skogen, men er usikker på hvordan stedsansen til torturerte
+    rotter fungerer...
+
+    -- Finn bandittenes hovedleir og stopp angrepene"""
 def shroom_q1_ferdig(navn):
     return ""
 

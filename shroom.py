@@ -101,6 +101,7 @@ def intro_loop(spiller, inv, klasser, spellbook):
 
 def sti(spiller, inv, klasser, spellbook):
     vassleQlog = klasser.questlog(5)
+    shroomQlog = klasser.questlog(6)
     while True:
         #Sti 1
         print("\nStien deler seg")
@@ -159,8 +160,24 @@ def sti(spiller, inv, klasser, spellbook):
             ---
             På en eller annen måte finner du veien tilbake til leirbålet du var med
             sist.**""")
+        elif h1 and not h2 and h3:
+            print("""\n\n        *Du fant et skilt hvor det står "BANDITT-LEIR"* """)
+            if shroomQlog.hent_quest(0).startet():
+                print("\nDu går inn til leiren.")
+                input("\nTrykk enter for å fortsette\n> ")
+                banditt_loop(spiller, inv, klasser, spellbook)
+                return False
+            else:
+                print("\nDet er ikke en banditt-leir", spiller.navn(), "er på jakt etter.")
+                print("Du bestemmer deg for å dra tilbake til leirbålet.")
+        elif not h1 and h2 and not h3 and shroomQlog.hent_quest(0).startet():
+            print("Blindvei! Du får en følelse av at rotters stedsans ikke er helt bra.")
+            print("Kanksje du kan prøve det motsatte? Du drar tilbake til leirbålet.")
         else:
             print("Blindvei! På en eller annen måte finner du veien tilbake til leirbålet.")
+
+def banditt_loop(spiller, inv, klasser, spellbook):
+    pass
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
     skriv_ut(spiller, fiende)
@@ -298,4 +315,16 @@ def shroom_butikk(butikk):
     butikk.legg_til_vare(vare)
 
 def skog_quest(qlog, spiller):
+    navn = spiller.navn()
+
+    #q1
+    desk1 = shroom_q1(navn)
+    ferdigDesk1 = shroom_q1_ferdig(navn)
+    q1 = Quest(desk1, ferdigDesk1, 7, 15, "Zip")
+    q1.legg_til_reward(xp=10000, gull=300, hp=30, kp=30)
+    q1.legg_til_progresjonTekst("Banditt-leir funnet: ")
+    q1.legg_til_svarTekst("\nVil du gå på bandittjakt?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q1)
+
+def banditt_quest(qlog, spiller):
     navn = spiller.navn()

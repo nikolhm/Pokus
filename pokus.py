@@ -91,6 +91,10 @@ skogQlog = Questlog()
 shroom.skog_quest(skogQlog, spiller)
 klasser.legg_til_questlog(skogQlog)
 
+bandittQlog = Questlog()
+shroom.banditt_quest(bandittQlog, spiller)
+klasser.legg_til_questlog(bandittQlog)
+
 if lastTidligere:
     last_fil(spiller, inv, klasser, lastTidligere)
 else:
