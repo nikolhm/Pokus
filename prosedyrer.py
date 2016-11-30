@@ -383,7 +383,7 @@ def load_screen():
         if filer == []:
             print("Du har ingen lagrede filer!")
             input("\nTrykk enter for å fortsette\n> ")
-            load_screen()
+            return load_screen()
         else:
             if osys == "Windows":
                 system("cls")
@@ -412,7 +412,7 @@ def load_screen():
                 except IndexError:
                     print("\nDu har ikke så mange filer!\n")
                 inn = input("Hvilket spill vil du laste?\n> ")
-            load_screen()
+            return load_screen()
     elif inn == "3":
         sys.exit("\nVelkommen tilbake!")
 
