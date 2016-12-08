@@ -419,19 +419,19 @@ def load_screen():
 def lagre(spiller, inv, klasser, nr=0):
     osys = platform.system()
     if osys == "Windows":
-        filnavn = "Save\\" + spiller.navn() + ".txt"
+        filnavn = "Save\\" + spiller.navn() + ".sav"
         if nr:
-            filnavn = "Save\\" + spiller.navn() + "(" + str(nr) + ")" ".txt"
+            filnavn = "Save\\" + spiller.navn() + "(" + str(nr) + ")" ".sav"
     else:
-        filnavn = "Save/" + spiller.navn() + ".txt"
+        filnavn = "Save/" + spiller.navn() + ".sav"
         if nr:
-            filnavn = "Save/" + spiller.navn() + "(" + str(nr) + ")" ".txt"
+            filnavn = "Save/" + spiller.navn() + "(" + str(nr) + ")" ".sav"
 
     try:
         fil = open(filnavn)
         fil.close()
         if spiller.first_save():
-            fil = open("012bsd13ryvjbkuj54ub7.txt")
+            fil = open("012bsd13ryvjbkuj54ub7.sav")
             fil.close()
         lagre(spiller, inv, klasser, nr +1)
     except FileNotFoundError:
@@ -538,28 +538,32 @@ def last_fil(spiller, inv, klasser, filnavn):
     krypt(filnavn)
 
 def krypt(filnavn):
+    ingetingAaSeHer = "hunGunIcorN"
     skalSkrive =  []
     tekst = ""
     with open(filnavn) as fil:
         for linje in fil:
             bokstaver = list(linje.strip())
             for x in range(len(bokstaver)):
-                bokstaver[x] = chr(ord(bokstaver[x]) + 3)
+                bokstaver[x] = chr(ord(bokstaver[x]) + ord(ingetingAaSeHer[x % len(ingetingAaSeHer)]))
+
+
             skalSkrive.append("".join(bokstaver))
     for linje in skalSkrive:
         tekst += linje + "\n"
 
-    with open(filnavn, "w") as fil:
+    with open(filnavn, "w", encoding="UTF-8") as fil:
         fil.write(tekst)
 
 def dekrypt(filnavn):
+    ingentingInteressant = "hunGunIcorN"
     skalSkrive =  []
     tekst = ""
-    with open(filnavn) as fil:
+    with open(filnavn, encoding="UTF-8") as fil:
         for linje in fil:
             bokstaver = list(linje.strip())
             for x in range(len(bokstaver)):
-                bokstaver[x] = chr(ord(bokstaver[x]) - 3)
+                bokstaver[x] = chr(ord(bokstaver[x]) - ord(ingentingInteressant[x % len(ingentingInteressant)]))
             skalSkrive.append("".join(bokstaver))
     for linje in skalSkrive:
         tekst += linje + "\n"
