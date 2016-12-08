@@ -219,6 +219,7 @@ class Questlog:
                 ikkeFerdig += 1
         if ikkeFerdig == 0:
             print("Kjedelige Kjell vil diskutere tresorter. Du sniker deg unna.")
+            input("Trykk enter for å dra tilbake\n> ")
             return "f"
         else:
             print("\nDitt nåværende nivå er", lvl)
@@ -505,6 +506,8 @@ class Spiller:
         self._sted = "tutorial"
         self._fuglelukt = False
         self._firstSave = False
+        self._goodPoints = 0
+        self._evilPoints = 0
 
         #Lager en liste som holder styr på hvor mye xp som trengs for neste lvl (nivå)
         #Listen begynner med 80 og øker med et tall som øker med et tall som øker med gjennomsnittlig 9.

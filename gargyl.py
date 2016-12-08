@@ -232,7 +232,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
-            if fiende.race() == "gargyl" and fiende.kp() >= 100 and randint(0, 1) == 1 and fiende.untouchableCD() >= 0:
+            if fiende.race() == "gargyl" and fiende.kp() >= 100 and randint(0, 1) == 1 \
+            and fiende.untouchableCD() >= 0 and not fiende.untouchable():
                 print(fiende.navn() + fiende.ending(), "kastet RockNoRoll!")
                 print(fiende.navn() + fiende.ending(), "er blitt til stein!")
                 fiende.bruk_kons(100)
