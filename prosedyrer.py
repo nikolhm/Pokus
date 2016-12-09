@@ -143,6 +143,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     elif inn == "e" or inn == "egenskaper":
         spiller.stats()
 
+    #viser godhets- og ondhetspoeng
+    elif inn == "p" or inn == "poeng":
+        spiller.good_evil_points()
+
     #viser tilgjengelige spesialangrep
     elif inn == "s" or inn == "formler":
         spellbook.skriv_spellbook()

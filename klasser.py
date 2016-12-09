@@ -522,7 +522,8 @@ class Spiller:
     def lagre_stats(self):
         return [self._navn, self._xHp, self._hp, self._kp, self._xKp, self._ekstraKp, \
         self._a, self._d, self._xXp, self._xp, self._spesialisering, self._sted, \
-        int(self._fuglelukt), self._lvl, int(self._firstSave), self._kartListe]
+        int(self._fuglelukt), self._lvl, int(self._firstSave), self._goodPoints, \
+        self._evilPoints, self._kartListe]
 
     def last_stats(self, statliste, kartliste):
         self._xHp = int(statliste[0])
@@ -539,6 +540,8 @@ class Spiller:
         self._fuglelukt = bool(int(statliste[11]))
         self._lvl = int(statliste[12])
         self._firstSave = bool(int(statliste[13]))
+        self._goodPoints = int(statliste[14])
+        self._evilPoints = int(statliste[15])
         self._kartListe = kartliste
 
     #Denne metoden gir total a fra spilleren og brukes til å angripe fienden.
@@ -760,6 +763,10 @@ class Spiller:
 
     def byttSted(self, plass):
         self._sted = plass
+
+    def good_evil_points(self):
+        print("Godhetspoeng:", self._goodPoints)
+        print("Ondhetspoeng:", self._evilPoints)
 
 class Loot:
     def __init__(self):
