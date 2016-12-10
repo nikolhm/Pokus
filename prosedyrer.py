@@ -532,7 +532,7 @@ def last_fil(spiller, inv, klasser, filnavn):
             q = qlog.hent_quest(int(questInf[1]))
             q.start((bool(int(questInf[2]))))
             q.sett_ferdig(bool(int(questInf[3])))
-            if int(questInf[4]):
+            if q.ferdig() and int(questInf[4]):
                 qlog.hent_quest(int(questInf[5])).sett_tilgjengelig()
             q.progresser(int(questInf[6]))
             if q.progresjon_liste():
