@@ -485,10 +485,12 @@ def garg_quest(qlog, spiller):
     ferdigDeskBq1 = garg_bq1_ferdig(navn)
     bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Besynderlige Berit", bonus=True, resetIfDead=True)
     item = Item("Berits skjegg", "beard", kp=50, ekstraKp=5)
-    bq1.legg_til_reward(xp=10000, item=item)
+    bq1.legg_til_reward(xp=10000, item=item, gp=1)
     bq1.legg_til_ekstra_tekst("Dette betyr så mye for oss! Her, ta det magiske skjegget mitt!.\n")
     bq1.legg_til_progresjonTekst("Kosebamse funnet: ")
     bq1.legg_til_svarTekst("Vil du gi kosebamsen til Besynderlige Berit?   (ja/nei)\n> ")
+    bq1.legg_til_alt_desk("Vil du myrde kosebamsen mens Besynderlige Berit ser på?\n> ")
+    bq1.legg_til_alt_reward(ep=5)
     qlog.legg_til_quest(bq1)
 
 def guri_dialog(spiller):

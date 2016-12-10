@@ -218,7 +218,7 @@ class Questlog:
             if q.ferdig() == False:
                 ikkeFerdig += 1
         if ikkeFerdig == 0:
-            print("Kjedelige Kjell vil diskutere tresorter. Du sniker deg unna.")
+            print("    Kjedelige Kjell vil diskutere tresorter. Du sniker deg unna.\n")
             input("Trykk enter for å dra tilbake\n> ")
             return "f"
         else:
@@ -255,6 +255,11 @@ class Questlog:
                     if svar == "j" or svar == "ja":
                         self._quests[indeks].reward(inv, spiller, self)
                         self._quests[indeks].sett_ferdig()
+                    elif svar == "n" or svar == "nei":
+                        svar = input(self._quests[indeks].alt_desk())
+                        if svar == "j" or svar == "ja":
+                            self._quests[indeks].alt_reward(inv, spiller, self)
+                            self._quests[indeks].sett_ferdig()
                     input("\nTrykk enter for å gå tilbake\n> ")
                 else:
                     print(self._quests[indeks].deskripsjon())
@@ -300,6 +305,8 @@ class Quest:
         self._xProgresjonListe = []
         self._progresjonListe = []
         self._progresjonTekstListe = []
+        self._altDesk = "Vil du gjøre det motsatte?\n> "
+        self._altReward = []
 
     def navn(self):
         return self._giverNavn
@@ -309,6 +316,9 @@ class Quest:
 
     def ferdig_desk(self):
         return self._ferdigDesk
+
+    def alt_desk(self):
+        return self._altDesk
 
     def progresjon(self):
         return self._progresjon
@@ -393,8 +403,12 @@ class Quest:
         self._svarTekst = tekst
 
     def legg_til_reward(self, xp=0, gull=0, hp=0, kp=0, ekstraKp=0, a=0, \
-    d=0, item=None, settTilgjengelig=False, settTilgjengeligIndeks=0):
-        self._reward = [xp, gull, hp, kp, ekstraKp, a, d, item, settTilgjengelig, settTilgjengeligIndeks]
+    d=0, item=None, settTilgjengelig=False, settTilgjengeligIndeks=0, gp=0, ep=0):
+        self._reward = [xp, gull, hp, kp, ekstraKp, a, d, item, settTilgjengelig, settTilgjengeligIndeks, gp, ep]
+
+    def legg_til_alt_reward(self, xp=0, gull=0, hp=0, kp=0, ekstraKp=0, a=0, \
+    d=0, item=None, settTilgjengelig=False, settTilgjengeligIndeks=0, gp=0, ep=0):
+        self._altReward = [xp, gull, hp, kp, ekstraKp, a, d, item, settTilgjengelig, settTilgjengeligIndeks, gp, ep]
 
     def hent_sett_tilgjengelig_reward(self):
         return [self._reward[8], self._reward[9]]
@@ -409,6 +423,9 @@ class Quest:
 
     def legg_til_progresjonTekstListe(self, tekst, indeks):
         self._progresjonTekstListe[indeks] = tekst
+
+    def legg_til_alt_desk(self, tekst):
+        self._altDesk = tekst
 
     def progresser_liste(self, indeks, antall=1):
         self._progresjonListe[indeks] += antall
@@ -451,7 +468,7 @@ class Quest:
             print(spiller.navn(), "får", self._reward[5], "ekstra angrepspoeng!")
             spiller.hev_a(self._reward[5])
 
-        #a
+        #d
         if self._reward[6] != 0:
             print(spiller.navn(), "får", self._reward[6], "ekstra defensivspoeng!")
             spiller.hev_d(self._reward[6])
@@ -480,6 +497,85 @@ class Quest:
         #sett tilgjengelig annet quest
         if self._reward[8]:
             quest = qlog.hent_quest(self._reward[9]).sett_tilgjengelig()
+
+        if self._reward[10]:
+            print(spiller.navn(), "får", self._reward[10], "godhetspoeng!")
+            spiller.good_points(self._reward[10])
+
+        if self._reward[11]:
+            print(spiller.navn(), "får", self._reward[11], "ondhetspoeng!")
+            spiller.evil_points(self._reward[11])
+
+    def alt_reward(self, inv, spiller, qlog):
+        print("Gratulerer!",spiller.navn(), "fullførte", self._giverNavn, "sitt oppdrag! På en måte...\n")
+
+        #xp
+        if self._altReward[0] != 0:
+            print(spiller.navn(), "får", self._altReward[0], "erfaringspoeng!")
+            spiller.gi_xp(self._altReward[0])
+
+        #gull
+        if self._altReward[1] != 0:
+            print(spiller.navn(), "får", self._reward[1], "gullstykker!")
+            inv.penger(self._reward[1])
+
+        #hp
+        if self._altReward[2] != 0:
+            print(spiller.navn(), "får", self._altReward[2], "ekstra helsepoeng!")
+            spiller.hev_hp(self._altReward[2])
+
+        #kp
+        if self._altReward[3] != 0:
+            print(spiller.navn(), "får", self._altReward[3], "ekstra konsentrasjonspoeng!")
+            spiller.hev_kp(self._altReward[3])
+
+        #ekstra kp
+        if self._altReward[4] != 0:
+            print(spiller.navn(), "får", self._altReward[4], "ekstra konsentrasjonspoeng per runde!")
+            spiller.hev_ekstraKp(self._altReward[4])
+
+        #a
+        if self._altReward[5] != 0:
+            print(spiller.navn(), "får", self._altReward[5], "ekstra angrepspoeng!")
+            spiller.hev_a(self._altReward[5])
+
+        #d
+        if self._altReward[6] != 0:
+            print(spiller.navn(), "får", self._altReward[6], "ekstra defensivspoeng!")
+            spiller.hev_d(self._altReward[6])
+
+        #item
+        if self._altReward[7]:
+            item = self._altReward[7]
+            print(self._giverNavn + "s", item.navn().lower(), "gir deg følgende fordeler:")
+            statliste = finn_stats(item)
+            print(" ".join(statliste))
+
+            gammelItem = inv.har_type(item.type())
+            if gammelItem:
+                statliste = finn_stats(gammelItem)
+                print("\n" + spiller.navn() + "s nåværende", gammelItem.navn().lower(), "gir deg følgende fordeler:")
+                print(" ".join(statliste))
+
+            inn = input("\nVil du bruke den? (ja/nei)\n> ").lower()
+            while inn != "ja" and inn != "nei" and inn != "j" and inn != "n":
+                inn = input(inn + " er ikke en gyldig kommando. Skriv 'ja' eller 'nei'\n> ")
+            if inn == "ja" or inn == "j":
+                inv.legg_til_item(item, bruk=True)
+            else:
+                inv.legg_til_item(item)
+
+        #sett tilgjengelig annet quest
+        if self._altReward[8]:
+            quest = qlog.hent_quest(self._altReward[9]).sett_tilgjengelig()
+
+        if self._altReward[10]:
+            print(spiller.navn(), "får", self._altReward[10], "godhetspoeng!")
+            spiller.good_points(self._altReward[10])
+
+        if self._altReward[11]:
+            print(spiller.navn(), "får", self._altReward[11], "ondhetspoeng!")
+            spiller.evil_points(self._altReward[11])
 
     def reset_progresjon(self):
         self._progresjon = 0
@@ -767,6 +863,14 @@ class Spiller:
     def good_evil_points(self):
         print("Godhetspoeng:", self._goodPoints)
         print("Ondhetspoeng:", self._evilPoints)
+
+    def good_points(self, p=0):
+        self._goodPoints += p
+        return self._goodPoints
+
+    def evil_points(self, p=0):
+        self._evilPoints += p
+        return self._evilPoints
 
 class Loot:
     def __init__(self):
