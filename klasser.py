@@ -23,10 +23,10 @@ class Butikk:
         print("    ------------------------------------------------------------")
         print("    Velkommen til '", self._navn, "'!", sep="")
         print("    ------------------------------------------------------------")
-        inn = input("\nVil du kjøpe eller selge? (k/s)         'f' for å gå tilbake\n> ")
+        inn = input("\nVil du kjøpe eller selge? (k/s)         'f' for å gå tilbake\n> ").lower()
         while inn != "f" and inn != "ferdig":
             while inn != "f" and inn != "ferdig" and inn != "k" and inn != "kjøp" and inn != "s" and inn != "selg":
-                inn = input(inn + " er ikke en gyldig kommando, skriv 'k', 's' eller 'f'\n> ")
+                inn = input(inn + " er ikke en gyldig kommando, skriv 'k', 's' eller 'f'\n> ").lower()
             if inn == "k" or inn == "kjøp":
                 while inn != "f" and inn != "ferdig" and inn != "selg" and inn != "s":
                     inn = self.buy(inv)
@@ -77,7 +77,7 @@ class Butikk:
             try:
                 inn = int(inn)
                 if inv.itemListe()[inn - 1].bruker():
-                    sikker = input("Du bruker denne gjenstanden. Er du sikker på at du vil selge den? (j/n)\n> ")
+                    sikker = input("Du bruker denne gjenstanden. Er du sikker på at du vil selge den? (j/n)\n> ").lower()
                     if sikker != "j" and sikker != "ja":
                         return inn
                 print("Du solgte", inv.itemListe()[inn - 1].navn().lower(), "for", inv.itemListe()[inn - 1].verdi(), "gullstykker.")
@@ -91,7 +91,7 @@ class Butikk:
     def buy(self, inv):
         self.skriv_ut_sortiment(inv)
         print("Du har", inv.penger(), "gullstykker.")
-        kommando = input("Hva vil du kjøpe?\n> ")
+        kommando = input("Hva vil du kjøpe?\n> ").lower()
 
         if kommando == "i" or kommando == "inventar":
             inv.skriv_inv()
@@ -231,7 +231,7 @@ class Questlog:
             and self._quests[indeks].tilgjengelig() and not self._quests[indeks].bonus():
                 if not self._quests[indeks].startet():
                     print(self._quests[indeks].deskripsjon())
-                    svar = self._quests[indeks].svar()
+                    svar = self._quests[indeks].svar().lower()
                     if svar == "j" or svar == "ja":
                         self._quests[indeks].start()
                 elif self._quests[indeks].startet() and not self._quests[indeks].sjekk_ferdig():
@@ -251,12 +251,12 @@ class Questlog:
                 if self._quests[indeks].sjekk_ferdig():
                     print(self._quests[indeks].deskripsjon())
                     print(self._quests[indeks].ferdig_desk())
-                    svar = self._quests[indeks].svar()
+                    svar = self._quests[indeks].svar().lower()
                     if svar == "j" or svar == "ja":
                         self._quests[indeks].reward(inv, spiller, self)
                         self._quests[indeks].sett_ferdig()
                     elif svar == "n" or svar == "nei":
-                        svar = input(self._quests[indeks].alt_desk())
+                        svar = input(self._quests[indeks].alt_desk()).lower()
                         if svar == "j" or svar == "ja":
                             self._quests[indeks].alt_reward(inv, spiller, self)
                             self._quests[indeks].sett_ferdig()
