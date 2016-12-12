@@ -730,6 +730,9 @@ class Spiller:
         self._xp += xp
         self._xXp += xp
 
+        evil = round((self._evilPoints + 0.1) / (self._goodPoints + self._evilPoints) * self._evilPoints)
+        good = round((self._goodPoints + 0.1) / (self._goodPoints + self._evilPoints) * self._goodPoints)
+
         #Del 1/2: lvl-up
         #Verdien til det første elementet i _xpListe er mengden xp som trengs for å
         #komme til lvl 2.
@@ -740,14 +743,14 @@ class Spiller:
 
             #Dette skjer hver gang man når en ny lvl; max hp økes med 10+5*lvl,
             #kp økes med 10, a med 10 og d med 5.
-            self._xHp += 10 + self._lvl * 5
-            self._hp += 10 + self._lvl * 5
+            self._xHp += 10 + self._lvl * 5 + round(evil * self._lvl / (5 * (1+ (self._lvl/20))))
+            self._hp += 10 + self._lvl * 5 + round(evil * self._lvl / (5 * (1+ (self._lvl/20))))
 
-            self._xKp += 10
-            self._kp += 10
+            self._xKp += 10 + round(good * self._lvl / (15 * (1+ (self._lvl/20))))
+            self._kp += 10 + round(good * self._lvl / (15 * (1+ (self._lvl/20))))
 
-            self._a += 10
-            self._d += 5
+            self._a += 10 + round((evil * self._lvl) / (50 * (1+ (self._lvl/20))))
+            self._d += 5 + round((good * self._lvl) / (50 * (1+ (self._lvl/20))))
 
             #Når man når lvl 3, 5 og 10 lærer karakteren et nytt spesialangrep.
             if self._lvl == 3:
