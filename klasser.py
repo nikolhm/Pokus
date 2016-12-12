@@ -730,8 +730,8 @@ class Spiller:
         self._xp += xp
         self._xXp += xp
 
-        evil = round((self._evilPoints + 0.1) / (self._goodPoints + self._evilPoints) * self._evilPoints)
-        good = round((self._goodPoints + 0.1) / (self._goodPoints + self._evilPoints) * self._goodPoints)
+        evil = round((self._evilPoints + 0.1) / (self._goodPoints + self._evilPoints + 1) * self._evilPoints)
+        good = round((self._goodPoints + 0.1) / (self._goodPoints + self._evilPoints + 1 ) * self._goodPoints)
 
         #Del 1/2: lvl-up
         #Verdien til det første elementet i _xpListe er mengden xp som trengs for å
