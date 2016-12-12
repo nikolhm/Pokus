@@ -297,6 +297,10 @@ def skrivGuri():
                          `"`""")
 
 def skrivGravstein():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                                          __.....__
                                         .'         ':,
                                        /  __  _  __  \\\\
@@ -423,6 +427,10 @@ def skrivFisk():
                            '     '""")
 
 def skrivSlott():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     slott = """                      ___                                                    ___
                       T)))                       __,___,_                    T)))
                       |                          TT  )   )                   |
@@ -492,6 +500,10 @@ def skrivStein():
                    ooo OOO OOO ooo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;nhm""")
 
 def skrivGargylslott():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                                 /\\
                                  ||
                                  ||
@@ -761,6 +773,10 @@ def skrivBirdman():
       ,=`~| |~`=,jgs""")
 
 def skrivHytte():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     hytte = """                                            /\\
 /\                                         /%%\  /\\
 %%\\            ,                          /%%%%\/%%\\
@@ -804,16 +820,20 @@ lc/%%%%%%%/%%%%\/%%/%%\%%%/%%%%\%%%%\/%%%%%%\__===______====_]   ,~,  _-
 
 
 def skrivRegnbue():
-    bue = """               ,aaaaaa.
-            ,aaabbbbbbaaa.
-         ,aaabbbccccccbbbaaa.
-       ,aabbbcccddddddcccbbbaa.
-     ,aabbcccddd'    'dddcccbbaa.
-   ,aabbccddd'          'dddccbbaa.
-  ,abbccdd'                'ddccbba.
- ,abccdd'                    'ddccba.
-,abcdd'                        'ddcba.
-abccd'                          'dccba"""
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    bue = """               ,aaaaaa.                             ,aaaaaa.                              ,aaaaaa.                               ,aaaaaa.
+            ,aaabbbbbbaaa.                        ,aaabbbbbbaaa.                        ,aaabbbbbbaaa.                        ,aaabbbbbbaaa.
+         ,aaabbbccccccbbbaaa.                  ,aaabbbccccccbbbaaa.                  ,aaabbbccccccbbbaaa.                  ,aaabbbccccccbbbaaa.
+       ,aabbbcccddddddcccbbbaa.              ,aabbbcccddddddcccbbbaa.              ,aabbbcccddddddcccbbbaa.              ,aabbbcccddddddcccbbbaa.
+     ,aabbcccddd'    'dddcccbbaa.          ,aabbcccddd'    'dddcccbbaa.          ,aabbcccddd'    'dddcccbbaa.          ,aabbcccddd'    'dddcccbbaa.
+   ,aabbccddd'          'dddccbbaa.      ,aabbccddd'          'dddccbbaa.      ,aabbccddd'          'dddccbbaa.      ,aabbccddd'          'dddccbbaa.
+  ,abbccdd'                'ddccbba.    ,abbccdd'                'ddccbba.    ,abbccdd'                'ddccbba.    ,abbccdd'                'ddccbba.
+ ,abccdd'                    'ddccba.  ,abccdd'                    'ddccba.  ,abccdd'                    'ddccba.  ,abccdd'                    'ddccba.
+,abcdd'                        'ddcba.,abcdd'                        'ddcba.,abcdd'                        'ddcba.,abcdd'                        'ddcba.
+abccd'                          'dccbaabccd'                          'dccbaabccd'                          'dccbaabccd'                          'dccba"""
 
     bue = list(bue)
     indeks = 0

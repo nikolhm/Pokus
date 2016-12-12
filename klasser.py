@@ -1582,6 +1582,11 @@ class Inventory:
         if not qListeGnom[7].ferdig() and qListeGnom[7].progresjon() != 0:
             print("Du har en magisk trylleformel for å rette oppgaver.")
 
+        #Troll
+        qListeTroll = self._klasser.questlog(2).hent_qLog()
+        if not qListeTroll[1].ferdig() and qListeTroll[1].progresjon() != 0:
+            print("Du har et trollsk dokument.")
+
         #Gargyl
         qListeGargyl = self._klasser.questlog(4).hent_qLog()
         if not qListeGargyl[4].ferdig() and qListeGargyl[4].progresjon() != 0:
