@@ -186,13 +186,17 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
             #Fiende 3
             skrivTrollBoss()
-            print(spiller.navn(), "har møtt en enormt troll!")
-            fiende = Fiende("Enormt troll", "troll", Loot(), 1000, 200, 200, kp=150)
+            print(spiller.navn(), "har møtt et enormt troll!")
+            loot = Loot()
+            item = Item("Trollskriv", "trinket")
+            fiende = Fiende("Enormt troll", "troll", loot, 1000, 200, 200, kp=150)
             fiende.return_loot().legg_til_item(500, 100)
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
                 qlog.hent_quest(1).progresser()
-                print("\n*Du klarte det! Nå har du svaret!*\n")
+                print("\n*Du har nå et dokument på trollsk. Kanskje det har informasjon om trollkongen?*\n")
+            while input("* Trykk enter for å fortsette *\n") != "":
+                pass
             cave = False
 
         "Quest nummer 3 skal slå en boss, og er satt i egen instans."
@@ -383,19 +387,19 @@ def trollButikk(butikk):
     vare = Vare(item, 400, "d")
     butikk.legg_til_vare(vare)
 
-    item = Item("Konsentrasjonspulver", "restoring", kp=150)
+    item = Item("Konsentrasjonspulver", "restoring", kp=200)
     vare = Vare(item, 500, "k")
     butikk.legg_til_vare(vare)
 
-    item = Item("Tryllestav", "weapon", a=60, xKp=45)
-    vare = Vare(item, 1000, "w")
+    item = Item("Tryllestav", "weapon", a=200, xKp=45)
+    vare = Vare(item, 3000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Sverd", "weapon", a=100, xHp=20)
-    vare = Vare(item, 3000, "v")
+    item = Item("Sverd", "weapon", a=300, xHp=20)
+    vare = Vare(item, 9000, "v")
     butikk.legg_til_vare(vare)
 
-    item = Item("falskt skjegg", "beard", xKp=30, ekstraKp=3)
+    item = Item("Falskt skjegg", "beard", xKp=30, ekstraKp=3)
     vare = Vare(item, 1100, "g")
     butikk.legg_til_vare(vare)
 
@@ -430,27 +434,20 @@ def trollQuest(qlog, spiller):
     """Her skal tre forskjellige fiender bekjempes. Hver har sin egen progresjon.
     Ved fullførelse av dette questet, skal det neste questet settes tilgjengelig (Quest-chains)."""
     desk2 = quests.troll_q2(navn)
-    ferdigDesk2 = "Takk igjen " + navn + "!"
+    ferdigDesk2 = quests.troll_q2_ferdig(navn)
     q2 = Quest(desk2, ferdigDesk2, 1, 16, "Zip")
     item = Item("Trollskjegg", "beard", xKp=80, ekstraKp=20)
     q2.legg_til_reward(xp=1000, gull=2500, item=item, settTilgjengelig=True, settTilgjengeligIndeks=2)
-    q2.legg_til_ekstra_tekst("Her kommer ekstra tekst. Noe som involverer skjegget som blir gitt i reward kanskje?")
-    """
-    q2.legg_til_progresjonTekst("Stor fiende 1 bekjempet: ")
-    q2.legg_til_progresjon(1)
-    q2.legg_til_progresjonTekstListe("Stor fiende 2 bekjempet: ", 0)
-    q2.legg_til_progresjon(1)
-    """
     q2.legg_til_progresjonTekst("Digert troll drept: ")
-    q2.legg_til_svarTekst("\nVil legge ut på et eventyr for å finne svaret?    (ja/nei)\n> ")
+    q2.legg_til_svarTekst("\nVil du drepe det store trollet?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
 
     #q3
     "Dette questet er utilgjengelig intill fullførelse av det forige questet."
     desk3 = "    Hei " + navn + "!\n    Dette er siste quest! Progresser ved å drepe hovedbossen!"
     ferdigDesk3 = "Takk " + navn + "! Du dette var skikkelig bra kodet!"
-    q3 = Quest(desk3, ferdigDesk3, 1, 16, "Questholder 2", tilgjengelig=False)
+    q3 = Quest(desk3, ferdigDesk3, 1, 16, "Zip", tilgjengelig=False)
     q3.legg_til_reward(xp=5000, gull=2000)
-    q3.legg_til_progresjonTekst("Boss bekjempet: ")
+    q3.legg_til_progresjonTekst("Trollkongen bekjempet: ")
     q3.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)

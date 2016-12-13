@@ -256,7 +256,7 @@ def troll_q2(navn):
     Det er meg! Zip! Ikke vær lurt av forkledningen min. Jeg må late som jeg er en
     gammel trollmann for å komme inn i badstua. Trollmennene her er sjåvinistiske
     relikker med foreldete verdier. Hvis jeg ikke later som jeg er mann, blir jeg
-    bare ignorert. "Lag meg en sandwich, heks!" "Jeg har lyst til å bruke vinden
+    bare ignorert. "Lag meg en sandwich, heks!" "Jeg har lyst til å dyppe staven
     min i det der, hvis du skjønner hva jeg mener!" De er absolutt motbydelige!
 
     Likevel må jeg finne ut hva de vet om trollene. Jeg har overhørt noe prat om
@@ -266,6 +266,17 @@ def troll_q2(navn):
     noen informasjon om lederen av trollene. Vi vet overraskende lite om ham...
 
     -- Dra ned i minen og drep et digert troll."""
+
+def troll_q2_ferdig(navn):
+    return "    Hei, " + navn + """!
+    Så du fant et skriv på trollet? Det er veldig vanskelig å lese trollsk, men
+    jeg kan tyde hovedpunktene, med manglende nøyaktighet. Det står noe i duren
+    av... *spyr* Å nei! For helvete! Hva er galt med dem?! Trollene skriver
+    alt i form av vemmeligheter. Det er helt frastøtende! Likeve *blæææh* ser
+    jeg at trollet fikk ordre om å *surt oppstøt* til Helvetesgapet. Det må være
+    der Trollkongen befinner seg. Jeg har hørt at ingen av gamlingene tør å gå
+    ned dit. Det er visst, for farlig med faren for steinras... For noen pyser!
+    """
 
 #Shroom:
 def shroom_q1(navn):
