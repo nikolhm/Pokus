@@ -739,24 +739,79 @@ def skrivTroll():
 
     print(troll + Style.RESET_ALL)
 
-def skrivTrollBoss():
-    print("""                         |
-                 .\      |      /.
-               .:\:\     |     /:/:.
-              .:\:\:\    |    /:/:/:.
-              :.:\:\:\   |   /:/:/:.:
+def skrivStortTroll():
+    troll = """                       %%|%%
+                 .\%%%%%%|%%%%%%/.
+               .:\:\%%%%%|%%%%%/:/:.
+              .:\:\:\%%%%|%%%%/:/:/:.
+              :.:\:\:\%%%|%%%/:/:/:.:
              :=.' -             - '.=:
             '=(\     @       @     /)='
                 \       /_\       /
                  \     [___]     /
             __    \_____________/   __
-          /`-vv                   v-'  \\
+          /`-vv                   vv-  \\
          /                              \\
         /   /|,,,                 ,,,|\  \\
        /_  //  /                  \  \\\\_\\
        WW(  (  ____________________  )  )WW
         __\,,\                      /,,/__
-   jgs (______Y                      ______)""")
+   jgs (______Y                      ______)"""
+
+    farge = randint(0, 5)
+    farger = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
+    f = farger[farge]
+
+    tf = list(troll)
+    tf.insert(0, Style.BRIGHT)
+    t = 0
+    while t < len(tf):
+        if (tf[t] in {":", ".", "'", "=", "%"}) or ((tf[t] in {"/", "\\", "|"}) and (tf[t + 1] not in {" ", "_", "\\"} and tf[t - 1] not in {"´", " ", "_", "/"})):
+            tf.insert(t, f)
+            t += 1
+        else:
+            tf.insert(t, Fore.WHITE)
+            t += 1
+        t += 1
+    troll = "".join(tf)
+
+    print(troll + Style.RESET_ALL)
+
+def skrivTrollBoss():
+    boss = """                       %%|%%
+                 .\%%%%%%|%%%%%%/.
+               .:\:\%%%%%|%%%%%/:/:.
+              .:\:\:\%%%%|%%%%/:/:/:.
+              :.:\:\:\%%%|%%%/:/:/:.:
+             :=.' -             - '.=:
+            '=(\     _       _    /)='
+                \       /_\       /
+                 \     /___\\     /
+            __    \_____________/   __
+          /`-vv                   vv-  \\
+         /                              \\
+        /   /|,,,                 ,,,|\  \\
+       /_  //  /                  \  \\\\_\\
+       WW(  (  ____________________  )  )WW
+        __\,,\                      /,,/__
+   jgs (______Y                      ______)"""
+
+    f = Fore.RED
+
+    tf = list(boss)
+    tf.insert(0, Style.BRIGHT)
+    t = 0
+    while t < len(tf):
+        if (tf[t] in {":", ".", "'", "=", "%"}) or ((tf[t] in {"/", "\\", "|"}) and (tf[t + 1] not in {" ", "_", "\\"} and tf[t - 1] not in {"´", " ", "_", "/"})):
+            tf.insert(t, f)
+            t += 1
+        else:
+            tf.insert(t, Fore.WHITE)
+            t += 1
+        t += 1
+    boss = "".join(tf)
+
+    print(boss + Style.RESET_ALL)
 
 def skrivBirdman():
     print("""    ,_
@@ -859,5 +914,43 @@ abccd'                          'dccbaabccd'                          'dccbaabcc
     bue = "".join(bue)
 
     print(bue)
+
+    print(Style.RESET_ALL)
+
+def skrivVulkan():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    vulkan = """                      ooO
+                     ooOOOo
+                   oOOOOOOoooo
+                 ooOOOooo  oooo
+                /vvv\\
+               /V V V\\
+              /V  V  V\\
+             /     V   \\
+            /      VV   \\
+           /        VVV   \\
+         /        VVVV     \\
+        /         VVVVVVV   \\
+       /            VVVVVVVVVVVVV"""
+
+    vulkan = list(vulkan)
+    indeks = 0
+    while indeks < len(vulkan):
+        if vulkan[indeks].lower() in {"v", "o"}:
+            vulkan.insert(indeks, Fore.RED)
+            indeks += 1
+
+        if vulkan[indeks] in {"/", "\\"}:
+            vulkan.insert(indeks, Fore.WHITE)
+            indeks += 1
+
+        indeks += 1
+
+    vulkan = "".join(vulkan)
+
+    print(vulkan)
 
     print(Style.RESET_ALL)

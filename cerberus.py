@@ -62,10 +62,10 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
                 quest = False
 
         while gaaTilButikk:
-            klasser.butikk(1).interaksjon(inv)
+            klasser.butikk(2).interaksjon(inv)
             gaaTilButikk = False
 
-        while regnbue:
+        while vulkan:
             if randint(1, 2) == 1:
                 fiende = generer_enhjorning(spiller)
             else:
@@ -186,10 +186,11 @@ def statiskLoot(loot):
     loot.legg_til_item(item, 25)
 
 def enhjorning_kart(qlog):
+    skrivVulkan()
     print("""
-    Velkommen til stallen! Her er stedene du kan dra:
-    Vulkanen (v)               Dra til 
-    Butikken (k)               Kjøp det du trenger hos "Over Regnbuen"-supertilbudsbutikk
+    Velkommen til hulen! Her er stedene du kan dra:
+    Vulkanen (v)               Dra til vulkanen og sloss mot helvetes søte biskevisker :)
+    Butikken (k)               Kjøp det du trenger hos "Smolderbrødrenes Smie"
     Utenfor (q)                Se om noen utenfor trenger din hjelp""")
     """if qlog.hent_qLog()[1].startet() and not qlog.hent_qLog()[1].ferdig():
         print("    Quest-sted 1 (1)           Dra til quest-instans nummer 1!")
@@ -212,11 +213,11 @@ def cerberusButikk(butikk):
     vare = Vare(item, 1000, "k")
     butikk.legg_til_vare(vare)
 
-    item = Item("Dickstick", "weapon", a=100, xKp=55)
+    item = Item("Generisk stav", "weapon", a=100, xKp=55)
     vare = Vare(item, 2000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Sverd (for tapere)", "weapon", a=80, blade=True)
+    item = Item("Vulkansverd", "weapon", a=300, blade=True)
     vare = Vare(item, 1000, "v")
     butikk.legg_til_vare(vare)
 

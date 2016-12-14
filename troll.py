@@ -185,7 +185,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             #qlog.hent_quest(1).progresser_liste(0)
 
             #Fiende 3
-            skrivTrollBoss()
+            skrivStortTroll()
             print(spiller.navn(), "har møtt et enormt troll!")
             loot = Loot()
             item = Item("Trollskriv", "trinket")
@@ -201,11 +201,12 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
         "Quest nummer 3 skal slå en boss, og er satt i egen instans."
         while helvete:
+            skrivTrollBoss()
             loot = Loot()
             item = Item("Overpowered ting", "trinket", a=200, d=200, ekstraKp=10)
             loot.legg_til_item(item, 50)
             loot.legg_til_item(3000, 50)
-            fiende = Fiende("Smart troll", "troll", loot, 2500, 300, 250, kp=100, bonusKp=5, weapon=60)
+            fiende = Fiende("Trollkongen", "troll", loot, 2500, 300, 250, kp=100, bonusKp=5, weapon=60)
 
             print("        " + spiller.navn(), """har møtt sisteboss! Han forklarer alt,
         korrupsjonen av trollene osv. Han snakker så lenge at det

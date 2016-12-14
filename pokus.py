@@ -60,7 +60,7 @@ troll.trollQuest(trollQlog, spiller)
 klasser.legg_til_questlog(trollQlog)
 
 #Cerberus
-butikk = Butikk("Sleipe Max: Magi og Porno")
+butikk = Butikk("Smolderbrødrenes Smie")
 cerberus.cerberusButikk(butikk)
 klasser.legg_til_butikk(butikk)
 
