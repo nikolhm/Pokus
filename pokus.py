@@ -23,6 +23,8 @@ import os
 
 skrivTittel()
 input("Trykk enter for å fortsette\n> ")
+print("\033[A                             \033[A")
+print("\033[A                             \033[A")
 lastTidligere = load_screen()
 if lastTidligere:
     spiller = Spiller(last_navn(lastTidligere))
@@ -116,7 +118,6 @@ while not heltFerdig:
 
     #Del 1: Magi-borgen og Gaute Gnom den Grusomme
     if spiller.hentSted() == "gnom":
-        skrivSlott()
         spiller.byttSted(gnom.gnomeloop(spiller, inv, klasser, spellbook))
 
     #Del 1.1: Trollfjellet

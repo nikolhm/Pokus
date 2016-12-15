@@ -1,5 +1,6 @@
 from random import randint
 from colorama import *
+from prosedyrer import *
 import os
 import time
 import platform
@@ -173,6 +174,10 @@ def skriv_ekorn3():
        "" jb""")
 
 def skrivGnom():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print(Fore.GREEN + """       ,      ,
       /(.-""-.)\\
   |\  \/      \/  /|
@@ -248,6 +253,10 @@ def skrivOndTrollmann():
 `-.___,-.      .-.        ___,'        (/""")
 
 def skrivGargouille():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print(""" ,                                                               ,
  \\'.                                                           .'/
   ),\                                                         /,(
@@ -281,6 +290,10 @@ def skrivGargouille():
                (/      (/'     \) (/     `\)      \)""")
 
 def skrivGuri():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""    		 ,	           ,
                 / \               / \\
               .//\ \             / /\\\\.
@@ -319,6 +332,10 @@ def skrivGravstein():
                                 jgs;;;;;;;;;;;'''`""")
 
 def skrivSkjellett():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                 .-"```"-.
                 /         \\
                 |  _   _  |
@@ -362,6 +379,10 @@ def skrivSkjellett():
            `//`             `\\\\`""")
 
 def skrivGaute():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""           ,           ,
           /(  .-\"\"\""-. )\\
       |\  \/           \/  /|
@@ -380,6 +401,10 @@ def skrivGaute():
 
 
 def skrivEnhjorning():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                  <<<<>>>>>>           .----------------------------.
                _>><<<<>>>>>>>>>       /               _____________)
       \|/      \<<<<<  < >>>>>>>>>   /            _______________)
@@ -401,6 +426,10 @@ def skrivEnhjorning():
                                             /_|       /_|""")
 
 def skrivFisk():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                          .
                           A       ;
                 |   ,--,-/ \---,-/|  ,
@@ -477,6 +506,10 @@ def skrivSlott():
     print("".join(slott), Style.RESET_ALL)
 
 def skrivStein():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                   ooo OOO OOO ooo
                oOO                 OOo
            oOO                         OOo
@@ -553,6 +586,10 @@ def skrivGargylslott():
                                                    `(     )""")
 
 def skrivStatue():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     statuer = ["""              {}
              .--.
             /.--.\\
@@ -706,6 +743,10 @@ jgs/____/\____\\""",
     print(statuer[indeks])
 
 def skrivTroll():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     troll = """           .:\:/:.
          .:\:\:/:/:.
         :.:\:\:/:/:.:
@@ -740,6 +781,10 @@ def skrivTroll():
     print(troll + Style.RESET_ALL)
 
 def skrivStortTroll():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     troll = """                       %%|%%
                  .\%%%%%%|%%%%%%/.
                .:\:\%%%%%|%%%%%/:/:.
@@ -778,6 +823,10 @@ def skrivStortTroll():
     print(troll + Style.RESET_ALL)
 
 def skrivTrollBoss():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     boss = """                       %%|%%
                  .\%%%%%%|%%%%%%/.
                .:\:\%%%%%|%%%%%/:/:.

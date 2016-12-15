@@ -64,6 +64,10 @@ def hjelp():
 
 #Skriver ut de viktigste kommandoene.
 def mini_hjelp():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""
     Her er kommandoer du kan bruke:
     ---------------------------------------------------------------------------
@@ -366,8 +370,7 @@ def load_screen():
     inn = ""
     print("""    *********************************************************
 
-    Velkommen til Pokus! Skriv 1 for å starte ett nytt spill,
-    eller skriv 2 for å laste et spill du har lagret fra før.
+    Velkommen til Pokus! Her er dine valg:
 
     Start et nytt spill                                  (1)
     Last tidligere spill                                 (2)
@@ -574,3 +577,9 @@ def dekrypt(filnavn):
 
     with open(filnavn, "w") as fil:
         fil.write(tekst)
+
+def clear_screen():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")

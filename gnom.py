@@ -466,6 +466,7 @@ def gauteDialog(spiller):
 
 #Skriver ut hvilke steder man kan dra når man er i borgen (hvilemodus).
 def kart(qListe, qListeVassle):
+    skrivSlott()
     print("""
     Velkommen til magi-borgen! Her er stedene du kan dra:
     Skogen (s)                 Dra ut i skogen og bekjemp de onde gnomene
