@@ -164,7 +164,7 @@ def intro_loop(spiller, inv, klasser, spellbook):
 
     skrivStein()
     print(spiller.navn(), "har møtt en stein!")
-    fiende = Fiende("Stein", "objekt", Loot(), hp=300, a=130, d=100, weapon=60)
+    fiende = Fiende("Stein", "stein", Loot(), hp=300, a=130, d=100, weapon=60)
     fiende.return_loot().legg_til_item(50, 100)
 
     angrip(spiller, fiende, inv, klasser, spellbook)
@@ -191,7 +191,7 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
         if inn == "s":
             while True:
                 skrivStein()
-                fiende = Fiende("Stein", "objekt", Loot(), hp=300, a=130, d=100, weapon=60)
+                fiende = Fiende("Stein", "stein", Loot(), hp=300, a=130, d=100, weapon=60)
                 fiende.return_loot().legg_til_item(70, 100)
                 print(spiller.navn(), "har møtt en stein!")
 
@@ -418,6 +418,18 @@ def garg_butikk(butikk):
     vare = Vare(item, 1100, "g")
     butikk.legg_til_vare(vare)
 
+def guri_dialog(spiller):
+    navn = spiller.navn()
+    print("\n\n    ***", spiller.navn(), "har møtt Guri Gargyl! ***\n\n")
+    skrivGuri()
+    input("Trykk enter for å fortsette\n> ")
+    print("""
+    Guri Gargyl: Så det er du som har kjøttifisert kreasjonene mine!
+                 Dette ender nå! Jeg fikk ikke magiske evner og et så
+                 stort ansvar og bare for å miste det hele til et usselt
+                 menneske. Forbered deg på det verste,""", navn + "!\n")
+    input("Trykk enter for å fortsette\n> ")
+
 def garg_quest(qlog, spiller):
     navn = spiller.navn()
 
@@ -484,23 +496,11 @@ def garg_quest(qlog, spiller):
     deskBq1 = garg_bq1(navn)
     ferdigDeskBq1 = garg_bq1_ferdig(navn)
     bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Besynderlige Berit", bonus=True, resetIfDead=True)
-    item = Item("Berits skjegg", "beard", kp=50, ekstraKp=5)
-    bq1.legg_til_reward(xp=10000, item=item, gp=1)
-    bq1.legg_til_ekstra_tekst("Dette betyr så mye for oss! Her, ta det magiske skjegget mitt!.\n")
+    item = Item("Berits skjegg", "beard", xKp=50, ekstraKp=5)
+    bq1.legg_til_reward(xp=10000, item=item, gp=2)
+    bq1.legg_til_ekstra_tekst("Dette betyr så mye for oss! Her, ta det magiske skjegget mitt!\n")
     bq1.legg_til_progresjonTekst("Kosebamse funnet: ")
     bq1.legg_til_svarTekst("Vil du gi kosebamsen til Besynderlige Berit?   (ja/nei)\n> ")
     bq1.legg_til_alt_desk("Vil du myrde kosebamsen mens Besynderlige Berit ser på?\n> ")
-    bq1.legg_til_alt_reward(ep=5)
+    bq1.legg_til_alt_reward(ep=3)
     qlog.legg_til_quest(bq1)
-
-def guri_dialog(spiller):
-    navn = spiller.navn()
-    print("\n\n    ***", spiller.navn(), "har møtt Guri Gargyl! ***\n\n")
-    skrivGuri()
-    input("Trykk enter for å fortsette\n> ")
-    print("""
-    Guri Gargyl: Så det er du som har kjøttifisert kreasjonene mine!
-                 Dette ender nå! Jeg fikk ikke magiske evner og et så
-                 stort ansvar og bare for å miste det hele til et usselt
-                 menneske. Forbered deg på det verste,""", navn + "!\n")
-    input("Trykk enter for å fortsette\n> ")

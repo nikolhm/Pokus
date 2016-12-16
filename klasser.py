@@ -640,9 +640,24 @@ class Spiller:
         self._evilPoints = int(statliste[15])
         self._kartListe = kartliste
 
-    #Denne metoden gir total a fra spilleren og brukes til å angripe fienden.
+    #Returnerer enkelt-stats
     def a(self):
         return self._a
+
+    def d(self):
+        return self._d
+
+    def hp(self):
+        return self._hp
+
+    def xHp(self):
+        return self._xHp
+
+    def kp(self):
+        return self._kp
+
+    def xKp(self):
+        return self._xKp
 
     #Brukes når spilleren blir angrepet av fienden. a hentes fra fienden, og
     #brukeren kan på det meste blokkere en verdi av 1/4 av sin d.
@@ -653,9 +668,19 @@ class Spiller:
         skade -= int(randint(0, self._d) / 4)
         if skade <= 0:
             print(fiende.navn() + fiende.ending() + " bommet!")
+            skade = 0
         else:
             print(self._navn, "mistet", skade, "liv!")
             self._hp -= skade
+        return skade
+
+    #Tar vekk et bestemt antall liv (uavhengig av defence). Returnerer True om
+    #spilleren fortsatt lever.
+    def mist_liv(self, liv):
+        self._hp -= liv
+        if self._hp < 0:
+            self._hp = 0
+        return self._hp != 0
 
     #både "du" og karakterens navn blir brukt i spillet.
     def navn(self):
@@ -712,8 +737,7 @@ class Spiller:
             x = hp - (self._hp - self._xHp)
             self._hp = self._xHp
             return x
-        else:
-            return hp
+        return hp
 
     #restorerer opptil en gitt mengde kp
     def restorer_kp(self, kp):
@@ -722,16 +746,15 @@ class Spiller:
             x = kp - (self._kp - self._xKp)
             self._kp = self._xKp
             return x
-        else:
-            return kp
+        return kp
 
     #gir xp og setter mulighet for lvl up
     def gi_xp(self, xp):
         self._xp += xp
         self._xXp += xp
 
-        evil = round((self._evilPoints + 0.1) / (self._goodPoints + self._evilPoints + 1) * self._evilPoints)
-        good = round((self._goodPoints + 0.1) / (self._goodPoints + self._evilPoints + 1 ) * self._goodPoints)
+        evil = round(((self._evilPoints + 0.1) / (self._goodPoints + self._evilPoints + 0.01)) * self._evilPoints)
+        good = round(((self._goodPoints + 0.1) / (self._goodPoints + self._evilPoints + 0.01)) * self._goodPoints)
 
         #Del 1/2: lvl-up
         #Verdien til det første elementet i _xpListe er mengden xp som trengs for å
@@ -779,10 +802,7 @@ class Spiller:
 
     #angir om karakteren er død eller ikke.
     def dead(self):
-        if self._hp <= 0:
-            return True
-        else:
-            return False
+        return self._hp <= 0
 
     #Fjerner ting i inventory og setter starterstatsene til å være lavere enn vanlig.
     def die(self, inv):
@@ -1078,6 +1098,7 @@ class Spellbook:
 
         self._utforsk = False
         self._utforskRunder = 0
+        self._opphold = 0
 
     def skriv_spellbook(self):
         print("Her er følgende angrep du kan bruke:")
@@ -1095,9 +1116,13 @@ class Spellbook:
         if self._spiller.lvl() >= 17:
             print("utforsk (u)              de neste 5 vanlige angrepene stjeler liv.\n\
                          Krever 195 konsentrasjonspoeng.")
+        if self._spiller.lvl() >= 20:
+            print("opphold (o)              fienden kan ikke angripe for 3 runder.\n\
+                         Krever 150 konsentrasjonspoeng.")
 
         gnomeqlog = self._klasser.questlog(1)
         gargyllog = self._klasser.questlog(4)
+        bandittlog = self._klasser.questlog(7)
         #Disse spesialangrepet krever å ha fullført et bestemt quest.
         if gnomeqlog.hent_quest(4).ferdig():
             print("konsentrer energi (ke)   stjeler 300 helsepoeng\n\
@@ -1105,6 +1130,9 @@ class Spellbook:
         if gargyllog.hent_quest(4).ferdig():
             print("kjøttifiser (kj)         gjør forsteinede fiender om til kjøtt\n\
                          Krever 100 konsentrasjonspoeng.")
+        if bandittlog.hent_quest(3).startet():
+            print("distraher (di)           tar vekk 200+ kp fra fienden\n\
+                         Krever 140 konsentrasjonspoeng. Tryllestav og d gir ekstra effekt.")
 
     def tryllepulver(self, fiende):
         harPulver = None
@@ -1287,7 +1315,7 @@ class Spellbook:
                     fiende.set_untouchable(False, -6)
                 return False
 
-            elif self._spiller.kons_igjen() >= 100 and fiende.navn() == "Stein":
+            elif self._spiller.kons_igjen() >= 100 and fiende.race() == "stein":
                 self._spiller.bruk_kons(100)
                 print(self._spiller.navn(), "kastet Kjøttifiser!")
                 print("Du gjorde steinen om til en velsmakende kjøttbolle.")
@@ -1308,6 +1336,10 @@ class Spellbook:
                 print(self._spiller.navn(), "kastet Utforsk!")
                 self._utforsk = True
                 self._utforskRunder = 5
+
+                #Oppdaterer qlog
+                bandittQlog = self._klasser.questlog(7)
+                bandittQlog.hent_quest(1).progresser()
                 return False
             else:
                 print("Du trenger et sverd!")
@@ -1325,6 +1357,39 @@ class Spellbook:
         if self._utforskRunder == 0:
             self._utforsk = False
         return utforsk
+
+    def brukOpphold(self):
+        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150:
+            self._spiller.bruk_kons(150)
+            print(self._spiller.navn(), "kastet Opphold!")
+            self._opphold = 3
+            return False
+        elif self._spiller.lvl() >= 20:
+            print("Du har ikke nok konsentrasjonspoeng!")
+        return True
+
+    def opphold(self, cd=0):
+        self._opphold += cd
+        return self._opphold
+
+    def distraher(self, fiende):
+        if self._klasser.questlog(7).hent_quest(3).startet():
+            if self._spiller.kons_igjen() >= 140:
+                self._spiller.bruk_kons(140)
+                mengde = 200 + round(self._spiller.d()/15) + self._inv.hent_weaponKp()
+                print(self._spiller.navn(), "kastet Distraher!")
+                if fiende.kp() < mengde:
+                    mengde = fiende.kp()
+                fiende.kp(-mengde)
+                print(fiende.navn() + fiende.ending(), "mistet", mengde, "kp")
+
+                #quest
+                self._klasser.questlog(7).hent_quest(3).progresser()
+
+                return False
+            else:
+                print("Du har ikke nok konsentrasjonspoeng!")
+        return True
 
 class Inventory:
     def __init__(self, spiller, klasser):
@@ -1480,7 +1545,7 @@ class Inventory:
     def hent_weaponKp(self):
         for weapon in self._weapons:
             if weapon.bruker():
-                return weapon.statliste()[3]
+                return weapon.statliste()[1]
         return 0
 
     def skriv_ut_alt(self, itemListe="default"):
@@ -1593,6 +1658,11 @@ class Inventory:
             print("Du har", qListeGargyl[4].progresjon(), "steiner.")
         if not qListeGargyl[6].ferdig() and qListeGargyl[6].progresjon() != 0:
             print("Du har en levende kosebamse.")
+
+        #Shroom
+        qListeBanditt = self._klasser.questlog(7).hent_qLog()
+        if not qListeBanditt[1].ferdig() and qListeBanditt[1].progresjon() != 0:
+            print("Du har", qListeBanditt[1].progresjon(), "lommeur.")
 
     #Resetter inventory til å inneholde ingenting
     def reset(self):

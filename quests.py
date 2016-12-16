@@ -5,7 +5,7 @@ def q1(navn):
     men det er unntakstilstand her på borgen for øyeblikket. Du skjønner det at det har
     kommet et monster til borgen vår som besudler den fine skogen vår og gjør borgen
     til et uhyggelig sted å være. Dette monsteret heter Gaute Gnom den Grusomme, og er
-    en gnom av værste sort. Vi har alltid hatt problemer med gnomene i skogen her,
+    en gnom av verste sort. Vi har alltid hatt problemer med gnomene i skogen her,
     men etter Gaute Gnoms ankomst har de vært spesielt aggressive! Jeg trenger din hjelp
     til å rydde de brysomme gnomene av veien slik at borgen og skogen vår igjen kan bli
     et harmonisk og magisk sted for alle.
@@ -173,7 +173,7 @@ def garg_q3_ferdig(navn):
 
 def garg_q4(navn):
     return "    " + navn + """!
-    Du må finne en måte å avvergen gargylenes RockNoRoll-magi. Snakk
+    Du må finne en måte å avverge gargylenes RockNoRoll-magi. Snakk
     med Kent Kokk, han pleier å kunne koke opp ganske gode steinsupper
     til kvelds, når det ikke er annet å spise i nærheten. Altså, ikke at
     man koker suppe på steinene, men spiser steinene. Ganske godt med
@@ -264,8 +264,8 @@ def troll_q2(navn):
     gamle fjertene snakker om å gjøre det, men de bare snakker og snakker og gjør
     niks. Kan du gå ned i minen og drepe et digert troll? Jeg tror du kan finne
     noen informasjon om lederen av trollene. Vi vet overraskende lite om ham...
-    """
 
+    -- Dra ned i minen og drep et digert troll."""
 def troll_q2_ferdig(navn):
     return "    Hei, " + navn + """!
     Så du fant et skriv på trollet? Det er veldig vanskelig å lese trollsk, men
@@ -302,8 +302,115 @@ def shroom_q1(navn):
     VENSTRE i skogen, men er usikker på hvordan stedsansen til torturerte
     rotter fungerer...
 
-    -- Finn bandittenes hovedleir og stopp angrepene"""
+    -- Finn bandittenes hovedleir og stopp angrepene."""
 def shroom_q1_ferdig(navn):
+    return ""
+
+def shroom_bq1(navn):
+    return """    Salig er du, som får oppleve nærværet deres!
+    Men det er ikke nok, vi må ha mer. MER! Javisst, våre overordnede er ikke
+    fornøyd med vår innsats. Vi må vise mer dedikasjon! MER! Vi trenger noe
+    håndfast vi kan bruke til å tilbe dem på, et totem eller noe slikt!
+    Har du sett noe slikt rundt omkring?
+    """
+def shroom_bq1_ferdig(navn):
+    return """    Fantastisk! Dommedagen er snart på oss, og det er viktig å vise soppen
+    hvilken side vi egentlig står på! Bli med meg, """ + navn + " i et kjapt blodoffer!\n"
+
+#Shroom: Banditter
+def banditt_q1(navn):
+    return "    Hei! Hva heter du? " + navn + """ ja, nettopp!
+    Om du vil diskutere vår angrepsstrategi mot magikerne, må du snakke med
+    Bjarte Banditt. Ellers har jeg et business-forslag som kan være svært gunstig
+    for oss begge, og du ser ut som en som kan hjelpe meg!
+
+    For ikke lenge siden stjelte jeg fire svært verdifulle lommeur. Men det er
+    lite med ære blandt banditter, og noen har robbet dem fra meg mens jeg sov!
+    Kan du banke opp noen banditter og se om du finner de for meg? Jeg har
+    masse gullstykker jeg kan gi deg tilbake!
+
+    -- Finn fire lommeur."""
+def banditt_q1_ferdig(navn):
+    return "    MOHAHA! *ond latter*\n" +\
+    "    Tusen takk " + navn + """! Tenker de tenker seg om to ganger neste gang de lømmlene bestemmer
+    seg for å ikke invitere meg med på lommeur-jakt!\n"""
+
+def banditt_q2(navn):
+    return """Hei du!
+    Du ser ut som en kapabel banditt som er godt kjent med sverdfekternes
+    eldgamle kampkunster. Kan du vise meg dine triks? Du skjønner det at
+    Fagre Frida, den vakreste, smarteste, mest fantastiske personen som noen
+    gang har vandret på denne jord, kun er interessert i dem som kan imponere
+    med sverdbruken sin. Dessverre er dette en av mine svakere sider! Om jeg
+    bare hadde vært like god til å svinge et sverd som jeg er til å knivstikke,
+    lyge og bedra... Akk! Men, om jeg kan henge meg på deg en stund, observere
+    dine triks og finesser, kanskje jeg da kan bli bedre?
+
+    -- Kast Utforsk 6 ganger."""
+def banditt_q2_ferdig(navn):
+    return """\n    Neeeeeei, Fagre Frida!! Du din lømmel! Bare ikke ta sverdet mitt når jeg
+    dør! Din snik, jeg skal kv- aaaaargh *Ussle Ulv dør på dramatisk vis*\n"""
+
+def banditt_q3(navn):
+    return "    Hei " + navn + """!
+    Har du hørt om soppen? Den magiske soppen som bor her iblandt oss? De passer
+    på oss når vi går oss vill, og holder oss trygge under deres hatt. De vet
+    alt, og kjenner alle! De er i luften, i bakken, blandt åndene og blandt
+    oss levende! Dra, min disippel, til soppstedet utenfor leiren her, og hør
+    selv at de snakker direkte til deg!
+
+    -- Dra til soppstedet og hør hva de magiske soppene har å si."""
+def banditt_q3_ferdig(navn):
+    return "    Deres vilje er vår lov! Vi må adlyde straks! Dra ut og finn disse trærne!\n"
+
+def banditt_q4(navn):
+    return "    Jaså " + navn + """, ikke helt forberedt?
+    Enhver god banditt burde være mentalt tre steg foran byttet. Avledning,
+    overraskelse og illusjoner, dette er mine spesialiteter! Vil du lære å
+    finpusse din egen smidighet, forvirre fiendens sinn og stikke av med de
+    saftigste byttene? Jeg kan vise deg hvordan man senker konsentrasjonen
+    til fienden, se og lær!
+
+    Skriv 'di' eller 'distraher' for å kaste Distraher på fienden!
+
+    -- Distraher fiender 9 ganger."""
+def banditt_q4_ferdig(navn):
+    return "    Utmerket " + navn + """!
+    med slike ferdigheter vil du nok raskt øke din fryktinngytenhet!\n"""
+
+def banditt_q5(navn):
+    return "    " + navn + """!
+    For et strålende talent! Slik teknikk! Og så tiltrekkende hender!
+    Jeg kunne ikke unngå å legge merke til hvor effektivt du slo ned den
+    knivstikkende slasken Ussle Ulf. Si meg, er du interessert i å gjøre
+    meg en tjeneste? Det har seg nemlig slik at eksen min, Onde Olga, har
+    blitt særdeles hovmoden i det siste. Hun pleide å være tolererbar, men
+    i det siste har hun blitt umotståel- ehm, utålelig! Hun burde virkelig
+    bli jekket ned et par hakk, til felles gode for alle her i leiren. Hun
+    pleier å henge med duellringen, kanskje du kan offentlig bekjemper henne
+    med dine fantastiske evner i ringen? Så kan vi se nærmere på dine evner
+    privat etterpå.
+
+    -- Bekjemp Onde Olga i duellringen."""
+def banditt_q5_ferdig(navn):
+    return ""
+
+def banditt_q6(navn):
+    return "    Hvem er du? Du ser ut som en " + navn + ". Yup, definitivt " + navn + """".
+    Uansett hvem du er, her er vi alle felles banditter, og i disse harde tidene må
+    vi banditter stå sammen mot de ondskapsfulle magikerne! De har alltid vært en
+    pest og en plage, stanset våre robberier og jaget oss vekk til denne skogen.
+    Men de har aldri direkte angrepet oss før, ikke slik som nå. Vi er ikke helt
+    sikre på hva de har gjort, men denne ellers medgjørlige skogen har i det siste
+    blitt... levende. På et vis. I tillegg har våre medbanditter oppført seg særdeles
+    merkverdig i det siste. Jeg er sikker på at dette er Kjedelige Kjell sitt verk!
+    Han er allerede notorisk for sin evne til å kjede folk til døde, men han er og
+    gal etter alt som har med trær og natur å gjøre. Om bare han hadde vært
+    'ordnet', kunne vi gått tilbake til vår vanlige tilværelse. Kan du ordne saken?
+    Kutt av ham fingeren til bevis!
+
+    -- Kutt av fingeren til Kjedelige Kjell og vis den til Bjarte Banditt."""
+def banditt_q6_ferdig(navn):
     return ""
 
 #Overtrollmann Vassles quests:
@@ -321,7 +428,7 @@ def vassle_troll(navn):
     samleplass for troll. Kan du hjelpe ... i å finne og rette opp
     ubalansen der?
 
-    -- Hjelp ... å finne og rette opp ubalansen med fjellhytta"""
+    -- Hjelp ... å finne og rette opp ubalansen med fjellhytta."""
 def vassle_troll_ferdig(navn):
     return "    Du har vært en uvurderlig hjelp " + navn + """!
     Dette du sier er rart... stuff stuff stuff"""
@@ -340,7 +447,7 @@ def vassle_cerberus(navn):
     i den regionen før, så vær klar! Kan du hjelpe ... i å finne og rette
     opp ubalansen der?
 
-    -- Hjelp ... å finne og rette opp ubalansen med vulkanen"""
+    -- Hjelp ... å finne og rette opp ubalansen med vulkanen."""
 def vassle_cerberus_ferdig(navn):
     return "    Du har vært en uvurderlig hjelp " + navn + """!
     Dette du sier er rart... stuff stuff stuff"""
@@ -361,7 +468,7 @@ def vassle_gargyl(navn):
     Dessuten har all kontakt blitt brutt for noen dager siden. Kan du
     hjelpe Zap i å finne og rette opp ubalansen med slottet?
 
-    -- Hjelp Zap å finne og rette opp ubalansen med slottet"""
+    -- Hjelp Zap å finne og rette opp ubalansen med slottet."""
 def vassle_gargyl_ferdig(navn):
     return "    Tusen takk " + navn + """!
     Med dette problemet løst, har vi en mindre ting å tenke på. Likevel
