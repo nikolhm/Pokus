@@ -192,12 +192,21 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     elif inn == "ke" or inn == "konsentrer energi":
         tur = spellbook.konsentrer_energi(fiende)
 
+    #kaster kjøttifiser. Krever utførelse av quest.
     elif inn == "kj" or inn == "kjøttifiser":
         tur = spellbook.meatify(fiende)
 
-    #kaster utforsk. Krever lvl 17
+    #kaster Utforsk. Krever lvl 17.
     elif inn == "u" or inn == "utforsk":
         tur = spellbook.brukUtforsk()
+
+    #kaster Opphold. Krever lvl 20.
+    elif inn == "o" or inn == "opphold":
+        tur = spellbook.brukOpphold()
+
+    #kaster Distraher. Krever fullførelse av quest
+    elif inn == "di" or inn == "distraher":
+        tur = spellbook.distraher(fiende)
 
     #gir liste over kommandoer.
     elif inn == "h" or inn == "hjelp":
@@ -212,7 +221,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     elif inn == "j" or inn == "juks":
         fiende.angrepet(10042)
 
-    #Juksekode nr. 2: gir 10000 xp.
+    #Juksekode nr. 2: når ønsket lvl.
     elif inn == "j2" or inn == "juks2":
         liste = [int(80*x+(80*(x-1)/10)*(x*x/5+x/1.5)) for x in range(1, 71)]
         try:
@@ -220,6 +229,14 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
             spiller.gi_xp(sum(liste[0:lvl - 1]) -spiller.total_xp())
         except ValueError:
             print("Du må skrive et tall!")
+
+    if not tur and spellbook.opphold():
+        spellbook.opphold(-1)
+        tur = True
+        print(fiende.navn() + fiende.ending(), "er oppholdt!")
+        spiller.kons()
+        fiende.gen_kons()
+        skriv_ut(spiller, fiende)
 
     return tur
 

@@ -424,12 +424,12 @@ def gnomequest(qlog, spiller):
     ferdigDeskBq1 = quests.bonus_q1ferdig(spiller.navn())
     bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Rotete Randi", bonus=True, resetIfDead=True)
     item = Item("Superspiss hatt", "hat", xHp=70, d=55)
-    bq1.legg_til_reward(gull=300, ekstraKp=1, item=item, gp=1)
+    bq1.legg_til_reward(gull=300, ekstraKp=1, item=item, gp=2)
     bq1.legg_til_ekstra_tekst("Tusen takk " + spiller.navn() + "! Tusen hjertelig takk! Endelig er jeg gjenforent med min kjære sopp!\n")
     bq1.legg_til_progresjonTekst("Magisk sopp funnet: ")
     bq1.legg_til_svarTekst("Vil du gi den magiske soppen til Rotete Randi?   (ja/nei)\n> ")
     bq1.legg_til_alt_desk("Vil du fortære soppen foran ansiktet hennes?\n> ")
-    bq1.legg_til_alt_reward(ep=5, ekstraKp=1, xp=3000)
+    bq1.legg_til_alt_reward(ep=3, ekstraKp=1, xp=3000)
     qlog.legg_til_quest(bq1)
 
     #bq2
@@ -437,12 +437,12 @@ def gnomequest(qlog, spiller):
     ferdigDeskBq2 = quests.bonus_q2ferdig(spiller.navn())
     bq2 = Quest(deskBq2, ferdigDeskBq2, 1, 1, "Mirakuløse Marte", bonus=True, resetIfDead=True)
     item = Item("Begynnerstav", "weapon", a=10, xKp=10)
-    bq2.legg_til_reward(xp=300, item=item, gp=1)
+    bq2.legg_til_reward(xp=300, item=item, gp=2)
     bq2.legg_til_ekstra_tekst("Supert! Her har du en tryllestav som takk! Det er en nybegynnerstav, men du trenger en for å gjøre mer avansert magi.\n")
     bq2.legg_til_progresjonTekst("Magisk oppgaveretter funnet: ")
     bq2.legg_til_svarTekst("Vil du gi den magiske oppgaveretteren til Mirakuløse Marte?   (ja/nei)\n> ")
     bq2.legg_til_alt_desk("Vil du rive den opp og kaste den på ansiktet hennes?\n> ")
-    bq2.legg_til_alt_reward(ep=5)
+    bq2.legg_til_alt_reward(ep=3)
     qlog.legg_til_quest(bq2)
 
 def gauteDialog(spiller):
@@ -510,7 +510,7 @@ def vassle_quest(qlog, spiller):
     #shroom
     desk4 = quests.vassle_shroom(spiller.navn())
     ferdigDesk4 = quests.vassle_shroom_ferdig(spiller.navn())
-    q4 = Quest(desk3, ferdigDesk3, 1, 20, "Overtrollmann Vassle", tilgjengelig=False)
+    q4 = Quest(desk4, ferdigDesk4, 1, 20, "Overtrollmann Vassle", tilgjengelig=False)
     q4.legg_til_reward(xp=30000, gull=5000, hp=100, kp=70, ekstraKp=2)
     q4.legg_til_progresjonTekst("Ekspedisjon funnet: ")
     q4.legg_til_progresjon(1)

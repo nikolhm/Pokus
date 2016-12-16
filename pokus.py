@@ -91,6 +91,10 @@ skogQlog = Questlog()
 shroom.skog_quest(skogQlog, spiller)
 klasser.legg_til_questlog(skogQlog)
 
+butikk = Butikk("Svartemarkedet")
+shroom.banditt_butikk(butikk)
+klasser.legg_til_butikk(butikk)
+
 bandittQlog = Questlog()
 shroom.banditt_quest(bandittQlog, spiller)
 klasser.legg_til_questlog(bandittQlog)
