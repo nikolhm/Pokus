@@ -1,5 +1,6 @@
 from random import randint
 from colorama import *
+from prosedyrer import *
 import os
 import time
 import platform
@@ -173,6 +174,10 @@ def skriv_ekorn3():
        "" jb""")
 
 def skrivGnom():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print(Fore.GREEN + """       ,      ,
       /(.-""-.)\\
   |\  \/      \/  /|
@@ -248,6 +253,10 @@ def skrivOndTrollmann():
 `-.___,-.      .-.        ___,'        (/""")
 
 def skrivGargouille():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print(""" ,                                                               ,
  \\'.                                                           .'/
   ),\                                                         /,(
@@ -281,6 +290,10 @@ def skrivGargouille():
                (/      (/'     \) (/     `\)      \)""")
 
 def skrivGuri():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""    		 ,	           ,
                 / \               / \\
               .//\ \             / /\\\\.
@@ -319,6 +332,10 @@ def skrivGravstein():
                                 jgs;;;;;;;;;;;'''`""")
 
 def skrivSkjellett():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                 .-"```"-.
                 /         \\
                 |  _   _  |
@@ -362,6 +379,10 @@ def skrivSkjellett():
            `//`             `\\\\`""")
 
 def skrivGaute():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""           ,           ,
           /(  .-\"\"\""-. )\\
       |\  \/           \/  /|
@@ -380,6 +401,10 @@ def skrivGaute():
 
 
 def skrivEnhjorning():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                  <<<<>>>>>>           .----------------------------.
                _>><<<<>>>>>>>>>       /               _____________)
       \|/      \<<<<<  < >>>>>>>>>   /            _______________)
@@ -401,6 +426,10 @@ def skrivEnhjorning():
                                             /_|       /_|""")
 
 def skrivFisk():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                          .
                           A       ;
                 |   ,--,-/ \---,-/|  ,
@@ -477,6 +506,10 @@ def skrivSlott():
     print("".join(slott), Style.RESET_ALL)
 
 def skrivStein():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     print("""                   ooo OOO OOO ooo
                oOO                 OOo
            oOO                         OOo
@@ -553,6 +586,10 @@ def skrivGargylslott():
                                                    `(     )""")
 
 def skrivStatue():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     statuer = ["""              {}
              .--.
             /.--.\\
@@ -706,6 +743,10 @@ jgs/____/\____\\""",
     print(statuer[indeks])
 
 def skrivTroll():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
     troll = """           .:\:/:.
          .:\:\:/:/:.
         :.:\:\:/:/:.:
@@ -739,24 +780,87 @@ def skrivTroll():
 
     print(troll + Style.RESET_ALL)
 
-def skrivTrollBoss():
-    print("""                         |
-                 .\      |      /.
-               .:\:\     |     /:/:.
-              .:\:\:\    |    /:/:/:.
-              :.:\:\:\   |   /:/:/:.:
+def skrivStortTroll():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    troll = """                       %%|%%
+                 .\%%%%%%|%%%%%%/.
+               .:\:\%%%%%|%%%%%/:/:.
+              .:\:\:\%%%%|%%%%/:/:/:.
+              :.:\:\:\%%%|%%%/:/:/:.:
              :=.' -             - '.=:
             '=(\     @       @     /)='
                 \       /_\       /
                  \     [___]     /
             __    \_____________/   __
-          /`-vv                   v-'  \\
+          /`-vv                   vv-  \\
          /                              \\
         /   /|,,,                 ,,,|\  \\
        /_  //  /                  \  \\\\_\\
        WW(  (  ____________________  )  )WW
         __\,,\                      /,,/__
-   jgs (______Y                      ______)""")
+   jgs (______Y                      ______)"""
+
+    farge = randint(0, 5)
+    farger = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
+    f = farger[farge]
+
+    tf = list(troll)
+    tf.insert(0, Style.BRIGHT)
+    t = 0
+    while t < len(tf):
+        if (tf[t] in {":", ".", "'", "=", "%"}) or ((tf[t] in {"/", "\\", "|"}) and (tf[t + 1] not in {" ", "_", "\\"} and tf[t - 1] not in {"´", " ", "_", "/"})):
+            tf.insert(t, f)
+            t += 1
+        else:
+            tf.insert(t, Fore.WHITE)
+            t += 1
+        t += 1
+    troll = "".join(tf)
+
+    print(troll + Style.RESET_ALL)
+
+def skrivTrollBoss():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    boss = """                       %%|%%
+                 .\%%%%%%|%%%%%%/.
+               .:\:\%%%%%|%%%%%/:/:.
+              .:\:\:\%%%%|%%%%/:/:/:.
+              :.:\:\:\%%%|%%%/:/:/:.:
+             :=.' -             - '.=:
+            '=(\     _       _    /)='
+                \       /_\       /
+                 \     /___\\     /
+            __    \_____________/   __
+          /`-vv                   vv-  \\
+         /                              \\
+        /   /|,,,                 ,,,|\  \\
+       /_  //  /                  \  \\\\_\\
+       WW(  (  ____________________  )  )WW
+        __\,,\                      /,,/__
+   jgs (______Y                      ______)"""
+
+    f = Fore.RED
+
+    tf = list(boss)
+    tf.insert(0, Style.BRIGHT)
+    t = 0
+    while t < len(tf):
+        if (tf[t] in {":", ".", "'", "=", "%"}) or ((tf[t] in {"/", "\\", "|"}) and (tf[t + 1] not in {" ", "_", "\\"} and tf[t - 1] not in {"´", " ", "_", "/"})):
+            tf.insert(t, f)
+            t += 1
+        else:
+            tf.insert(t, Fore.WHITE)
+            t += 1
+        t += 1
+    boss = "".join(tf)
+
+    print(boss + Style.RESET_ALL)
 
 def skrivBirdman():
     print("""    ,_
@@ -862,26 +966,40 @@ abccd'                          'dccbaabccd'                          'dccbaabcc
 
     print(Style.RESET_ALL)
 
-def skrivBanditt():
-    print("""                _
-    	       / \\
-    	    __|   |__
-           / <|   |> \\
-           '-._____.-'
-            ,| O_o |,
-             \\\\###//
-              .| |.
-          ,############\\
-         /  #########,  \\
-        /_<'#########'./_\\
-       '_7_ ######### _o_7
-        (  \\[o-o-o-o]/  )
-         \\|l#########l|/
-            ####_####
-           /    |    \\
-  	   |    |    |
-           |_  _|_  _|
-           |\\\\//|\\\\//|
-           \\//\\\\|//\\\\/
-         ___\\\\// \\\\//___
-        (((___X\\ /X___))) """)
+def skrivVulkan():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+    vulkan = """                      ooO
+                     ooOOOo
+                   oOOOOOOoooo
+                 ooOOOooo  oooo
+                /vvv\\
+               /V V V\\
+              /V  V  V\\
+             /     V   \\
+            /      VV   \\
+           /        VVV   \\
+         /        VVVV     \\
+        /         VVVVVVV   \\
+       /            VVVVVVVVVVVVV"""
+
+    vulkan = list(vulkan)
+    indeks = 0
+    while indeks < len(vulkan):
+        if vulkan[indeks].lower() in {"v", "o"}:
+            vulkan.insert(indeks, Fore.RED)
+            indeks += 1
+
+        if vulkan[indeks] in {"/", "\\"}:
+            vulkan.insert(indeks, Fore.WHITE)
+            indeks += 1
+
+        indeks += 1
+
+    vulkan = "".join(vulkan)
+
+    print(vulkan)
+
+    print(Style.RESET_ALL)

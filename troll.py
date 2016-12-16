@@ -185,7 +185,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             #qlog.hent_quest(1).progresser_liste(0)
 
             #Fiende 3
-            skrivTrollBoss()
+            skrivStortTroll()
             print(spiller.navn(), "har møtt et enormt troll!")
             loot = Loot()
             item = Item("Trollskriv", "trinket")
@@ -201,11 +201,12 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
         "Quest nummer 3 skal slå en boss, og er satt i egen instans."
         while helvete:
+            skrivTrollBoss()
             loot = Loot()
-            item = Item("Overpowered ting", "trinket", a=200, d=200, ekstraKp=10)
+            item = Item("Trollkongens stav", "weapon", a=200, kp=200)
             loot.legg_til_item(item, 50)
             loot.legg_til_item(3000, 50)
-            fiende = Fiende("Smart troll", "troll", loot, 2500, 300, 250, kp=100, bonusKp=5, weapon=60)
+            fiende = Fiende("Trollkongen", "trollmagiker", loot, 2500, 300, 250, kp=100, bonusKp=5, weapon=60)
 
             print("        " + spiller.navn(), """har møtt sisteboss! Han forklarer alt,
         korrupsjonen av trollene osv. Han snakker så lenge at det
@@ -443,11 +444,10 @@ def trollQuest(qlog, spiller):
     qlog.legg_til_quest(q2)
 
     #q3
-    "Dette questet er utilgjengelig intill fullførelse av det forige questet."
-    desk3 = "    Hei " + navn + "!\n    Dette er siste quest! Progresser ved å drepe hovedbossen!"
-    ferdigDesk3 = "Takk " + navn + "! Du dette var skikkelig bra kodet!"
+    desk3 = quests.troll_q3(navn)
+    ferdigDesk3 = "Kjempebra " + navn + "! Nå kan jeg endelig ta av meg dette skjegget og dra hjem!"
     q3 = Quest(desk3, ferdigDesk3, 1, 16, "Zip", tilgjengelig=False)
     q3.legg_til_reward(xp=5000, gull=2000)
     q3.legg_til_progresjonTekst("Trollkongen bekjempet: ")
-    q3.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    q3.legg_til_svarTekst("\nTa ned Trollkongen!    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)

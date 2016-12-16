@@ -277,6 +277,13 @@ def troll_q2_ferdig(navn):
     ned dit. Det er visst, for farlig med faren for steinras... For noen pyser!
     """
 
+def troll_q3(navn):
+    return "    Hei, " + navn + """!
+    Nå som vi vet hvor trollkongen er kan vi ta ham ned. Du må likevel være
+    forsiktig. Jeg har hørt at han har veldig sterk magi. Du vet aldri hva han
+    har opp ermet...
+    """
+
 #Shroom:
 def shroom_q1(navn):
     return "    Hei " + navn + """!
