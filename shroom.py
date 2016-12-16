@@ -273,7 +273,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 input("Trykk enter for å fortsette\n> ")
             elif angrip(spiller, generer_liten_sopp(spiller), inv, klasser, spellbook):
                 print("\n" + spiller.navn(), "fikk restorert", spiller.restorer(1000), "helsepoeng og", \
-                spiller.restorer_kp(300), "gjennom de magiske soppenes velsignelse.\n")
+                spiller.restorer_kp(300), " konsentrasjonspoeng gjennom de magiske soppenes velsignelse.\n")
                 input("Trykk enter for å fortsette\n> ")
             sopp = False
 
