@@ -413,6 +413,16 @@ def banditt_q6(navn):
 def banditt_q6_ferdig(navn):
     return ""
 
+def banditt_dq7(navn):
+    return "Duellring 1"
+def banditt_dq7_ferdig(navn):
+    return "Nice!"
+
+def banditt_dq8(navn):
+    return "Duellring 2"
+def banditt_dq8_ferdig(navn):
+    return "Nice!"
+
 #Overtrollmann Vassles quests:
 def vassle_troll(navn):
     return "    Hei " + navn + """!

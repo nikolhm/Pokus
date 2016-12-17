@@ -237,6 +237,9 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     if not tur and spellbook.opphold():
         spellbook.opphold(-1)
         tur = True
+        if fiende.dead():
+            spellbook.opphold(-spellbook.opphold())
+            return tur
         print(fiende.navn() + fiende.ending(), "er oppholdt!")
         spiller.kons()
         fiende.gen_kons()

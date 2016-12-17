@@ -204,6 +204,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
         gaaTilButikk = False
         skogen = False
         sopp = False
+        duell = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -217,6 +218,10 @@ def banditt_loop(spiller, inv, klasser, spellbook):
 
             if inn == "k":
                 gaaTilButikk = True
+                valg = True
+
+            if inn == "d":
+                duell = True
                 valg = True
 
             if inn == "s":
@@ -276,6 +281,33 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 spiller.restorer_kp(300), " konsentrasjonspoeng gjennom de magiske soppenes velsignelse.\n")
                 input("Trykk enter for å fortsette\n> ")
             sopp = False
+
+        while duell:
+            progresjon = 6 + sum([int(bQlog.hent_quest(x).ferdig()) for x in range(6, len(bQlog.hent_qLog()))])
+            try:
+                q = bQlog.hent_quest(progresjon)
+            except IndexError:
+                print("Du")
+            q.sett_tilgjengelig()
+            if not q.startet():
+                bQlog.snakk(progresjon, spiller, inv)
+
+            if q.startet() and q.progresjon():
+                bQlog.snakk(progresjon, spiller, inv)
+                duell = False
+                if progresjon +1 != len(bQlog.hent_qLog()):
+                    if input("\nVil du høre om neste duellant?\n> ").lower() in {"j", "ja", "yes", "y"}:
+                        duell = True
+
+            elif q.startet():
+                fiende = generer_duellant(progresjon - 6)
+                if angrip(spiller, fiende, inv, klasser, spellbook):
+                    q.progresser()
+
+            else:
+                duell = False
+
+            q.sett_tilgjengelig(False)
 
     if ferdig:
         return False
@@ -395,6 +427,14 @@ def generer_kvist(spiller):
 
 def generer_tre(spiller):
     pass
+
+def generer_duellant(nr):
+    fiende = None
+    loot = Loot()
+    if nr == 0 or nr == 1:
+        loot.legg_til_item(50, 1)
+        fiende = Fiende("Patetiske Patrick", "menneske", loot, a=100, hp=400, d=50)
+    return fiende
 
 def generer_banditt(spiller):
     loot = Loot()
@@ -578,7 +618,7 @@ def banditt_quest(qlog, spiller):
     ferdigDesk2 = banditt_q2_ferdig(navn)
     q2 = Quest(desk2, ferdigDesk2, 6, 22, "Ussle Ulf")
     item = Item("Usselt sverd", "weapon", blade=True, a=200, xHp=-150, ekstraKp=-2)
-    q2.legg_til_reward(xp=5000, gull=600, item=item)
+    q2.legg_til_reward(xp=5000, gull=600, item=item, settTilgjengelig=True, settTilgjengeligIndeks=4)
     q2.legg_til_progresjonTekst("Utforsk kastet: ")
     q2.legg_til_progresjon(1)
     q2.legg_til_progresjonTekstListe("Ussle Ulf undervist: ", 0)
@@ -606,7 +646,7 @@ def banditt_quest(qlog, spiller):
     #q5
     desk5 = banditt_q5(navn)
     ferdigDesk5 = banditt_q5_ferdig(navn)
-    q5 = Quest(desk5, ferdigDesk5, 1, 26, "Fagre Frida")
+    q5 = Quest(desk5, ferdigDesk5, 1, 26, "Fagre Frida", tilgjengelig=False)
     q5.legg_til_reward(xp=3000, kp=10)
     q5.legg_til_progresjonTekst("Onde Olga bekjempet: ")
     q5.legg_til_svarTekst("\nVil du, min helt, utfordre eksen min til duell?     (ja/nei)\n> ")
@@ -620,3 +660,21 @@ def banditt_quest(qlog, spiller):
     q6.legg_til_progresjonTekst("Kjedelige Kjells finger kuttet: ")
     q6.legg_til_svarTekst("\nVil du 'ordne' Kjedelige Kjell?     (ja/nei)\n> ")
     qlog.legg_til_quest(q6)
+
+    #duell_q1
+    desk = banditt_dq7(navn)
+    ferdigDesk = banditt_dq7_ferdig(navn)
+    dq7 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
+    dq7.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq7.legg_til_progresjonTekst("Patetiske Patrick overvunnet: ")
+    dq7.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
+    qlog.legg_til_quest(dq7)
+
+    #duell_q1
+    desk = banditt_dq8(navn)
+    ferdigDesk = banditt_dq8_ferdig(navn)
+    dq8 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
+    dq8.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq8.legg_til_progresjonTekst("Patetiske Patrick overvunnet: ")
+    dq8.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
+    qlog.legg_til_quest(dq8)
