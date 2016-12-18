@@ -1,3 +1,17 @@
 body {
-    color: #333;
+    color: #ddd;
+}
+
+.btn-default {
+  color: #ddd;
+  background-color: transparent;
+  border-color: #fff;
+}
+
+h4, .h4 {
+  line-height: 1.4;
+}
+
+a, .a {
+  color: #959e1b;
 }
