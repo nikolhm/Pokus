@@ -203,7 +203,10 @@ class Questlog:
     #startes, kun fullføres, og inkluderer å finne ting fra fienden tilfeldig. De
     #oppdragene man har fullført blir skjult.
     def oppdrag_tilgjengelige(self, lvl, sted):
-        print("\n    Velkommen til", sted + "! Følgende personer ønsker å snakke med deg:")
+        if sted != "det høyeste spirtårnet":
+            print("\n    Velkommen til", sted + "! Følgende personer ønsker å snakke med deg:")
+        else:
+            print("\n    Velkommen til", sted + "! Du kan snakke med Overtrollmann Vassle om følgende affærer:")
         i = 0
         while i < len(self._quests):
             if not self._quests[i].ferdig() and self._quests[i].tilgjengelig() and not self._quests[i].bonus():

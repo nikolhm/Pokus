@@ -162,8 +162,13 @@ def sti(spiller, inv, klasser, spellbook):
             return False
 
         elif h1 and h2 and h3:
-            print("""\n\n        **Du fant en avrevet side fra en gammel bok! På den står det:
+            print("""\n\n           **Du fant en avrevet side fra en gammel bok! På den står det:
             ---
+             _  _  .-'   '-.
+            (.)(.)/         \\
+             /66            ;   jgs
+            o_\\\\-mm-......-mm`~~~~~~~~~~~~~
+
             ...Rotter har en tendens til å glemme forskjellen på høyre og venstre
             når de blir utsatt for smerte. En som f.eks sier "hold høyre" mener
             da egentlig "hold venstre". En annen nyttig faktaopplysning omhandler...
