@@ -484,7 +484,7 @@ def vassle_quest(qlog, spiller):
     #troll
     desk1 = quests.vassle_troll(spiller.navn())
     ferdigDesk1 = quests.vassle_troll_ferdig(spiller.navn())
-    q1 = Quest(desk1, ferdigDesk1, 1, 15, "Fjellhytta")
+    q1 = Quest(desk1, ferdigDesk1, 1, 15, "Overtrollmann Vassle", sted="Fjellhytta")
     q1.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q1.legg_til_progresjonTekst("Ubalanse med fjellhytta gjennbalansert: ")
     q1.legg_til_svarTekst("Vil du undersøke ubalansen med fjellhytta?    (ja/nei)\n> ")
@@ -493,7 +493,7 @@ def vassle_quest(qlog, spiller):
     #cerberus
     desk2 = quests.vassle_cerberus(spiller.navn())
     ferdigDesk2 = quests.vassle_cerberus_ferdig(spiller.navn())
-    q2 = Quest(desk2, ferdigDesk2, 1, 15, "Vulkanen")
+    q2 = Quest(desk2, ferdigDesk2, 1, 15, "Overtrollmann Vassle", sted="Vulkanen")
     q2.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q2.legg_til_progresjonTekst("Ubalanse med vulkanen gjennbalansert: ")
     q2.legg_til_svarTekst("Vil du undersøke ubalansen med vulkanen?    (ja/nei)\n> ")
@@ -502,7 +502,7 @@ def vassle_quest(qlog, spiller):
     #gargyl
     desk3 = quests.vassle_gargyl(spiller.navn())
     ferdigDesk3 = quests.vassle_gargyl_ferdig(spiller.navn())
-    q3 = Quest(desk3, ferdigDesk3, 1, 15, "Slottet")
+    q3 = Quest(desk3, ferdigDesk3, 1, 15, "Overtrollmann Vassle", sted="Slottet")
     q3.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Ubalanse med slottet gjennbalansert: ")
     q3.legg_til_svarTekst("Vil du undersøke ubalansen med slottet?    (ja/nei)\n> ")
@@ -511,7 +511,7 @@ def vassle_quest(qlog, spiller):
     #shroom
     desk4 = quests.vassle_shroom(spiller.navn())
     ferdigDesk4 = quests.vassle_shroom_ferdig(spiller.navn())
-    q4 = Quest(desk4, ferdigDesk4, 1, 20, "Skogen", tilgjengelig=False)
+    q4 = Quest(desk4, ferdigDesk4, 1, 20, "Overtrollmann Vassle", sted="Skogen", tilgjengelig=False)
     q4.legg_til_reward(xp=30000, gull=5000, hp=100, kp=70, ekstraKp=2)
     q4.legg_til_progresjonTekst("Ekspedisjon funnet: ")
     q4.legg_til_progresjon(1)
