@@ -203,14 +203,24 @@ class Questlog:
     #startes, kun fullføres, og inkluderer å finne ting fra fienden tilfeldig. De
     #oppdragene man har fullført blir skjult.
     def oppdrag_tilgjengelige(self, lvl, sted):
-        print("\n    Velkommen til", sted + "! Følgende personer ønsker å snakke med deg:")
-        i = 0
-        while i < len(self._quests):
-            if not self._quests[i].ferdig() and self._quests[i].tilgjengelig() and not self._quests[i].bonus():
-                print("    {:36} ({})".format("{} (nivå {})".format(self._quests[i].navn(), self._quests[i].lvl()), i+1))
-            elif not self._quests[i].ferdig() and self._quests[i].tilgjengelig() and self._quests[i].bonus():
-                print("    {:36} ({})".format(self._quests[i].navn(), i+1))
-            i += 1
+        if sted != "det høyeste spirtårnet":
+            print("\n    Velkommen til", sted + "! Følgende personer ønsker å snakke med deg:")
+            i = 0
+            while i < len(self._quests):
+                if not self._quests[i].ferdig() and self._quests[i].tilgjengelig() and not self._quests[i].bonus():
+                    print("    {:36} ({})".format("{} (nivå {})".format(self._quests[i].navn(), self._quests[i].lvl()), i+1))
+                elif not self._quests[i].ferdig() and self._quests[i].tilgjengelig() and self._quests[i].bonus():
+                    print("    {:36} ({})".format(self._quests[i].navn(), i+1))
+                i += 1
+        else:
+            print("\n    Velkommen til", sted + "! Du kan snakke med Overtrollmann Vassle om følgende affærer:")
+            i = 0
+            while i < len(self._quests):
+                if not self._quests[i].ferdig() and self._quests[i].tilgjengelig() and not self._quests[i].bonus():
+                    print("    {:36} ({})".format("{} (nivå {})".format(self._quests[i].sted(), self._quests[i].lvl()), i+1))
+                elif not self._quests[i].ferdig() and self._quests[i].tilgjengelig() and self._quests[i].bonus():
+                    print("    {:36} ({})".format(self._quests[i].sted(), i+1))
+                i += 1
 
         #Sjekker om det er minst ett oppdrag tilgjengelig.
         ikkeFerdig = 0
@@ -286,7 +296,7 @@ class Questlog:
                     print(progresjon)
 
 class Quest:
-    def __init__(self, desk, ferdigDesk, xProgresjon, lvl, navn, tilgjengelig=True, bonus=False, resetIfDead=False):
+    def __init__(self, desk, ferdigDesk, xProgresjon, lvl, navn, tilgjengelig=True, bonus=False, resetIfDead=False, sted=""):
         self._deskripsjon = desk
         self._ferdigDesk = ferdigDesk
         self._progresjon = 0
@@ -307,9 +317,13 @@ class Quest:
         self._progresjonTekstListe = []
         self._altDesk = "Vil du gjøre det motsatte?\n> "
         self._altReward = []
+        self._sted = sted
 
     def navn(self):
         return self._giverNavn
+
+    def sted(self):
+        return self._sted
 
     def deskripsjon(self):
         return self._deskripsjon

@@ -1,3 +1,20 @@
 body {
-    color: #333;
+    color: #ddd;
+    background-image: url("res/img/asanoha.png");
+    background-repeat: repeat;
+
+}
+
+.btn-default {
+  color: #ddd;
+  background-color: transparent;
+  border-color: #fff;
+}
+
+h4, .h4 {
+  line-height: 1.4;
+}
+
+a, .a {
+  color: #bbc712;
 }

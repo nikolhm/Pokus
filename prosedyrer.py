@@ -311,7 +311,7 @@ def write_player_died(spiller, sted):
     En noe fortumlet""", spiller.navn(), """våkner opp forslått, men trygg og
     med noenlunde stabil mental helse opp i""", sted + ".\n")
     input("    Trykk enter for å fortsette\n    > ")
-
+#Koden din er ikke godt nok kommentert. Hilsen Lilly :)
 def finn_stats(item):
     statliste = item.statliste()
     totalStats = 0
