@@ -1373,10 +1373,14 @@ class Spellbook:
         return utforsk
 
     def brukOpphold(self):
-        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150:
+        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150 and not fiende.untouchable():
             self._spiller.bruk_kons(150)
             print(self._spiller.navn(), "kastet Opphold!")
             self._opphold = 3
+            return False
+        elif self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150 and fiende.untouchable():
+            print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
+            self._spiller.bruk_kons(150)
             return False
         elif self._spiller.lvl() >= 20:
             print("Du har ikke nok konsentrasjonspoeng!")
@@ -1394,6 +1398,8 @@ class Spellbook:
                 print(self._spiller.navn(), "kastet Distraher!")
                 if fiende.kp() < mengde:
                     mengde = fiende.kp()
+                if fiende.untouchable():
+                    mengde = 0
                 fiende.kp(-mengde)
                 print(fiende.navn() + fiende.ending(), "mistet", mengde, "kp")
 

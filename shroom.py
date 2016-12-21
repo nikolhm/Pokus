@@ -344,14 +344,19 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
     bQlog = klasser.questlog(7)
     skriv_ut(spiller, fiende)
     uCD = 0
+    bundetCD = 0
     while True:
-        inn = input("\nHva vil du gjøre?\n> ").lower()
-
         #tur angir at det er brukeren sin tur til å handle.
-        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
+        if bundetCD > 0:
+            tur = False
+            inn = ""
+            print(spiller.navn(), "er bundet fast.")
+        else:
+            inn = input("\nHva vil du gjøre?\n> ").lower()
+            tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
 
         if inn == "f" or inn == "flykt":
-            print(spiller.navn(), "drar tilbake til stallen.")
+            print(spiller.navn(), "drar tilbake til leiren.")
             return False
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
@@ -384,6 +389,22 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 print(fiende.navn() + fiende.ending(), "kastet Utforsk!")
                 fiende.bruk_kons(195)
                 uCD = -6
+            #Smidige Sandra - Duell
+            elif fiende.navn() == "Smidige Sandra":
+                if fiende.untouchableCD():
+                    print("Smidige Sandra restorerte 800 hp.")
+                    fiende.restorer(800)
+                    fiende.kp(-15)
+                elif fiende.hp() < 900 and fiende.kp() >= 100 and not fiende.untouchableCD():
+                    print("Smidige Sandra har sklidd inn i mørket for to runder!")
+                    fiende.set_untouchable(True, 2)
+                    fiende.kp(-100)
+                elif fiende.kp() >= 150 and randint(1, 4) == 1 and bundetCD <= 0:
+                    print("Smidige Sandra har bundet deg fast!")
+                    bundetCD = 3
+                    fiende.kp(-150)
+                else:
+                    spiller.angrepet(fiende)
             #Restituer
             elif fiende.kp() >= 50 and randint(0, 1) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0:
                 print(fiende.navn() + fiende.ending(), "kastet Restituer!")
@@ -405,9 +426,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             #skriver ut hp og kp til karakteren og hp til fienden til neste runde.
             else:
                 uCD += 1
+                bundetCD -= 1
                 spiller.kons()
                 fiende.gen_kons()
                 skriv_ut(spiller, fiende)
+                if bundetCD > 0:
+                    input("Trykk enter for å fortsette\n> ")
 
 def generer_mosegrodd_stein(spiller):
     loot = Loot()
@@ -436,9 +460,12 @@ def generer_tre(spiller):
 def generer_duellant(nr):
     fiende = None
     loot = Loot()
-    if nr == 0 or nr == 1:
+    if nr == 0:
         loot.legg_til_item(50, 1)
-        fiende = Fiende("Patetiske Patrick", "menneske", loot, a=100, hp=400, d=50)
+        fiende = Fiende("Patetiske Patrick", "menneske", loot, a=150, hp=850, d=100)
+    elif nr == 1:
+        loot.legg_til_item(50, 1)
+        fiende = Fiende("Smidige Sandra", "menneske", loot, a=300 ,hp=2300, d=400, kp=450, bonusKp=10)
     return fiende
 
 def generer_banditt(spiller):
@@ -675,11 +702,47 @@ def banditt_quest(qlog, spiller):
     dq7.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq7)
 
-    #duell_q1
+    #duell_q2
     desk = banditt_dq8(navn)
     ferdigDesk = banditt_dq8_ferdig(navn)
     dq8 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
     dq8.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
-    dq8.legg_til_progresjonTekst("Patetiske Patrick overvunnet: ")
+    dq8.legg_til_progresjonTekst("Smidige Sandra overvunnet: ")
     dq8.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq8)
+
+    #duell_q3
+    desk = banditt_dq9(navn)
+    ferdigDesk = banditt_dq9_ferdig(navn)
+    dq9 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
+    dq9.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq9.legg_til_progresjonTekst("Store Simon overvunnet: ")
+    dq9.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
+    qlog.legg_til_quest(dq9)
+
+    #duell_q4
+    desk = banditt_dq10(navn)
+    ferdigDesk = banditt_dq10_ferdig(navn)
+    dq10 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
+    dq10.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq10.legg_til_progresjonTekst("Kraftige Klara overvunnet: ")
+    dq10.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
+    qlog.legg_til_quest(dq10)
+
+    #duell_q5
+    desk = banditt_dq11(navn)
+    ferdigDesk = banditt_dq11_ferdig(navn)
+    dq11 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
+    dq11.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq11.legg_til_progresjonTekst("Teite Tim overvunnet: ")
+    dq11.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
+    qlog.legg_til_quest(dq11)
+
+    #duell_q6
+    desk = banditt_dq12(navn)
+    ferdigDesk = banditt_dq12_ferdig(navn)
+    dq12 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
+    dq12.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq12.legg_til_progresjonTekst("Onde Olga overvunnet: ")
+    dq12.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
+    qlog.legg_til_quest(dq12)

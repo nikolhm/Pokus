@@ -414,13 +414,52 @@ def banditt_q6_ferdig(navn):
     return ""
 
 def banditt_dq7(navn):
-    return "Duellring 1"
+    return "    Hei " + navn + """!
+    Mitt navn er Onde Olga, og jeg er den som styrer duellringen her.
+    Du ser ut som en kapabel banditt, har du lyst til å teste deg? Heder
+    og ære finner du nok ikke her, men du får muligheten til å vinne en
+    fin slump gullstykker! Hvis du vinner da selvfølgelig, skulle du dø
+    eller flykte før motstanderen er beseiret, mister du pengene som er
+    krevd for deltakelse. Det koster 500 per kamp; desto værre odds, desto
+    større vinnerlønn til deg.
+
+    Siden du er ny her, starter du nederst på rangstigen. Om du takker ja,
+    vil du bli satt opp mot Patetiske Patrick. Jeg har ingen tips å gi mot
+    ham."""
 def banditt_dq7_ferdig(navn):
-    return "Nice!"
+    return "    Gratulerer med seieren " + navn + """! Nå skal det sies at Patetiske Patrick
+    aldri har vunnet en eneste kamp før, så det sier ingenting om en
+    spjæling som deg...\n"""
 
 def banditt_dq8(navn):
-    return "Duellring 2"
+    return "    Hei igjen " + navn + """!
+    Din neste motstander er en litt tøffere utfordring. Smidige Sandra har lært
+    seg noen smidige triks, hun kan sette deg ut av spill og gjemme seg selv i
+    mørket mens hun slikker sine sår. Ta fra henne konsentrasjonen slik at hun
+    ikke kan gjemme seg noe sted! Om du trenger hjelp til det, snakk med Taktiske
+    Tore."""
 def banditt_dq8_ferdig(navn):
+    return """    Hun kan være en skikkelig utfordring for de fleste, men klarte ikke
+    å beseire deg """ + navn + ". Jeg får disiplinere henne selv i natt.\n"
+
+def banditt_dq9(navn):
+    return "Duellring 3"
+def banditt_dq9_ferdig(navn):
+    return "Nice!"
+
+def banditt_dq10(navn):
+    return "Duellring 4"
+def banditt_dq10_ferdig(navn):
+    return "Nice!"
+
+def banditt_dq11(navn):
+    return "Duellring 5"
+def banditt_dq11_ferdig(navn):
+    return "Nice!"
+
+def banditt_dq12(navn):
+    return "Duellring 6"
+def banditt_dq12_ferdig(navn):
     return "Nice!"
 
 #Overtrollmann Vassles quests:
