@@ -4,6 +4,7 @@ from prosedyrer import *
 import os
 import time
 import platform
+import sys
 
 init()
 
@@ -133,9 +134,11 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
     frames.append(ferdig)
 
     for f in frames:
+        sys.stdout.flush()
         print(f)
         time.sleep(1/12)
         os.system(ccom)
+    sys.stdout.flush()
     print(ferdig)
 
 def skriv_ekorn1():
@@ -383,7 +386,7 @@ def skrivGaute():
         os.system("cls")
     else:
         os.system("clear")
-    print("""           ,           ,
+    print(Fore.GREEN + """           ,           ,
           /(  .-\"\"\""-. )\\
       |\  \/           \/  /|
       | \ /     \  /    \ / |
@@ -396,7 +399,7 @@ def skrivGaute():
     /       '\\\\\\\\\\/////'       \\
    /         '\\\\\\\\////'         \\
   /            '\\\\//'            \\
- /       |  lgs  \/   nhm  |      \\""")
+ /       |  lgs  \/   nhm  |      \\""" + Style.RESET_ALL)
 
 
 
