@@ -3,6 +3,32 @@
   <head>
     <title>Pokus</title>
 
+    <!-- for Google -->
+    <meta name="description" content="Norsk tekstbasert fantasyspill."/>
+    <meta name="keywords"
+    content="hokus, pokus, hokus pokus, magi, magic, game, spill, fantasy-spill, fantasy, RPG-spill, RPG, ASCII art, tekstbasert spill,
+    tekstbasert, tekst, ASCII-spill, ASCII spill, ASCII art game, norwegian, ifi, UiO, Instituttet for Informatikk,
+    Universitetet i Oslo, Python, INF1001, studentspill, moro, tidi, GitHub, role-playing game, play, retro, adventure, eventyr,
+    eventyrspill" />
+
+    <meta name="author" content="Magic Wand Productions" />
+    <meta name="copyright" content="LICENSE.txt" />
+    <meta name="application-name" content="Pokus" />
+
+    <!-- for Facebook -->
+    <meta property="og:title" content="Pokus" />
+    <meta property="og:type" content="game" />
+    <meta property="og:image" itemprop="image" content="http://pokus.org/res/img/TrollIcon.png" />
+    <meta property="og:url" content="http://pokus.org/" />
+    <meta property="og:description" content="Et tekstbasert fantasy-spill utviklet for moro skyld av studenter på Instituttet for Informatikk ved UiO.
+    Det er et hobby-prosjekt og setter ut for å være så useriøst som mulig. Målet for spillet er å være gøy for
+    de som spiller det og å gi erfaring til de som lager det." />
+
+    <!-- for Twitter -->
+    <meta name="twitter:card" content="Norsk tekstbasert fantasyspill." />
+    <meta name="twitter:title" content="Pokus" />
+
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="bootstrap.css" type = "text/css"/>
     <link rel="stylesheet" href="override.css" type = "text/css"/>
@@ -17,6 +43,35 @@
 
   <body class="body">
     <div class="container-fluid" style="min-height:95%; ">
+    <div class="row hidden-xs hidden-sm hidden-md" style="background-color:#5d1f1f">
+      <div class="col-sm-12">
+        <pre style="background-color:#5d1f1f; color: #ddd; border: 0px solid #ccc; padding: 0px">                  **********************************************************************************************************************************************
+
+                  PPPPPPPPPPPPPPPPP         OOOOOOOOO      KKKKKKKKK    KKKKKKK UUUUUUUU     UUUUUUUU   SSSSSSSSSSSSSSS                       ____
+                  P::::::::::::::::P      OO:::::::::OO    K:::::::K    K:::::K U::::::U     U::::::U  SS:::::::::::::::S                   .'* *.'
+                  P::::::PPPPPP:::::P   OO:::::::::::::OO  K:::::::K    K:::::K U::::::U     U::::::U S:::::SSSSSS::::::S                __/_*_*(_
+                  PP:::::P     P:::::P O:::::::OOO:::::::O K:::::::K   K::::::K UU:::::U     U:::::UU S:::::S     SSSSSSS               / _______  \
+                    P::::P     P:::::P O::::::O   O::::::O KK::::::K  K:::::KKK  U:::::U     U:::::U  S:::::S                          _\_)/___\(_/_
+                    P::::P     P:::::P O:::::O     O:::::O   K:::::K K:::::K     U:::::D     D:::::U  S:::::S                         / _((\o -/))_ \
+                    P::::PPPPPP:::::P  O:::::O     O:::::O   K::::::K:::::K      U:::::D     D:::::U   S::::SSSS                      \ \())(-)(()/ /
+                    P:::::::::::::PP   O:::::O     O:::::O   K:::::::::::K       U:::::D     D:::::U    SS::::::SSSSS                  ' \(((()))/ '
+                    P::::PPPPPPPPP     O:::::O     O:::::O   K:::::::::::K       U:::::D     D:::::U      SSS::::::::SS               / ' \)).))/ ' \
+                    P::::P             O:::::O     O:::::O   K::::::K:::::K      U:::::D     D:::::U         SSSSSS::::S             / _ \ - | - /_  \
+                    P::::P             O:::::O     O:::::O   K:::::K K:::::K     U:::::D     D:::::U              S:::::S           (   ( .;''';. .'  )
+                    P::::P             O::::::O   O::::::O KK::::::K  K:::::KKK  U::::::U   U::::::U               S:::::S          _\"__ /    )\ __"/_
+                  PP::::::PP           O:::::::OOO:::::::O K:::::::K   K::::::K  U:::::::UUU:::::::U  SSSSSSS     S:::::S             \/  \   ' /  \/
+                  P::::::::P            OO:::::::::::::OO  K:::::::K    K:::::K   UU:::::::::::::UU   S::::::SSSSSS:::::S              .'  '...' ' )
+                  P::::::::P              OO:::::::::OO    K:::::::K    K:::::K     UU:::::::::UU     S:::::::::::::::SS               / /  |  \ \\
+                  PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU        SSSSSSSSSSSSSSS                / .   .   . \\
+                                                                                                                                     /   .     .   \\
+                                                                  av                                                                /   /   |   \   \\
+                                                                                                                                  .'   /    b    '.  '.
+                                                        Magic Wand Productions                                                _.-'    /     Db     '-. '-._
+                                                                                                                          _.-'       |      DDb       '-.  '-.
+                                                                                                                         (_______mrf/\____.dDDDb.________)____)
+                  **********************************************************************************************************************************************</pre>
+      </div>
+    </div>
 		<div class="row" style="background-color:#5d1f1f">
 			  <div class="col-sm-4">
 				  <br>
@@ -39,15 +94,15 @@
         <div class="col-sm-1"></div>
 			  <div class="col-sm-6">
 				  <br>
-				  <h1 style="color:#bbc712;"><b>Velkommen til Pokus!</b></h1>
+				  <h1 style="color:#bbc712; text-shadow: 3px 3px #000"><b>Velkommen til Pokus!</b></h1>
           <h4 style="color:#ddd">Pokus er et tekstbasert fantasy-spill utviklet for moro skyld av studenter på Instituttet for Informatikk ved UiO.
           Det er et hobby-prosjekt og setter ut for å være så useriøst som mulig. Målet for spillet er å være gøy for
           de som spiller det og å gi erfaring til de som lager det.</h4>
           <h4 style="color:#ccc">Spillet er laget i <a href="https://www.python.org">Python</a> og er
           utviklet på <a href="https://github.com/nikolhm/Pokus/">Github</a>.</h4>
           <h4>Spillet er desverre ikke tilgjengelig ennå, fordi vi ikke er helt klare til å slippe ut den første delen.
-          Vi har mål om å slippe det ut på <a href="https://github.com/nikolhm/Pokus/">Github</a> ved solvervet
-          21.12.16, men vi vet ikke om vi rekker det. Får se :)</h4>
+          Vi har mål om å slippe det ut på <a href="https://github.com/nikolhm/Pokus/">Github</a> på nyttår
+          01.01.2017, men vi vet ikke om vi rekker det. Får se :)</h4>
           <center>
             <a
             style="margin-top: 40px; margin-bottom: 80px"
@@ -56,7 +111,6 @@
             role="button">
             <b>Last ned Pokus!</b>
             </a>
-
           </center>
 			  </div>
         <div class="col-sm-1"></div>
@@ -64,7 +118,7 @@
     <div class="container-fluid" style="min-height:95%; color:#ddd">
       <div class="row">
           <div class="col-sm-3"></div>
-  			  <div class="col-sm-6">
+  			  <div class="col-sm-6" style="margin-bottom: 50px">
             <center><h1>Pokus</h1></center>
             <p>Spillet tar sted i en eventyrverden fylt med magikere og monstre.
             Du er en lovende ung magiker ute på jakt etter eventyr. Du husker
@@ -74,16 +128,41 @@
 
             <p>Det nye livet ditt starter ved et magisk slott med utallige magikere.
             Der blir du trent opp til å bruke magi av den mektige Overtrollmann Vassle.
-            </p>
+            Fra tidlig av blir du kjent med monstrene som omringer slottet. Det
+            gnom på gnom på gnom i skogen, hvor Gaute Gnom den Grusomme har lagt
+            sitt terretorie.</p>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mattis ipsum in metus lobortis sollicitudin. Ut scelerisque felis et lacus pharetra faucibus id nec ipsum. Proin laoreet libero ac ante cursus, ut scelerisque purus cursus. Aliquam vel tristique tortor. Cras elementum lobortis nunc, a suscipit elit. Curabitur est massa, ornare nec viverra ut, aliquam sit amet erat. Nam imperdiet quis diam in sodales. Quisque rutrum ipsum sem, ut commodo dui iaculis vitae. Maecenas et lacinia eros. Phasellus ut sapien posuere, sollicitudin lacus et, cursus lorem. Proin mattis mi nec eros fringilla scelerisque. Ut mattis mauris ipsum, vitae egestas ipsum malesuada convallis. Donec bibendum porta massa nec aliquam.</p>
+            <p>Etterhvert som du blir en bedre magiker får du også bedre utstyr.
+            Du får mere penger som du kan bruke i den lokale butikken: "Kåres hokus og andre hokuspokus".
+            Du får nye staver som øker de magiske kreftene dine og sverd som drastisk øker angrepsstyrken din.</p>
+
+            <p>Ettersom du blir sterkere møter du kraftigere gnomer
+            og går på oppdrag som blir farligere og farligere. Du møter trollmenn
+            og hekser som Mette Merkelig og Gale Grizly, som trenger din hjelp.
+            Når Symmetriske Sara ber deg om å bekjempe Gaute Gnom den Grusomme må
+            du overkomme de fem gnomevaktene hans før du blir kastet inn i en taktisk
+            kamp mot den viljesterke kjempen.</p>
+
+            <p>Etter du har tatt ned denne forferdelige fienden blir du sendt til
+            nye områder med sterkere fiender og mer krevende oppgaver. Overtrollmann
+            Vassle sender deg til et trollbefestet fjell, en vulkan hvor helveteshunder
+            blir født fra lavaen og et slott hvor stein kommer til live. Der skal
+            du oppdage hva som er kilden til disse magiske mysteriene.</p>
+
+            <p>Jo mer du lærer om de magiske skapningene i denne verden, desto
+            mer kjenner du nærværet av en mystisk makt. Et mørke ligger over verden
+            som du bare begynner å legge merke til. Hva gjemmer seg i mørket?</p>
+
+        <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mattis ipsum in metus lobortis sollicitudin. Ut scelerisque felis et lacus pharetra faucibus id nec ipsum. Proin laoreet libero ac ante cursus, ut scelerisque purus cursus. Aliquam vel tristique tortor. Cras elementum lobortis nunc, a suscipit elit. Curabitur est massa, ornare nec viverra ut, aliquam sit amet erat. Nam imperdiet quis diam in sodales. Quisque rutrum ipsum sem, ut commodo dui iaculis vitae. Maecenas et lacinia eros. Phasellus ut sapien posuere, sollicitudin lacus et, cursus lorem. Proin mattis mi nec eros fringilla scelerisque. Ut mattis mauris ipsum, vitae egestas ipsum malesuada convallis. Donec bibendum porta massa nec aliquam.</p>
             <p>Ut malesuada lacinia pellentesque. Fusce ornare dolor nec faucibus vehicula. Sed sagittis nisl dolor, sed imperdiet nisi fringilla scelerisque. Suspendisse potenti. Donec scelerisque sagittis gravida. Morbi ut justo sit amet quam fermentum tempus id eget eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin commodo cursus mi, eget laoreet risus molestie in. Proin fringilla luctus dapibus. Donec placerat, nunc a pellentesque accumsan, turpis lorem tincidunt justo, ut blandit est leo nec libero. Proin gravida consectetur sem aliquam ultrices.</p>
             <p>Integer convallis felis metus. Nullam vitae ultricies diam, vel ultricies quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent quis lectus risus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam pretium quis nulla ut gravida. Nullam tempus aliquam ligula vestibulum vehicula. Aliquam lacus nisl, vestibulum et dolor at, iaculis mattis sapien. Etiam volutpat nisl nec semper vehicula.</p>
             <p>Nam ullamcorper blandit orci, sed consequat tortor malesuada eu. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vestibulum efficitur libero, et lacinia nisi pharetra at. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus gravida augue urna, quis sagittis ipsum tincidunt accumsan. Proin a rutrum odio, et ullamcorper tellus. Sed et iaculis mi, vel varius diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere lectus lectus, at tempor turpis elementum non. Nunc a ex nec metus auctor luctus in ac velit. Pellentesque fringilla tellus augue, vitae ullamcorper turpis fermentum eu. Aliquam venenatis ante ut rutrum rutrum.</p>
-            <p>Curabitur a orci eu est facilisis volutpat a at metus. Sed laoreet ultrices tellus, sit amet dapibus nulla tincidunt pharetra. Cras quis dictum velit. Mauris et lacus tincidunt, dictum nibh at, porttitor enim. Cras fermentum faucibus orci. In hac habitasse platea dictumst. Aliquam dapibus nisl sit amet sem venenatis interdum. Aliquam volutpat ex quis pharetra semper. Sed vel elit vehicula, suscipit eros sed, pulvinar leo. Aliquam gravida posuere dolor, sed interdum ipsum sagittis eu. Nunc commodo, velit quis dictum dapibus, nibh urna fringilla ex, at elementum tellus odio sit amet nisl. Nulla pulvinar, tellus sed ornare sagittis, neque odio pulvinar neque, non dignissim velit dui nec diam. Cras quis commodo magna.</p>
+            <p>Curabitur a orci eu est facilisis volutpat a at metus. Sed laoreet ultrices tellus, sit amet dapibus nulla tincidunt pharetra. Cras quis dictum velit. Mauris et lacus tincidunt, dictum nibh at, porttitor enim. Cras fermentum faucibus orci. In hac habitasse platea dictumst. Aliquam dapibus nisl sit amet sem venenatis interdum. Aliquam volutpat ex quis pharetra semper. Sed vel elit vehicula, suscipit eros sed, pulvinar leo. Aliquam gravida posuere dolor, sed interdum ipsum sagittis eu. Nunc commodo, velit quis dictum dapibus, nibh urna fringilla ex, at elementum tellus odio sit amet nisl. Nulla pulvinar, tellus sed ornare sagittis, neque odio pulvinar neque, non dignissim velit dui nec diam. Cras quis commodo magna.</p>-->
           </div>
           <div class="col-sm-3"></div>
       </div>
     </div>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5856b8fa45630ac5"></script>
   </body>
 </html>
