@@ -393,7 +393,12 @@ def banditt_q5(navn):
 
     -- Bekjemp Onde Olga i duellringen."""
 def banditt_q5_ferdig(navn):
-    return ""
+    return "    For en lykkedag! Tusen takk " + navn + """!
+    Onde Olga har startet å vise interesse for meg igjen! Jeg bare vet
+    at vi kommer til å utrette virkelig grufulle ting sammen! Ekte
+    kjærlighet er absolutt en sjelden vare, husk på det """ + navn + """.
+    Vi to fikk aldri en sjanse sammen, men jeg er sikker på at den rette for
+    deg er der ute et sted.\n"""
 
 def banditt_q6(navn):
     return "    Hvem er du? Du ser ut som en " + navn + ". Yup, definitivt " + navn + """".
@@ -432,35 +437,61 @@ def banditt_dq7_ferdig(navn):
     spjæling som deg...\n"""
 
 def banditt_dq8(navn):
-    return "    Hei igjen " + navn + """!
+    return "    Hei igjen " + navn + """.
+    Denne gang settes du opp mot Store Sture. Han er en stor kar som tåler en
+    støyt, så hold et øye med dine egne helsepoeng mens du hakker løs!"""
+def banditt_dq8_ferdig(navn):
+    return """    Store Sture har stamina, men ikke stort med angrepspotensiale. Du
+    får vente til en senere anledning med å vise om du virkelig duger til noe.\n"""
+
+def banditt_dq9(navn):
+    return "    Nok en gang trekkes du mot duellringens vold og hete " + navn + """!
     Din neste motstander er en litt tøffere utfordring. Smidige Sandra har lært
     seg noen smidige triks, hun kan sette deg ut av spill og gjemme seg selv i
     mørket mens hun slikker sine sår. Ta fra henne konsentrasjonen slik at hun
     ikke kan gjemme seg noe sted! Om du trenger hjelp til det, snakk med Taktiske
     Tore."""
-def banditt_dq8_ferdig(navn):
+def banditt_dq9_ferdig(navn):
     return """    Hun kan være en skikkelig utfordring for de fleste, men klarte ikke
     å beseire deg """ + navn + ". Jeg får disiplinere henne selv i natt.\n"
 
-def banditt_dq9(navn):
-    return "Duellring 3"
-def banditt_dq9_ferdig(navn):
-    return "Nice!"
-
 def banditt_dq10(navn):
-    return "Duellring 4"
+    return "    Denne gangen skal du nok få deg en utfordring " + navn + """!
+    Kraftige Klara er sterkere enn folk flest, men sikter dårlig med slagene sine.
+    Selv om hun er kraftig nok til å slå deg ut med noen få slag, så tåler hun ikke
+    så mye selv. Noen godt plasserte angrep burde gjøre susen, og om du i tillegg
+    klarer å oppholde henne så hun ikke kan angripe deg, er duellen over på null
+    komma niks."""
 def banditt_dq10_ferdig(navn):
-    return "Nice!"
+    return "    Du begynner å komme deg " + navn + """, det må være jeg som har god påvirkning
+    på deg. Nå har du bare en duellant igjen før duell-mester tittelen går til deg!\n"""
 
 def banditt_dq11(navn):
-    return "Duellring 5"
+    return "    Du er tilbake for en siste kamp " + navn + """!
+    Dette er øyeblikket vi har ventet på, og din siste duellant er:
+    Teite Tim! Og han er langt fra like inkapabel som mange av dine
+    tidligere duellanter. Teite Tim har mangt et triks opp i ermet,
+    bruk det du har lært så langt og gi meg en seier og en ny
+    duell-mester!"""
 def banditt_dq11_ferdig(navn):
-    return "Nice!"
+    return "    Gratulerer " + navn + """!
+    Den nye duell-mesteren er DEG! Og det hele er min fortjeneste! Godt jobbet
+    Onde Olga! Jeg er virkelig av de snedigste, lureste og beste bandittene i
+    denne leiren! Ser deg rundt om kring """ + navn + ", jeg skal feire meg selv!\n"
 
 def banditt_dq12(navn):
-    return "Duellring 6"
+    return """    HVA?!?!?
+    Ønsker du å duellere meg? Hvordan våger du! Jeg som har reist deg fra sølen
+    og oppdratt deg som min egen! Jeg har lært deg å duellere slik proffene
+    gjør det, bedre enn proffene gjør det! Og nå snur du ryggen mot meg?
+
+    Om det er slik vil ha det; Ta dine siste steg """ + navn + "!"
 def banditt_dq12_ferdig(navn):
-    return "Nice!"
+    return """    D- du har beseiret meg! Hvordan er det mulig?
+    Hvem har sendt deg """ + navn + """?
+
+    Fagre Frida altså. Hun er ikke så dum som hun ser ut, kanskje
+    jeg burde gi henne en ny sjanse\n"""
 
 #Overtrollmann Vassles quests:
 def vassle_troll(navn):

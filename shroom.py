@@ -292,22 +292,44 @@ def banditt_loop(spiller, inv, klasser, spellbook):
             try:
                 q = bQlog.hent_quest(progresjon)
             except IndexError:
-                print("Du")
-            q.sett_tilgjengelig()
+                print("\n        *Det er ingen flere å duellere mot her*\n")
+                input("Trykk enter for å fortsette\n> ")
+                duell = False
+                break
+            if progresjon != 11 or bQlog.hent_quest(4).startet():
+                q.sett_tilgjengelig()
+            else:
+                print("\n      *Onde Olga godter seg med seiersinntekten du skaffet henne*")
+                print("      *Det er ingen flere å duellere mot på dette tidspunktet*\n")
+                input("Trykk enter for å dra tilbake\n> ")
+                duell = False
+                break
             if not q.startet():
                 bQlog.snakk(progresjon, spiller, inv)
 
             if q.startet() and q.progresjon():
                 bQlog.snakk(progresjon, spiller, inv)
                 duell = False
-                if progresjon +1 != len(bQlog.hent_qLog()):
+                if progresjon +1 != len(bQlog.hent_qLog()) and (progresjon+1 != 11 or bQlog.hent_quest(4).startet()):
                     if input("\nVil du høre om neste duellant?\n> ").lower() in {"j", "ja", "yes", "y"}:
                         duell = True
+                if bQlog.hent_quest(11).ferdig():
+                    bQlog.hent_quest(4).progresser()
 
-            elif q.startet():
+            elif q.startet() and inv.penger() >= 500:
+                inv.penger(-500)
+                print("Du blir trukket 500 gullstykker for inngangsbillett.")
+                input("Trykk enter for å fortsette\n> ")
                 fiende = generer_duellant(progresjon - 6)
                 if angrip(spiller, fiende, inv, klasser, spellbook):
                     q.progresser()
+                else:
+                    duell = False
+
+            elif q.startet():
+                print("\nDu har ikke nok gullstykker til å bli med i en duell!\n")
+                input("Trykk enter for å dra tilbake til leiren\n> ")
+                duell = False
 
             else:
                 duell = False
@@ -405,10 +427,69 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                     fiende.kp(-150)
                 else:
                     spiller.angrepet(fiende)
+            #Store Sture - Duell
+            elif fiende.navn() == "Store Sture":
+                if fiende.kp() >= 50 and fiende.hp() <= fiende.xHp() - 210 and randint(1, 5) == 3:
+                    print("Store Sture dunket deg med et kjøttstykke og spiste det!")
+                    print(fiende.navn(), "restorerte", fiende.restorer(250), "hp.")
+                    print(spiller.navn(), "mistet", spiller.mist_liv(50), "liv.")
+                    fiende.kp(-50)
+                else:
+                    spiller.angrepet(fiende)
+            #Kraftige Klara - Duell
+            elif fiende.navn() == "Kraftige Klara":
+                if fiende.kp() >= 50 and randint(1, 7) != 1:
+                    fiende.kp(-50)
+                    fiende.a(500)
+                    print("Kraftige Klara varmet opp musklene!")
+                    print("Kraftige Klara fikk 500 angrepspoeng.")
+                else:
+                    spiller.angrepet(fiende)
+            #Teite Tim - Duell
+            elif fiende.navn() == "Teite Tim":
+                if fiende.kp() >= 200 and randint(1, 15) == 7 and fiende.hp() < fiende.xHp() - 400:
+                    print("Teite Tim kastet Super Restituer!")
+                    print("Teite Tim restorerte", fiende.restorer(500 + randint(0, 120)), "liv.")
+                    fiende.kp(-200)
+                elif fiende.kp() >= 350 and randint(1, 10) == 1 and spiller.kp() >= 150:
+                    print("Teite Tim kastet Distraher!")
+                    print(spiller.navn(), "mistet", spiller.mist_kp(500 + randint(0, 80)), "kp.")
+                    fiende.kp(-350)
+                elif fiende.kp() >= 200 and randint(1, 15) == 1:
+                    print("Teite Tim gjorde en strategisk vurdering av kampen!")
+                    print("Teite TIm fikk 50 angrepspoeng.")
+                    fiende.a(50)
+                    fiende.kp(-200)
+                elif fiende.kp() >= 50 and randint(1, 8) == 1 and uCD >= 0:
+                    print("Teite Tim kastet Restituer!")
+                    print("Teite Tim restorerte", fiende.restorer(150 + randint(0, 50)), "liv.")
+                    fiende.kp(-50)
+                else:
+                    if uCD < 0:
+                        print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(spiller.angrepet(fiende)), "hp!")
+                    else:
+                        spiller.angrepet(fiende)
+            #Onde Olga - Duell
+            elif fiende.navn() == "Onde Olga":
+                if fiende.kp() >= 315 and randint(1, 7) == 1 and not fiende.untouchableCD():
+                    print(fiende.navn() + fiende.ending(), "kastet RockNoRoll!")
+                    print(fiende.navn() + fiende.ending(), "er blitt til stein!")
+                    fiende.kp(-315)
+                    fiende.set_untouchable(True, 5)
+                elif fiende.kp() >= 140 and randint(1, 6) == 1 and fiende.hp() < fiende.xHp() - 200:
+                    print("Onde Olga kastet Restituer!")
+                    print("Onde Olga restorerte", fiende.restorer(250), "liv.")
+                    fiende.kp(-140)
+                elif fiende.kp() >= 350 and randint(1, 2 + round(13 * (fiende.hp() / fiende.xHp()))) == 1:
+                    print("Onde Olga mante frem en kampstein og kastet den på deg!")
+                    print(spiller.navn(), "mistet", spiller.mist_liv(500), "liv!")
+                    fiende.kp(-350)
+                else:
+                    spiller.angrepet(fiende)
             #Restituer
             elif fiende.kp() >= 50 and randint(0, 1) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0:
                 print(fiende.navn() + fiende.ending(), "kastet Restituer!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp!")
+                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp.")
                 fiende.bruk_kons(50)
             #Vanlig angrep
             else:
@@ -462,10 +543,22 @@ def generer_duellant(nr):
     loot = Loot()
     if nr == 0:
         loot.legg_til_item(50, 1)
-        fiende = Fiende("Patetiske Patrick", "menneske", loot, a=150, hp=850, d=100)
+        fiende = Fiende("Patetiske Patrick", "menneske", loot, a=300, hp=850, d=200)
     elif nr == 1:
         loot.legg_til_item(50, 1)
-        fiende = Fiende("Smidige Sandra", "menneske", loot, a=300 ,hp=2300, d=400, kp=450, bonusKp=10)
+        fiende = Fiende("Store Sture", "menneske", loot, a=200, hp=10000, d=200, kp=200, bonusKp=1)
+    elif nr == 2:
+        loot.legg_til_item(50, 1)
+        fiende = Fiende("Smidige Sandra", "menneske", loot, a=300, hp=2300, d=400, kp=450, bonusKp=10)
+    elif nr == 3:
+        loot.legg_til_item(50, 1)
+        fiende = Fiende("Kraftige Klara", "menneske", loot, a=1200, hp=1337, d=-1200, kp=50)
+    elif nr == 4:
+        loot.legg_til_item(50, 1)
+        fiende = Fiende("Teite Tim", "snik", loot, a=400, hp=6666, d=1000, kp=600, bonusKp=8)
+    elif nr == 5:
+        loot.legg_til_item(50, 1)
+        fiende = Fiende("Onde Olga", "gargyl", loot, a=1000, hp=5734, d=666, kp=1000, bonusKp=20, weapon=250)
     return fiende
 
 def generer_banditt(spiller):
@@ -697,7 +790,7 @@ def banditt_quest(qlog, spiller):
     desk = banditt_dq7(navn)
     ferdigDesk = banditt_dq7_ferdig(navn)
     dq7 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
-    dq7.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq7.legg_til_reward(xp=2000, gull=1000)
     dq7.legg_til_progresjonTekst("Patetiske Patrick overvunnet: ")
     dq7.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq7)
@@ -706,8 +799,8 @@ def banditt_quest(qlog, spiller):
     desk = banditt_dq8(navn)
     ferdigDesk = banditt_dq8_ferdig(navn)
     dq8 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
-    dq8.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
-    dq8.legg_til_progresjonTekst("Smidige Sandra overvunnet: ")
+    dq8.legg_til_reward(xp=3000, gull=1500, hp=150, d=40)
+    dq8.legg_til_progresjonTekst("Store Sture overvunnet: ")
     dq8.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq8)
 
@@ -715,8 +808,8 @@ def banditt_quest(qlog, spiller):
     desk = banditt_dq9(navn)
     ferdigDesk = banditt_dq9_ferdig(navn)
     dq9 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
-    dq9.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
-    dq9.legg_til_progresjonTekst("Store Simon overvunnet: ")
+    dq9.legg_til_reward(xp=5000, gull=2000, kp=50)
+    dq9.legg_til_progresjonTekst("Smidige Sandra overvunnet: ")
     dq9.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq9)
 
@@ -724,7 +817,7 @@ def banditt_quest(qlog, spiller):
     desk = banditt_dq10(navn)
     ferdigDesk = banditt_dq10_ferdig(navn)
     dq10 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
-    dq10.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq10.legg_til_reward(xp=8000, gull=3000, a=50, kp=10)
     dq10.legg_til_progresjonTekst("Kraftige Klara overvunnet: ")
     dq10.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq10)
@@ -733,7 +826,7 @@ def banditt_quest(qlog, spiller):
     desk = banditt_dq11(navn)
     ferdigDesk = banditt_dq11_ferdig(navn)
     dq11 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
-    dq11.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq11.legg_til_reward(xp=12000, gull=5000, hp=10, kp=10, ekstraKp=2)
     dq11.legg_til_progresjonTekst("Teite Tim overvunnet: ")
     dq11.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq11)
@@ -742,7 +835,7 @@ def banditt_quest(qlog, spiller):
     desk = banditt_dq12(navn)
     ferdigDesk = banditt_dq12_ferdig(navn)
     dq12 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
-    dq12.legg_til_reward(xp=2000, gull=300, hp=10, kp=10)
+    dq12.legg_til_reward(xp=20000, gull=7000, hp=50, kp=40, d=15, a=15, ekstraKp=1)
     dq12.legg_til_progresjonTekst("Onde Olga overvunnet: ")
     dq12.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq12)
