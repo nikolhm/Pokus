@@ -688,13 +688,13 @@ class Spiller:
             self._hp -= skade
         return skade
 
-    #Tar vekk et bestemt antall liv (uavhengig av defence). Returnerer True om
-    #spilleren fortsatt lever.
+    #Tar vekk et bestemt antall liv (uavhengig av defence). Returnerer totalt
+    #antall liv mistet
     def mist_liv(self, liv):
+        if self._hp < liv:
+            liv = self._hp
         self._hp -= liv
-        if self._hp < 0:
-            self._hp = 0
-        return self._hp != 0
+        return liv
 
     #både "du" og karakterens navn blir brukt i spillet.
     def navn(self):
@@ -743,6 +743,13 @@ class Spiller:
     #bruker kp. Brukes når karakteren utfører et spesialangrep
     def bruk_kons(self, k):
         self._kp -= k
+
+    #mister kp. Returnerer total mengde kp mistet.
+    def mist_kp(self, k):
+        if self._kp < k:
+            k = self._kp
+        self._kp -= k
+        return k
 
     #restorerer opptil en gitt mengde hp
     def restorer(self, hp):
@@ -1012,7 +1019,10 @@ class Fiende:
         skade = randint(0, a)
         if sverdA:
             skade = round(randint(0, a) / 10) + sverdA
-        skade -= int(randint(0, self._d) / 4)
+        if self._d >= 0:
+            skade -= int(randint(0, self._d) / 4)
+        else:
+            skade -= int(randint(self._d, 0) / 4)
         if skade <= 0:
             print("Du bommet!")
             return 0
@@ -1373,10 +1383,14 @@ class Spellbook:
         return utforsk
 
     def brukOpphold(self):
-        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150:
+        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150 and not fiende.untouchable():
             self._spiller.bruk_kons(150)
             print(self._spiller.navn(), "kastet Opphold!")
             self._opphold = 3
+            return False
+        elif self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150 and fiende.untouchable():
+            print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
+            self._spiller.bruk_kons(150)
             return False
         elif self._spiller.lvl() >= 20:
             print("Du har ikke nok konsentrasjonspoeng!")
@@ -1394,6 +1408,8 @@ class Spellbook:
                 print(self._spiller.navn(), "kastet Distraher!")
                 if fiende.kp() < mengde:
                     mengde = fiende.kp()
+                if fiende.untouchable():
+                    mengde = 0
                 fiende.kp(-mengde)
                 print(fiende.navn() + fiende.ending(), "mistet", mengde, "kp")
 
