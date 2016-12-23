@@ -206,7 +206,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
 
     #kaster Opphold. Krever lvl 20.
     elif inn == "o" or inn == "opphold":
-        tur = spellbook.brukOpphold()
+        tur = spellbook.brukOpphold(fiende)
 
     #kaster Distraher. Krever fullførelse av quest
     elif inn == "di" or inn == "distraher":

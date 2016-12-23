@@ -1382,7 +1382,7 @@ class Spellbook:
             self._utforsk = False
         return utforsk
 
-    def brukOpphold(self):
+    def brukOpphold(self, fiende):
         if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150 and not fiende.untouchable():
             self._spiller.bruk_kons(150)
             print(self._spiller.navn(), "kastet Opphold!")
