@@ -1,3 +1,5 @@
+from colorama import *
+
 #Quest relatert til gnomene:
 def q1(navn):
     return ("    Hei "+navn+"""!
@@ -304,7 +306,9 @@ def shroom_q1(navn):
 
     -- Finn bandittenes hovedleir og stopp angrepene."""
 def shroom_q1_ferdig(navn):
-    return ""
+    return """    Trenger vi ikke bekymre oss lengre for banditt-angrep? Fantastisk!
+    Da kan vi fokusere på oppgaven fremover, og jeg har et spesielt oppdrag
+    til deg """ + navn + ".\n"
 
 def shroom_bq1(navn):
     return """    Salig er du, som får oppleve nærværet deres!
@@ -416,7 +420,16 @@ def banditt_q6(navn):
 
     -- Kutt av fingeren til Kjedelige Kjell og vis den til Bjarte Banditt."""
 def banditt_q6_ferdig(navn):
-    return ""
+    return "    Er dette den ekte fingeren til Kjedelige Kjell? Fantastisk " + navn + """!
+    Dette må jo bety at deres utspekulerte planer om å gjøre skogen levende har
+    kommet til en stopp. Utmerket! Angrep fra skogen vil opphøre, folk vil
+    returnere til normalen, de hersens sopp-fanatikerne vil åpne øynene, kanskje
+    til og med det store treet over oss som plutselig dukket opp vil trekke
+    seg tilbak- """ + Fore.RED + "Hei " + navn + """. Vi har ventet på deg. Disse fjolsene er snart under
+    vår kontroll, de vil ikke forstyrre dere lengre. Dette neket tar vi med
+    oss. Vi vil sees igjen """ + navn + ". " + Style.RESET_ALL + """Huff da, jeg ble litt svimmel. Uansett, alt
+    vil bli bra fremover, tusen takk! Jeg tror jeg skal ta meg en tur ut i
+    skogen for å feire, jeg fikk plutselig veldig lyst på sopp...\n"""
 
 def banditt_dq7(navn):
     return "    Hei " + navn + """!

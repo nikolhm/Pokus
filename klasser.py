@@ -253,6 +253,7 @@ class Questlog:
                     self._quests[indeks].sett_ferdig()
                     print()
                     print(self._quests[indeks].ferdig_desk())
+                    input("Trykk enter for å fortsette\n> ")
                     self._quests[indeks].reward(inv, spiller, self)
                     input("\nTrykk enter for å gå tilbake\n> ")
 
@@ -673,6 +674,9 @@ class Spiller:
     def xKp(self):
         return self._xKp
 
+    def ekstraKp(self):
+        return self._ekstraKp
+
     #Brukes når spilleren blir angrepet av fienden. a hentes fra fienden, og
     #brukeren kan på det meste blokkere en verdi av 1/4 av sin d.
     def angrepet(self, fiende):
@@ -1034,10 +1038,11 @@ class Fiende:
             return skade
 
     #Skriver ut hvor mye skade fienden tar.
-    def mist_liv(self, skade):
+    def mist_liv(self, skade, stille=False):
         if self._hp < skade:
             skade = self._hp
-        print(self._navn, "mistet", skade, "liv.")
+        if not stille:
+            print(self._navn, "mistet", skade, "liv.")
         self._hp -= skade
         return skade
 
@@ -1142,7 +1147,7 @@ class Spellbook:
                          Krever 195 konsentrasjonspoeng.")
         if self._spiller.lvl() >= 20:
             print("opphold (o)              fienden kan ikke angripe for 3 runder.\n\
-                         Krever 150 konsentrasjonspoeng.")
+                         Krever 350 konsentrasjonspoeng.")
 
         gnomeqlog = self._klasser.questlog(1)
         gargyllog = self._klasser.questlog(4)
@@ -1383,14 +1388,14 @@ class Spellbook:
         return utforsk
 
     def brukOpphold(self, fiende):
-        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150 and not fiende.untouchable():
-            self._spiller.bruk_kons(150)
+        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and not fiende.untouchable():
+            self._spiller.bruk_kons(350)
             print(self._spiller.navn(), "kastet Opphold!")
             self._opphold = 3
             return False
-        elif self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 150 and fiende.untouchable():
+        elif self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and fiende.untouchable():
             print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
-            self._spiller.bruk_kons(150)
+            self._spiller.bruk_kons(350)
             return False
         elif self._spiller.lvl() >= 20:
             print("Du har ikke nok konsentrasjonspoeng!")
@@ -1691,8 +1696,13 @@ class Inventory:
 
         #Shroom
         qListeBanditt = self._klasser.questlog(7).hent_qLog()
+        qListeShroom = self._klasser.questlog(6).hent_qLog()
         if not qListeBanditt[1].ferdig() and qListeBanditt[1].progresjon() != 0:
             print("Du har", qListeBanditt[1].progresjon(), "lommeur.")
+        if not qListeBanditt[5].ferdig() and qListeBanditt[5].progresjon() != 0:
+            print("Du har Kjedelige Kjells finger.")
+        if not qListeShroom[2].ferdig() and qListeShroom[2].progresjon():
+            print("Du har en guffsliffsaff-gren.")
 
     #Resetter inventory til å inneholde ingenting
     def reset(self):

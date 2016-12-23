@@ -12,6 +12,7 @@ from prosedyrer import *
 #Mainloop:
 def shroom_loop(spiller, inv, klasser, spellbook):
     qlog = klasser.questlog(6)
+    bQlog = klasser.questlog(7)
     vassleQlog = klasser.questlog(5)
     ferdig = False
 
@@ -42,7 +43,7 @@ def shroom_loop(spiller, inv, klasser, spellbook):
                 gaaTilButikk = True
                 valg = True
 
-            if inn == "r":
+            if inn == "s":
                 fight = True
                 valg = True
 
@@ -59,8 +60,12 @@ def shroom_loop(spiller, inv, klasser, spellbook):
             ferdig = sti(spiller, inv, klasser, spellbook)
 
         while quest:
-            inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "stuffs").lower()
-            if inn != "f" and inn != "ferdig":
+            inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "strategi-teltet").lower()
+            kjellQ = bQlog.hent_quest(5)
+            if kjellQ.startet() and not kjellQ.ferdig() and inn == "3":
+                if not kjellLoop(spiller, inv, klasser, spellbook, kjellQ):
+                    quest = False
+            elif inn != "f" and inn != "ferdig":
                 try:
                     qlog.snakk(int(inn) - 1, spiller, inv)
                 except ValueError:
@@ -73,12 +78,9 @@ def shroom_loop(spiller, inv, klasser, spellbook):
             gaaTilButikk = False
 
         while fight:
-            if randint(1, 2) == 1:
-                fiende = generer_enhjorning(spiller)
-            else:
-                fiende = generer_fisk(spiller)
+            if randint(1, 1) == 1:
+                fiende = generer_guffsliffsaff(spiller)
 
-            skriv_ut(spiller, fiende)
             fight = angrip(spiller, fiende, inv, klasser, spellbook)
 
         while lagre:
@@ -249,6 +251,8 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                     print("\nDu må skrive et tall!\n")
             else:
                 quest = False
+            if bQlog.hent_quest(5).ferdig():
+                sQlog.hent_quest(0).progresser()
 
         while gaaTilButikk:
             klasser.butikk(5).interaksjon(inv)
@@ -339,6 +343,60 @@ def banditt_loop(spiller, inv, klasser, spellbook):
     if ferdig:
         return False
 
+def kjellLoop(spiller, inv, klasser, spellbook, kjellQ):
+    q = klasser.questlog(6).hent_quest(2)
+    if kjellQ.sjekk_ferdig():
+        print("    Hvorfor er du fremdeles her og slenger? Se til å gi den forbaskede",\
+        "\n    fingeren til den hersens banditten!")
+        input("\nTrykk enter for å fortsette\n> ")
+        return True
+    elif q.sjekk_ferdig() and not q.ferdig():
+        print("\n    Supert", spiller.navn() + "! Her har du en kopi av fingeren min!\n")
+        q.reward(inv, spiller, klasser.questlog(6))
+        q.sett_ferdig()
+        kjellQ.progresser()
+        input("Trykk enter for å fortsette\n> ")
+        return True
+    elif q.startet():
+        print("""    Tresorten du leter etter heter Guffsliffsaff, og finnes
+    rundt omkring her i skogen. Den er relativt sjelden, men du burde støte
+    på den før eller siden. Kom tilbake hit når du har funnet den, og pass
+    på å ikke være borti den selv!\n""")
+        input("Trykk enter for å fortsette\n> ")
+        return True
+    print("\n    " + spiller.navn() + """!
+    Hva sier du, vil du ha fingeren min? Det er den mest uforskammede
+    forespørselen jeg noensinne har hørt! Om du vil ha den, må du sloss
+    mot meg først! Ved mindre...
+
+    Jeg har en idé. Om det er sant som du sier, at dette er den eneste
+    måten å få de forbeskede bandittene til å slutte å jakte oss, burde
+    jeg gi deg fingeren. Og jeg tror jeg har en måte vi kan gjøre det
+    på uten å ta frem kniven.""")
+    input("\nTrykk enter for å fortsette\n> ")
+    print("""
+    Gjennom århundrer med å nøye observere tresorter, har jeg funnet en
+    bemerkelsesverdig tresort som har en helt spesiell egenskap; Dens
+    grener kan etterligne det de kommer i kontakt med! Det eneste du
+    trenger å gjøre er å finne tresorten, temme den og ta den med til
+    meg. Den kan være noe aggressiv, så pass på!\n""")
+    if input("Ønsker du å hjelpe Kjedelige Kjell å beholde fingeren sin?   (ja/nei)\n> ").lower() in {"ja", "j"}:
+        q.start()
+        print("""\n    Strålende! Tresorten du leter etter heter Guffsliffsaff, og finnes
+    rundt omkring her i skogen. Den er relativt sjelden, men du burde støte
+    på den før eller siden. Kom tilbake hit når du har funnet den, og pass
+    på å ikke være borti den selv!\n""")
+        input("Trykk enter for å fortsette\n> ")
+        return True
+    elif input("\nØnsker du å angripe Kjedelige Kjell og kutte av ham fingeren?\n> ").lower() in {"ja", "j"}:
+        loot = Loot()
+        loot.legg_til_item(400, 1)
+        fiende = Fiende("Kjedelige Kjell", "magiker", loot, a=350, hp=3000, d=240, kp=350, bonusKp=4)
+        if not angrip(spiller, fiende, inv, klasser, spellbook):
+            return False
+        kjellQ.progresser()
+    return True
+
 def ussleUlvLoop(spiller, inv, klasser, spellbook):
     print("    Tusen takk " + spiller.navn() + """!
     Nå kan jeg endelig vinne hjertet til Fagre Frida! Håper ikke jeg må
@@ -396,18 +454,36 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 print("Du fant et av Lugubre Lasses lommeur!")
                 bQlog.hent_quest(0).progresser()
 
+            #Banditt q6:
+            if fiende.navn() == "Kjedelige Kjell":
+                print("Du kutter av fingeren til Kjedelige Kjell")
+                print("Du får 3 ondhetspoeng.")
+                spiller.evil_points(3)
+
             #Shroom bq1
             if fiende.race() == "tre" and bQlog.hent_quest(2).ferdig() and not sQlog.hent_quest(1).ferdig()\
             and randint(1, 5) == 1:
                 sQlog.hent_quest(1).progresser()
                 print("Du klarte å lage et totem ut av restene til", fiende.navn() + fiende.ending())
 
+            #Shroom q10
+            if fiende.race() == "guffsliffsaff" and sQlog.hent_quest(2).startet() \
+            and not sQlog.hent_quest(2).progresjon():
+                sQlog.hent_quest(2).progresser()
+                print("Du plukker opp de tamme restene av guffsliffsaff-grenen.")
+
             input("Trykk enter for å fortsette\n> ")
             return True
 
         elif not tur:
+            #Guffsliffsaff - spiller til tre
+            if fiende.navn() == spiller.navn() + " v2" and fiende.hp() <= int(fiende.xHp() / 4):
+                print("Guffsliffsaffen er for svak til å opprettholde formen sin!")
+                print("Guffsliffsaffen transformerer seg igjen.")
+                fiende = generer_guffsliffsaff(spiller, "kvist", fiende)
+                input("Trykk enter for å fortsette")
             #Utforsk
-            if fiende.race() == "snik" and fiende.kp() >= 195 and uCD >=0 and randint(1, 5) >= 3:
+            elif fiende.race() == "snik" and fiende.kp() >= 195 and uCD >=0 and randint(1, 5) >= 3:
                 print(fiende.navn() + fiende.ending(), "kastet Utforsk!")
                 fiende.bruk_kons(195)
                 uCD = -6
@@ -487,10 +563,16 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 else:
                     spiller.angrepet(fiende)
             #Restituer
-            elif fiende.kp() >= 50 and randint(0, 1) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0:
+            elif fiende.kp() >= 50 and randint(0, 2) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0:
                 print(fiende.navn() + fiende.ending(), "kastet Restituer!")
                 print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp.")
                 fiende.bruk_kons(50)
+            #Guffsliffsaff
+            elif fiende.navn() == "Guffsliffsaff" and fiende.kp() >= 60 and randint(1, 3) == 1:
+                print(fiende.navn() + fiende.ending(), "tok på deg!")
+                print(fiende.navn() + fiende.ending(), "transformerer seg.")
+                input("Trykk enter for å fortsette\n> ")
+                fiende = generer_guffsliffsaff(spiller, True)
             #Vanlig angrep
             else:
                 if uCD < 0:
@@ -537,6 +619,18 @@ def generer_kvist(spiller):
 
 def generer_tre(spiller):
     pass
+
+def generer_guffsliffsaff(spiller, b=False, fSpiller=None):
+    loot = Loot()
+    loot.legg_til_item(75, 1)
+    if not b:
+        return Fiende("Guffsliffsaff", "guffsliffsaff", loot, a=200, hp=2300, d=200, kp=200, bonusKp=7, ending="en")
+    elif b is "kvist":
+        fiende = Fiende("Guffsliffsaff-gren", "guffsliffsaff", loot, a=200, hp=2300, d=200, kp=200, bonusKp=7, ending="en")
+        fiende.mist_liv(2300 - round((fSpiller.hp() / fSpiller.xHp()) *2300), stille=True)
+        return fiende
+    return Fiende(spiller.navn() + " v2", "guffsliffsaff", loot, a=spiller.a(), hp=spiller.xHp(),\
+    d=spiller.d(), kp=spiller.xKp(), bonusKp=spiller.ekstraKp()-5)
 
 def generer_duellant(nr):
     fiende = None
@@ -622,15 +716,11 @@ def dynamiskLoot(loot, fiende, spiller):
 def skog_kart(qlog):
     print("""
     Velkommen til ekspedisjonsleiren! Her er stedene du kan dra:
-    Altså (r)                  Dra til foten av regnbuen og bekjemp de korrupte enhjørningene
-    ikke helt (k)              Kjøp det du trenger hos "Over Regnbuen"-supertilbudsbutikk
-    Ferdig enda (q)            Se om noen utenfor trenger din hjelp
+    Skogen (s)                 Utforsk området utenfor ekspedisjonsleiren
+    Butikken (k)               Se gjennom nødrasjonene og spesial-utstyret
+    Strategi-teltet (q)        Diskuter strategi med de andre i ekspedisjonen
     Leirbålet (b)              Dra tilbake til det forlatte leirbålet
     Minnesteinen (l)           Graver din progresjon i skogens omtrent-funksjonelle minnestein""")
-    """if qlog.hent_qLog()[1].startet() and not qlog.hent_qLog()[1].ferdig():
-        print("    Quest-sted 1 (1)           Dra til quest-instans nummer 1!")
-    if qlog.hent_qLog()[2].startet():
-        print("    Quest-sted 2 (2)           Dra til quest-instans nummer 2!")"""
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 def banditt_kart(qlog):
@@ -642,9 +732,7 @@ def banditt_kart(qlog):
     Duellringen (d)            Test dine ferdigheter i bandittenes interne duellring""")
     if qlog.hent_qLog()[2].startet():
         print("    Soppstedet (p)             Dra til det hemmelige soppstedet")
-    #if qlog.hent_qLog()[3].startet():
-    #    print("    Quest-sted 2 (2)           Dra til quest-instans nummer 2!")
-    print("    Leirbålet (f)              Dra tilbake til det forlatte leirbålet\n")
+    print("    Ekspedisjonsleiren (f)     Dra tilbake til ekspedisjonsleiren\n")
 
 def shroom_butikk(butikk):
     butikk.legg_til_hadeTekst("\nVelkommen tilbake! Og se opp for gangster-fiskene!\n")
@@ -725,6 +813,12 @@ def skog_quest(qlog, spiller):
     item = Item("Fanatisk stav", "weapon", a=200, d=-10, xHp=-30)
     bq1.legg_til_alt_reward(ep=3, kp=50, xp=6000, item=item)
     qlog.legg_til_quest(bq1)
+
+    #q10
+    q10 = Quest("", "", 1, 15, "Kjedelige Kjell", tilgjengelig=False, resetIfDead=True)
+    q10.legg_til_reward(xp=1000, gp=2)
+    q10.legg_til_progresjonTekst("Guffsliffsaff-gren funnet: ")
+    qlog.legg_til_quest(q10)
 
 def banditt_quest(qlog, spiller):
     navn = spiller.navn()
