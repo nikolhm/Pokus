@@ -131,8 +131,8 @@ def generer_gnom(spiller, gnomevakter, goingToGaute):
         20 + randint(0, 10 * spiller.lvl()), \
         30 + randint(0, 10 * spiller.lvl()), ending="en")
         gnomLoot(fiende, loot, spiller)
-        print("\n" + spiller.navn(), "har møtt på en gnom!")
         skrivGnom()
+        print("\n" + spiller.navn(), "har møtt på en gnom!")
 
     #goingToGaute indikerer at brukeren holder på med det siste questet.
     #Da skal gnomene være en del sterkere enn de vanlige, for å gjøre kampen
@@ -143,8 +143,8 @@ def generer_gnom(spiller, gnomevakter, goingToGaute):
         120 + randint(gnomevakter * 10, 10 * spiller.lvl()), \
         130 + randint(gnomevakter * 10, 10 * spiller.lvl()))
         gnomvaktLoot(fiende, loot, spiller)
-        print("\n" + spiller.navn(), "har møtt på Gaute Gnoms dørvakt nr.", gnomevakter + 1)
         skrivGnom()
+        print("\n" + spiller.navn(), "har møtt på Gaute Gnoms dørvakt nr.", gnomevakter + 1)
 
     #Når man har kommet forbi 5 vakter, møter karakteren Gaute Gnom.
     elif goingToGaute and gnomevakter == 5:
@@ -446,8 +446,8 @@ def gnomequest(qlog, spiller):
     qlog.legg_til_quest(bq2)
 
 def gauteDialog(spiller):
-    print("""\n\n***Du har funnet hulen til Gaute Gnom den Grusomme!***\n\n""")
     skrivGaute()
+    print("""\n\n***Du har funnet hulen til Gaute Gnom den Grusomme!***\n\n""")
     input("Trykk enter for å fortsette\n> ")
     print("\n\n    Gaute Gnom: Velkommen til min hule,",spiller.navn() + """!
     Siden jeg skal drepe deg nå, kan jeg avsløre mine dypeste hemligheter for

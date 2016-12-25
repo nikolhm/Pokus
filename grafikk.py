@@ -8,6 +8,12 @@ import sys
 
 init()
 
+def clear_screen():
+    if platform.system() == "Windows":
+        os.system("cls")
+    else:
+        os.system("clear")
+
 def skrivTittel():
     frames = ["""
 **********************************************************************************************************************************************
@@ -1008,6 +1014,7 @@ def skrivVulkan():
     print(Style.RESET_ALL)
 
 def skrivBanditt():
+    clear_screen()
     print("""                _
     	       / \\
     	    __|   |__
