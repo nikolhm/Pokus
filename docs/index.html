@@ -106,18 +106,34 @@
           01.01.2017, men vi vet ikke om vi rekker det. Får se :)</h4>
           <center>
             <a
+            id="button"
             style="margin-top: 40px; margin-bottom: 80px"
             class="btn btn-default btn-lg btn-block"
-            xhref="https://github.com/nikolhm/Pokus/archive/master.zip"
             role="button"
-            xtarget="_blank"
             onclick="showPong(); pong()">
             <b>Last ned Pokus!</b>
             </a>
           </center>
-			  </div>
-        <div class="col-sm-1"></div>
+          <div id="OS" style="display: none">
+            <div class="col-sm-4">
+              <center>
+              <a><img src="res/img/Windows.png" class="img-responsive" style="max-height: 100px" alt="Windows"><h4>Windows</h4></a>
+              </center>
+            </div>
+            <div class="col-sm-4">
+              <center>
+              <a><img src="res/img/Apple.png" class="img-responsive" style="max-height: 100px" alt="MAC OS X"><h4>MAC OS X</h4></a>
+              </center>
+            </div>
+            <div class="col-sm-4">
+              <center>
+              <a><img src="res/img/Linux.png" class="img-responsive" style="max-height: 100px" alt="Linux"><h4>Linux</h4></a>
+              </center>
+            </div>
+        </div>
+        <!--<div class="col-sm-1"></div>-->
 		</div>
+    </div>
     <div class="container-fluid" style="min-height:95%; color:#ddd">
       <div class="row">
           <div class="col-sm-3"></div>
@@ -175,6 +191,20 @@
           <div class="col-sm-3"></div>
       </div>
     </div>
+    <script>
+    var button = document.getElementById('button'); // Assumes element with id='button'
+
+    button.onclick = function() {
+      showPong();
+      pong();
+      var div = document.getElementById('OS');
+        if (div.style.display !== 'none') {
+            div.style.display = 'none';
+        } else {
+            div.style.display = 'block';
+        }
+      };
+    </script>
     <script src="res/scripts/pong.js"></script>
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5856b8fa45630ac5"></script>
