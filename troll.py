@@ -8,74 +8,10 @@ from grafikk import *
 from quests import *
 from prosedyrer import *
 
-"""
-Litt generelt: xHp, xKp og xProgresjon betyr total mengde (max) av det man kan
-ha av noe. For alle mulige argumenter som kan brukes ved opprettelsen av
-de forskjellige objektene, se __init__-metode i klasser.py. Det skal
-generelt ikke være nødvendig å forandre på implementasjonen innenfor klassene.
-Skulle det likevel være ønskelig, ta kontakt med meg (Gaute) på facebook
-eller evt. på gaute.svanes@gmail.com. Noen unntak kan gjelde Spellbook-klassen
-og skriv_inv-metoden i Inventory-klassen som muligens må utvides avhengig
-av innholdet i expansionen. Ta uansett kontakt med meg om det skulle være
-tilfellet. Item-klassen er en mye brukt klasse, og brukes mest til loot,
-reward i quest og som vare i butikken. Alle items må ha en kategori oppgitt
-i konstruktøren. Dette må være en av følgende:
-
-restoring       restorerer hp eller kp eller begge.
-damaging        gjør skade på fienden (f.eks tryllepulver)
-weapon          våpen. Merk at både sverd og stav er i samme kategori. Er det et
-                sverd, sett blade=True som argument
-hat             Hatter/luer
-gloves          hansker
-robe            sett med klær/klær generelt
-shoes           sko
-beard           falskt skjegg
-trinket         ting (kan være hva som helst) som gir stats
-various         ting som ikke gir stats.
-
-For å få denne test-expansionen til å fungere, ta vekk #-tegnet foran
-spiller.sett_sted_tilgjengelig(0)
-
-Er det noen spørsmål, ikke nøl med å spørre meg :)
-
-- Gaute Svanes Lunde
-"""
-
-"""
-    Start med å lage en Main-loop. Denne skal kalles fra pokus.py, og kjører
-    hele denne delen. Det skal være mulig å kalle denne loopen flere ganger, altså
-    at man kan "komme tilbake" til dette stedet på et senere tidspunkt, uten at
-    noe har forandret seg. For at det skal fungere, må questlog og butikk lages
-    utenfor denne filen, og lages dermed i pokus.py.
-
-    La oss si at vår helt og hovedkarakter har kommet til et magisk sted fylt med
-    regnbuer og onde enhjørninger.
-
-    Merk at det aldri brukes æøå i variabelnavn eller prosedyre/funksjon/metode-navn.
-    Main-loopen skal ta inn spiller, inventory, klasser og spellbook, slik at de kan
-    brukes senere.
-"""
-
-#Mainloop:
-def troll_loop(spiller, inv, klasser, spellbook):
-    """Questlog blir laget utenfor loopen, og lagres i klasser-objektet.
-    For å enkelt kunne referere til dette, lagrer vi vårt Questlog-objekt
-    som en variabel:"""
-    qlog = klasser.questlog(2)
-
-    """Vi begynner med en valgløkke. Her bestemmes alle stedene karakteren kan
-    gå, og består gjerne av et sted man får quest, en butikk, og diverse
-    kamp-instanser som kan være quest-relatert eller frie. Brukeren får opp
-    et kart over hvor man kan dra, som vi lager i en egen prosedyre."""
-
     ferdig = False
     while not ferdig:
-        """kartet tar inn qlog som parameter, slik at det kan forandre seg
-        basert på hvilke quest man har gjort."""
         trollKart(qlog)
 
-        """Her deklereres alle variablene som blir brukt i hovedløkken. variablene
-        bestemmer hvilken løkke den skal gå inn i etterpå."""
         valg = False
         quest = False
         gaaTilButikk = False
@@ -106,8 +42,6 @@ def troll_loop(spiller, inv, klasser, spellbook):
                 lagre = True
                 valg = True
 
-            """Skal kun gå i denne løkken hvis man har startet, men ikke er ferdig med,
-            quest nummer 2. Merk opptelling begynner med 0."""
             if inn == "c" and qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
                 cave = True
                 valg = True
@@ -116,12 +50,6 @@ def troll_loop(spiller, inv, klasser, spellbook):
                 helvete = True
                 valg = True
 
-        """Questlog-klassen sin oppdrag_tilgjengelige-metode viser lvl og stedet
-        man er, samt returnerer brukerens input. Snakk-metoden brukes for å
-        starte, sjekke progresjon eller fullføre et quest, avhengig av progresjon.
-        Det kan brukes seperat for spesielle quest, men i dette tilfellet
-        samles alle som gir quest på et sted (utenfor stallen). Vil man ha det,
-        kan løkken nedenfor kopieres."""
         while quest:
             #Merk at oppdrag_tilgjengelige() er en funksjon med returverdi.
             inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "badstua").lower()
@@ -133,30 +61,16 @@ def troll_loop(spiller, inv, klasser, spellbook):
             else:
                 quest = False
 
-        "Om butikken er ferdig oppsatt med varer, trengs ikke mer enn å kalle interaksjon-metoden."
         while gaaTilButikk:
             klasser.butikk(1).interaksjon(inv)
             gaaTilButikk = False
 
-        """Dette er instansen med fri kamp, som her går undet navnet 'regnbue'.
-        Her vil man alltid møte en ny fiende helt til man drar vekk. I dette
-        tilfellet veksler fienden man møter med å være en fisk og en enhjørning.
-        Enhjørningen er et eksempel på dynamisk generering av fiende, mens
-        fisken er statisk. Det vil si at enhjørningen kan variere i hvor god den
-        er, og skalerer med spillerens nivå, mens fisken alltid har samme stats.
-        Fiendene genereres her i egne løkker.
-
-        Jeg har her valgt å sette angrepsinstansen i en egen prosedyre (angrip)
-        slik at den kan brukes på hvilken som helst fiende. Angrip-prosedyren
-        returnerer her True hvis fienden er overvunnet, eller False hvis man
-        løper vekk eller dør."""
         while fjell:
             fiende = generer_troll(spiller)
 
             skriv_ut(spiller, fiende)
             fjell = angrip(spiller, fiende, inv, klasser, spellbook)
 
-            "progresserer første questet hvis det er aktivt."
             if fjell and qlog.hent_quest(0).startet():
                 qlog.hent_quest(0).progresser()
 
@@ -165,7 +79,6 @@ def troll_loop(spiller, inv, klasser, spellbook):
             minnestein(spiller, inv, klasser)
             lagre = False
 
-        "Quest nummer 2 er satt i en egen instans, og har tre progresjoner som følges."
         while cave:
             #Fiende 1
             fiende = generer_troll(spiller)
@@ -181,7 +94,6 @@ def troll_loop(spiller, inv, klasser, spellbook):
             if not angrip(spiller, fiende, inv, klasser, spellbook):
                 cave = False
                 break
-            "progresserer her den første av de ekstra progresjonene som ble lagt til."
             #qlog.hent_quest(1).progresser_liste(0)
 
             #Fiende 3
@@ -217,33 +129,9 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
             helvete = False
 
-    """Man havner i her når brukeren vil se verdenskartet. Da går man ut av
-    hovedløkken, og går til løkken i pokus.py. """
     if ferdig:
         return verdenskart(spiller)
 
-
-"""
-                                Angrepsløkken:
-
-    Denne løkken gir brukeren mulighet til å utføre alle kommandoer som er
-    implementert i spillet. De ligger lett tilgjengelig i kommandoer()-funksjonen
-    i prosedyrer.py. kommandoer() avgjør om brukeren har brukt sin tur eller ikke,
-    og utfører de kommandoene brukeren ønsker, med unntak av flykt-funksjonen som
-    må implementeres seperat.
-
-    Etter kommandoer(), gjenstår det å se om fienden er død. I så fall, får
-    spilleren xp og loot. Hvis ikke fienden er død, sjekkes det om spilleren
-    har brukt opp sin tur. Om det er tilfellet, får fienden angripe.
-    I dette tilfellet kan fienden enten angripe vanlig, eller bruke kp
-    for å restorere seg selv. Etter fienden har angrepet, sjekkes det om
-    spilleren er død. Om det er tilfellet, skrives dødstekst, og inventory
-    og eventuelle quests resettes automatisk med spiller-klassen sin
-    player_died()-metode.
-
-    Om ingen er død, får begge tilbake litt kp, og informasjon om spiller og
-    fiende skrives ut.
-"""
 def angrip(spiller, fiende, inv, klasser, spellbook):
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
@@ -285,8 +173,6 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 fiende.gen_kons()
                 skriv_ut(spiller, fiende)
 
-"""Her genereres en fiende, tilfeldig skalert etter spillerens nivå.
-I dette tilfellet, om spilleren er i lvl 20, kan fienden maksimalt ta 220 liv."""
 def generer_troll(spiller):
     loot = Loot()
     fiende = Fiende(navn="Troll", race="troll", loot=loot, \
@@ -303,21 +189,6 @@ def generer_troll(spiller):
     skrivTroll()
     return fiende
 
-"""
-                                    Loot:
-
-    Loot lages ved å opprette et nytt Loot-objekt, deretter fylle det opp med
-    items gjennom .legg_til_item()-metoden. Den tar et item-objekt og et tall
-    som parametre, der tallet representerer sannsynligheten for å få denne tingen.
-    Om alle tallene i Loot-objektetes legg_til_item()-metode tilsammen blir tallet
-    100, vil det utrykke prosent. Om summen av alle tallene er 143, og en item har
-    sannsynlighet på 32, er det en 32/143-sjanse for å få tingen.
-
-    Penger kan legges til ved å putte et tall der item-objektet skulle vært.
-
-    I denne prosedyren, skaleres tingene i forhold til lvl til spilleren.
-    I statsiskLoot-prosedyren under, har tingene faste stats.
-"""
 def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
     loot.legg_til_item(tall, 60)
@@ -360,7 +231,6 @@ def statiskLoot(loot):
     item = Item("Trollskinn-kjole", "robe", xHp=20, d=100)
     loot.legg_til_item(item, 25)
 
-"Her er kartet til Troll-expansionen. Noen steder avhenger av quest for å vises."
 def trollKart(qlog):
     skrivHytte()
     print("""
@@ -375,8 +245,6 @@ def trollKart(qlog):
     print("    Minnesteinen (l)           Lagre sjelen din i borgens lokale minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
-"""Her settes en butikk opp. Alt som trengs er å opprete Item-objekter, og legge
-de til i butikken gjennom Butikk-klassens .legg_til_vare()-metode."""
 def trollButikk(butikk):
     butikk.legg_til_hadeTekst("\nVelkommen tilbake! Og pass deg for troll!\n")
 
@@ -404,21 +272,6 @@ def trollButikk(butikk):
     vare = Vare(item, 1100, "g")
     butikk.legg_til_vare(vare)
 
-"""
-                                    Quest:
-
-    I denne prosedyren fylles Questlog-objektet opp med quests. Siden dette bare
-    er en test, er beskrivelsene korte, og lagt direkte til her, men der quest-beskrivelsen
-    og avslutningsbeskrivelsen er lengre, kan de puttes til egne prosedyrer og legges
-    i quests.py-filen.
-
-    Ved opprettelse av Quest-objekter, er følgende argumenter
-    nødvendige: Deskripsjon, ferdig-deksripsjon (/slutttekst/takketekst), total
-    progresjon som trengs (som f.eks. finn 20 ting, drep 12 dyr osv.), lvl for å starte
-    questet, og navnet til den som gir questet. Belønning blir lagt til med en egen metode.
-    For total oversikt over hvilke argumenter man kan gi ved opprettelse av Quest-objekt
-    og ved legg_til_reward()-metoden, se i klasser.py-filen.
-"""
 def trollQuest(qlog, spiller):
     navn = spiller.navn()
 
