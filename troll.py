@@ -8,6 +8,11 @@ from grafikk import *
 from quests import *
 from prosedyrer import *
 
+
+#Mainloop:
+def troll_loop(spiller, inv, klasser, spellbook):
+    qlog = klasser.questlog(2)
+
     ferdig = False
     while not ferdig:
         trollKart(qlog)
