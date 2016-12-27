@@ -225,7 +225,7 @@ class Questlog:
         #Sjekker om det er minst ett oppdrag tilgjengelig.
         ikkeFerdig = 0
         for q in self._quests:
-            if q.ferdig() == False:
+            if q.ferdig() == False and q.tilgjengelig():
                 ikkeFerdig += 1
         if ikkeFerdig == 0:
             print("    Kjedelige Kjell vil diskutere tresorter. Du sniker deg unna.\n")
@@ -511,8 +511,13 @@ class Quest:
 
         #sett tilgjengelig annet quest
         if self._reward[8]:
-            quest = qlog.hent_quest(self._reward[9]).sett_tilgjengelig()
+            try:
+                for x in range(len(self._reward[9])):
+                    qlog.hent_quest(self._reward[9][x]).sett_tilgjengelig()
+            except TypeError:
+                qlog.hent_quest(self._reward[9]).sett_tilgjengelig()
 
+        #Evil/Good points
         if self._reward[10]:
             print(spiller.navn(), "får", self._reward[10], "godhetspoeng!")
             spiller.good_points(self._reward[10])
@@ -582,8 +587,13 @@ class Quest:
 
         #sett tilgjengelig annet quest
         if self._altReward[8]:
-            quest = qlog.hent_quest(self._altReward[9]).sett_tilgjengelig()
+            try:
+                for x in range(len(self._altReward[9])):
+                    qlog.hent_quest(self._altReward[9][x]).sett_tilgjengelig()
+            except TypeError:
+                qlog.hent_quest(self._altReward[9]).sett_tilgjengelig()
 
+        #Evil/Good points
         if self._altReward[10]:
             print(spiller.navn(), "får", self._altReward[10], "godhetspoeng!")
             spiller.good_points(self._altReward[10])
@@ -1019,7 +1029,7 @@ class Fiende:
     #Tar imot skade gjort av spilleren som parameter. Parameteret er altså max
     #skade som kan bli gjort, men hvor mye som faktisk blir gjort avhenger av randint
     #og fiendens d.
-    def angrepet(self, a=0, sverdA=0):
+    def angrepet(self, a=0, sverdA=0, alliert=None):
         skade = randint(0, a)
         if sverdA:
             skade = round(randint(0, a) / 10) + sverdA
@@ -1028,7 +1038,10 @@ class Fiende:
         else:
             skade -= int(randint(self._d, 0) / 4)
         if skade <= 0:
-            print("Du bommet!")
+            if alliert:
+                print(alliert.navn() + alliert.ending(), "bommet!")
+            else:
+                print("Du bommet!")
             return 0
         else:
             if skade > self._hp:
@@ -1042,9 +1055,17 @@ class Fiende:
         if self._hp < skade:
             skade = self._hp
         if not stille:
-            print(self._navn, "mistet", skade, "liv.")
+            print(self._navn + self._ending, "mistet", skade, "liv.")
         self._hp -= skade
         return skade
+
+    def mist_kp(self, mengde, stille=False):
+        if self._kp < mengde:
+            mengde = self._kp
+        if not stille:
+            print(self._navn + self._ending, "mistet", mengde, "kp.")
+        self._kp -= mengde
+        return mengde
 
     def restorer(self, hp):
         self._hp += hp
@@ -1701,8 +1722,13 @@ class Inventory:
             print("Du har", qListeBanditt[1].progresjon(), "lommeur.")
         if not qListeBanditt[5].ferdig() and qListeBanditt[5].progresjon() != 0:
             print("Du har Kjedelige Kjells finger.")
-        if not qListeShroom[2].ferdig() and qListeShroom[2].progresjon():
+        q = qListeShroom[2]
+        tall = sum([q.progresjon_liste()[i] + q.progresjon() for i in range(4)])
+        if not q.ferdig() and tall:
+            print("Du et sett notater om trær.")
+        if not qListeShroom[0].ferdig() and qListeShroom[0].progresjon():
             print("Du har en guffsliffsaff-gren.")
+            "mer"
 
     #Resetter inventory til å inneholde ingenting
     def reset(self):

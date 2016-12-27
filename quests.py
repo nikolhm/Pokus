@@ -307,8 +307,135 @@ def shroom_q1(navn):
     -- Finn bandittenes hovedleir og stopp angrepene."""
 def shroom_q1_ferdig(navn):
     return """    Trenger vi ikke bekymre oss lengre for banditt-angrep? Fantastisk!
-    Da kan vi fokusere på oppgaven fremover, og jeg har et spesielt oppdrag
-    til deg """ + navn + ".\n"
+    Da kan vi fokusere på oppgaven fremover, og jeg tror Strategiske Synne har
+    et spesielt oppdrag til deg """ + navn + ".\n"
+
+def shroom_q2(navn):
+    return "    Akk " + navn + """.
+    Det går ulykkens vei for meg. Jeg er en middelmådig magiker som aldri har
+    fått til noe særlig av det jeg prøver på her i livet. Men så en dag ble
+    jeg spurt om å ta ansvaret for mat og utstyr på en topp-hemmelig ekspedisjon
+    utsendt hit av Overtrollmann Vassle selv! Tenk så Lykkelig jeg ble! Og Tenk
+    og hvor knust jeg ble da jeg fant ut at de skøyerske gnomene har stjålet
+    mesteparten av det. Vi har levd på bark og mose de siste dagene, og min
+    popularitet her i leiren er stadig synkende. Kan du gjøre meg og resten
+    av leiren en stor tjeneste og finne de stjålne forsyningene?
+
+    -- Finn 13 stålne forsyninger."""
+def shroom_q2_ferdig(navn):
+    return "    Endelig kan vi spise litt skikkelig mat igjen! Mange mange takk " + navn + """!
+    Kanskje de andre vil se meg i et annet lys nå.\n"""
+
+def shroom_q3(navn):
+    return "    Hei " + navn + """!
+    Er ikke denne skogen fantastisk? Trær må være det mest spennende i verden,
+    og i denne delen av skogen har jeg funnet mange flere sorter enn vanlig.
+    Ikke nok med det, men det virker som om de er levende! Det er også grunnen
+    til at jeg trenger hjelp fra deg. Til vanlig katalogiserer jeg alle nye
+    tresorter jeg finner selv, men til tross for min ekstraordinære egenskap
+    til å teleportere meg dit jeg vil, duger jeg ikke når det kommer til kamp.
+    Kan du gi meg 'temme' eksemplarer av noen av de fascinerende tresortene
+    som pryder denne kanten av skogen?
+
+    -- Oppdag et knippe forskjellige tresorter."""
+def shroom_q3_ferdig(navn):
+    return "    Eik, bøk, tre, fire, sort, guffs- Hei " + navn + """!
+    Humm, disse notatene sier lite om trærenes indre komposisjon og
+    under-suverene overlevelseskraft, men de duger! Tenk så interessant,
+    kraftige X-verdier i barkens nedre hjørneparti splittes HVERT sekund
+    for å gjøre plass til et stadig ekspanderende volum, forårsaket av
+    både indre og ytre dragningskraft påkalt av monopolare bio-felt
+    fremdrevet av saktegående motstandsprosesser...
+
+    *Kjedelige Kjell durer på om trær. Du sniker deg unna*\n"""
+
+def shroom_q4(navn):
+    return "    Akk " + navn + """.
+    Det var stor jubel i leiren da du returnerte de stjålne forsyningene, men
+    selv med dem kommer vi ikke til å holde lenge. Det vi trenger er noen til
+    å lage mat for oss, en som kan bruke ressursene rundt oss til noe matnyttig.
+    En som Kent Kokk! Vi trenger Kent Kokk! Hvis du noen gang møter på Kent Kokk
+    på dine reiser, kunne du bedt ham komme hit?
+
+    -- Finn Kent Kokk og be ham lage mat for ekspedisjonen."""
+def shroom_q4_ferdig(navn):
+    return "    Strålende " + navn + """, virkelig strålende!
+    Med Kent Kokk på laget, kan vi holde ut her så lenge som er krevd av oss!
+    Jeg ser frem til deilige delikatesser de neste dagene. Har hørt noen rykter
+    om at han har fått en ny interesse for steiner, vet du noe om det?\n"""
+
+def shroom_q5(navn):
+    return "    " + navn + """!
+    Vi ble sendt her for å utforske en magisk ubalanse lokalisert her i utkanten
+    av vår egen skog. Som du helt sikkert har merket, er ikke alt som det skal
+    her. Trær og andre ting i skogen har fått en egen vilje og er blitt aggresive,
+    i tillegg til at folk her har startet å oppføre seg merkelig. For ikke snakke
+    om alt styret med bandittene! Vi har mye å takke deg for, men vårt arbeid
+    er knapt i gang. Som du har observert, har lignende magiske ubalanser oppstått
+    andre steder også. Fra din beskrivelse virker det som om en magiker står bak
+    disse grufulle gjerningene. At andre enn oss magikere har evne til å utføre
+    magi er farlig og ikke noe vi kan ta lett på. Jeg har sendt fire magikere i
+    forskjellige retninger, og en er enda ikke tilbake. Kan du dra opp bakken
+    og lete etter henne?
+
+    -- Let i området opp bakken etter Pàn Tú."""
+def shroom_q5_ferdig(navn):
+    return "    Du må være " + navn + """!
+    Jeg har hørt mye om deg, men nå er ikke tiden for hyggelige introduksjoner.
+    Jeg har lokalisert Shroomsenes tilholdsted og tilegnet meg svært verdifull
+    informasjon. Zip sier jeg kan stole på deg, så her er den: Shroomsene er
+    splittet i to leirer. Den ene er fanatisk opptatt av selvdyrkelse, mens
+    den andre ser ut til å være mulig å kommunisere med. Jeg har allerede noen
+    kontakter innad i den leiren, men på grunn av min... menneskelighet, sliter
+    jeg med å få ut informasjon ubemerket.
+
+    Hør her """ + navn + """, dette er svært viktig.
+    Det finnes noen ondskapsfulle sjeler innen våre egne rekker, som konspirerer
+    med fienden og gjør livene våre sure. Rapporter tilbake til Strategiske Synne,
+    men ikke nevn spionasjen eller de to leirene. Snakk med Zip, og bare Zip, når
+    du er klar for å gjøre noe virkelig godt her i verden.
+
+    Vi snakkes. Hold et åpent sinn """ + navn + ".\n"
+
+def shroom_q6(navn):
+    return """    Shrooms?
+    Jeg har aldri hørt om noe slikt før, men om forvokste sopper nå
+    besitter magiske evner, er situasjonen blitt værre enn først antatt. Vi må
+    tenke strategisk her og ikke gjøre noe forhastet. Målet vårt er å utgjevne
+    den magiske ubalansen, som helt sikkert er opphavet til disse 'shroomsene'
+    og alle de andre levende skapningene i skogen som ikke burde være levende.
+    Men om vi leter direkte etter kilden vil shroomsene oppdage målet vårt med
+    en gang, og de virker som en fiende vi ikke bør undervurdere. Derfor trenger
+    vi en distraksjon. Jeg sender et team med gode magikere opp bakken og dypere
+    inn i skogen for å slåss direkte mot shroomsene. Med denne taktikken slår vi
+    to fluer i en smekk, vi får distraksjonen vi trenger, og vi reduserer trusselen
+    for en shroom-invasjon. Jeg trenger at du, som har støtt på disse shroomsene
+    før, er med i feltet og leder ann kampen mot udyrene!
+
+    -- Drep 20 shrooms."""
+def shroom_q6_ferdig(navn):
+    return "    Strålende " + navn + """.
+    Kampene fortsetter, men jeg har en viktigere oppgave til deg.\n"""
+
+def shroom_q7(navn):
+    return ""
+def shroom_q7_ferdig(navn):
+    return ""
+
+def shroom_q8(navn):
+    return ""
+def shroom_q8_ferdig(navn):
+    return ""
+
+def shroom_q9(navn):
+    return ""
+def shroom_q9_ferdig(navn):
+    return ""
+
+def shroom_q10(navn):
+    return ""
+def shroom_q10_ferdig(navn):
+    return ""
 
 def shroom_bq1(navn):
     return """    Salig er du, som får oppleve nærværet deres!

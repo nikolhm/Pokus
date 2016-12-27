@@ -173,13 +173,16 @@ def intro_loop(spiller, inv, klasser, spellbook):
 
 def slottsgaard_loop(spiller, inv, klasser, spellbook):
     qlog = klasser.questlog(4)
+    sQlog = klasser.questlog(6)
     while True:
-        intro_kart(qlog)
+        intro_kart(klasser)
         inn = input("\nHvor vil du dra?\n> ").lower()
 
+        #intro
         if inn == "q" and not qlog.hent_quest(0).ferdig():
             qlog.snakk(0, spiller, inv)
 
+        #Kent kokk
         if inn == "q" and qlog.hent_quest(3).startet() and not qlog.hent_quest(4).ferdig():
             qlog.hent_quest(4).sett_tilgjengelig()
             qlog.snakk(4, spiller, inv)
@@ -187,6 +190,13 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
             qlog.hent_quest(3).progresser()
             if qlog.hent_quest(4).ferdig():
                 qlog.hent_quest(3).progresser_liste(0)
+
+        #Kent kokk i forbindelse med Shrooms
+        elif inn == "q" and qlog.hent_quest(4).ferdig() and sQlog.hent_quest(3).startet() \
+        and not sQlog.hent_quest(3).progresjon():
+            sQlog.hent_quest(3).progresser()
+            print("\n\n    Jaså? Jeg er ønsket på en ekspedisjon? Det høres midt i blinken ut! Jeg kommer!\n\n")
+            input("Nice. Trykk enter for å fortsette\n> ")
 
         if inn == "s":
             while True:
@@ -379,13 +389,16 @@ def garg_kart(qlog):
     print("    Minnesteinen (l)           Bevar sjelen din i slottets forfalne minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
-def intro_kart(qlog):
+def intro_kart(klasser):
+    qlog = klasser.questlog(4)
+    sQlog = klasser.questlog(6)
     print("""
     Du står i slottsgården! Her er stedene du kan dra:
     Slottsporten (s)           Rydd bort steiner foran slottsporten""")
     if not qlog.hent_quest(0).ferdig():
         print("    Fontenen (q)               Snakk med Zap")
-    if qlog.hent_quest(3).startet() and not qlog.hent_quest(4).ferdig():
+    if qlog.hent_quest(3).startet() and not qlog.hent_quest(4).ferdig()\
+    or sQlog.hent_quest(3).startet() and not sQlog.hent_quest(3).progresjon():
         print("    Fontenen (q)               Snakk med Kent Kokk")
     if qlog.hent_quest(0).ferdig():
         print("    Slottet (t)                Dra til slottet")
@@ -426,7 +439,7 @@ def guri_dialog(spiller):
     print("""
     Guri Gargyl: Så det er du som har kjøttifisert kreasjonene mine!
                  Dette ender nå! Jeg fikk ikke magiske evner og et så
-                 stort ansvar og bare for å miste det hele til et usselt
+                 stort ansvar bare for å miste det hele til et usselt
                  menneske. Forbered deg på det verste,""", navn + "!\n")
     input("Trykk enter for å fortsette\n> ")
 

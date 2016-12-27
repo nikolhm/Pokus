@@ -11,7 +11,7 @@ from prosedyrer import *
 
 #Mainloop:
 def shroom_loop(spiller, inv, klasser, spellbook):
-    qlog = klasser.questlog(6)
+    sQlog = klasser.questlog(6)
     bQlog = klasser.questlog(7)
     vassleQlog = klasser.questlog(5)
     ferdig = False
@@ -20,7 +20,7 @@ def shroom_loop(spiller, inv, klasser, spellbook):
         ferdig = intro_loop(spiller, inv, klasser, spellbook)
 
     while not ferdig:
-        skog_kart(qlog)
+        skog_kart(sQlog)
 
         valg = False
         quest = False
@@ -28,6 +28,7 @@ def shroom_loop(spiller, inv, klasser, spellbook):
         fight = False
         leirBaal = False
         lagre = False
+        oppBakken = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -55,19 +56,27 @@ def shroom_loop(spiller, inv, klasser, spellbook):
                 leirBaal = True
                 valg = True
 
+            if inn == "o" and sQlog.hent_quest(4).startet():
+                oppBakken = True
+                fight = True
+                valg = True
+
         if leirBaal:
             leirBaal = False
             ferdig = sti(spiller, inv, klasser, spellbook)
 
         while quest:
-            inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "strategi-teltet").lower()
-            kjellQ = bQlog.hent_quest(5)
-            if kjellQ.startet() and not kjellQ.ferdig() and inn == "3":
-                if not kjellLoop(spiller, inv, klasser, spellbook, kjellQ):
-                    quest = False
+            inn = sQlog.oppdrag_tilgjengelige(spiller.lvl(), "strategi-teltet").lower()
+            kjellQ = sQlog.hent_quest(2)
+            bjarteQ = bQlog.hent_quest(5)
+            bq = sQlog.hent_quest(0) #mer
+            if bjarteQ.startet() and not bjarteQ.ferdig():
+                if not kjellQ.ferdig() and inn == "3" or kjellQ.ferdig() and inn == "10":
+                    if not kjellLoop(spiller, inv, klasser, spellbook, bjarteQ):
+                        quest = False
             elif inn != "f" and inn != "ferdig":
                 try:
-                    qlog.snakk(int(inn) - 1, spiller, inv)
+                    sQlog.snakk(int(inn) - 1, spiller, inv)
                 except ValueError:
                     print("\nDu må skrive et tall!\n")
             else:
@@ -77,11 +86,57 @@ def shroom_loop(spiller, inv, klasser, spellbook):
             klasser.butikk(4).interaksjon(inv)
             gaaTilButikk = False
 
+        antall = 0
+        shrooms = False
         while fight:
-            if randint(1, 1) == 1:
+            alliert = None
+            minst = 1
+            maks = 17
+            if bQlog.hent_quest(5).ferdig():
+                minst = 5
+            if shrooms:
+                maks = 60
+            tall = randint(minst, maks)
+            if tall <= 4:
+                fiende = generer_banditt(spiller)
+            elif tall <= 13:
+                fiende = generer_tre(spiller)
+            elif tall <= 16:
+                fiende = generer_gnom(spiller)
+            elif tall == 17:
                 fiende = generer_guffsliffsaff(spiller)
+            elif tall <= 60:
+                fiende = generer_shroom(spiller)
 
-            fight = angrip(spiller, fiende, inv, klasser, spellbook)
+            if shrooms:
+                if randint(1, 3) == 1:
+                    alliert = Fiende(["Gufsne Gry", "Kjipe Knut", "Trøtte Tare", "Tafatte Terje"][randint(0, 3)], \
+                    "alliert", Loot(), hp=800+(randint(0, spiller.lvl())*10), a=200, d=120, kp=150+randint(0, 50))
+                elif randint(0, 1):
+                    alliert = Fiende(["Gale Gro", "Kjappe Kim", "Listige Ludvig", "Modige Mona"][randint(0, 3)], \
+                    "alliert", Loot(), hp=1900+(randint(0, spiller.lvl())*30), a=300, d=270, kp=300+randint(0, 60), bonusKp=10)
+                else:
+                    alliert = Fiende(["Symmetrike Sara", "Magiske Mikkel", "Mirakuløse Marte", "Suverene Sigurd"][randint(0, 3)], \
+                    "alliert", Loot(), hp=4000+(randint(0, spiller.lvl())*70), a=1000+randint(0, 100), d=600, \
+                    kp=600+randint(0, 150), bonusKp=30, weapon=400)
+
+            fight = angrip(spiller, fiende, inv, klasser, spellbook, alliert)
+            if fight:
+                antall += 1
+            if fight and oppBakken and not sQlog.hent_quest(4).ferdig() and antall == 4:
+                print("""
+        ** Med dine suverene sporeferdigheter finner du ut at noen
+        har vært her for ikke så lenge siden, til tross for at
+        tekannen som står på kok over bålet gir fra seg en svært
+        særegen og distraherende lukt. Du nærmer deg! **""")
+                input("\nTrykk enter for å gå videre\n> ")
+            elif fight and oppBakken and sQlog.hent_quest(4).ferdig() and antall == 4:
+                print("    ** Du nærmer deg shroomsenes tilholdsplass **")
+                input("\nTrykk enter for å fortsette\n> ")
+            if fight and oppBakken and antall == 7:
+                fight = oppBakkenLoop(spiller, inv, klasser, spellbook)
+                shrooms = fight
+                oppBakken = False
 
         while lagre:
             minnestein(spiller, inv, klasser)
@@ -94,7 +149,7 @@ def intro_loop(spiller, inv, klasser, spellbook):
     print("    **", spiller.navn(), """kommer til et utbrent leirbål. Det er blod på bakken, og
     spor etter kamp. Det virker ikke som om det er lenge siden noen var her,
     men det er vanskelig å si hvor de gikk. Hovedstien deler seg til høyre
-    og venstre.
+    og venstre**.
     """)
 
     input("Trykk enter for å fortsette\n> ")
@@ -253,6 +308,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 quest = False
             if bQlog.hent_quest(5).ferdig():
                 sQlog.hent_quest(0).progresser()
+                sQlog.hent_quest(9).sett_ferdig()
 
         while gaaTilButikk:
             klasser.butikk(5).interaksjon(inv)
@@ -390,7 +446,7 @@ def kjellLoop(spiller, inv, klasser, spellbook, kjellQ):
         return True
     elif input("\nØnsker du å angripe Kjedelige Kjell og kutte av ham fingeren?\n> ").lower() in {"ja", "j"}:
         loot = Loot()
-        loot.legg_til_item(400, 1)
+        loot.legg_til_item(400, 1) #mer
         fiende = Fiende("Kjedelige Kjell", "magiker", loot, a=350, hp=3000, d=240, kp=350, bonusKp=4)
         if not angrip(spiller, fiende, inv, klasser, spellbook):
             return False
@@ -419,12 +475,32 @@ def ussleUlvLoop(spiller, inv, klasser, spellbook):
         return True
     return False
 
-def angrip(spiller, fiende, inv, klasser, spellbook):
+def oppBakkenLoop(spiller, inv, klasser, spellbook):
+    sQlog = klasser.questlog(6)
+    if not sQlog.hent_quest(4).ferdig():
+        print("""
+        ** Du sanser en sterk magisk kraft i nærheten! **\n""")
+        input("Trykk enter for å gå videre\n> ")
+        print("""        ** En levende forvokst sopp kommer bort til deg **\n
+    Skjegghatt Shroom: """ + Fore.RED + "Du er ikke velkommen her " + spiller.navn() + ".\n" + Style.RESET_ALL)
+        input("Trykk enter for å fortsette\n> ")
+        loot = Loot()
+        loot.legg_til_item(1000, 1) #mer
+        fiende = Fiende("Skjegghatt Shroom", "shroom", loot, a=350, d=600, hp=12345, kp=1000, bonusKp=30)
+        if not angrip(spiller, fiende, inv, klasser, spellbook): return False
+        sQlog.hent_quest(4).progresser()
+        sQlog.snakk(4, spiller, inv)
+        return False
+    return True
+
+def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
     sQlog = klasser.questlog(6)
     bQlog = klasser.questlog(7)
+    if alliert: alliert.skriv_ut()
     skriv_ut(spiller, fiende)
     uCD = 0
     bundetCD = 0
+    pantu = False
     while True:
         #tur angir at det er brukeren sin tur til å handle.
         if bundetCD > 0:
@@ -438,6 +514,27 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til leiren.")
             return False
+
+        if alliert:
+            if alliert.kp() >= 70 and spiller.hp() / spiller.xHp() <= 0.6 and randint(0, 3) == 0:
+                print(alliert.navn() + alliert.ending(), "kastet restituer!")
+                print(spiller.navn(), "restorerte", spiller.restorer(300), "liv.")
+                alliert.kp(-70)
+            elif alliert.kp() >= 70 and alliert.hp() / alliert.xHp() <= 0.6 and randint(0, 3) == 0:
+                print(alliert.navn() + alliert.ending(), "kastet restituer!")
+                print(alliert.navn() + alliert.ending(), "restorerte", alliert.restorer(300), "liv.")
+                alliert.kp(-70)
+            elif alliert.kp() >= 150 and spiller.kp() / spiller.xKp() <= 0.35 and randint(0, 5) == 0:
+                print(alliert.navn() + alliert.ending(), "kastet Konsentrert Hjelp!")
+                print(spiller.navn(), "restorerte", spiller.restorer_kp(300), "kp.")
+                alliert.kp(-150)
+            elif alliert.kp() >= 130 and not randint(0, 10):
+                print(alliert.navn() + alliert.ending(), "kastet Full Kraft!")
+                fiende.mist_liv(alliert.a())
+                alliert.kp(-130)
+            else:
+                print(alliert.navn(), "angrep", fiende.navn() + fiende.ending() + ".")
+                fiende.angrepet(alliert.a(), alliert.weapon_dmg(), alliert=alliert)
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
         if fiende.dead():
@@ -456,9 +553,38 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 
             #Banditt q6:
             if fiende.navn() == "Kjedelige Kjell":
-                print("Du kutter av fingeren til Kjedelige Kjell")
+                print("Du kutter av fingeren til Kjedelige Kjell.")
                 print("Du får 3 ondhetspoeng.")
                 spiller.evil_points(3)
+
+            #Shroom q2
+            if fiende.race() == "gnom" and sQlog.hent_quest(1).startet() and \
+            not sQlog.hent_quest(1).ferdig() and randint(1, 6) >= 4:
+                sQlog.hent_quest(1).progresser()
+                print("Du fant en av de stjålne forsyningene!")
+
+            #Shroom q3
+            q = sQlog.hent_quest(2)
+            if q.startet():
+                if fiende.navn() == "Barsk Bøk" and not q.progresjon():
+                    print("Du nedtegner dine oppdagelser med den barske bøken.")
+                    q.progresser()
+                elif fiende.navn() == "Fiffig Furu" and not q.progresjon_liste()[0]:
+                    print("Du nedtegner dine oppdagelser med den fiffige furuen.")
+                    q.progresser_liste(0)
+                elif fiende.navn() == "Brysom Bjørk" and not q.progresjon_liste()[1]:
+                    print("Du nedtegner dine oppdagelser med den brysomme bjørken.")
+                    q.progresser_liste(1)
+                elif fiende.navn() == "Ondskapsfull Osp" and not q.progresjon_liste()[2]:
+                    print("Du nedtegner dine oppdagelser med den ondskapsfulle ospen.")
+                    q.progresser_liste(2)
+                elif fiende.navn() == "Rasende Rogn" and not q.progresjon_liste()[3]:
+                    print("Du nedtegner dine oppdagelser med den rasende rognen.")
+                    q.progresser_liste(3)
+
+            #Shroom q6
+            if sQlog.hent_quest(5).startet() and not sQlog.hent_quest(5).ferdig():
+                sQlog.hent_quest(5).progresser()
 
             #Shroom bq1
             if fiende.race() == "tre" and bQlog.hent_quest(2).ferdig() and not sQlog.hent_quest(1).ferdig()\
@@ -476,8 +602,17 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
+            #Alliert
+            if alliert and randint(0, 3) == 0:
+                if fiende.kp() >= 450 and randint(0, 10) == 0:
+                    print(fiende.navn() + fiende.ending(), "kastet Avskjær Hjelp!")
+                    alliert.mist_kp(1000)
+                    fiende.kp(-450)
+                else:
+                    alliert.angrepet(fiende.a(), fiende.weapon_dmg())
+
             #Guffsliffsaff - spiller til tre
-            if fiende.navn() == spiller.navn() + " v2" and fiende.hp() <= int(fiende.xHp() / 4):
+            elif fiende.navn() == spiller.navn() + " v2" and fiende.hp() <= int(fiende.xHp() / 4):
                 print("Guffsliffsaffen er for svak til å opprettholde formen sin!")
                 print("Guffsliffsaffen transformerer seg igjen.")
                 fiende = generer_guffsliffsaff(spiller, "kvist", fiende)
@@ -580,11 +715,39 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 else:
                     spiller.angrepet(fiende)
 
+            #Pàn Tú - legger til alliert
+            if fiende.navn() == "Skjegghatt Shroom" and fiende.hp() / fiende.xHp() <= 0.82 \
+            and not pantu and not spiller.dead():
+                pantu = True
+                alliert = Fiende("Pàn Tú", "alliert", Loot(), hp=25000, a=470, d=100, kp=700, bonusKp=30)
+                print("""\n
+        I kampens hete legger du merke til at to skikkelser observerer kampen fra
+        avstand. Den ene skikkelsen hvisker noe til den andre, før den sporløst
+        fordufter i løse luften. Skikkelsen som er igjen stormer bort til deg
+        for å hjelpe.
+
+                      ** Pàn Tú har blitt med i kampen! **\n""")
+                input("Trykk enter for å fortsette kampen\n> ")
+                if spiller.fuglelukt():
+                    print("\n\n    Pàn Tú rynker på nesen og synes du lukter... Fugleaktig.\n")
+                    input("Ikke bry deg om det og trykk enter for å fortsette\n> ")
+
             #gir beskjed om karakteren døde
             if spiller.dead():
                 write_player_died(spiller, "leiren")
                 player_died(spiller, inv, klasser)
                 return False
+
+            #git beskjed om den allierte døde
+            if alliert and alliert.dead():
+                if alliert.navn() in {"Pàn Tú", "Zip", "Zap"}:
+                    print(alliert.navn() + alliert.ending(), "hviler seg på sidelinjen.")
+                else:
+                    print(alliert.navn() + alliert.ending(), "døde! En magisk paraply henter", \
+                    alliert.navn() + alliert.ending(), "til en uviss fremtid.")
+                print("\n     **", alliert.navn() + alliert.ending(), "har forsvunnet fra kampen! **")
+                alliert = None
+                input("\nTrykk enter for å fortsette\n> ")
 
             #skriver ut hp og kp til karakteren og hp til fienden til neste runde.
             else:
@@ -592,9 +755,33 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 bundetCD -= 1
                 spiller.kons()
                 fiende.gen_kons()
+                if alliert:
+                    alliert.gen_kons()
+                    alliert.skriv_ut()
                 skriv_ut(spiller, fiende)
                 if bundetCD > 0:
                     input("Trykk enter for å fortsette\n> ")
+
+def generer_shroom(spiller):
+    loot = Loot()
+    loot.legg_til_item(1000, 1) #mer
+    weapon = 0
+    if randint(1, 10) == 10:
+        weapon = 300 + randint(0, round(spiller.a() / randint(9, 10)) + 50)
+    fiende = Fiende(["Inocybe Relicina", "Geoglossum Umbratile", "Entoloma Jubatum", \
+    "Scutellinia Olivascens", "Mitrula Paludosa", "Russula Farinipes", "Coprinus Acuminatus", \
+    "Ripartites Tricholoma", "Coprinus Miser", "Cantharellus Borealis", "Mycena Cinerella", \
+    "Plicaria Trachycarpa", "Crinipellis Scabella", "manita Muscaria"][randint(0, 13)], \
+    "shroom", loot, \
+    hp=2000 + randint(0, round(spiller.xHp() / 10) + (spiller.lvl() * 90)), \
+    a=350 + randint(0, (spiller.lvl() * 20) + round(spiller.a() / randint(7, 10))), \
+    d=300 + randint(0, round(spiller.d() / 1.6) + (spiller.lvl() * 3)), \
+    kp=400 + randint(0, round(spiller.xKp() / 2.2) + spiller.lvl() * 6), \
+    bonusKp=15 + randint(0, int(spiller.ekstraKp()/10)) * 5, \
+    weapon=weapon)
+    #skrivShroom
+    print(spiller.navn(), "har møtt en", fiende.navn() + "!")
+    return fiende
 
 def generer_mosegrodd_stein(spiller):
     loot = Loot()
@@ -618,7 +805,51 @@ def generer_kvist(spiller):
     return fiende
 
 def generer_tre(spiller):
-    pass
+    tall = randint(1, 5)
+    loot = Loot()
+    fiende = None
+    if tall == 1:
+        fiende = Fiende("Barsk Bøk", "tre", loot, hp=1000+randint(0, 400), \
+        a=600, d=800, kp=80+randint(0, 50), weapon=170+randint(0, 50))
+        #skrivBarskBok()
+        print(spiller.navn(), "har møtt på en Barsk Bøk!")
+    elif tall == 2:
+        fiende = Fiende("Fiffig Furu", "tre", loot, hp=1000+randint(0, 400), \
+        a=600, d=200, kp=280+randint(0, 50), weapon=130+randint(0, 50))
+        #skrivFiffigFuru()
+        print(spiller.navn(), "har møtt på en Fiffig Furu!")
+    elif tall == 3:
+        fiende = Fiende("Brysom Bjørk", "tre", loot, hp=1800+randint(0, 400), \
+        a=300, d=100+randint(0, 50), kp=80+randint(0, 50))
+        #skrivBrysomBjork()
+        print(spiller.navn(), "har møtt på en Brysom Bjørk!")
+    elif tall == 4:
+        fiende = Fiende("Ondskapsfull Osp", "tre", loot, hp=1000+randint(0, 400), \
+        a=600, d=800, kp=80+randint(0, 50), weapon=170+randint(0, 50))
+        #skrivOndskapsfullOsp()
+        print(spiller.navn(), "har møtt på en Ondskapsfull Osp!")
+    elif tall == 5:
+        fiende = Fiende("Rasende Rogn", "tre", loot, hp=800+randint(0, 600), \
+        a=400+randint(0, 70), d=100, kp=40+randint(0, 50))
+        #skrivRasendeRogn()
+        print(spiller.navn(), "har møtt på en Rasende Rogn!")
+    loot.legg_til_item(40+round(fiende.xp()/15), 1)
+    return fiende
+
+def generer_gnom(spiller):
+    fiende = Fiende("Gnom", "gnom", Loot(), \
+    1000 + 10 * randint(round(spiller.lvl()/2), spiller.lvl()), \
+    140 + randint(0, 6 * spiller.lvl()), \
+    350 + randint(0, 5 * spiller.lvl()), ending="en")
+    gnomLoot(fiende, fiende.return_loot(), spiller)
+    skrivGnom()
+    print("\n" + spiller.navn(), "har møtt på en gnom!")
+    return fiende
+
+def gnomLoot(fiende, loot, spiller):
+    loot.legg_til_item(round(fiende.xp() / 14), 70)
+
+    "mer"
 
 def generer_guffsliffsaff(spiller, b=False, fSpiller=None):
     loot = Loot()
@@ -717,11 +948,13 @@ def skog_kart(qlog):
     print("""
     Velkommen til ekspedisjonsleiren! Her er stedene du kan dra:
     Skogen (s)                 Utforsk området utenfor ekspedisjonsleiren
-    Butikken (k)               Se gjennom nødrasjonene og spesial-utstyret
     Strategi-teltet (q)        Diskuter strategi med de andre i ekspedisjonen
-    Leirbålet (b)              Dra tilbake til det forlatte leirbålet
-    Minnesteinen (l)           Graver din progresjon i skogens omtrent-funksjonelle minnestein""")
-    print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
+    Butikken (k)               Se gjennom nødrasjonene og spesial-utstyret""")
+    if qlog.hent_quest(4).startet():
+        print("    Opp bakken (o)             Dra opp bakken og dypere inn i skogen")
+    print("""    Leirbålet (b)              Dra tilbake til det forlatte leirbålet
+    Minnesteinen (l)           Graver din progresjon i skogens omtrent-funksjonelle minnestein
+    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n""")
 
 def banditt_kart(qlog):
     print("""
@@ -792,33 +1025,95 @@ def skog_quest(qlog, spiller):
     navn = spiller.navn()
 
     #q1
-    desk1 = shroom_q1(navn)
-    ferdigDesk1 = shroom_q1_ferdig(navn)
-    q1 = Quest(desk1, ferdigDesk1, 1, 15, "Zip")
-    q1.legg_til_reward(xp=10000, gull=300, hp=30, kp=30)
-    q1.legg_til_progresjonTekst("Banditt-angrep stoppet: ")
-    q1.legg_til_svarTekst("\nVil du gå på bandittjakt?     (ja/nei)\n> ")
-    qlog.legg_til_quest(q1)
+    desk = shroom_q1(navn)
+    ferdigDesk = shroom_q1_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 17, "Zip")
+    q.legg_til_reward(xp=10000, gull=300, hp=30, kp=30, settTilgjengelig=True, settTilgjengeligIndeks=4)
+    q.legg_til_progresjonTekst("Banditt-angrep stoppet: ")
+    q.legg_til_svarTekst("\nVil du gå på bandittjakt?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q2
+    desk = shroom_q2(navn)
+    ferdigDesk = shroom_q2_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 23, "Uheldige Ulrik")
+    q.legg_til_reward(xp=10000, gull=700, hp=50, settTilgjengelig=True, settTilgjengeligIndeks=3)
+    q.legg_til_progresjonTekst("Forsyninger funnet: ")
+    q.legg_til_svarTekst("\nVil du hjelpe meg finne forsyningene?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q3
+    desk = shroom_q3(navn)
+    ferdigDesk = shroom_q3_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 23, "Kjedelige Kjell", resetIfDead=True)
+    q.legg_til_reward(xp=10000, settTilgjengelig=True, settTilgjengeligIndeks=9)
+    q.legg_til_progresjonTekst("Barsk Bøk oppdaget: ")
+    q.legg_til_progresjon(1)
+    q.legg_til_progresjonTekstListe("Fiffig Furu oppdaget: ", 0)
+    q.legg_til_progresjon(1)
+    q.legg_til_progresjonTekstListe("Brysom Bjørk oppdaget: ", 1)
+    q.legg_til_progresjon(1)
+    q.legg_til_progresjonTekstListe("Ondskapsfull Osp oppdaget: ", 2)
+    q.legg_til_progresjon(1)
+    q.legg_til_progresjonTekstListe("Rasende Rogn oppdaget: ", 3)
+    q.legg_til_svarTekst("\nEr du like spent som meg på å undersøke trærne?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q4
+    desk = shroom_q4(navn)
+    ferdigDesk = shroom_q4_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 23, "Uheldige Ulrik", tilgjengelig=False)
+    q.legg_til_reward(xp=10000)
+    q.legg_til_progresjonTekst("Kent Kokk rekruttert: ")
+    q.legg_til_svarTekst("\nKan du rekruttere Kent Kokk?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q5
+    desk = shroom_q5(navn)
+    ferdigDesk = shroom_q5_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 29, "Strategiske Synne", tilgjengelig=False)
+    q.legg_til_reward(xp=10000, hp=100, kp=40, settTilgjengelig=True, settTilgjengeligIndeks=[5, 6])
+    q.legg_til_progresjonTekst("Pàn Tú funnet: ")
+    q.legg_til_svarTekst("\nKan du dra etter henne?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q6
+    desk = shroom_q6(navn)
+    ferdigDesk = shroom_q6_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 20, 30, "Strategiske Synne", tilgjengelig=False)
+    q.legg_til_reward(xp=10000)
+    q.legg_til_progresjonTekst("Shrooms drept: ")
+    q.legg_til_svarTekst("\nKan du være med i slakten?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q7
+    desk = shroom_q7(navn)
+    ferdigDesk = shroom_q7_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 32, "Zip", tilgjengelig=False)
+    q.legg_til_reward(xp=10000)
+    q.legg_til_progresjonTekst("Hemmelig beskjed levert: ")
+    q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
 
     #bq1
-    deskBq1 = shroom_bq1(navn)
-    ferdigDeskBq1 = shroom_bq1_ferdig(navn)
-    bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Fanatiske Ferdinand", bonus=True, resetIfDead=True)
+    deskBq = shroom_bq1(navn)
+    ferdigDeskBq = shroom_bq1_ferdig(navn)
+    bq = Quest(deskBq, ferdigDeskBq, 1, 1, "Fanatiske Ferdinand", bonus=True, resetIfDead=True)
     item = Item("Forkastet totem", "trinket", xKp=50, xHp=60, ekstraKp=3, d=20)
-    bq1.legg_til_reward(xp=6000, item=item, gp=2)
-    bq1.legg_til_progresjonTekst("Totem funnet: ")
-    bq1.legg_til_svarTekst("Vil du fortelle Fanatiske Ferdinand at han er hjernevasket?   (ja/nei)\n> ")
-    bq1.legg_til_ekstra_tekst("Hvaaaa? Det kan umulig stemme? De- dette, men, hvorfor? Hvem er jeg? HVEM ER JEG??")
-    bq1.legg_til_alt_desk("Vil du gi totemet til Fanatiske Ferdinand?\n> ")
+    bq.legg_til_reward(xp=6000, item=item, gp=2)
+    bq.legg_til_progresjonTekst("Totem funnet: ")
+    bq.legg_til_svarTekst("Vil du fortelle Fanatiske Ferdinand at han er hjernevasket?   (ja/nei)\n> ")
+    bq.legg_til_ekstra_tekst("Hvaaaa? Det kan umulig stemme? De- dette, men, hvorfor? Hvem er jeg? HVEM ER JEG??")
+    bq.legg_til_alt_desk("Vil du gi totemet til Fanatiske Ferdinand?\n> ")
     item = Item("Fanatisk stav", "weapon", a=200, d=-10, xHp=-30)
-    bq1.legg_til_alt_reward(ep=3, kp=50, xp=6000, item=item)
-    qlog.legg_til_quest(bq1)
+    bq.legg_til_alt_reward(ep=3, kp=50, xp=6000, item=item)
+    qlog.legg_til_quest(bq)
 
     #q10
-    q10 = Quest("", "", 1, 15, "Kjedelige Kjell", tilgjengelig=False, resetIfDead=True)
-    q10.legg_til_reward(xp=1000, gp=2)
-    q10.legg_til_progresjonTekst("Guffsliffsaff-gren funnet: ")
-    qlog.legg_til_quest(q10)
+    q = Quest("", "", 1, 15, "Kjedelige Kjell", bonus=True, tilgjengelig=False, resetIfDead=True)
+    q.legg_til_reward(xp=5000, gp=2)
+    q.legg_til_progresjonTekst("Guffsliffsaff-gren funnet: ")
+    qlog.legg_til_quest(q)
 
 def banditt_quest(qlog, spiller):
     navn = spiller.navn()

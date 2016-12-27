@@ -551,12 +551,29 @@ def last_fil(spiller, inv, klasser, filnavn):
         linje = fil.readline().strip()
         while linje != "":
             questInf = linje.split(",")
+            start = 0
+            slutt = 0
+            settTilgjengeligListe = []
+            for x in range(len(questInf)):
+                if settTilgjengeligListe and "]" in questInf[x]:
+                    settTilgjengeligListe.append(int(questInf.pop(x).strip("]")))
+                    break
+                elif settTilgjengeligListe:
+                    settTilgjengeligListe.append(int(questInf.pop(x)))
+                if "[" in questInf[x]:
+                    settTilgjengeligListe.append(int(questInf[x].strip("[")))
+            if settTilgjengeligListe:
+                questInf[5] = settTilgjengeligListe
             qlog = klasser.questlog(int(questInf[0]))
             q = qlog.hent_quest(int(questInf[1]))
             q.start((bool(int(questInf[2]))))
             q.sett_ferdig(bool(int(questInf[3])))
             if q.ferdig() and int(questInf[4]):
-                qlog.hent_quest(int(questInf[5])).sett_tilgjengelig()
+                if settTilgjengeligListe:
+                    for i in settTilgjengeligListe:
+                        qlog.hent_quest(i).sett_tilgjengelig()
+                else:
+                    qlog.hent_quest(int(questInf[5])).sett_tilgjengelig()
             q.progresser(int(questInf[6]))
             if q.progresjon_liste():
                 for x in range(7, 7 + len(q.progresjon_liste())):
@@ -581,6 +598,8 @@ def krypt(filnavn):
 
     with open(filnavn, "w", encoding="UTF-8") as fil:
         fil.write(tekst)
+
+#krypt("Save\\Kåre.sav")
 
 def dekrypt(filnavn):
     ingentingInteressant = "hunGunIcorN"
