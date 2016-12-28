@@ -995,7 +995,7 @@ def shroom_butikk(butikk):
     butikk.legg_til_vare(vare)
 
 def banditt_butikk(butikk):
-    butikk.legg_til_hadeTekst("\nVelkommen tilbake! Og se opp for gangster-fiskene!\n")
+    butikk.legg_til_hadeTekst("\nKom deg ut! Hvis ikke skal kjøpe og ikke skal selge, pell deg!\n")
 
     item = Item("Tryllepulver", "damaging", dmg=100)
     vare = Vare(item, 50, "t")
