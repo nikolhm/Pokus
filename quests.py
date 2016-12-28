@@ -412,20 +412,49 @@ def shroom_q6(navn):
     for en shroom-invasjon. Jeg trenger at du, som har støtt på disse shroomsene
     før, er med i feltet og leder ann kampen mot udyrene!
 
+    Og en ting til """ + navn + """. Jeg burde kanskje ha advart deg før, men vi
+    er ikke helt sikre på hvor lojaliteten til Pàn Tú ligger. Ta alt hun sier med
+    en klype salt!
+
     -- Drep 20 shrooms."""
 def shroom_q6_ferdig(navn):
     return "    Strålende " + navn + """.
     Kampene fortsetter, men jeg har en viktigere oppgave til deg.\n"""
 
 def shroom_q7(navn):
-    return ""
+    return "    Hei der " + navn + """!
+    Dine magiske krefter har økt betraktelig siden sist, men det er alltid
+    rom for forbedring! Er du kjent med formelen Opphold? Den forvirrer
+    fienden i to runder, og gir deg tid til å ta tilbake overtaket i en
+    ellers nedgående kamp. Men, jeg har funnet en metode å gjøre formelen
+    enda mer effektiv på, uten at det krever noe mer konsentrasjon fra deg!
+    Spesielt her ute på ekspedisjonen er det viktig at alle er på sitt beste,
+    men som alltid har jeg mine prinsipper: Ingen skal lære noe de ikke kan
+    kontrollere, slik som det neket Gale Gizly. La fiender være oppholdt i
+    totalt 14 runder, så skal jeg lære deg hvordan formelen blir enda
+    kraftigere!
+
+    -- Opphold fiender med formelen Opphold i totalt 14 runder."""
 def shroom_q7_ferdig(navn):
-    return ""
+    return "    Flott " + navn + """!
+    Det er viktig at alle er på sitt ypperste i disse tider. Her er
+    hemmeligheten til å utføre god og effektiv magi...\n"""
 
 def shroom_q8(navn):
-    return ""
+    return "    Hei igjen " + navn + """!
+    Det var rett av deg å komme til meg med denne informasjonen. Strategiske
+    Synne bryr seg mest om å utslette shroomsene, men om vi kan kommunisere
+    med noen av dem, kan vi kanskje finne ut hva som egentlig har skjedd her.
+    Dette er informasjon av uvurderlig verdi som er verdt tapene det kan
+    medføre om vi ikke fokuserer på å raskt utslette fienden. Finn Pàn Tú
+    og møt kontakten hennes, koste hva det koste vil. Vi trenger å vite hva
+    som har skjedd her! Og husk, hold et åpent sinn.
+
+    -- Møt kontakten til Pàn Tú."""
 def shroom_q8_ferdig(navn):
-    return ""
+    return """    Så de er ikke den Bamhjertiges barn altså. Det forklarer en del!
+    Pàn Tú har forduftet sier du? Kanskje jeg burde dra ut i skogen og... lete
+    etter henne. Ja. Definitivt! Hold et åpent sinn """ + navn + "!\n"
 
 def shroom_q9(navn):
     return ""
