@@ -1427,7 +1427,7 @@ class Spellbook:
         #quest
         if cd and self._klasser.questlog(6).hent_quest(6).startet():
             self._klasser.questlog(6).hent_quest(6).progresser()
-            
+
         self._opphold += cd
         return self._opphold
 
@@ -1731,9 +1731,10 @@ class Inventory:
         tall = sum([q.progresjon_liste()[i] + q.progresjon() for i in range(4)])
         if not q.ferdig() and tall:
             print("Du et sett notater om trær.")
-        if not qListeShroom[0].ferdig() and qListeShroom[0].progresjon():
+        if not qListeBanditt[10].ferdig() and qListeBanditt[10].progresjon():
+            print("Du har et totem.")
+        if not qListeShroom[12].ferdig() and qListeShroom[12].progresjon():
             print("Du har en guffsliffsaff-gren.")
-            "mer"
 
     #Resetter inventory til å inneholde ingenting
     def reset(self):

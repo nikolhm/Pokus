@@ -69,11 +69,13 @@ def shroom_loop(spiller, inv, klasser, spellbook):
             inn = sQlog.oppdrag_tilgjengelige(spiller.lvl(), "strategi-teltet").lower()
             kjellQ = sQlog.hent_quest(2)
             bjarteQ = bQlog.hent_quest(5)
-            bq = sQlog.hent_quest(0) #mer
-            if bjarteQ.startet() and not bjarteQ.ferdig() and (inn == "3" or inn == "10"):
-                if not kjellQ.ferdig() and inn == "3" or kjellQ.ferdig() and inn == "10":
+            if bjarteQ.startet() and not bjarteQ.ferdig() and (inn == "3" or inn == "13"):
+                if not kjellQ.ferdig() and inn == "3" or kjellQ.ferdig() and inn == "13":
                     if not kjellLoop(spiller, inv, klasser, spellbook, bjarteQ):
                         quest = False
+            elif not bjarteQ.startet() and kjellQ.ferdig() and inn == "13":
+                print(kjellprat())
+                input("Trykk enter for å slippe unna\n> ")
             elif inn != "f" and inn != "ferdig":
                 try:
                     sQlog.snakk(int(inn) - 1, spiller, inv)
@@ -91,11 +93,11 @@ def shroom_loop(spiller, inv, klasser, spellbook):
         while fight:
             alliert = None
             minst = 1
-            maks = 17
+            maks = 20
             if bQlog.hent_quest(5).ferdig():
                 minst = 5
             if shrooms:
-                maks = 60
+                maks = 62
             tall = randint(minst, maks)
             if tall <= 4:
                 fiende = generer_banditt(spiller)
@@ -103,9 +105,11 @@ def shroom_loop(spiller, inv, klasser, spellbook):
                 fiende = generer_tre(spiller)
             elif tall <= 16:
                 fiende = generer_gnom(spiller)
-            elif tall == 17:
+            elif tall <= 19:
+                fiende = generer_smaatt(spiller)
+            elif tall == 20:
                 fiende = generer_guffsliffsaff(spiller)
-            elif tall <= 60:
+            elif tall <= 62:
                 fiende = generer_shroom(spiller)
 
             if shrooms:
@@ -308,22 +312,22 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 quest = False
             if bQlog.hent_quest(5).ferdig():
                 sQlog.hent_quest(0).progresser()
-                sQlog.hent_quest(9).sett_ferdig()
+                sQlog.hent_quest(12).sett_ferdig()
 
         while gaaTilButikk:
             klasser.butikk(5).interaksjon(inv)
             gaaTilButikk = False
 
         while skogen:
-            tall = randint(1, 10)
-            if tall >= 6:
+            tall = randint(1, 15)
+            if tall >= 14:
+                fiende = generer_tre(spiller)
+            elif tall >= 10:
+                fiende = generer_gnom(spiller)
+            elif tall >= 6:
                 fiende = generer_banditt(spiller)
             elif tall >= 4:
-                fiende = generer_kvist(spiller)
-            elif tall >= 2:
-                fiende = generer_mosegrodd_stein(spiller)
-            else:
-                fiende = generer_liten_sopp(spiller)
+                fiende = generer_smaatt(spiller)
 
             skogen = angrip(spiller, fiende, inv, klasser, spellbook)
 
@@ -399,9 +403,9 @@ def banditt_loop(spiller, inv, klasser, spellbook):
     if ferdig:
         return False
 
-def kjellLoop(spiller, inv, klasser, spellbook, kjellQ):
-    q = klasser.questlog(6).hent_quest(2)
-    if kjellQ.sjekk_ferdig():
+def kjellLoop(spiller, inv, klasser, spellbook, bjarteQ):
+    q = klasser.questlog(6).hent_quest(12)
+    if bjarteQ.sjekk_ferdig():
         print("    Hvorfor er du fremdeles her og slenger? Se til å gi den forbaskede",\
         "\n    fingeren til den hersens banditten!")
         input("\nTrykk enter for å fortsette\n> ")
@@ -410,7 +414,7 @@ def kjellLoop(spiller, inv, klasser, spellbook, kjellQ):
         print("\n    Supert", spiller.navn() + "! Her har du en kopi av fingeren min!\n")
         q.reward(inv, spiller, klasser.questlog(6))
         q.sett_ferdig()
-        kjellQ.progresser()
+        bjarteQ.progresser()
         input("Trykk enter for å fortsette\n> ")
         return True
     elif q.startet():
@@ -450,7 +454,7 @@ def kjellLoop(spiller, inv, klasser, spellbook, kjellQ):
         fiende = Fiende("Kjedelige Kjell", "magiker", loot, a=350, hp=3000, d=240, kp=350, bonusKp=4)
         if not angrip(spiller, fiende, inv, klasser, spellbook):
             return False
-        kjellQ.progresser()
+        bjarteQ.progresser()
     return True
 
 def ussleUlvLoop(spiller, inv, klasser, spellbook):
@@ -651,15 +655,15 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
                 sQlog.hent_quest(5).progresser()
 
             #Shroom bq1
-            if fiende.race() == "tre" and bQlog.hent_quest(2).ferdig() and not sQlog.hent_quest(1).ferdig()\
-            and randint(1, 5) == 1:
-                sQlog.hent_quest(1).progresser()
+            if fiende.race() == "tre" and bQlog.hent_quest(2).ferdig() and \
+            not sQlog.hent_quest(10).sjekk_ferdig() and randint(1, 5) == 1:
+                sQlog.hent_quest(10).progresser()
                 print("Du klarte å lage et totem ut av restene til", fiende.navn() + fiende.ending())
 
-            #Shroom q10
-            if fiende.race() == "guffsliffsaff" and sQlog.hent_quest(2).startet() \
-            and not sQlog.hent_quest(2).progresjon():
-                sQlog.hent_quest(2).progresser()
+            #Shroom q13
+            if fiende.race() == "guffsliffsaff" and sQlog.hent_quest(12).startet() \
+            and not sQlog.hent_quest(12).progresjon():
+                sQlog.hent_quest(12).progresser()
                 print("Du plukker opp de tamme restene av guffsliffsaff-grenen.")
 
             input("Trykk enter for å fortsette\n> ")
@@ -847,26 +851,28 @@ def generer_shroom(spiller):
     print(spiller.navn(), "har møtt en", fiende.navn() + "!")
     return fiende
 
-def generer_mosegrodd_stein(spiller):
+def generer_smaatt(spiller):
+    tall = randint(1, 3):
     loot = Loot()
-    loot.legg_til_item(100, 1)
-    return Fiende("Mosegrodd stein", "stein", loot,  a=100, d=100, hp=100, kp=100)
-
-def generer_kvist(spiller):
-    loot = Loot()
-    a = randint(0, 4 * spiller.lvl())
-    xKp = randint(0, 3 * spiller.lvl())
-    item = Item("Superkvist", "weapon", a=a, xKp=xKp)
-    loot.legg_til_item(item, 100)
-    fiende = Fiende(navn="Kvist", race="tre", loot=loot, \
-    hp=20 + 20 * randint(1, spiller.lvl()), \
-    a=20 + randint(0, 10 * spiller.lvl()), \
-    d=30 + randint(0, 10 * spiller.lvl()), \
-    kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
-    print("\n" + spiller.navn(), "har møtt på en levende kvist!")
-
-    #skrivKvist()
-    return fiende
+    if tall == 1:
+        loot.legg_til_item(100, 1)
+        return Fiende("Mosegrodd stein", "stein", loot,  a=100, d=100, hp=100, kp=100)
+    elif tall == 2:
+        a = randint(0, 4 * spiller.lvl())
+        xKp = randint(0, 3 * spiller.lvl())
+        item = Item("Superkvist", "weapon", a=a, xKp=xKp)
+        loot.legg_til_item(item, 100)
+        fiende = Fiende(navn="Kvist", race="tre", loot=loot, \
+        hp=20 + 20 * randint(1, spiller.lvl()), \
+        a=20 + randint(0, 10 * spiller.lvl()), \
+        d=30 + randint(0, 10 * spiller.lvl()), \
+        kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
+        print("\n" + spiller.navn(), "har møtt på en levende kvist!")
+        #skrivKvist()
+        return fiende
+    elif tall == 3:
+        loot.legg_til_item(100, 1)
+        return Fiende("Liten sopp", "shroom", loot, a=100, d=100, hp=100, kp=100)
 
 def generer_tre(spiller):
     tall = randint(1, 5)
@@ -957,11 +963,6 @@ def generer_banditt(spiller):
     skrivBanditt()
     print("\n" + spiller.navn(), "har møtt på en banditt!")
     return fiende
-
-def generer_liten_sopp(spiller):
-    loot = Loot()
-    loot.legg_til_item(100, 1)
-    return Fiende("Liten sopp", "shroom", loot, a=100, d=100, hp=100, kp=100)
 
 def bandittLoot(loot, fiende, spiller):
     loot.legg_til_item(100, 60)
@@ -1110,7 +1111,7 @@ def skog_quest(qlog, spiller):
     desk = shroom_q3(navn)
     ferdigDesk = shroom_q3_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 23, "Kjedelige Kjell", resetIfDead=True)
-    q.legg_til_reward(xp=10000, settTilgjengelig=True, settTilgjengeligIndeks=9)
+    q.legg_til_reward(xp=10000, settTilgjengelig=True, settTilgjengeligIndeks=12)
     q.legg_til_progresjonTekst("Barsk Bøk oppdaget: ")
     q.legg_til_progresjon(1)
     q.legg_til_progresjonTekstListe("Fiffig Furu oppdaget: ", 0)
@@ -1145,7 +1146,7 @@ def skog_quest(qlog, spiller):
     desk = shroom_q6(navn)
     ferdigDesk = shroom_q6_ferdig(navn)
     q = Quest(desk, ferdigDesk, 20, 30, "Strategiske Synne", tilgjengelig=False)
-    q.legg_til_reward(xp=10000)
+    q.legg_til_reward(xp=10000, settTilgjengelig=True, settTilgjengeligIndeks=8)
     q.legg_til_progresjonTekst("Shrooms drept: ")
     q.legg_til_svarTekst("\nKan du være med i slakten?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
@@ -1164,6 +1165,24 @@ def skog_quest(qlog, spiller):
     desk = shroom_q8(navn)
     ferdigDesk = shroom_q8_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 32, "Zip", tilgjengelig=False)
+    q.legg_til_reward(xp=13000, settTilgjengelig=True, settTilgjengeligIndeks=[9, 11])
+    q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
+    q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q9
+    desk = shroom_q9(navn)
+    ferdigDesk = shroom_q9_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 34, "Strategiske Synne", tilgjengelig=False)
+    q.legg_til_reward(xp=13000)
+    q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
+    q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q10
+    desk = shroom_q10(navn)
+    ferdigDesk = shroom_q10_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 1, 32, "Strategiske Synne", tilgjengelig=False)
     q.legg_til_reward(xp=13000)
     q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
     q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
@@ -1183,7 +1202,21 @@ def skog_quest(qlog, spiller):
     bq.legg_til_alt_reward(ep=3, kp=50, xp=6000, item=item)
     qlog.legg_til_quest(bq)
 
-    #q10
+    #bq2
+    deskBq = shroom_bq2(navn)
+    ferdigDeskBq = shroom_bq2_ferdig(navn)
+    bq = Quest(deskBq, ferdigDeskBq, 1, 1, "Simon Sporfinner", bonus=True, resetIfDead=True, tilgjengelig=False)
+    item = Item("Forkastet totem", "trinket", xKp=50, xHp=60, ekstraKp=3, d=20)
+    bq.legg_til_reward(xp=6000, item=item, gp=2)
+    bq.legg_til_progresjonTekst("Totem funnet: ")
+    bq.legg_til_svarTekst("Vil du fortelle Fanatiske Ferdinand at han er hjernevasket?   (ja/nei)\n> ")
+    bq.legg_til_ekstra_tekst("Hvaaaa? Det kan umulig stemme? De- dette, men, hvorfor? Hvem er jeg? HVEM ER JEG??")
+    bq.legg_til_alt_desk("Vil du gi totemet til Fanatiske Ferdinand?\n> ")
+    item = Item("Fanatisk stav", "weapon", a=200, d=-10, xHp=-30)
+    bq.legg_til_alt_reward(ep=3, kp=50, xp=6000, item=item)
+    qlog.legg_til_quest(bq)
+
+    #q13
     q = Quest("", "", 1, 15, "Kjedelige Kjell", bonus=True, tilgjengelig=False, resetIfDead=True)
     q.legg_til_reward(xp=5000, gp=2)
     q.legg_til_progresjonTekst("Guffsliffsaff-gren funnet: ")

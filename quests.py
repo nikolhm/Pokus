@@ -477,6 +477,18 @@ def shroom_bq1_ferdig(navn):
     return """    Fantastisk! Dommedagen er snart på oss, og det er viktig å vise soppen
     hvilken side vi egentlig står på! Bli med meg, """ + navn + " i et kjapt blodoffer!\n"
 
+def shroom_bq2(navn):
+    return ""
+def shroom_bq2_ferdig(navn):
+    return ""
+
+def kjellprat():
+    return """"    ...Trevirksomhets invirkning på utenforstående faktorer aldri vil gjøre
+    opp for skadeområdet innenfor et omfang på en slik biokultur, dessuten har
+    bark-områdene et eget beskyttende lag spesielt for slike metalliske
+    gjenstander, laget nettopp av de øvre grenpartiene på slike typer, noe som
+    også har innvirkning og ringvirkning på trærnes røtter...\n"""
+
 #Shroom: Banditter
 def banditt_q1(navn):
     return "    Hei! Hva heter du? " + navn + """ ja, nettopp!

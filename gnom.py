@@ -511,7 +511,7 @@ def vassle_quest(qlog, spiller):
     #shroom
     desk4 = quests.vassle_shroom(spiller.navn())
     ferdigDesk4 = quests.vassle_shroom_ferdig(spiller.navn())
-    q4 = Quest(desk4, ferdigDesk4, 1, 20, "Overtrollmann Vassle", sted="Skogen", tilgjengelig=False)
+    q4 = Quest(desk4, ferdigDesk4, 1, 20, "Overtrollmann Vassle", sted="Ekspedisjonen", tilgjengelig=False)
     q4.legg_til_reward(xp=30000, gull=5000, hp=100, kp=70, ekstraKp=2)
     q4.legg_til_progresjonTekst("Ekspedisjon funnet: ")
     q4.legg_til_progresjon(1)

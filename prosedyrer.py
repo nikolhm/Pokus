@@ -234,6 +234,13 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
         except ValueError:
             print("Du må skrive et tall!")
 
+    #Juksekode nr. 3: Får ønsket antall gullstykker.
+    elif inn == "j3" or inn == "juks3":
+        try:
+            inv.penger(int(input("Hvor mange gullstykker vil du ha?\n> ")))
+        except ValueError:
+            print("Du må skrive et tall!")
+
     if not tur and spellbook.opphold():
         spellbook.opphold(-1)
         tur = True
