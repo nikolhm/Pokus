@@ -28,7 +28,7 @@ msi_data = {"Shortcut": shortcut_table}
 bdist_msi_options = {'data': msi_data}
 
 icoPath = ""
-if (sys.plaform == "win32"):
+if (sys.platform == "win32"):
     icoPath = "docs\\res\img\\favicon.ico"
 else:
     icoPath = "docs/res/img/favicon.ico"
