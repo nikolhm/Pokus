@@ -1039,12 +1039,14 @@ def skrivBanditt():
         (((___X\\ /X___))) """)
 
 def skrivRotte():
+    clear_screen()
     print(""" _  _  .-'   '-.
 (.)(.)/         \\
  /66            ;   jgs
 o_\\\\-mm-......-mm`~~~~~~~~~~~~~""")
 
 def skrivShroom():
+
     rod = Fore.RED
     res = Style.RESET_ALL
     shroom = """       -----------------
