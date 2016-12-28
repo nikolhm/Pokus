@@ -1165,7 +1165,7 @@ def skog_quest(qlog, spiller):
     desk = shroom_q8(navn)
     ferdigDesk = shroom_q8_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 32, "Zip", tilgjengelig=False)
-    q.legg_til_reward(xp=13000, settTilgjengelig=True, settTilgjengeligIndeks=[9, 11])
+    q.legg_til_reward(xp=13000, settTilgjengelig=True, settTilgjengeligIndeks=[8, 11])
     q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
     q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
@@ -1173,7 +1173,7 @@ def skog_quest(qlog, spiller):
     #q9
     desk = shroom_q9(navn)
     ferdigDesk = shroom_q9_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 1, 34, "Strategiske Synne", tilgjengelig=False)
+    q = Quest(desk, ferdigDesk, 1, 32, "Strategiske Synne", tilgjengelig=False)
     q.legg_til_reward(xp=13000)
     q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
     q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
@@ -1182,7 +1182,7 @@ def skog_quest(qlog, spiller):
     #q10
     desk = shroom_q10(navn)
     ferdigDesk = shroom_q10_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 1, 32, "Strategiske Synne", tilgjengelig=False)
+    q = Quest(desk, ferdigDesk, 1, 35, "Strategiske Synne", tilgjengelig=False)
     q.legg_til_reward(xp=13000)
     q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
     q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
@@ -1204,16 +1204,16 @@ def skog_quest(qlog, spiller):
 
     #bq2
     deskBq = shroom_bq2(navn)
-    ferdigDeskBq = shroom_bq2_ferdig(navn)
-    bq = Quest(deskBq, ferdigDeskBq, 1, 1, "Simon Sporfinner", bonus=True, resetIfDead=True, tilgjengelig=False)
-    item = Item("Forkastet totem", "trinket", xKp=50, xHp=60, ekstraKp=3, d=20)
-    bq.legg_til_reward(xp=6000, item=item, gp=2)
-    bq.legg_til_progresjonTekst("Totem funnet: ")
-    bq.legg_til_svarTekst("Vil du fortelle Fanatiske Ferdinand at han er hjernevasket?   (ja/nei)\n> ")
-    bq.legg_til_ekstra_tekst("Hvaaaa? Det kan umulig stemme? De- dette, men, hvorfor? Hvem er jeg? HVEM ER JEG??")
-    bq.legg_til_alt_desk("Vil du gi totemet til Fanatiske Ferdinand?\n> ")
-    item = Item("Fanatisk stav", "weapon", a=200, d=-10, xHp=-30)
-    bq.legg_til_alt_reward(ep=3, kp=50, xp=6000, item=item)
+    ferdigDeskBq = "    Har du noe informasjon? Fortell!\n"
+    bq = Quest(deskBq, ferdigDeskBq, 5, 1, "Simon Sporfinner", bonus=True, resetIfDead=True, tilgjengelig=False)
+    bq.legg_til_reward(xp=14000)
+    bq.legg_til_progresjonTekst("korrespondanser funnet: ")
+    bq.legg_til_svarTekst("Vil du gi informasjonen til Simon Sporfinner?   (ja/nei)\n> ")
+    bq.legg_til_ekstra_tekst(shroom_bq2_tekst())
+    bq.legg_til_alt_desk("Vil du drepe Simon Sporfinner på gøy?\n> ")
+    bq.legg_til_alt_ektra_tekst("Du drepte Simon Sporfinner. Alle er for opptatt til å merke noe.")
+    item = Item("Sporerstøvler", "shoes", a=-20, d=130, xHp=30)
+    bq.legg_til_alt_reward(ep=3, xp=14000, item=item)
     qlog.legg_til_quest(bq)
 
     #q13

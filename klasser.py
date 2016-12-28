@@ -311,6 +311,7 @@ class Quest:
         self._bonus = bonus
         self._giverNavn = navn
         self._ekstraTekst = ""
+        self._altEkstraTekst = ""
         self._svarTekst = "Vil du hjelpe meg?\n> "
         self._progresjonTekst = "Progresjon: "
         self._xProgresjonListe = []
@@ -431,6 +432,9 @@ class Quest:
     def legg_til_ekstra_tekst(self, tekst):
         self._ekstraTekst = tekst
 
+    def legg_til_alt_ektra_tekst(self, tekst):
+        self._altEkstraTekst = tekst
+
     def legg_til_progresjon(self, xProgresjon):
         self._xProgresjonListe.append(xProgresjon)
         self._progresjonListe.append(0)
@@ -528,6 +532,9 @@ class Quest:
 
     def alt_reward(self, inv, spiller, qlog):
         print("Gratulerer!",spiller.navn(), "fullførte", self._giverNavn, "sitt oppdrag! På en måte...\n")
+
+        if self._altEkstraTekst != "":
+            print(self._ekstraTekst)
 
         #xp
         if self._altReward[0] != 0:

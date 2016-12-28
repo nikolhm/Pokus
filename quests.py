@@ -457,14 +457,44 @@ def shroom_q8_ferdig(navn):
     etter henne. Ja. Definitivt! Hold et åpent sinn """ + navn + "!\n"
 
 def shroom_q9(navn):
-    return ""
+    return "    " + navn + """! Det er krise!
+    Det viser seg at Pàn Tú er en forræder! Hun har brutt all kontakt med oss,
+    og hun var sist sett flyktende innover i shroom-terretorium sammen med en
+    annen skikkelse! Ikke nok med det, men Zip har også sporløst forsvunnet!
+    Zip er en nøkkelbrikke i denne ekspedisjonen, og om Zip er blitt bortført
+    er det svært alvorlig. Om Zip også er en forræder ligger vi tynt an! Fort,
+    dra opp bakken og inn til fronten og finn Zap! Om noen vet noe mer om Zip,
+    må det være Zap.
+
+    -- Finn Zap ved fronten og finn ut hva som har skjedd med Zip."""
 def shroom_q9_ferdig(navn):
-    return ""
+    return """    Er Zip også en forræder?! Da ligger vi taktisk svært dårlig an!
+    Stakkars Zap, Zip og Zap har alltid vært en enhet i seg selv!\n"""
 
 def shroom_q10(navn):
-    return ""
+    return "    Tiden er inne " + navn + """, for å gjøre slutt på dette.
+    Vi har en dårlig taktisk posisjon i forhold til fienden, og vi er mange
+    ganger undertallige. Vårt eneste håp er å kutte av kilden deres til magi.
+    Det vil utgjevne den magiske ubalansen her, som var det vi kom for å gjøre,
+    så får de resterende shroomsene leve ut sine liv i dette hjørnet av skogen.
+    Såfremt shroomsene i seg selv ikke besitter evnen til å skape flere magiske
+    kreasjoner, burde det ikke være nødvendig å drepe dem alle. I tillegg har
+    vi ikke ressurser nok til en slik operasjon.
+
+    Heldigvis har vi klart å uthente informasjon mens fiendens fokus var ved
+    kampene med fronten. Det viser seg at kilden til deres magi kommer fra et
+    lite tjern, som er senteret av shroom-terretoriumet. Det er en smal sak å
+    forurense tjernet med en standard Kast Hvitløk-formel som alle magikere kan,
+    men å komme bort til det blir utfordringen! Vi har bestemt å sende deg inn
+    alene slik at du kan snike deg ubemerket dit, samtidig som vi sender alle
+    våre magikere til fronten for å avlede oppmerksomheten. Men pass på, De har
+    helt sikkert utstasjonert vakter ved tjernet, som vil ha en stadig påfylling
+    av magiske krefter!
+
+    -- Forurens tjernet i midten av shroom-terretoriumet."""
 def shroom_q10_ferdig(navn):
-    return ""
+    return "    Hurra! Du " + navn + """, må være den dyktigste magikeren vi har!
+    Rapporter tilbake til Overtrollmann Vassle så han får høre om seieren vår!\n"""
 
 def shroom_bq1(navn):
     return """    Salig er du, som får oppleve nærværet deres!
@@ -478,9 +508,18 @@ def shroom_bq1_ferdig(navn):
     hvilken side vi egentlig står på! Bli med meg, """ + navn + " i et kjapt blodoffer!\n"
 
 def shroom_bq2(navn):
-    return ""
-def shroom_bq2_ferdig(navn):
-    return ""
+    return """    Pàn Tú er en forræder!
+    Jeg har blitt satt til oppgaven å administrere en gransking innad i
+    ekspedisjonen, og se etter eventuelle beskjeder noen kan ha hatt fra
+    Pàn Tú eller hennes sammensvorne. Alle bevis er helt sikkert revet opp
+    og kastet i skogen, men om du finner noen biter av lapper eller andre
+    hint, kom rett til meg med det!\n"""
+def shroom_bq2_tekst():
+    return """    Alle korrespondanser ser ut til å omhandle 'den Bamhjertige'.
+    Motivene er uklare, men det virker ikke som om de er direkte i liga med
+    shroomsene. Dette er høyst merkverdig og svært alvorlig, og en sak jeg skal
+    ta opp med Overtrollmann Vassle. Ikke snakk om dette til noen, og helst glem
+    alt som har skjedd!\n"""
 
 def kjellprat():
     return """"    ...Trevirksomhets invirkning på utenforstående faktorer aldri vil gjøre
