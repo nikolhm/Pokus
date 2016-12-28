@@ -326,7 +326,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 fiende = generer_gnom(spiller)
             elif tall >= 6:
                 fiende = generer_banditt(spiller)
-            elif tall >= 4:
+            elif tall >= 1:
                 fiende = generer_smaatt(spiller)
 
             skogen = angrip(spiller, fiende, inv, klasser, spellbook)
@@ -852,7 +852,7 @@ def generer_shroom(spiller):
     return fiende
 
 def generer_smaatt(spiller):
-    tall = randint(1, 3):
+    tall = randint(1, 3)
     loot = Loot()
     if tall == 1:
         loot.legg_til_item(100, 1)
