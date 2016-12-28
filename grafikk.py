@@ -1061,6 +1061,3 @@ def skrivShroom():
             \____/"""
 
     print(shroom)
-
-skrivShroom()
-input("Se neste...")
