@@ -864,7 +864,7 @@ def generer_shroom(spiller):
     kp=400 + randint(0, round(spiller.xKp() / 2.2) + spiller.lvl() * 6), \
     bonusKp=15 + randint(0, int(spiller.ekstraKp()/10)) * 5, \
     weapon=weapon)
-    #skrivShroom
+    skrivShroom()
     print(spiller.navn(), "har møtt en", fiende.navn() + "!")
     return fiende
 
