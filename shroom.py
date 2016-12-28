@@ -521,8 +521,8 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                    Godt å se deg """ + navn + """, vi fant Zap like hysetirsk som han er nå,
                    vi tror han er i sjokk. Rapporter tilbake til Strategiske Synne, vi skal
                    ta vare på Zap!\n""")
-                 input("Trykk enter for å dra tilbake\n> ")
-                 sQlog.hent_quest(8).progresser()
+                input("Trykk enter for å dra tilbake\n> ")
+                sQlog.hent_quest(8).progresser()
             elif inn == "s": return True
             if inn == "f": return False
             if inn == "q" and sQlog.hent_quest(7).startet() and not sQlog.hent_quest(7).progresjon():
