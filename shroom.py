@@ -70,7 +70,7 @@ def shroom_loop(spiller, inv, klasser, spellbook):
             kjellQ = sQlog.hent_quest(2)
             bjarteQ = bQlog.hent_quest(5)
             bq = sQlog.hent_quest(0) #mer
-            if bjarteQ.startet() and not bjarteQ.ferdig():
+            if bjarteQ.startet() and not bjarteQ.ferdig() and (inn == "3" or inn == "10"):
                 if not kjellQ.ferdig() and inn == "3" or kjellQ.ferdig() and inn == "10":
                     if not kjellLoop(spiller, inv, klasser, spellbook, bjarteQ):
                         quest = False
@@ -116,7 +116,7 @@ def shroom_loop(spiller, inv, klasser, spellbook):
                     alliert = Fiende(["Gale Gro", "Kjappe Kim", "Listige Ludvig", "Modige Mona"][randint(0, 3)], \
                     "alliert", Loot(), hp=1900+(randint(0, spiller.lvl())*30), a=300, d=270, kp=300+randint(0, 60), bonusKp=10)
                 else:
-                    alliert = Fiende(["Symmetrike Sara", "Magiske Mikkel", "Mirakuløse Marte", "Suverene Sigurd"][randint(0, 3)], \
+                    alliert = Fiende(["Symmetriske Sara", "Magiske Mikkel", "Mirakuløse Marte", "Suverene Sigurd"][randint(0, 3)], \
                     "alliert", Loot(), hp=4000+(randint(0, spiller.lvl())*70), a=1000+randint(0, 100), d=600, \
                     kp=600+randint(0, 150), bonusKp=30, weapon=400)
 
@@ -477,6 +477,7 @@ def ussleUlvLoop(spiller, inv, klasser, spellbook):
 
 def oppBakkenLoop(spiller, inv, klasser, spellbook):
     sQlog = klasser.questlog(6)
+    navn = spiller.navn()
     if not sQlog.hent_quest(4).ferdig():
         print("""
         ** Du sanser en sterk magisk kraft i nærheten! **\n""")
@@ -491,7 +492,70 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
         sQlog.hent_quest(4).progresser()
         sQlog.snakk(4, spiller, inv)
         return False
-    return True
+    else:
+        while True:
+            print("    Du er i utkanten av Shroom-terretorium. Her er dine alternativer:")
+            print("    --                    ~~                 ~~                    --")
+            print("    Fronten (s)           Hjelp ekspedisjonsmagikerne å drepe shrooms")
+            if sQlog.hent_quest(7).startet() and not sQlog.hent_quest(7).progresjon():
+                print("    Pàn Tú (q)            Hør hva Pàn Tú har å si")
+            print("    Dra tilbake (f)       Dra tilbake til ekspedisjonsleiren")
+            print("    --                    ~~                 ~~                    --")
+            inn = input("Hva vil du gjøre?\n> ").lower()
+            if inn == "s": return True
+            if inn == "f": return False
+            if inn == "q" and sQlog.hent_quest(7).startet() and not sQlog.hent_quest(7).progresjon():
+                print("""
+    Pàn Tú: Din timing er upåklagelig. Vi trenger å vite hva som har skjedd
+            her før alle ekspedisjonsmagikerne utsletter alle spor og alt
+            levende her i skogen! Som tidligere nevnt har jeg kontakter inne
+            i den åpne shroom-leiren, men kun sopp-fanatikere får gå inn i
+            shroom-terretorium uten å bli angrepet av den andre leiren.
+            Heldigvis har jeg fått beskjed om at et sendebud vil bli sendt
+            til den åpne plassen nord for her. Kan du dra opp dit og rydde
+            vekk eventuelle fiendtlige shrooms?\n""")
+                if input("Vil du dra nord til sendebudet?       (ja/nei)\n> ").lower() in {"ja", "j"}:
+                    for x in range(4):
+                        if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): return False
+                    print("""
+  Bjarte Banditt: """ + navn + "? " + navn + """, er det deg?
+                  Hv- hvor er jeg? Hvem er jeg? HVEM ER J- """ + Fore.RED + "Hei " + navn + """.
+                  Det er høyst beklagelig at vi må benytte oss av tosker som denne for
+                  å kommunisere, men slik den politiske situasjonen er nå ser vi ingen
+                  annen mulighet. Tiden renner ut fort, og det vi har å si er viktig,
+                  så lytt nøye """ + navn + """. Vi er ikke den Bamhjertiges egne barn,
+                  men man kan si vi er dens barnebarn. Vi er ikke en intensjon, men et
+                  heldig uhell fremkalt av den Bamhjertiges første barn. Vi er bevis på
+                  en ny sirkel av liv.\n""" + Style.RESET_ALL)
+                    input("Trykk enter for å fortsette\n> ")
+                    print(Fore.RED + """
+                  Vi er et svar, men vi er ikke ditt svar """ + navn + """. Du vil finne det senere.
+                  Vår ende er nær, men frø er plantet. En ny verden vil reise seg i
+                  asken til den forrige, og tapt harmoni vil oppstå på ny.
+
+                  Hold et åpent sinn.\n""" + Style.RESET_ALL)
+                    input("Trykk enter for å fortsette\n> ")
+                    print("\n ** En shroom avbryter møtet **\n")
+                    print("  Boletus Pascuus: " + Fore.RED + "Hva foregår her? Tilbe oss!\n" + Style.RESET_ALL)
+                    #skrivShroom mer
+                    print(spiller.navn(), "og Bjarte Banditt har møtt en fiendtlig shroom!")
+                    loot = Loot()
+                    loot.legg_til_item(1000, 1)
+                    fiende = Fiende("Boletus Pascuus", "shroom", loot, hp=7000, a=450, d=300, kp=500, bonusKp=15)
+                    loot = Loot()
+                    loot.legg_til_item(7000, 1)
+                    alliert = Fiende("Bjarte Banditt", "banditt", loot, hp=12000, a=450, d=-400, kp=700, bonusKp=30)
+                    if not angrip(spiller, fiende, inv, klasser, spellbook, alliert): return False
+                    print("       ** Bjarte Banditt har gått fra vettet! **\n")
+                    #skrivBjarte
+                    print(spiller.navn(), "har møtt Bjarte Banditt!")
+                    fiende = alliert
+                    if fiende.dead(): fiende.mist_liv(-4000, True)
+                    if not angrip(spiller, fiende, inv, klasser, spellbook): return False
+                    sQlog.hent_quest(7).progresser()
+                    print("\nDu drar tilbake til utkanten av shroom-terretoriumet, men Pàn Tú er")
+                    print("ikke å se. Kanskje du burde snakke med Zip?")
+                    input("\nTrykk enter for å fortsette\n> ")
 
 def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
     sQlog = klasser.questlog(6)
@@ -515,7 +579,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
             print(spiller.navn(), "drar tilbake til leiren.")
             return False
 
-        if alliert:
+        if alliert and not tur and not fiende.dead():
             if alliert.kp() >= 70 and spiller.hp() / spiller.xHp() <= 0.6 and randint(0, 3) == 0:
                 print(alliert.navn() + alliert.ending(), "kastet restituer!")
                 print(spiller.navn(), "restorerte", spiller.restorer(300), "liv.")
@@ -534,7 +598,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
                 alliert.kp(-130)
             else:
                 print(alliert.navn(), "angrep", fiende.navn() + fiende.ending() + ".")
-                fiende.angrepet(alliert.a(), alliert.weapon_dmg(), alliert=alliert)
+                fiende.angrepet(alliert.a(), alliert.weapon_dmg(), angriper=alliert)
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
         if fiende.dead():
@@ -609,7 +673,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
                     alliert.mist_kp(1000)
                     fiende.kp(-450)
                 else:
-                    alliert.angrepet(fiende.a(), fiende.weapon_dmg())
+                    alliert.angrepet(fiende.a(), fiende.weapon_dmg(), angriper=fiende)
 
             #Guffsliffsaff - spiller til tre
             elif fiende.navn() == spiller.navn() + " v2" and fiende.hp() <= int(fiende.xHp() / 4):
@@ -1072,7 +1136,7 @@ def skog_quest(qlog, spiller):
     desk = shroom_q5(navn)
     ferdigDesk = shroom_q5_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 29, "Strategiske Synne", tilgjengelig=False)
-    q.legg_til_reward(xp=10000, hp=100, kp=40, settTilgjengelig=True, settTilgjengeligIndeks=[5, 6])
+    q.legg_til_reward(xp=10000, hp=100, kp=40, settTilgjengelig=True, settTilgjengeligIndeks=[5, 7])
     q.legg_til_progresjonTekst("Pàn Tú funnet: ")
     q.legg_til_svarTekst("\nKan du dra etter henne?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
@@ -1089,9 +1153,19 @@ def skog_quest(qlog, spiller):
     #q7
     desk = shroom_q7(navn)
     ferdigDesk = shroom_q7_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 14, 30, "Magiske Mikkel")
+    q.legg_til_reward(xp=11000)
+    q.legg_til_ekstra_tekst("Magiske Mikkel har forbedret teknikken din, Opphold er nå mer effektiv!")
+    q.legg_til_progresjonTekst("Opphold runder aktiv: ")
+    q.legg_til_svarTekst("\nVil du forbedre teknikken din?     (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q8
+    desk = shroom_q8(navn)
+    ferdigDesk = shroom_q8_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 32, "Zip", tilgjengelig=False)
-    q.legg_til_reward(xp=10000)
-    q.legg_til_progresjonTekst("Hemmelig beskjed levert: ")
+    q.legg_til_reward(xp=13000)
+    q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
     q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 

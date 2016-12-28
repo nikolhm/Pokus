@@ -1029,7 +1029,7 @@ class Fiende:
     #Tar imot skade gjort av spilleren som parameter. Parameteret er altså max
     #skade som kan bli gjort, men hvor mye som faktisk blir gjort avhenger av randint
     #og fiendens d.
-    def angrepet(self, a=0, sverdA=0, alliert=None):
+    def angrepet(self, a=0, sverdA=0, angriper=None):
         skade = randint(0, a)
         if sverdA:
             skade = round(randint(0, a) / 10) + sverdA
@@ -1038,8 +1038,8 @@ class Fiende:
         else:
             skade -= int(randint(self._d, 0) / 4)
         if skade <= 0:
-            if alliert:
-                print(alliert.navn() + alliert.ending(), "bommet!")
+            if angriper:
+                print(angriper.navn() + angriper.ending(), "bommet!")
             else:
                 print("Du bommet!")
             return 0
@@ -1412,7 +1412,8 @@ class Spellbook:
         if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and not fiende.untouchable():
             self._spiller.bruk_kons(350)
             print(self._spiller.navn(), "kastet Opphold!")
-            self._opphold = 3
+            self._opphold = 2
+            if self._klasser.questlog(6).hent_quest(6).ferdig(): self._opphold += 1
             return False
         elif self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and fiende.untouchable():
             print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
@@ -1423,6 +1424,10 @@ class Spellbook:
         return True
 
     def opphold(self, cd=0):
+        #quest
+        if cd and self._klasser.questlog(6).hent_quest(6).startet():
+            self._klasser.questlog(6).hent_quest(6).progresser()
+            
         self._opphold += cd
         return self._opphold
 

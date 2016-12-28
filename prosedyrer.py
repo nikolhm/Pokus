@@ -599,8 +599,6 @@ def krypt(filnavn):
     with open(filnavn, "w", encoding="UTF-8") as fil:
         fil.write(tekst)
 
-#krypt("Save\\Kåre.sav")
-
 def dekrypt(filnavn):
     ingentingInteressant = "hunGunIcorN"
     skalSkrive =  []

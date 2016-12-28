@@ -27,6 +27,12 @@ msi_data = {"Shortcut": shortcut_table}
 # Change some default MSI options and specify the use of the above defined tables
 bdist_msi_options = {'data': msi_data}
 
+icoPath = ""
+if (sys.platform == "win32"):
+    icoPath = "docs\\res\img\\favicon.ico"
+else:
+    icoPath = "docs/res/img/favicon.ico"
+
 
 base = None
 
@@ -35,6 +41,6 @@ setup(  name="Pokus",
         options = {"build_exe": build_exe_options, "bdist_msi": bdist_msi_options},
         executables = [Executable("pokus.py",
         base=base,
-        icon="docs\\res\img\\favicon.ico",
+        icon=icoPath,
         shortcutName="Pokus",
         shortcutDir="DesktopFolder")])
