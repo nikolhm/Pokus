@@ -506,7 +506,24 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
             print("    Dra tilbake (f)       Dra tilbake til ekspedisjonsleiren")
             print("    --                    ~~                 ~~                    --")
             inn = input("Hva vil du gjøre?\n> ").lower()
-            if inn == "s": return True
+            if inn == "s" and sQlog.hent_quest(8).startet() and not sQlog.hent_quest(8).progresjon():
+                alliert = Fiende("Zap", "alliert", Loot(), hp=13000, a=560, d=320, kp=800, bonusKp=20)
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, alliert): return False
+                print("""
+              Zap: """ + navn + """! Så godt å se deg! Jeg vet ikke hva jeg skal gjøre!
+                   Zip kom forbi her for litt siden, vi sloss, og, og- vi er forrådt! Av Zip!
+                   Jeg sloss nettopp mot Zip! Vi må dra etter henne, hun kan ikke være seg
+                   selv! Det må være disse udugelige, forvrengte, forbaskede forvokste soppene
+                   som har tatt over sinnet hennes! Hva skal vi gjøre?\n""")
+                input("Trykk enter for å fortsette\n> ")
+                print("""
+ Symmetriske Sara: Du må ta det rolig Zap! Det nytter ikke å kjempe mer nå, du må hvile deg!
+                   Godt å se deg """ + navn + """, vi fant Zap like hysetirsk som han er nå,
+                   vi tror han er i sjokk. Rapporter tilbake til Strategiske Synne, vi skal
+                   ta vare på Zap!\n""")
+                 input("Trykk enter for å dra tilbake\n> ")
+                 sQlog.hent_quest(8).progresser()
+            elif inn == "s": return True
             if inn == "f": return False
             if inn == "q" and sQlog.hent_quest(7).startet() and not sQlog.hent_quest(7).progresjon():
                 print("""
