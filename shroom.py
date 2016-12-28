@@ -486,9 +486,12 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
         print("""
         ** Du sanser en sterk magisk kraft i nærheten! **\n""")
         input("Trykk enter for å gå videre\n> ")
-        print("""        ** En levende forvokst sopp kommer bort til deg **\n
-    Skjegghatt Shroom: """ + Fore.RED + "Du er ikke velkommen her " + spiller.navn() + ".\n" + Style.RESET_ALL)
+        print("        ** En levende forvokst sopp kommer bort til deg **")
+        skrivSkjegghattShroom()
+        print(  """Skjegghatt Shroom: """ + Fore.RED + "Du er ikke velkommen her " + spiller.navn() + ".\n" + Style.RESET_ALL)
         input("Trykk enter for å fortsette\n> ")
+        clear_screen()
+        skrivSkjegghattShroom()
         loot = Loot()
         loot.legg_til_item(1000, 1) #mer
         fiende = Fiende("Skjegghatt Shroom", "shroom", loot, a=350, d=600, hp=12345, kp=1000, bonusKp=30)
