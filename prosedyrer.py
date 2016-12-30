@@ -95,6 +95,9 @@ def skriv_ut(s, f):
     s.skriv_ut()
     f.skriv_ut()
 
+def pause():
+    input("Trykk enter for å fortsette\n> ")
+
 def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     qlog = klasser.questlog(1)
     #gir xp

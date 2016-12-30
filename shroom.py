@@ -506,9 +506,23 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
             print("    Fronten (s)           Hjelp ekspedisjonsmagikerne å drepe shrooms")
             if sQlog.hent_quest(7).startet() and not sQlog.hent_quest(7).progresjon():
                 print("    Pàn Tú (q)            Hør hva Pàn Tú har å si")
+            if sQlog.hent_quest(9).startet():
+                print("    Tjernet (t)           Snik deg bort til det magiske tjernet")
             print("    Dra tilbake (f)       Dra tilbake til ekspedisjonsleiren")
             print("    --                    ~~                 ~~                    --")
             inn = input("Hva vil du gjøre?\n> ").lower()
+            if inn == "t" and sQlog.hent_quest(9).startet():
+                clear_screen()
+                print("\n\n    * Du sniker deg inn til midten av shroom-terretorium * \n")
+                pause()
+                print("Du er blitt oppdaget av en soppfamilie!\n")
+                pause()
+                loot = Loot()
+                loot.legg_til_item(25, 1) #mer
+                fiende1 = Fiende("Suillus Soppfar", "shroom", loot, hp=5000, a=300, d=400, kp=250, bonusKp=25, weapon=400)
+                fiende2 = Fiende("Suillus Soppmor", "shroom", loot, hp=4000, a=600, d=10, kp=400, bonusKp=25)
+                fiende3 = Fiende("Suillus Soppbarn","shroom", loot, hp=2000, a=100, d=1000, kp=1000, bonusKp=25)
+                if not angrip(spiller, fiende1, inv, klasser, spellbook, fiende2=fiende2, fiende3=fiende3): return False
             if inn == "s" and sQlog.hent_quest(8).startet() and not sQlog.hent_quest(8).progresjon():
                 alliert = Fiende("Zap", "alliert", Loot(), hp=13000, a=560, d=320, kp=800, bonusKp=20)
                 if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, alliert): return False
@@ -581,11 +595,19 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                     print("ikke å se. Kanskje du burde snakke med Zip?")
                     input("\nTrykk enter for å fortsette\n> ")
 
-def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
+def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None, fiende3=None):
     sQlog = klasser.questlog(6)
     bQlog = klasser.questlog(7)
+    fiende1 = fiende
+    fiender = [fiende1]
     if alliert: alliert.skriv_ut()
     skriv_ut(spiller, fiende)
+    if fiende2:
+        fiende2.skriv_ut()
+        fiender.append(fiende2)
+    if fiende3:
+        fiende3.skriv_ut()
+        fiender.append(fiende3)
     uCD = 0
     bundetCD = 0
     pantu = False
@@ -602,6 +624,30 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til leiren.")
             return False
+
+        if (inn == "skift" or inn == "skift fiende") and fiende2:
+            print("    ------------------------- SKIFT FIENDE -------------------------")
+            print("    Fiende 1: {:55} {}".format(fiende1.skriv_ut(True), " DØD" * int(fiende1.dead())))
+            print("    Fiende 2: {:55} {}".format(fiende2.skriv_ut(True), " DØD" * int(fiende2.dead())))
+            if fiende3:
+                print("    Fiende 3: {:55} {}".format(fiende3.skriv_ut(True), " DØD" * int(fiende3.dead())))
+            print("    ------------------------- *****~***** -------------------------")
+            inn = input("\nHvem vil du angripe?\n> ").lower()
+            if inn in {"fiende 1", "fiende1", "1", fiende1.navn()}:
+                if fiende1.dead(): print("Denne fienden er død!")
+                else:
+                    fiende = fiende1
+                    print("Du angriper nå", fiende1.navn())
+            if inn in {"fiende 2", "fiende2", "2", fiende2.navn()}:
+                if fiende2.dead(): print("Denne fienden er død!")
+                else:
+                    fiende = fiende2
+                    print("Du angriper nå", fiende2.navn())
+            if fiende3 and inn in {"fiende 3", "fiende3", "3", fiende3.navn()}:
+                if fiende3.dead(): print("Denne fienden er død!")
+                else:
+                    fiende = fiende3
+                    print("Du angriper nå", fiende3.navn())
 
         if alliert and not tur and not fiende.dead():
             if alliert.kp() >= 70 and spiller.hp() / spiller.xHp() <= 0.6 and randint(0, 3) == 0:
@@ -631,6 +677,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
+            if not fiende1.dead():
+                fiende = fiende1
+            elif fiende2 and not fiende2.dead():
+                fiende = fiende2
+            elif fiende3 and not fiende3.dead():
+                fiende = fiende3
 
             #Quests:
             #Banditt q1:
@@ -687,168 +739,181 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None):
                 print("Du plukker opp de tamme restene av guffsliffsaff-grenen.")
 
             input("Trykk enter for å fortsette\n> ")
-            return True
+            if fiende.dead():
+                return True
 
-        elif not tur:
-            #Alliert
-            if alliert and randint(0, 3) == 0:
-                if fiende.kp() >= 450 and randint(0, 10) == 0:
-                    print(fiende.navn() + fiende.ending(), "kastet Avskjær Hjelp!")
-                    alliert.mist_kp(1000)
-                    fiende.kp(-450)
-                else:
-                    alliert.angrepet(fiende.a(), fiende.weapon_dmg(), angriper=fiende)
+        if not tur:
+            target = fiende
+            for i in range( sum([int(not f.dead()) for f in fiender]) ):
+                fiende = fiender[i]
 
-            #Guffsliffsaff - spiller til tre
-            elif fiende.navn() == spiller.navn() + " v2" and fiende.hp() <= int(fiende.xHp() / 4):
-                print("Guffsliffsaffen er for svak til å opprettholde formen sin!")
-                print("Guffsliffsaffen transformerer seg igjen.")
-                fiende = generer_guffsliffsaff(spiller, "kvist", fiende)
-                input("Trykk enter for å fortsette")
-            #Utforsk
-            elif fiende.race() == "snik" and fiende.kp() >= 195 and uCD >=0 and randint(1, 5) >= 3:
-                print(fiende.navn() + fiende.ending(), "kastet Utforsk!")
-                fiende.bruk_kons(195)
-                uCD = -6
-            #Smidige Sandra - Duell
-            elif fiende.navn() == "Smidige Sandra":
-                if fiende.untouchableCD():
-                    print("Smidige Sandra restorerte 800 hp.")
-                    fiende.restorer(800)
-                    fiende.kp(-15)
-                elif fiende.hp() < 900 and fiende.kp() >= 100 and not fiende.untouchableCD():
-                    print("Smidige Sandra har sklidd inn i mørket for to runder!")
-                    fiende.set_untouchable(True, 2)
-                    fiende.kp(-100)
-                elif fiende.kp() >= 150 and randint(1, 4) == 1 and bundetCD <= 0:
-                    print("Smidige Sandra har bundet deg fast!")
-                    bundetCD = 3
-                    fiende.kp(-150)
-                else:
-                    spiller.angrepet(fiende)
-            #Store Sture - Duell
-            elif fiende.navn() == "Store Sture":
-                if fiende.kp() >= 50 and fiende.hp() <= fiende.xHp() - 210 and randint(1, 5) == 3:
-                    print("Store Sture dunket deg med et kjøttstykke og spiste det!")
-                    print(fiende.navn(), "restorerte", fiende.restorer(250), "hp.")
-                    print(spiller.navn(), "mistet", spiller.mist_liv(50), "liv.")
-                    fiende.kp(-50)
-                else:
-                    spiller.angrepet(fiende)
-            #Kraftige Klara - Duell
-            elif fiende.navn() == "Kraftige Klara":
-                if fiende.kp() >= 50 and randint(1, 7) != 1:
-                    fiende.kp(-50)
-                    fiende.a(500)
-                    print("Kraftige Klara varmet opp musklene!")
-                    print("Kraftige Klara fikk 500 angrepspoeng.")
-                else:
-                    spiller.angrepet(fiende)
-            #Teite Tim - Duell
-            elif fiende.navn() == "Teite Tim":
-                if fiende.kp() >= 200 and randint(1, 15) == 7 and fiende.hp() < fiende.xHp() - 400:
-                    print("Teite Tim kastet Super Restituer!")
-                    print("Teite Tim restorerte", fiende.restorer(500 + randint(0, 120)), "liv.")
-                    fiende.kp(-200)
-                elif fiende.kp() >= 350 and randint(1, 10) == 1 and spiller.kp() >= 150:
-                    print("Teite Tim kastet Distraher!")
-                    print(spiller.navn(), "mistet", spiller.mist_kp(500 + randint(0, 80)), "kp.")
-                    fiende.kp(-350)
-                elif fiende.kp() >= 200 and randint(1, 15) == 1:
-                    print("Teite Tim gjorde en strategisk vurdering av kampen!")
-                    print("Teite TIm fikk 50 angrepspoeng.")
-                    fiende.a(50)
-                    fiende.kp(-200)
-                elif fiende.kp() >= 50 and randint(1, 8) == 1 and uCD >= 0:
-                    print("Teite Tim kastet Restituer!")
-                    print("Teite Tim restorerte", fiende.restorer(150 + randint(0, 50)), "liv.")
-                    fiende.kp(-50)
+                #Alliert
+                if alliert and randint(0, 3) == 0:
+                    if fiende.kp() >= 450 and randint(0, 10) == 0:
+                        print(fiende.navn() + fiende.ending(), "kastet Avskjær Hjelp!")
+                        alliert.mist_kp(1000)
+                        fiende.kp(-450)
+                    else:
+                        alliert.angrepet(fiende.a(), fiende.weapon_dmg(), angriper=fiende)
+
+                #Guffsliffsaff - spiller til tre
+                elif fiende.navn() == spiller.navn() + " v2" and fiende.hp() <= int(fiende.xHp() / 4):
+                    print("Guffsliffsaffen er for svak til å opprettholde formen sin!")
+                    print("Guffsliffsaffen transformerer seg igjen.")
+                    fiende = generer_guffsliffsaff(spiller, "kvist", fiende)
+                    input("Trykk enter for å fortsette")
+                #Utforsk
+                elif fiende.race() == "snik" and fiende.kp() >= 195 and uCD >=0 and randint(1, 5) >= 3:
+                    print(fiende.navn() + fiende.ending(), "kastet Utforsk!")
+                    fiende.bruk_kons(195)
+                    uCD = -6
+                #Smidige Sandra - Duell
+                elif fiende.navn() == "Smidige Sandra":
+                    if fiende.untouchableCD():
+                        print("Smidige Sandra restorerte 800 hp.")
+                        fiende.restorer(800)
+                        fiende.kp(-15)
+                    elif fiende.hp() < 900 and fiende.kp() >= 100 and not fiende.untouchableCD():
+                        print("Smidige Sandra har sklidd inn i mørket for to runder!")
+                        fiende.set_untouchable(True, 2)
+                        fiende.kp(-100)
+                    elif fiende.kp() >= 150 and randint(1, 4) == 1 and bundetCD <= 0:
+                        print("Smidige Sandra har bundet deg fast!")
+                        bundetCD = 3
+                        fiende.kp(-150)
+                    else:
+                        spiller.angrepet(fiende)
+                #Store Sture - Duell
+                elif fiende.navn() == "Store Sture":
+                    if fiende.kp() >= 50 and fiende.hp() <= fiende.xHp() - 210 and randint(1, 5) == 3:
+                        print("Store Sture dunket deg med et kjøttstykke og spiste det!")
+                        print(fiende.navn(), "restorerte", fiende.restorer(250), "hp.")
+                        print(spiller.navn(), "mistet", spiller.mist_liv(50), "liv.")
+                        fiende.kp(-50)
+                    else:
+                        spiller.angrepet(fiende)
+                #Kraftige Klara - Duell
+                elif fiende.navn() == "Kraftige Klara":
+                    if fiende.kp() >= 50 and randint(1, 7) != 1:
+                        fiende.kp(-50)
+                        fiende.a(500)
+                        print("Kraftige Klara varmet opp musklene!")
+                        print("Kraftige Klara fikk 500 angrepspoeng.")
+                    else:
+                        spiller.angrepet(fiende)
+                #Teite Tim - Duell
+                elif fiende.navn() == "Teite Tim":
+                    if fiende.kp() >= 200 and randint(1, 15) == 7 and fiende.hp() < fiende.xHp() - 400:
+                        print("Teite Tim kastet Super Restituer!")
+                        print("Teite Tim restorerte", fiende.restorer(500 + randint(0, 120)), "liv.")
+                        fiende.kp(-200)
+                    elif fiende.kp() >= 350 and randint(1, 10) == 1 and spiller.kp() >= 150:
+                        print("Teite Tim kastet Distraher!")
+                        print(spiller.navn(), "mistet", spiller.mist_kp(500 + randint(0, 80)), "kp.")
+                        fiende.kp(-350)
+                    elif fiende.kp() >= 200 and randint(1, 15) == 1:
+                        print("Teite Tim gjorde en strategisk vurdering av kampen!")
+                        print("Teite TIm fikk 50 angrepspoeng.")
+                        fiende.a(50)
+                        fiende.kp(-200)
+                    elif fiende.kp() >= 50 and randint(1, 8) == 1 and uCD >= 0:
+                        print("Teite Tim kastet Restituer!")
+                        print("Teite Tim restorerte", fiende.restorer(150 + randint(0, 50)), "liv.")
+                        fiende.kp(-50)
+                    else:
+                        if uCD < 0:
+                            print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(spiller.angrepet(fiende)), "hp!")
+                        else:
+                            spiller.angrepet(fiende)
+                #Onde Olga - Duell
+                elif fiende.navn() == "Onde Olga":
+                    if fiende.kp() >= 315 and randint(1, 7) == 1 and not fiende.untouchableCD():
+                        print(fiende.navn() + fiende.ending(), "kastet RockNoRoll!")
+                        print(fiende.navn() + fiende.ending(), "er blitt til stein!")
+                        fiende.kp(-315)
+                        fiende.set_untouchable(True, 5)
+                    elif fiende.kp() >= 140 and randint(1, 6) == 1 and fiende.hp() < fiende.xHp() - 200:
+                        print("Onde Olga kastet Restituer!")
+                        print("Onde Olga restorerte", fiende.restorer(250), "liv.")
+                        fiende.kp(-140)
+                    elif fiende.kp() >= 350 and randint(1, 2 + round(13 * (fiende.hp() / fiende.xHp()))) == 1:
+                        print("Onde Olga mante frem en kampstein og kastet den på deg!")
+                        print(spiller.navn(), "mistet", spiller.mist_liv(500), "liv!")
+                        fiende.kp(-350)
+                    else:
+                        spiller.angrepet(fiende)
+                #Restituer
+                elif fiende.kp() >= 50 and randint(0, 2) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0:
+                    print(fiende.navn() + fiende.ending(), "kastet Restituer!")
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp.")
+                    fiende.bruk_kons(50)
+                #Guffsliffsaff
+                elif fiende.navn() == "Guffsliffsaff" and fiende.kp() >= 60 and randint(1, 3) == 1:
+                    print(fiende.navn() + fiende.ending(), "tok på deg!")
+                    print(fiende.navn() + fiende.ending(), "transformerer seg.")
+                    input("Trykk enter for å fortsette\n> ")
+                    fiende = generer_guffsliffsaff(spiller, True)
+                #Vanlig angrep
                 else:
                     if uCD < 0:
                         print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(spiller.angrepet(fiende)), "hp!")
                     else:
                         spiller.angrepet(fiende)
-            #Onde Olga - Duell
-            elif fiende.navn() == "Onde Olga":
-                if fiende.kp() >= 315 and randint(1, 7) == 1 and not fiende.untouchableCD():
-                    print(fiende.navn() + fiende.ending(), "kastet RockNoRoll!")
-                    print(fiende.navn() + fiende.ending(), "er blitt til stein!")
-                    fiende.kp(-315)
-                    fiende.set_untouchable(True, 5)
-                elif fiende.kp() >= 140 and randint(1, 6) == 1 and fiende.hp() < fiende.xHp() - 200:
-                    print("Onde Olga kastet Restituer!")
-                    print("Onde Olga restorerte", fiende.restorer(250), "liv.")
-                    fiende.kp(-140)
-                elif fiende.kp() >= 350 and randint(1, 2 + round(13 * (fiende.hp() / fiende.xHp()))) == 1:
-                    print("Onde Olga mante frem en kampstein og kastet den på deg!")
-                    print(spiller.navn(), "mistet", spiller.mist_liv(500), "liv!")
-                    fiende.kp(-350)
-                else:
-                    spiller.angrepet(fiende)
-            #Restituer
-            elif fiende.kp() >= 50 and randint(0, 2) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0:
-                print(fiende.navn() + fiende.ending(), "kastet Restituer!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp.")
-                fiende.bruk_kons(50)
-            #Guffsliffsaff
-            elif fiende.navn() == "Guffsliffsaff" and fiende.kp() >= 60 and randint(1, 3) == 1:
-                print(fiende.navn() + fiende.ending(), "tok på deg!")
-                print(fiende.navn() + fiende.ending(), "transformerer seg.")
-                input("Trykk enter for å fortsette\n> ")
-                fiende = generer_guffsliffsaff(spiller, True)
-            #Vanlig angrep
-            else:
-                if uCD < 0:
-                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(spiller.angrepet(fiende)), "hp!")
-                else:
-                    spiller.angrepet(fiende)
 
-            #Pàn Tú - legger til alliert
-            if fiende.navn() == "Skjegghatt Shroom" and fiende.hp() / fiende.xHp() <= 0.82 \
-            and not pantu and not spiller.dead():
-                pantu = True
-                alliert = Fiende("Pàn Tú", "alliert", Loot(), hp=25000, a=470, d=100, kp=700, bonusKp=30)
-                print("""\n
-        I kampens hete legger du merke til at to skikkelser observerer kampen fra
-        avstand. Den ene skikkelsen hvisker noe til den andre, før den sporløst
-        fordufter i løse luften. Skikkelsen som er igjen stormer bort til deg
-        for å hjelpe.
+                #Pàn Tú - legger til alliert
+                if fiende.navn() == "Skjegghatt Shroom" and fiende.hp() / fiende.xHp() <= 0.82 \
+                and not pantu and not spiller.dead():
+                    pantu = True
+                    alliert = Fiende("Pàn Tú", "alliert", Loot(), hp=25000, a=470, d=100, kp=700, bonusKp=30)
+                    print("""\n
+            I kampens hete legger du merke til at to skikkelser observerer kampen fra
+            avstand. Den ene skikkelsen hvisker noe til den andre, før den sporløst
+            fordufter i løse luften. Skikkelsen som er igjen stormer bort til deg
+            for å hjelpe.
 
-                      ** Pàn Tú har blitt med i kampen! **\n""")
-                input("Trykk enter for å fortsette kampen\n> ")
-                if spiller.fuglelukt():
-                    print("\n\n    Pàn Tú rynker på nesen og synes du lukter... Fugleaktig.\n")
-                    input("Ikke bry deg om det og trykk enter for å fortsette\n> ")
+                          ** Pàn Tú har blitt med i kampen! **\n""")
+                    input("Trykk enter for å fortsette kampen\n> ")
+                    if spiller.fuglelukt():
+                        print("\n\n    Pàn Tú rynker på nesen og synes du lukter... Fugleaktig.\n")
+                        input("Ikke bry deg om det og trykk enter for å fortsette\n> ")
 
-            #gir beskjed om karakteren døde
-            if spiller.dead():
-                write_player_died(spiller, "leiren")
-                player_died(spiller, inv, klasser)
-                return False
+                #gir beskjed om karakteren døde
+                if spiller.dead():
+                    write_player_died(spiller, "leiren")
+                    player_died(spiller, inv, klasser)
+                    return False
 
-            #git beskjed om den allierte døde
-            if alliert and alliert.dead():
-                if alliert.navn() in {"Pàn Tú", "Zip", "Zap"}:
-                    print(alliert.navn() + alliert.ending(), "hviler seg på sidelinjen.")
-                else:
-                    print(alliert.navn() + alliert.ending(), "døde! En magisk paraply henter", \
-                    alliert.navn() + alliert.ending(), "til en uviss fremtid.")
-                print("\n     **", alliert.navn() + alliert.ending(), "har forsvunnet fra kampen! **")
-                alliert = None
-                input("\nTrykk enter for å fortsette\n> ")
+                #git beskjed om den allierte døde
+                if alliert and alliert.dead():
+                    if alliert.navn() in {"Pàn Tú", "Symmetriske Sara", "Magiske Mikkel", "Zap"}:
+                        print(alliert.navn() + alliert.ending(), "hviler seg på sidelinjen.")
+                    else:
+                        print(alliert.navn() + alliert.ending(), "døde! En magisk paraply henter", \
+                        alliert.navn() + alliert.ending(), "til en uviss fremtid.")
+                    print("\n     **", alliert.navn() + alliert.ending(), "har forsvunnet fra kampen! **")
+                    alliert = None
+                    input("\nTrykk enter for å fortsette\n> ")
 
             #skriver ut hp og kp til karakteren og hp til fienden til neste runde.
-            else:
-                uCD += 1
-                bundetCD -= 1
-                spiller.kons()
-                fiende.gen_kons()
-                if alliert:
-                    alliert.gen_kons()
-                    alliert.skriv_ut()
-                skriv_ut(spiller, fiende)
-                if bundetCD > 0:
-                    input("Trykk enter for å fortsette\n> ")
+            uCD += 1
+            bundetCD -= 1
+            spiller.kons()
+            fiende = target
+            if alliert:
+                alliert.gen_kons()
+                alliert.skriv_ut()
+            spiller.skriv_ut()
+            if not fiende1.dead():
+                fiende1.gen_kons()
+                fiende1.skriv_ut()
+            if fiende2 and not fiende2.dead():
+                fiende2.gen_kons()
+                fiende2.skriv_ut()
+            if fiende3 and not fiende3.dead():
+                fiende3.gen_kons()
+                fiende3.skriv_ut()
+            if bundetCD > 0:
+                input("Trykk enter for å fortsette\n> ")
 
 def generer_shroom(spiller):
     loot = Loot()
@@ -891,8 +956,12 @@ def generer_smaatt(spiller):
         #skrivKvist()
         return fiende
     elif tall == 3:
-        loot.legg_til_item(100, 1)
-        return Fiende("Liten sopp", "shroom", loot, a=100, d=100, hp=100, kp=100)
+        return generer_liten_sopp(spiller)
+
+def generer_liten_sopp(spiller):
+    loot = Loot()
+    loot.legg_til_item(100, 1)
+    return Fiende("Liten sopp", "shroom", loot, a=100, d=100, hp=100, kp=100)
 
 def generer_tre(spiller):
     tall = randint(1, 5)
@@ -1166,7 +1235,7 @@ def skog_quest(qlog, spiller):
     desk = shroom_q6(navn)
     ferdigDesk = shroom_q6_ferdig(navn)
     q = Quest(desk, ferdigDesk, 20, 30, "Strategiske Synne", tilgjengelig=False)
-    q.legg_til_reward(xp=10000, settTilgjengelig=True, settTilgjengeligIndeks=8)
+    q.legg_til_reward(xp=10000, settTilgjengelig=True, settTilgjengeligIndeks=9)
     q.legg_til_progresjonTekst("Shrooms drept: ")
     q.legg_til_svarTekst("\nKan du være med i slakten?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
@@ -1195,17 +1264,17 @@ def skog_quest(qlog, spiller):
     ferdigDesk = shroom_q9_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 32, "Strategiske Synne", tilgjengelig=False)
     q.legg_til_reward(xp=13000)
-    q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
-    q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
+    q.legg_til_progresjonTekst("Zap snakket med: ")
+    q.legg_til_svarTekst("\nVil du finne Zap?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 
     #q10
     desk = shroom_q10(navn)
     ferdigDesk = shroom_q10_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 35, "Strategiske Synne", tilgjengelig=False)
-    q.legg_til_reward(xp=13000)
-    q.legg_til_progresjonTekst("Pàn Tús kontakt møtt: ")
-    q.legg_til_svarTekst("\nKan jeg stole på deg " + navn + "?     (ja/nei)\n> ")
+    q.legg_til_reward(xp=25000)
+    q.legg_til_progresjonTekst("Tjern Forurenset: ")
+    q.legg_til_svarTekst("\nKan du stoppe denne galskapen " + navn + "?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 
     #bq1

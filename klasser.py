@@ -1091,12 +1091,15 @@ class Fiende:
             return False
 
     #Skriver ut fiendens stats. Gjøres hver runde samtidig som karakterens stats skrives ut.
-    def skriv_ut(self):
+    def skriv_ut(self, silent=False):
         if self._xKp == 0:
-            print(self._navn, " HP: ", self._hp, "/", Style.BRIGHT + Fore.RED, self._xHp, Style.RESET_ALL, sep="")
+            tekst = self._navn + " HP: " + str(self._hp) + "/" + Style.BRIGHT + Fore.RED + str(self._xHp) + Style.RESET_ALL
         else:
-            print(self._navn, " HP: ", self._hp, "/", Style.BRIGHT + Fore.RED, self._xHp, \
-            Style.RESET_ALL, ", KP: ", self._kp, "/", Style.BRIGHT + Fore.BLUE, self._xKp, Style.RESET_ALL, sep="")
+            tekst = self._navn + " HP: " + str(self._hp) + "/" + Style.BRIGHT + Fore.RED + str(self._xHp) + \
+                    Style.RESET_ALL + " + KP: " + str(self._kp) + "/" + Style.BRIGHT + Fore.BLUE + str(self._xKp) + Style.RESET_ALL
+        if not silent:
+            print(tekst)
+        return tekst
 
     #bruker en gitt mengde kp.
     def bruk_kons(self, mengde):
