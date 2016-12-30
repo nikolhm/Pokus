@@ -481,6 +481,7 @@ def ussleUlvLoop(spiller, inv, klasser, spellbook):
 
 def oppBakkenLoop(spiller, inv, klasser, spellbook):
     sQlog = klasser.questlog(6)
+    vassleQ = klasser.questlog(5).hent_quest(3)
     navn = spiller.navn()
     if not sQlog.hent_quest(4).ferdig():
         print("""
@@ -511,6 +512,8 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
             print("    Dra tilbake (f)       Dra tilbake til ekspedisjonsleiren")
             print("    --                    ~~                 ~~                    --")
             inn = input("Hva vil du gjøre?\n> ").lower()
+
+            #Quest 10 - forurens tjernet
             if inn == "t" and sQlog.hent_quest(9).startet():
                 clear_screen()
                 print("\n\n    * Du sniker deg inn til midten av shroom-terretorium * \n")
@@ -522,7 +525,36 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                 fiende1 = Fiende("Suillus Soppfar", "shroom", loot, hp=5000, a=300, d=400, kp=250, bonusKp=25, weapon=400)
                 fiende2 = Fiende("Suillus Soppmor", "shroom", loot, hp=4000, a=600, d=10, kp=400, bonusKp=25)
                 fiende3 = Fiende("Suillus Soppbarn","shroom", loot, hp=2000, a=100, d=1000, kp=1000, bonusKp=25)
-                if not angrip(spiller, fiende1, inv, klasser, spellbook, fiende2=fiende2, fiende3=fiende3): return False
+                print("\n      * Dette er en kamp med flere fiender. Du kan kun angripe en fiende *")
+                print("        om gangen, men alle fiendene vil angripe deg. For å skifte ")
+                print("        hvilken fiende du angriper, skriv 'skift fiende', 'skift' eller")
+                print("        bare 'sf'. Du bruker ikke en tur på å skifte fiende.\n")
+                pause()
+                if not angrip(spiller, fiende1, inv, klasser, spellbook, fiende2=fiende2, fiende3=fiende3):
+                    return False
+                print("\n\n    Bråket fra soppfamilien lokket flere shrooms til deg!\n")
+                pause()
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): return False
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): return False
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=generer_shroom(spiller)):
+                    return False
+                clear_screen()
+                print("\n\n    * Du har nådd tjernet! Tre store shrooms vokter det! *\n")
+                pause()
+                fiender = generer_store_shrooms(spiller)
+                if not angrip(spiller, fiender[0], inv, klasser, spellbook, fiende2=fiender[1], fiende3=fiender[2]):
+                    return False
+                if not vassleQ.progresjon_liste()[0]:
+                    avslutningsLoop(spiller)
+                    vassleQ.progresser_liste(0)
+                    sQlog.hent_quest(9).progresser()
+                    return False
+                else:
+                    print("  * Du har allerede forurenset tjernet! Du drar tilbake til fronten. *\n")
+                    pause()
+                    return True
+
+            #Quest 9 - Snakk med Zap
             if inn == "s" and sQlog.hent_quest(8).startet() and not sQlog.hent_quest(8).progresjon():
                 alliert = Fiende("Zap", "alliert", Loot(), hp=13000, a=560, d=320, kp=800, bonusKp=20)
                 if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, alliert): return False
@@ -540,8 +572,14 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                    ta vare på Zap!\n""")
                 input("Trykk enter for å dra tilbake\n> ")
                 sQlog.hent_quest(8).progresser()
+
+            #Slåss mot shrooms ved fronten
             elif inn == "s": return True
+
+            #Dra tilbake til leiren
             if inn == "f": return False
+
+            #Quest 8 - Snakk med Pàn Tú sin kontakt
             if inn == "q" and sQlog.hent_quest(7).startet() and not sQlog.hent_quest(7).progresjon():
                 print("""
     Pàn Tú: Din timing er upåklagelig. Vi trenger å vite hva som har skjedd
@@ -595,6 +633,39 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                     print("ikke å se. Kanskje du burde snakke med Zip?")
                     input("\nTrykk enter for å fortsette\n> ")
 
+def avslutningsLoop(spiller):
+    navn = spiller.navn()
+    clear_screen()
+    print("""\n
+    * Shroomsene er for svake til å stoppe deg. Du går bort til tjernet. *\n
+  {0:>10}: Allium Sativum Tjernum Forurensum!
+              * {0} kastet Kast Hvitløk. *
+              Tjernet ble forurenset!\n""".format(navn))
+    pause()
+    print("""
+       Boletus Edulis: Neeeeeeeei! Det stakkers tjernet vårt! Hva har du gjort?!
+                       Hvordan skal de små steinsoppene vokse opp og bli som meg
+                       nå? Dette var begynnelsen på en ny sirkel av liv!\n""")
+    pause()
+    print("""
+    Agaricus Augustus: Vårt fødested! Vår kilde til inspirasjon, magi, til livet
+                       selv! Hvilken ondskap vil gjøre noe slikt!\n""")
+    pause()
+    print("""
+Cantharellus Cibarius: Den Bamhjertige vil ikke glemme dette! Selv om han ikke
+                       er vår direkte skaper, vil han beskytte oss slik han
+                       beskytter alle andre! Tyranniet deres vil ende, og en
+                       dag vil en stakkers kantarell som meg bli husket som en
+                       martyr! Alle vil tilbe meg!\n""")
+    pause()
+    print("""
+    Agaricus Augustus: Ahh, ikke han og. Dette er hvorfor den Bamhjertige ikke
+                       lar oss være med på rådsmøter. Hvordan skal man gjennomføre
+                       revolusjon når man konstant krever tilbedelse? Blir ikke
+                       noe bedre verden av det, da er vi jo like ille som Vassle
+                       selv. Dra nå {}, la oss visne i fred!\n""".format(navn))
+    input("Trykk enter for å dra tilbake til Ekspedisjonsleiren\n> ")
+
 def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None, fiende3=None):
     sQlog = klasser.questlog(6)
     bQlog = klasser.questlog(7)
@@ -625,12 +696,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             print(spiller.navn(), "drar tilbake til leiren.")
             return False
 
-        if (inn == "skift" or inn == "skift fiende") and fiende2:
+        if inn in {"skift fiende", "skift", "sf", "bytt fiende", "bf"} and fiende2:
             print("    ------------------------- SKIFT FIENDE -------------------------")
-            print("    Fiende 1: {:55} {}".format(fiende1.skriv_ut(True), " DØD" * int(fiende1.dead())))
-            print("    Fiende 2: {:55} {}".format(fiende2.skriv_ut(True), " DØD" * int(fiende2.dead())))
+            print("    Fiende 1: {:55s} {}".format(fiende1.skriv_ut(True), " DØD" * int(fiende1.dead())))
+            print("    Fiende 2: {:55s} {}".format(fiende2.skriv_ut(True), " DØD" * int(fiende2.dead())))
             if fiende3:
-                print("    Fiende 3: {:55} {}".format(fiende3.skriv_ut(True), " DØD" * int(fiende3.dead())))
+                print("    Fiende 3: {:55s} {}".format(fiende3.skriv_ut(True), " DØD" * int(fiende3.dead())))
             print("    ------------------------- *****~***** -------------------------")
             inn = input("\nHvem vil du angripe?\n> ").lower()
             if inn in {"fiende 1", "fiende1", "1", fiende1.navn()}:
@@ -677,6 +748,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
+            fiender.remove(fiende)
             if not fiende1.dead():
                 fiende = fiende1
             elif fiende2 and not fiende2.dead():
@@ -744,7 +816,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
         if not tur:
             target = fiende
-            for i in range( sum([int(not f.dead()) for f in fiender]) ):
+            for i in range(len(fiender)):
                 fiende = fiender[i]
 
                 #Alliert
@@ -914,6 +986,25 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                 fiende3.skriv_ut()
             if bundetCD > 0:
                 input("Trykk enter for å fortsette\n> ")
+
+def generer_store_shrooms(spiller):
+    fiender = []
+    loot = Loot()
+    loot.legg_til_item(4000, 1) #mer
+
+    #Cantharellus Cibarius
+    fiende = Fiende("Cantharellus Cibarius", "shroom", loot, hp=20000, a=1000, d=400, kp=340, bonusKp=5, weapon=100)
+    fiender.append(fiende)
+
+    #Agaricus Augustus
+    fiende = Fiende("Agaricus Augustus", "shroom", loot, hp=7500, a=140, d=10, kp=700, bonusKp=45)
+    fiender.append(fiende)
+
+    #Boletus Edulis
+    fiende = Fiende("Boletus Edulis", "shroom", loot, hp=4500, a=700, d=130, kp=400, bonusKp=15)
+    fiender.append(fiende)
+
+    return fiender
 
 def generer_shroom(spiller):
     loot = Loot()

@@ -1096,7 +1096,7 @@ class Fiende:
             tekst = self._navn + " HP: " + str(self._hp) + "/" + Style.BRIGHT + Fore.RED + str(self._xHp) + Style.RESET_ALL
         else:
             tekst = self._navn + " HP: " + str(self._hp) + "/" + Style.BRIGHT + Fore.RED + str(self._xHp) + \
-                    Style.RESET_ALL + " + KP: " + str(self._kp) + "/" + Style.BRIGHT + Fore.BLUE + str(self._xKp) + Style.RESET_ALL
+                    Style.RESET_ALL + ", KP: " + str(self._kp) + "/" + Style.BRIGHT + Fore.BLUE + str(self._xKp) + Style.RESET_ALL
         if not silent:
             print(tekst)
         return tekst

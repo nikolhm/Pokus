@@ -509,12 +509,17 @@ def vassle_quest(qlog, spiller):
     qlog.legg_til_quest(q3)
 
     #shroom
+    avslutningstekst = """
+    Gratulerer! Du har spilt ferdig kapittel 1 av Pokus!
+    Da er det bare å bite negler og håpe spent på at
+    kapittel 2 ser dagens lys.\n"""
     desk4 = quests.vassle_shroom(spiller.navn())
     ferdigDesk4 = quests.vassle_shroom_ferdig(spiller.navn())
     q4 = Quest(desk4, ferdigDesk4, 1, 20, "Overtrollmann Vassle", sted="Ekspedisjonen", tilgjengelig=False)
-    q4.legg_til_reward(xp=30000, gull=5000, hp=100, kp=70, ekstraKp=2)
+    q4.legg_til_reward(xp=45000, gull=5000, hp=100, kp=70, ekstraKp=2)
     q4.legg_til_progresjonTekst("Ekspedisjon funnet: ")
     q4.legg_til_progresjon(1)
     q4.legg_til_progresjonTekstListe("Ubalanse i skogen gjennbalansert: ", 0)
     q4.legg_til_svarTekst("Vil du redde dagen, skogen og kanskje verden?    (ja/nei)\n> ")
+    q4.legg_til_ekstra_tekst(avslutningstekst)
     qlog.legg_til_quest(q4)

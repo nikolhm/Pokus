@@ -113,8 +113,7 @@ else:
     spiller.sett_sted_tilgjengelig(3)
     spiller.sett_sted_tilgjengelig(4)
 
-heltFerdig = False
-while not heltFerdig:
+while True:
 
     #Tutorial
     if spiller.hentSted() == "tutorial":

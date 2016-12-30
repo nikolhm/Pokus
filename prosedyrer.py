@@ -26,8 +26,9 @@ def verdenskart(spiller):
         if spiller.kart()[0]:
             print("    Eksempel-expansion                      (0)")
         print("    ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~")
+        print("    -   Skriv 'exit' for å avslutte spillet.  -")
 
-        inn = input("Hvor vil du dra? (Skriv nummeret til høyre)\n> ")
+        inn = input("\nHvor vil du dra? (Skriv nummeret til høyre)\n> ").lower()
         if inn == "0" and spiller.kart()[0]:
             return "test"
         if inn == "1" and spiller.kart()[1]:
@@ -40,6 +41,9 @@ def verdenskart(spiller):
             return "gargyl"
         if inn == "5" and spiller.kart()[5]:
             return "shroom"
+        if inn in {"exit", "avslutt"} and \
+        input("Progresjon blir ikke lagret når du avslutter. Vil du avslutte likevel?   (Progresjon kan lagres ved minnesteiner)\n> ").lower() in {"ja", "j", "yes"}:
+            sys.exit("\nVelkommen tilbake til Pokus!")
 
 #Skriver ut hvilke kommandoer man kan gjøre i angrepsmodus.
 def hjelp():

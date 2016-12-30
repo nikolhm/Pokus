@@ -794,4 +794,9 @@ def vassle_shroom(navn):
     -- Finn ekspedisjonen og rett den magiske ubalansen i skogen."""
 def vassle_shroom_ferdig(navn):
     return "    Du er en helt " + navn + """!
-    Denne magikeren er en pest og en plage og må stanses omgåelig!\n"""
+    Denne magikeren, 'den Bamhjertige' er en pest og en plage og må
+    stanses omgåelig! Vær forsiktig med den informasjonen du tilegner
+    deg fra hans agenter, jeg tror vi har å gjøre med en magiker jeg
+    kjente en gang for lenge siden, og han er en manipulerende løgner
+    som benytter alle midler for å oppnå sine egne syke drømmer! Lukk
+    sinnet for hans galne ambisjoner før de går til hodet på deg og.\n"""
