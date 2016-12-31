@@ -521,6 +521,23 @@ def shroom_bq2_tekst():
     ta opp med Overtrollmann Vassle. Ikke snakk om dette til noen, og helst glem
     alt som har skjedd!\n"""
 
+def shroom_bq3(navn):
+    return """    Hei igjen {}!
+    Det har skjedd igjen! Den stakkers magiske sussesoppen min har forsvunnet!
+    Har du sett ham? Vi var bare ute og trente med vennene hans, så plutselig
+    forsvant han! Det er klart slike sopper gjør som de vil, og de må adlydes,
+    ADLYDES! OG TILbes men tenk en slik liten stakkerslig nussesussesopp alene
+    i den store fæle skogen! Noen må finne ham! Jeg er sikker på at om du finner
+    ham, vil han bli så glad at han kan låne deg kreftene sine en gang i blandt!
+    Slike sussesopper som ham har sterke KRAFTIGE USTOPPELIGE krefter som kan
+    komme til god nytte i en kamp!\n""".format(navn)
+def shroom_bq3_tekst():
+    return """    Du har nå muligheten til å tilkalle sussesoppen i kamp!
+    For å gjøre det, skriv 'tilkall sussesopp' eller bare 'ts'. Sussesoppen vil
+    ikke adlyde deg om du er utenfor denne delen av skogen, og vil ikke komme
+    om du allerede har en alliert ved din side i kamp. Skriv 's' i kamp for å
+    se detaljer.\n"""
+
 def kjellprat():
     return """"    ...Trevirksomhets invirkning på utenforstående faktorer aldri vil gjøre
     opp for skadeområdet innenfor et omfang på en slik biokultur, dessuten har

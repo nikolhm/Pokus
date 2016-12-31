@@ -1182,6 +1182,7 @@ class Spellbook:
 
         gnomeqlog = self._klasser.questlog(1)
         gargyllog = self._klasser.questlog(4)
+        ekspedisjonslog= self._klasser.questlog(6)
         bandittlog = self._klasser.questlog(7)
         #Disse spesialangrepet krever å ha fullført et bestemt quest.
         if gnomeqlog.hent_quest(4).ferdig():
@@ -1193,6 +1194,10 @@ class Spellbook:
         if bandittlog.hent_quest(3).startet():
             print("distraher (di)           tar vekk 200+ kp fra fienden\n\
                          Krever 140 konsentrasjonspoeng. Tryllestav og d gir ekstra effekt.")
+        if ekspedisjonslog.hent_quest(13).ferdig() and self._spiller.hentSted() == "shroom":
+            print("tilkall sussesopp (ts)   tilkaller en magisk sopp til å kjempe ved din side\n\
+                         Krever 200 konsentrasjonspoeng. Forsvinner etter hver kamp og kan \n\
+                         kun brukes ved ekspedijonsleiren.")
 
     def tryllepulver(self, fiende):
         harPulver = None
@@ -1741,10 +1746,14 @@ class Inventory:
         tall = sum([q.progresjon_liste()[i] + q.progresjon() for i in range(4)])
         if not q.ferdig() and tall:
             print("Du et sett notater om trær.")
-        if not qListeBanditt[10].ferdig() and qListeBanditt[10].progresjon():
+        if not qListeShroom[10].ferdig() and qListeShroom[10].progresjon():
             print("Du har et totem.")
+        if not qListeShroom[11].ferdig() and qListeShroom[11].progresjon():
+            print("Du har", qListeShroom[11].progresjon(), "stk hemmelige korrespondanser.")
         if not qListeShroom[12].ferdig() and qListeShroom[12].progresjon():
             print("Du har en guffsliffsaff-gren.")
+        if not qListeShroom[13].ferdig() and qListeShroom[13].progresjon():
+            print("Du har en magisk sussesopp.")
 
     #Resetter inventory til å inneholde ingenting
     def reset(self):

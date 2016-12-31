@@ -7,6 +7,7 @@ import sys
 #Verdenskart.
 def verdenskart(spiller):
     while True:
+        clear_screen()
         print("""
     ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
                 ~   VERDENSKART   ~
@@ -567,13 +568,15 @@ def last_fil(spiller, inv, klasser, filnavn):
             questInf = linje.split(",")
             start = 0
             slutt = 0
+            minus = 0
             settTilgjengeligListe = []
             for x in range(len(questInf)):
-                if settTilgjengeligListe and "]" in questInf[x]:
-                    settTilgjengeligListe.append(int(questInf.pop(x).strip("]")))
+                if settTilgjengeligListe and "]" in questInf[x - minus]:
+                    settTilgjengeligListe.append(int(questInf.pop(x - minus).strip("]")))
                     break
                 elif settTilgjengeligListe:
-                    settTilgjengeligListe.append(int(questInf.pop(x)))
+                    settTilgjengeligListe.append(int(questInf.pop(x - minus)))
+                    minus += 1
                 if "[" in questInf[x]:
                     settTilgjengeligListe.append(int(questInf[x].strip("[")))
             if settTilgjengeligListe:
