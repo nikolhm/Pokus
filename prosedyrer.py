@@ -230,7 +230,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     #Intet spill er komplett uten en juksekode. Dessuten særdeles
     #brukbart for å teste programmet. Dreper en fiende på første forsøk.
     elif inn == "j" or inn == "juks":
-        fiende.angrepet(10042)
+        fiende.angrepet(100042)
 
     #Juksekode nr. 2: når ønsket lvl.
     elif inn == "j2" or inn == "juks2":

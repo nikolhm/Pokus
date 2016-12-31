@@ -1733,8 +1733,8 @@ class Inventory:
         #Shroom
         qListeBanditt = self._klasser.questlog(7).hent_qLog()
         qListeShroom = self._klasser.questlog(6).hent_qLog()
-        if not qListeBanditt[1].ferdig() and qListeBanditt[1].progresjon() != 0:
-            print("Du har", qListeBanditt[1].progresjon(), "lommeur.")
+        if not qListeBanditt[0].ferdig() and qListeBanditt[0].progresjon() != 0:
+            print("Du har", qListeBanditt[0].progresjon(), "lommeur.")
         if not qListeBanditt[5].ferdig() and qListeBanditt[5].progresjon() != 0:
             print("Du har Kjedelige Kjells finger.")
         q = qListeShroom[2]

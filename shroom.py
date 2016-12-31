@@ -20,6 +20,7 @@ def shroom_loop(spiller, inv, klasser, spellbook):
         ferdig = intro_loop(spiller, inv, klasser, spellbook)
 
     while not ferdig:
+        skrivLeir()
         skog_kart(sQlog)
 
         valg = False
@@ -150,6 +151,7 @@ def shroom_loop(spiller, inv, klasser, spellbook):
         return verdenskart(spiller)
 
 def intro_loop(spiller, inv, klasser, spellbook):
+    skrivBaal()
     print("    **", spiller.navn(), """kommer til et utbrent leirbål. Det er blod på bakken, og
     spor etter kamp. Det virker ikke som om det er lenge siden noen var her,
     men det er vanskelig å si hvor de gikk. Hovedstien deler seg til høyre
@@ -174,6 +176,8 @@ def sti(spiller, inv, klasser, spellbook):
     vassleQlog = klasser.questlog(5)
     shroomQlog = klasser.questlog(6)
     while True:
+        if vassleQlog.hent_quest(3).progresjon():
+            skrivBaal()
         #Sti 1
         print("\nStien deler seg")
         valg1 = input("Hvor vil du gå? (h/v)\n> ")
@@ -223,7 +227,7 @@ def sti(spiller, inv, klasser, spellbook):
             return False
 
         elif h1 and h2 and h3:
-            print("""\n\n           **Du fant en avrevet side fra en gammel bok! På den står det:
+            print("""\n           ** Du fant en avrevet side fra en gammel bok! På den står det: **
             ---
              _  _  .-'   '-.
             (.)(.)/         \\
@@ -235,7 +239,8 @@ def sti(spiller, inv, klasser, spellbook):
             da egentlig "hold venstre". En annen nyttig faktaopplysning omhandler...
             ---
             På en eller annen måte finner du veien tilbake til leirbålet du var med
-            sist.**""")
+            sist.\n""")
+            pause()
         elif h1 and not h2 and h3:
             print("""\n\n        *Du fant et skilt hvor det står "BANDITT-LEIR"* """)
             if shroomQlog.hent_quest(0).startet():
@@ -245,11 +250,14 @@ def sti(spiller, inv, klasser, spellbook):
             else:
                 print("\nDet er ikke en banditt-leir", spiller.navn(), "er på jakt etter.")
                 print("Du bestemmer deg for å dra tilbake til leirbålet.")
+                pause()
         elif not h1 and h2 and not h3 and shroomQlog.hent_quest(0).startet():
             print("Blindvei! Du får en følelse av at rotters stedsans ikke er helt bra.")
             print("Kanksje du kan prøve det motsatte? Du drar tilbake til leirbålet.")
+            pause()
         else:
             print("Blindvei! På en eller annen måte finner du veien tilbake til leirbålet.")
+            pause()
 
 def banditt_loop(spiller, inv, klasser, spellbook):
     sQlog = klasser.questlog(6)
@@ -262,7 +270,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
 
     ferdig = False
     while not ferdig:
-        #skrivBandittLeir()
+        skrivBandittLeir()
         banditt_kart(bQlog)
 
         valg = False
@@ -384,7 +392,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 inv.penger(-500)
                 print("Du blir trukket 500 gullstykker for inngangsbillett.")
                 input("Trykk enter for å fortsette\n> ")
-                fiende = generer_duellant(progresjon - 6)
+                fiende = generer_duellant(progresjon - 6, spiller)
                 if angrip(spiller, fiende, inv, klasser, spellbook):
                     q.progresser()
                 else:
@@ -467,6 +475,7 @@ def ussleUlvLoop(spiller, inv, klasser, spellbook):
     Da ville jeg ikke vært særlig spesiell lengre! Dette har vært gøy,
     men jeg er redd det er på tide for deg å opphøre å eksistere.\n""")
     input("Trykk enter for å fortsette\n> ")
+    skrivBanditt()
     print("\nUssle Ulv har knivstukket deg!")
     skade = spiller.hp() // 3
     spiller.mist_liv(skade)
@@ -518,6 +527,7 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                 clear_screen()
                 print("\n\n    * Du sniker deg inn til midten av shroom-terretorium * \n")
                 pause()
+                skrivSopp("familie")
                 print("Du er blitt oppdaget av en soppfamilie!\n")
                 pause()
                 loot = Loot()
@@ -530,6 +540,7 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                 print("        hvilken fiende du angriper, skriv 'skift fiende', 'skift' eller")
                 print("        bare 'sf'. Du bruker ikke en tur på å skifte fiende.\n")
                 pause()
+                skrivSopp("familie")
                 if not angrip(spiller, fiende1, inv, klasser, spellbook, fiende2=fiende2, fiende3=fiende3):
                     return False
                 print("\n\n    Bråket fra soppfamilien lokket flere shrooms til deg!\n")
@@ -682,6 +693,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
     uCD = 0
     bundetCD = 0
     pantu = False
+    target = fiende
     while True:
         #tur angir at det er brukeren sin tur til å handle.
         if bundetCD > 0:
@@ -696,6 +708,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             print(spiller.navn(), "drar tilbake til leiren.")
             return False
 
+        #Skift fiende - kun når det er flere fiender til stedet.
         if inn in {"skift fiende", "skift", "sf", "bytt fiende", "bf"} and fiende2:
             print("    ------------------------- SKIFT FIENDE -------------------------")
             print("    Fiende 1: {:55s} {}".format(fiende1.skriv_ut(True), " DØD" * int(fiende1.dead())))
@@ -720,6 +733,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     fiende = fiende3
                     print("Du angriper nå", fiende3.navn())
 
+        #alliert gjør sin tur
         if alliert and not tur and not fiende.dead():
             if alliert.kp() >= 70 and spiller.hp() / spiller.xHp() <= 0.6 and randint(0, 3) == 0:
                 print(alliert.navn() + alliert.ending(), "kastet restituer!")
@@ -814,6 +828,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             if fiende.dead():
                 return True
 
+        #Fiendens tur
         if not tur:
             target = fiende
             for i in range(len(fiender)):
@@ -833,6 +848,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print("Guffsliffsaffen er for svak til å opprettholde formen sin!")
                     print("Guffsliffsaffen transformerer seg igjen.")
                     fiende = generer_guffsliffsaff(spiller, "kvist", fiende)
+                    fiender = [fiende]
+                    fiende1 = fiende
+                    target = fiende
                     input("Trykk enter for å fortsette")
                 #Utforsk
                 elif fiende.race() == "snik" and fiende.kp() >= 195 and uCD >=0 and randint(1, 5) >= 3:
@@ -925,6 +943,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print(fiende.navn() + fiende.ending(), "transformerer seg.")
                     input("Trykk enter for å fortsette\n> ")
                     fiende = generer_guffsliffsaff(spiller, True)
+                    fiende1 = fiende
+                    fiender = [fiende]
+                    target = fiende
                 #Vanlig angrep
                 else:
                     if uCD < 0:
@@ -989,6 +1010,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
 def generer_store_shrooms(spiller):
     fiender = []
+    skrivSopp("tre")
+    print("Du har møtt tre store shrooms!")
     loot = Loot()
     loot.legg_til_item(4000, 1) #mer
 
@@ -1023,7 +1046,7 @@ def generer_shroom(spiller):
     kp=400 + randint(0, round(spiller.xKp() / 2.2) + spiller.lvl() * 6), \
     bonusKp=15 + randint(0, int(spiller.ekstraKp()/10)) * 5, \
     weapon=weapon)
-    skrivShroom()
+    skrivSopp(fiende.navn())
     print(spiller.navn(), "har møtt en", fiende.navn() + "!")
     return fiende
 
@@ -1032,6 +1055,8 @@ def generer_smaatt(spiller):
     loot = Loot()
     if tall == 1:
         loot.legg_til_item(100, 1)
+        skrivMoseStein()
+        print(spiller.navn(), "har møtt på en levende stein!")
         return Fiende("Mosegrodd stein", "stein", loot,  a=100, d=100, hp=100, kp=100)
     elif tall == 2:
         a = randint(0, 4 * spiller.lvl())
@@ -1043,8 +1068,8 @@ def generer_smaatt(spiller):
         a=20 + randint(0, 10 * spiller.lvl()), \
         d=30 + randint(0, 10 * spiller.lvl()), \
         kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
+        skrivTre(kvist=True)
         print("\n" + spiller.navn(), "har møtt på en levende kvist!")
-        #skrivKvist()
         return fiende
     elif tall == 3:
         return generer_liten_sopp(spiller)
@@ -1052,36 +1077,34 @@ def generer_smaatt(spiller):
 def generer_liten_sopp(spiller):
     loot = Loot()
     loot.legg_til_item(100, 1)
+    skrivSopp("liten")
+    print(spiller.navn(), "har møtt på en liten sopp!")
     return Fiende("Liten sopp", "shroom", loot, a=100, d=100, hp=100, kp=100)
 
 def generer_tre(spiller):
     tall = randint(1, 5)
     loot = Loot()
     fiende = None
+    skrivTre()
     if tall == 1:
         fiende = Fiende("Barsk Bøk", "tre", loot, hp=1000+randint(0, 400), \
         a=600, d=800, kp=80+randint(0, 50), weapon=170+randint(0, 50))
-        #skrivBarskBok()
         print(spiller.navn(), "har møtt på en Barsk Bøk!")
     elif tall == 2:
         fiende = Fiende("Fiffig Furu", "tre", loot, hp=1000+randint(0, 400), \
         a=600, d=200, kp=280+randint(0, 50), weapon=130+randint(0, 50))
-        #skrivFiffigFuru()
         print(spiller.navn(), "har møtt på en Fiffig Furu!")
     elif tall == 3:
         fiende = Fiende("Brysom Bjørk", "tre", loot, hp=1800+randint(0, 400), \
         a=300, d=100+randint(0, 50), kp=80+randint(0, 50))
-        #skrivBrysomBjork()
         print(spiller.navn(), "har møtt på en Brysom Bjørk!")
     elif tall == 4:
         fiende = Fiende("Ondskapsfull Osp", "tre", loot, hp=1000+randint(0, 400), \
         a=600, d=800, kp=80+randint(0, 50), weapon=170+randint(0, 50))
-        #skrivOndskapsfullOsp()
         print(spiller.navn(), "har møtt på en Ondskapsfull Osp!")
     elif tall == 5:
         fiende = Fiende("Rasende Rogn", "tre", loot, hp=800+randint(0, 600), \
         a=400+randint(0, 70), d=100, kp=40+randint(0, 50))
-        #skrivRasendeRogn()
         print(spiller.navn(), "har møtt på en Rasende Rogn!")
     loot.legg_til_item(40+round(fiende.xp()/15), 1)
     return fiende
@@ -1105,6 +1128,8 @@ def generer_guffsliffsaff(spiller, b=False, fSpiller=None):
     loot = Loot()
     loot.legg_til_item(75, 1)
     if not b:
+        skrivGuffsliffsaff()
+        print(spiller.navn(), "har møtt på en Guffsliffsaff!")
         return Fiende("Guffsliffsaff", "guffsliffsaff", loot, a=200, hp=2300, d=200, kp=200, bonusKp=7, ending="en")
     elif b is "kvist":
         fiende = Fiende("Guffsliffsaff-gren", "guffsliffsaff", loot, a=200, hp=2300, d=200, kp=200, bonusKp=7, ending="en")
@@ -1113,11 +1138,12 @@ def generer_guffsliffsaff(spiller, b=False, fSpiller=None):
     return Fiende(spiller.navn() + " v2", "guffsliffsaff", loot, a=spiller.a(), hp=spiller.xHp(),\
     d=spiller.d(), kp=spiller.xKp(), bonusKp=spiller.ekstraKp()-5)
 
-def generer_duellant(nr):
+def generer_duellant(nr, spiller):
     fiende = None
     loot = Loot()
+    skrivHodeskalle()
     if nr == 0:
-        loot.legg_til_item(50, 1)
+        loot.legg_til_item(50, 1) #mer
         fiende = Fiende("Patetiske Patrick", "menneske", loot, a=300, hp=850, d=200)
     elif nr == 1:
         loot.legg_til_item(50, 1)
@@ -1134,6 +1160,7 @@ def generer_duellant(nr):
     elif nr == 5:
         loot.legg_til_item(50, 1)
         fiende = Fiende("Onde Olga", "gargyl", loot, a=1000, hp=5734, d=666, kp=1000, bonusKp=20, weapon=250)
+    print(spiller.navn(), "møter denne gangen", fiende.navn(), "i duellringen! Hvem vil vinne?\n")
     return fiende
 
 def generer_banditt(spiller):
@@ -1258,7 +1285,7 @@ def banditt_butikk(butikk):
     vare = Vare(item, 1000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Sverd", "weapon", a=100, xHp=20)
+    item = Item("Sverd", "weapon", a=100, xHp=20, blade=True)
     vare = Vare(item, 3000, "v")
     butikk.legg_til_vare(vare)
 
