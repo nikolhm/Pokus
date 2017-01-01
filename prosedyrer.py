@@ -362,7 +362,7 @@ def minnestein(spiller, inv, klasser):
         pris = 10000
         sPris = 60000
 
-    print("""                 *** MINNESTEIN ***
+    print("""                     *** MINNESTEIN ***
 
     Du er ved en minnestein! Her kan du bevare sjelen din, og
     hente den ut igjen ved et senere tidspunkt. Å bevare sjelen
@@ -481,7 +481,7 @@ def lagre(spiller, inv, klasser, nr=0):
 
         lagreListe = ["Spiller\n"]
 
-        spillerinf = spiller.lagre_stats()
+        spillerinf = spiller.lagre_stats(inv)
         kartListe = spillerinf.pop()
         tekst = ""
         for x in range(len(spillerinf)):

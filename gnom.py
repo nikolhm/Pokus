@@ -463,6 +463,8 @@ def gauteDialog(spiller):
     input("Trykk enter for å fortsette\n> ")
     print("    SOVER DU?!?!? Hvordan våger du?? Jeg skal vise deg jeg!\n")
     input("Trykk enter for å slåss mot Gaute Gnom den Grusomme\n> ")
+    skrivGaute()
+    print("")
 
 #Skriver ut hvilke steder man kan dra når man er i borgen (hvilemodus).
 def kart(qListe, qListeVassle):

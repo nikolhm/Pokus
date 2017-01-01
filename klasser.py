@@ -11,18 +11,18 @@ class Butikk:
 
     #Skriver ut varene.
     def skriv_ut_sortiment(self, inv):
-        print("    ------------------------------------------------------------")
+        print("    ----------------------------------------------------------------------")
         print("    Hos '", self._navn, "' har vi følgende varer:", sep="")
         for vare in self._vareliste:
             print("    " + vare.skriv_vare(inv))
         print("\n    Skriv bokstaven til høyre for å kjøpe den valgte varen.", \
             "\n    Skriv 'ferdig' / 'f' for å gå ut, 'selg' / 's' for å selge.", \
-            "\n    ------------------------------------------------------------\n")
+            "\n    ----------------------------------------------------------------------\n")
 
     def interaksjon(self, inv):
-        print("    ------------------------------------------------------------")
-        print("    Velkommen til '", self._navn, "'!", sep="")
-        print("    ------------------------------------------------------------")
+        print("    ----------------------------------------------------------------------")
+        print("   " + "Velkommen til '{}'!".format(self._navn).center(70))
+        print("    ----------------------------------------------------------------------")
         inn = input("\nVil du kjøpe eller selge? (k/s)         'f' for å gå tilbake\n> ").lower()
         while inn != "f" and inn != "ferdig":
             while inn != "f" and inn != "ferdig" and inn != "k" and inn != "kjøp" and inn != "s" and inn != "selg":
@@ -45,10 +45,11 @@ class Butikk:
                 input("Trykk enter for å dra tilbake\n> ")
 
     def selg(self, inv):
-        print("\n***************************************************************\n////                  Du har følgende ting:                \\\\\\\\")
-        print("   -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  ")
+        print("\n    ********************************************************************************")
+        print("    ////" + "Du har følgende ting:".center(72, " ") + "\\\\\\\\")
+        print("      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ")
         inv.skriv_ut_alt()
-        print("***************************************************************")
+        print("    ********************************************************************************")
         print("\nDu har", inv.penger(), "gullstykker.")
         print("Skriv tallet ved siden av det du vil selge, 'alt' for å selge alt du ikke bruker,", \
         "\n'k' eller 'kjøp' for å gå til butikken, eller 'f' eller 'ferdig' for å gå tilbake.")
@@ -177,15 +178,15 @@ class Vare:
     def skriv_vare(self, inv):
         stats = finn_stats(self._item)
         if len(stats) == 0:
-            return ("{:45s} = {:5}g ({})".format(self._item.navn(), self._pris, self._kommando))
+            return ("{:55s} = {:5}g ({})".format(self._item.navn(), self._pris, self._kommando))
         elif len(stats) == 1:
-            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), stats[0], self._pris, self._kommando))
+            return ("{:27s}{:28s} = {:5}g ({})".format(self._item.navn(), stats[0], self._pris, self._kommando))
         elif len(stats) == 2:
-            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), "{}, {}".format(stats[0], stats[1]), self._pris, self._kommando))
+            return ("{:27s}{:28s} = {:5}g ({})".format(self._item.navn(), "{}, {}".format(stats[0], stats[1]), self._pris, self._kommando))
         elif len(stats) == 3:
-            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), "{}, {}, {}".format(stats[0], stats[1], stats[2]), self._pris, self._kommando))
+            return ("{:27s}{:28s} = {:5}g ({})".format(self._item.navn(), "{}, {}, {}".format(stats[0], stats[1], stats[2]), self._pris, self._kommando))
         elif len(stats) == 4:
-            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), "{}, {}, {}, {}".format(stats[0], stats[1], stats[2], stats[3]), self._pris, self._kommando))
+            return ("{:27s}{:28s} = {:5}g ({})".format(self._item.navn(), "{}, {}, {}, {}".format(stats[0], stats[1], stats[2], stats[3]), self._pris, self._kommando))
 
     def legg_til_buyText(self, tekst):
         self._buyText = tekst
@@ -652,11 +653,18 @@ class Spiller:
         #Kart
         self._kartListe = [False for x in range(20)]
 
-    def lagre_stats(self):
-        return [self._navn, self._xHp, self._hp, self._kp, self._xKp, self._ekstraKp, \
+    def lagre_stats(self, inv):
+        for item in inv.itemListe():
+            if item.bruker():
+                self.bytt_stats(item.statliste(), [0, 0, 0, 0, 0])
+        stats = [self._navn, self._xHp, self._hp, self._kp, self._xKp, self._ekstraKp, \
         self._a, self._d, self._xXp, self._xp, self._spesialisering, self._sted, \
         int(self._fuglelukt), self._lvl, int(self._firstSave), self._goodPoints, \
         self._evilPoints, self._kartListe]
+        for item in inv.itemListe():
+            if item.bruker():
+                self.bytt_stats([0, 0, 0, 0, 0], item.statliste())
+        return stats
 
     def last_stats(self, statliste, kartliste):
         self._xHp = int(statliste[0])
@@ -702,6 +710,9 @@ class Spiller:
     #Brukes når spilleren blir angrepet av fienden. a hentes fra fienden, og
     #brukeren kan på det meste blokkere en verdi av 1/4 av sin d.
     def angrepet(self, fiende):
+        if fiende.oppholdt():
+            print(fiende.navn() + fiende.ending(), "er oppholdt.")
+            return 0
         skade = randint(0, fiende.a())
         if fiende.weapon_dmg():
             skade = round(randint(0, fiende.a()) / 10) + fiende.weapon_dmg()
@@ -1428,7 +1439,7 @@ class Spellbook:
                 self._spiller.bruk_kons(195)
                 print(self._spiller.navn(), "kastet Utforsk!")
                 self._utforsk = True
-                self._utforskRunder = 5
+                self._utforskRunder = 3
 
                 #Oppdaterer qlog
                 bandittQlog = self._klasser.questlog(7)
@@ -1657,34 +1668,13 @@ class Inventory:
             x = 0
             for item in itemListe:
                 x += 1
-
-                statliste = finn_stats(item)
-
-                if len(statliste) == 0:
-                    if item.bruker():
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn() + " **bruker**", "{} ".format(""), item.verdi(), x))
-                    else:
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn(), "{} ".format(""), item.verdi(), x))
-                elif len(statliste) == 1:
-                    if item.bruker():
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn() + " **bruker**", "{} {}".format("", statliste[0]), item.verdi(), x))
-                    else:
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn(), "{} {}".format("", statliste[0]), item.verdi(), x))
-                elif len(statliste) == 2:
-                    if item.bruker():
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn() + " **bruker**", "{} {}, {}".format("", statliste[0], statliste[1]), item.verdi(), x))
-                    else:
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn(), "{} {}, {}".format("", statliste[0], statliste[1]), item.verdi(), x))
-                elif len(statliste) == 3:
-                    if item.bruker():
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn() + " **bruker**", "{} {}, {}, {}".format("", statliste[0], statliste[1], statliste[2]), item.verdi(), x))
-                    else:
-                        print("{:28s}{:25} {:>4}g ({})".format(item.navn(), "{} {}, {}, {}".format("", statliste[0], statliste[1], statliste[2]), item.verdi(), x))
-                elif len(statliste) == 4:
-                    if item.bruker():
-                        print("{:28s}{:30} {:>4}g ({})".format(item.navn() + " **bruker**", "{} {}, {}, {}, {}".format("", statliste[0], statliste[1], statliste[2], statliste[3]), item.verdi(), x))
-                    else:
-                        print("{:28s}{:30} {:>4}g ({})".format(item.navn(), "{} {}, {}, {}, {}".format("", statliste[0], statliste[1], statliste[2], statliste[3]), item.verdi(), x))
+                s = item.statliste()
+                t = item.statlisteTekst()
+                stats = [str(t[i] + ":" + str(s[i]) + ", ") * int(bool(s[i])) for i in range(len(s))]
+                print("    {:36} {:30} {:>5}g {:>4}".format(\
+                "{} {}".format(item.navn(), "**bruker**"*int(item.bruker())), \
+                "{}{}{}{}{}{}{}".format(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7]).strip(", "),\
+                item.verdi(), "(" + str(x) + ")"))
             return 0
 
     def skriv_inv(self):

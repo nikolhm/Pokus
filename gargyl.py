@@ -27,6 +27,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
         fangekjeller = False
         utkikk = False
         lagre = False
+        guri = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -56,6 +57,10 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
 
             if inn == "u" and qlog.hent_quest(2).startet():
                 utkikk = True
+                valg = True
+
+            if inn == "g" and qlog.hent_quest(5).ferdig():
+                guri = True
                 valg = True
 
         while quest:
@@ -102,7 +107,8 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                 else:
                     loot = Loot()
                     ormLoot(loot)
-                    fiende = Fiende("Orm", "dyr", loot, 2300, 150, 130, ending="en")
+                    fiende = Fiende("Orm", "dyr", loot, 2500, 300, 200, ending="en")
+                    skrivOrm()
                     print("\nEn svær orm gjemte seg i kisten!\n" + spiller.navn(), "har møtt en orm!")
                     if angrip(spiller, fiende, inv, klasser, spellbook):
                         print("\n" + spiller.navn(), "fant 350 gullstykker, en stripe konsentrasjonspulver og en trolldrikk i kisten.")
@@ -128,7 +134,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                 qlog.hent_quest(2).progresser()
                 angrip(spiller, generer_gargyl(spiller), inv, klasser, spellbook)
                 utkikk = False
-            else:
+            elif qlog.hent_quest(5).startet() and not qlog.hent_quest(5).sjekk_ferdig():
                 tall = randint(1, 10)
                 if tall <= 7:
                     fiende = generer_gargyl(spiller)
@@ -143,14 +149,32 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                     guri_dialog(spiller)
                     loot = Loot()
                     guriLoot(loot)
-                    fiende = Fiende("Guri Gargyl", "gargyl", loot, 7000, 400, 250, kp=300, bonusKp=7, weapon=70)
+                    fiende = Fiende("Guri Gargyl", "gargyl", loot, 7000, 470, 300, kp=300, bonusKp=7, weapon=200)
                     if angrip(spiller, fiende, inv, klasser, spellbook):
                         qlog.hent_quest(5).progresser_liste(0)
                         utkikk = False
+            else:
+                tall = randint(1, 10)
+                if tall <= 7:
+                    fiende = generer_gargyl(spiller)
+                else:
+                    fiende = generer_statue(spiller)
+                if not angrip(spiller, fiende, inv, klasser, spellbook):
+                    utikk = False
+                    break
 
         while lagre:
             minnestein(spiller, inv, klasser)
             lagre = False
+
+        while guri:
+            loot = Loot()
+            guriLoot(loot)
+            skrivGuri()
+            print(spiller.navn(), "møter Guri Gargyl igjen!\n")
+            fiende = Fiende("Guri Gargyl", "gargyl", loot, 7000, 470, 300, kp=300, bonusKp=7, weapon=240)
+            if not angrip(spiller, fiende, inv, klasser, spellbook):
+                guri = False
 
     if ferdig:
         return verdenskart(spiller)
@@ -164,7 +188,7 @@ def intro_loop(spiller, inv, klasser, spellbook):
 
     skrivStein()
     print(spiller.navn(), "har møtt en stein!")
-    fiende = Fiende("Stein", "stein", Loot(), hp=300, a=130, d=100, weapon=60)
+    fiende = Fiende("Stein", "stein", Loot(), hp=300, a=130, d=100, weapon=60, ending="en")
     fiende.return_loot().legg_til_item(50, 100)
 
     angrip(spiller, fiende, inv, klasser, spellbook)
@@ -201,8 +225,8 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
         if inn == "s":
             while True:
                 skrivStein()
-                fiende = Fiende("Stein", "stein", Loot(), hp=300, a=130, d=100, weapon=60)
-                fiende.return_loot().legg_til_item(70, 100)
+                fiende = Fiende("Stein", "stein", Loot(), hp=randint(290, 450), a=130, d=100, weapon=60, ending="en")
+                fiende.return_loot().legg_til_item(randint(30, 80), 100)
                 print(spiller.navn(), "har møtt en stein!")
 
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
@@ -242,7 +266,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
-            if fiende.race() == "gargyl" and fiende.kp() >= 100 and randint(0, 1) == 1 \
+            if fiende.oppholdt():
+                print(fiende.navn() + fiende.ending(), "er oppholdt.")
+            elif fiende.race() == "gargyl" and fiende.kp() >= 100 and randint(0, 1) == 1 \
             and fiende.untouchableCD() >= 0 and not fiende.untouchable():
                 print(fiende.navn() + fiende.ending(), "kastet RockNoRoll!")
                 print(fiende.navn() + fiende.ending(), "er blitt til stein!")
@@ -251,12 +277,15 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             elif fiende.race() != "gargyl" and fiende.kp() >= 50 and randint(0, 2) == 1 \
             and fiende.xHp() - fiende.hp() > 80:
                 print(fiende.navn() + fiende.ending(), "kastet restituer!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp!")
+                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(90, 120)), "liv.")
                 fiende.bruk_kons(50)
             elif fiende.race() == "gargyl" and fiende.kp() >= 40 and randint(0, 10) == 1 \
             and fiende.xHp() - fiende.hp() > 100:
                 print(fiende.navn() + fiende.ending(), "kastet restituer!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp!")
+                if fiende.navn() == "Guri Gargyl":
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(230, 450)), "liv.")
+                else:
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(100, 180)), "liv.")
                 fiende.bruk_kons(40)
             else:
                 spiller.angrepet(fiende)
@@ -276,7 +305,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 def generer_statue(spiller):
     loot = Loot()
     fiende = Fiende(navn="Statue", race="objekt", loot=loot, \
-    hp=60 + 20 * randint(1, spiller.lvl()), \
+    hp=120 + 40 * randint(1, spiller.lvl()), \
     a=20 + randint(0, 10 * spiller.lvl()), \
     d=30 + randint(0, 10 * spiller.lvl()), \
     kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="n")
@@ -287,13 +316,12 @@ def generer_statue(spiller):
 
 def generer_gargyl(spiller):
     loot = Loot()
-    hp = 1000 + randint(0, spiller.lvl()) * 25
-    a = 180 + randint(spiller.lvl() - 10, spiller.lvl() + 10)
-    d = 120 + 2 * spiller.lvl()
+    hp = 1200 + randint(0, spiller.lvl()) * 25
+    a = 180 + randint(spiller.lvl() - 10, spiller.lvl() + 10) *2 + int(spiller.d() / 4)
+    d = 120 + 4 * spiller.lvl()
     kp = 130 + 5 * round(spiller.lvl() / 4) + randint(-10, 10)
     bkp = randint(4, 6)
-    w = randint(65, 75)
-    fiende = Fiende("Gargyl", "gargyl", loot, hp, a, d, kp=kp, bonusKp=bkp, weapon=w, ending="en")
+    fiende = Fiende("Gargyl", "gargyl", loot, hp, a, d, kp=kp, bonusKp=bkp, ending="en")
     gargylLoot(loot, fiende, spiller)
     skrivGargouille()
     print("\n" + spiller.navn(), "har møtt på en gargyl!")
@@ -386,6 +414,8 @@ def garg_kart(qlog):
         print("    Fangekjelleren (a)         Dra til fangekjelleren og finn skjulte skatter!")
     if qlog.hent_qLog()[2].startet():
         print("    Utkikkstårnet (u)          Bekjemp gargyler i de øvre delene av slottet!")
+    if qlog.hent_qLog()[5].ferdig():
+        print("    Guri Gargyl (g)            Slåss mot Guri Gargyl igjen")
     print("    Minnesteinen (l)           Bevar sjelen din i slottets forfalne minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
@@ -405,7 +435,7 @@ def intro_kart(klasser):
     print("    Verdenskart (f)            Se på verdenskartet")
 
 def garg_butikk(butikk):
-    butikk.legg_til_hadeTekst("\nVelkommen tilbake! Og se opp for gangster-fiskene!\n")
+    butikk.legg_til_hadeTekst("\nKom tilbake snart! Heller deg enn de skumle rustningene...\n")
 
     item = Item("Tryllepulver", "damaging", dmg=100)
     vare = Vare(item, 50, "t")
@@ -433,15 +463,21 @@ def garg_butikk(butikk):
 
 def guri_dialog(spiller):
     navn = spiller.navn()
-    print("\n\n    ***", spiller.navn(), "har møtt Guri Gargyl! ***\n\n")
     skrivGuri()
+    print("\n\n    ***", spiller.navn(), "har møtt Guri Gargyl! ***\n\n")
+    input("Trykk enter for å fortsette\n> ")
+    print("""
+    Guri Gargyl: Hva er dette for noe? Vår invasjon av den menneskelige
+                 verden har knapt begynt, og allerede er det trøbbelmakere
+                 som vil stikke kjepper i hjulene for oss?\n""")
     input("Trykk enter for å fortsette\n> ")
     print("""
     Guri Gargyl: Så det er du som har kjøttifisert kreasjonene mine!
                  Dette ender nå! Jeg fikk ikke magiske evner og et så
                  stort ansvar bare for å miste det hele til et usselt
                  menneske. Forbered deg på det verste,""", navn + "!\n")
-    input("Trykk enter for å fortsette\n> ")
+    input("Trykk enter for å slåss mot Guri Gargyl!\n> ")
+    skrivGuri()
 
 def garg_quest(qlog, spiller):
     navn = spiller.navn()

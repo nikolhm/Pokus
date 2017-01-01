@@ -139,7 +139,7 @@ def garg_q1_ferdig(navn):
 
 def garg_q2(navn):
     return "    Hei " + navn + """!
-    Noen her har skremt beboerne fra vettet, de tørr ikke bevege seg ut av
+    Noen her har skremt beboerne fra vettet, de tør ikke bevege seg ut av
     møtehallen her. Det påstås at det finnes skapninger på slottet her som
     kan manipulere og skape liv til steiner og metall, og til og med gjøre
     seg selv om til ugjennomtrengbar stein! Hvis det er disse skapningene

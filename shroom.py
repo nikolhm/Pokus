@@ -153,22 +153,23 @@ def shroom_loop(spiller, inv, klasser, spellbook):
 
 def intro_loop(spiller, inv, klasser, spellbook):
     skrivBaal()
-    print("    **", spiller.navn(), """kommer til et utbrent leirbål. Det er blod på bakken, og
+    print("\n    **", spiller.navn(), """kommer til et utbrent leirbål. Det er blod på bakken, og
     spor etter kamp. Det virker ikke som om det er lenge siden noen var her,
     men det er vanskelig å si hvor de gikk. Hovedstien deler seg til høyre
-    og venstre**.
+    og venstre **.
     """)
 
     input("Trykk enter for å fortsette\n> ")
-    print("""\n*En banditt kommer løpende ut fra ingensteds*
+    print("""\n * En banditt kommer løpende ut fra ingensteds *
 
     Banditt: Du er en av dem, er du ikke? Jeg skal finne dem! Jeg har fått
     torturert ut noen veibeskrivelser av en ynkelig rotte, og nå slipper
     ingen av dere unna! Og min enmanns-massakre starter med deg!\n""")
-
+    pause()
     if not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
         return True
-    print("\n*" + spiller.navn() + "finner en lapp på banditten! På den står det:")
+    clear_screen()
+    print("\n" + spiller.navn() + " finner en lapp på banditten! På den står det:")
     print("\n    Hold høyre!\n\nForan deg har du to stier, og du må velge en.")
 
     return sti(spiller, inv, klasser, spellbook)
@@ -356,7 +357,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 input("Trykk enter for å fortsette\n> ")
             elif angrip(spiller, generer_liten_sopp(spiller), inv, klasser, spellbook):
                 print("\n" + spiller.navn(), "fikk restorert", spiller.restorer(1000), "helsepoeng og", \
-                spiller.restorer_kp(300), " konsentrasjonspoeng gjennom de magiske soppenes velsignelse.\n")
+                spiller.restorer_kp(300), "konsentrasjonspoeng gjennom de magiske soppenes velsignelse.\n")
                 input("Trykk enter for å fortsette\n> ")
             sopp = False
 
@@ -483,7 +484,7 @@ def ussleUlvLoop(spiller, inv, klasser, spellbook):
     print(spiller.navn(), "mistet", skade, "liv!\n")
     loot = Loot()
     loot.legg_til_item(30, 1)
-    ussleUlv = Fiende("Ussle Ulf", "snik", loot, a=400, d=200, hp=3000, kp=500, weapon=200, bonusKp=8)
+    ussleUlv = Fiende("Ussle Ulf", "snik", loot, a=800, d=200, hp=3000, kp=500, weapon=350, bonusKp=8)
     if angrip(spiller, ussleUlv, inv, klasser, spellbook):
         klasser.questlog(7).hent_quest(1).progresser_liste(0)
         return True
@@ -1206,7 +1207,7 @@ def generer_smaatt(spiller):
     loot = Loot()
     if tall == 1:
         loot.legg_til_item(randint(100, 300), 92)
-        item = Item("Fossil", "trinket", a=100, d=10, xKp=75, xHp=25, ekstraKp=randint(3, 5))
+        item = Item("Fossil", "trinket", a=30, xKp=75, xHp=25, ekstraKp=randint(3, 5))
         loot.legg_til_item(item, 8)
         skrivMoseStein()
         print(spiller.navn(), "har møtt på en levende stein!")
@@ -1291,8 +1292,8 @@ def generer_tre(spiller):
 def generer_gnom(spiller):
     fiende = Fiende("Gnom", "gnom", Loot(), \
     1000 + 10 * randint(round(spiller.lvl()/2), spiller.lvl()), \
-    140 + randint(0, 6 * spiller.lvl()), \
-    350 + randint(0, 5 * spiller.lvl()), ending="en")
+    140 + randint(0, 10 * spiller.lvl()), \
+    350 + randint(0, 8 * spiller.lvl()), ending="en")
     gnom.gnomLoot(fiende, fiende.return_loot(), spiller)
     skrivGnom()
     print("\n" + spiller.navn(), "har møtt på en gnom!")
@@ -1323,18 +1324,18 @@ def generer_duellant(nr, spiller):
     loot = Loot()
     skrivHodeskalle()
     if nr == 0:
-        item = Item("Patricks Poncho", "robe", d=130, xHp=150)
+        item = Item("Patricks Poncho", "robe", d=40, xHp=30)
         item.sett_loot_tekst("Patetiske Patrick sin poncho")
         loot.legg_til_item(item, 1)
         fiende = Fiende("Patetiske Patrick", "menneske", loot, a=300, hp=850, d=200)
     elif nr == 1:
         loot.legg_til_item(1050, 1)
-        fiende = Fiende("Store Sture", "menneske", loot, a=200, hp=10000, d=200, kp=200, bonusKp=1)
+        fiende = Fiende("Store Sture", "menneske", loot, a=400, hp=10000, d=600, kp=200, bonusKp=1)
     elif nr == 2:
         item = Item("Sandras Sko", "shoes", d=100, xHp=40, xKp=20)
         item.sett_loot_tekst("Smidige Sandra sine sko")
         loot.legg_til_item(item, 1)
-        fiende = Fiende("Smidige Sandra", "menneske", loot, a=300, hp=2300, d=400, kp=450, bonusKp=10)
+        fiende = Fiende("Smidige Sandra", "menneske", loot, a=450, hp=2700, d=400, kp=450, bonusKp=10)
     elif nr == 3:
         item = Item("Klaras hansker", "gloves", a=80, d=50, xHp=70)
         item.sett_loot_tekst("Kraftige Klara sine hansker")
@@ -1344,11 +1345,11 @@ def generer_duellant(nr, spiller):
         item = Item("Teit ting", "trinket", a=45, xHp=50, xKp=40, ekstraKp=5)
         item.sett_loot_tekst("Teite Tims teite ting")
         loot.legg_til_item(item, 1)
-        fiende = Fiende("Teite Tim", "snik", loot, a=400, hp=6666, d=1000, kp=600, bonusKp=8)
+        fiende = Fiende("Teite Tim", "snik", loot, a=500, hp=6666, d=1000, kp=600, bonusKp=8)
     elif nr == 5:
         item = Item("Ondskap", "trinket", a=-200, d=-200, xHp=-230, xKp=500, ekstraKp=10)
         loot.legg_til_item(item, 1)
-        fiende = Fiende("Onde Olga", "gargyl", loot, a=1000, hp=5734, d=666, kp=1000, bonusKp=20, weapon=250)
+        fiende = Fiende("Onde Olga", "gargyl", loot, a=1000, hp=5734, d=666, kp=1000, bonusKp=20, weapon=500)
     print(spiller.navn(), "møter denne gangen", fiende.navn(), "i duellringen! Hvem vil vinne?\n")
     return fiende
 
@@ -1427,8 +1428,8 @@ def banditt_kart(qlog):
 def shroom_butikk(butikk):
     butikk.legg_til_hadeTekst("\nVelkommen tilbake! Og vær forsiktig der ute!\n")
 
-    item = Item("Trolldrikk", "restoring", hp=300)
-    vare = Vare(item, 400, "d")
+    item = Item("Trolldrikk", "restoring", hp=400)
+    vare = Vare(item, 500, "d")
     butikk.legg_til_vare(vare)
 
     item = Item("Trolldrikk", "restoring", hp=750)
@@ -1444,21 +1445,21 @@ def shroom_butikk(butikk):
     butikk.legg_til_vare(vare)
 
     item = Item("Ekspedisjonsstav", "weapon", a=170, xKp=80)
-    vare = Vare(item, 10000, "w")
+    vare = Vare(item, 25000, "w")
     butikk.legg_til_vare(vare)
 
     item = Item("Eks. sverd", "weapon", a=430, xHp=80, blade=True)
-    vare = Vare(item, 17000, "e")
+    vare = Vare(item, 34000, "e")
     butikk.legg_til_vare(vare)
 
-    item = Item("Støvler", "shoes", d=130, xHp=230)
+    item = Item("Støvler", "shoes", d=90, xHp=100)
     vare = Vare(item, 8000, "ø")
     butikk.legg_til_vare(vare)
 
 def banditt_butikk(butikk):
     butikk.legg_til_hadeTekst("\nKom deg ut! Hvis ikke skal kjøpe og ikke skal selge, pell deg!\n")
 
-    item = Item("Trolldrikk", "restoring", hp=500)
+    item = Item("Trolldrikk", "restoring", hp=600)
     vare = Vare(item, 900, "d")
     butikk.legg_til_vare(vare)
 
