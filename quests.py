@@ -430,11 +430,10 @@ def shroom_q7(navn):
     enda mer effektiv på, uten at det krever noe mer konsentrasjon fra deg!
     Spesielt her ute på ekspedisjonen er det viktig at alle er på sitt beste,
     men som alltid har jeg mine prinsipper: Ingen skal lære noe de ikke kan
-    kontrollere, slik som det neket Gale Gizly. La fiender være oppholdt i
-    totalt 14 runder, så skal jeg lære deg hvordan formelen blir enda
-    kraftigere!
+    kontrollere, slik som det neket Gale Gizly. Opphold fiender 7 ganger, så
+    skal jeg lære deg hvordan formelen blir enda kraftigere!
 
-    -- Opphold fiender med formelen Opphold i totalt 14 runder."""
+    -- Opphold fiender med formelen Opphold 7 ganger."""
 def shroom_q7_ferdig(navn):
     return "    Flott " + navn + """!
     Det er viktig at alle er på sitt ypperste i disse tider. Her er

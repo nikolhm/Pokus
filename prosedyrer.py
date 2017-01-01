@@ -249,16 +249,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
         except ValueError:
             print("Du må skrive et tall!")
 
-    if not tur and spellbook.opphold():
-        spellbook.opphold(-1)
-        tur = True
-        if fiende.dead():
-            spellbook.opphold(-spellbook.opphold())
-            return tur
-        print(fiende.navn() + fiende.ending(), "er oppholdt!")
-        spiller.kons()
-        fiende.gen_kons()
-        skriv_ut(spiller, fiende)
+    #Juksekode nr. 4: Restorerer liv og kp til fullt.
+    elif inn == "j4" or inn == "juks4":
+        spiller.restorer(100000)
+        spiller.restorer_kp(10000)
 
     return tur
 

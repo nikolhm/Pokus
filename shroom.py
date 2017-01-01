@@ -695,7 +695,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
     if fiende3:
         fiende3.skriv_ut()
         fiender.append(fiende3)
-    uCD = 0
+    uCD = 0 #utforsk CoolDown
     bundetCD = 0
     pantu = False
     target = fiende
@@ -743,7 +743,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             if alliert:
                 print("Du har allerede en alliert i denne kampen!")
             else:
-                alliert = Fiende("Sussesopp", "alliert", Loot(), hp=800, a=300, d=500, kp=1500, bonusKp=22, ending="en")
+                alliert = Fiende("Psilocybe Semilanceata", "alliert", Loot(), hp=800, a=300, d=500, kp=1500, bonusKp=22, ending="en")
                 print(spiller.navn(), "tilkalte en magisk sopp til å hjelpe i kampen!")
                 spiller.bruk_kons(200)
                 tur = False
@@ -860,6 +860,10 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             target = fiende
             for i in range(len(fiender)):
                 fiende = fiender[i]
+                #oppholdt
+                if fiende.oppholdt():
+                    print(fiende.navn() + fiende.ending(), "er oppholdt.")
+                    continue
 
                 #Alliert
                 if alliert and randint(0, 3) == 0:
@@ -879,6 +883,76 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     fiende1 = fiende
                     target = fiende
                     input("Trykk enter for å fortsette")
+                #Shrooms - Bakkekontakt
+                elif fiende.race() == "shroom" and fiende.kp() >= 350 and fiende.hp() <= 800 and not randint(0, 6):
+                    print(fiende.navn() + fiende.ending(), "kastet Bakkekontakt!", \
+                    fiende.navn() + fiende.ending(), "suger opp næring fra bakken!")
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(50, 85) * 10), "liv.")
+                    fiende.kp(-350)
+                #Shrooms - binde fast
+                elif fiende.race() == "shroom" and fiende.kp() >= 300 and bundetCD <= 0 and randint(1, 17) == 4:
+                    print(fiende.navn() + fiende.ending(), "har tilkalt røtter fra bakken som binder deg fast!")
+                    bundetCD = 2
+                    fiende.kp(-300)
+                #Tre fiender-system: soppfamilie og sistebossene
+                #heal
+                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and not fiende1.dead() and \
+                fiende.kp() >= 450 and randint(1, 3) == 1 and fiende1.hp() <= fiende1.xHp() - 500:
+                    print(fiende.navn(), "kastet Motivér!")
+                    print(fiende1.navn(), "restorerte", fiende1.restorer(1000), "liv.")
+                    fiende.kp(-450)
+                #Intensivèr
+                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and fiende.kp() >= 500 \
+                and randint(1, 15) == 1:
+                    print(fiende.navn(), "kastet Intensivér!")
+                    fiende.kp(-500)
+                    for f in fiender:
+                        f.a(20)
+                        print(f.navn(), "fikk 20 angrepspoeng.")
+                #distraher
+                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and fiende.kp() >= 230 \
+                and randint(1, 10) == 1:
+                    print(fiende.navn(), "kastet Distraher!")
+                    print(spiller.navn(), "mistet", spiller.mist_kp(randint(150, 230)), "kp.")
+                    fiende.kp(-230)
+                #felles røykepause
+                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and fiende.kp() >= 280 \
+                and randint(1, 4) == 1:
+                    print(fiende.navn(), "kastet Felles Røykepause")
+                    fiende.kp(-280)
+                    for f in fiender:
+                        print(f.navn(), "restorerte", f.restorer(250), "liv, og fikk lungebetennelse.")
+                #Solidifiser
+                elif fiende.navn() in {"Cantharellus Cibarius", "Suillus Soppfar"} and fiende.kp() >= 200 \
+                and randint(1, 7) == 2:
+                    fiende.kp(-200)
+                    fiende.d(30)
+                    print(fiende.navn(), "kastet Solidifiser!")
+                    print(fiende.navn(), "fikk 30 defensivpoeng.")
+                #Raseri
+                elif fiende.navn() in {"Suillus Soppmor", "Boletus Edulis"} and fiende.kp() >= 350 \
+                and randint(1, 8) == 1:
+                    fiende.kp(-350)
+                    print(fiende.navn(), "kastet Raseri!")
+                    print(spiller.navn(), "mistet", spiller.mist_liv(400), "liv av raseriet.")
+                #Untouchable shroom
+                elif fiende.navn() in {"Suillus Soppmor", "Boletus Edulis"} and fiende.kp() >= 250 \
+                and randint(1, 7) == 1 and ("Suillus Soppbarn" in fiender or "Agaricus Augustus" in fiender):
+                    fiende.kp(-250)
+                    if fiende.navn() == "Suillus Soppmor":
+                        print(fiende.navn(), "kastet Beskytt Barn!")
+                        print(fiende3.navn(), "går i ett med jorden for to runder.")
+                        fiende3.set_untouchable(True, 2)
+                    else:
+                        print(fiende.navn(), "kastet Beskytt Sjampinjong!")
+                        print(fiende2.navn(), "går i ett med jorden for to runder.")
+                        fiende2.set_untouchable(True, 2)
+                #Trær
+                elif fiende.race() == "tre" and fiende.kp() >= 230 and randint(1, 8) == 4:
+                    print(fiende.navn() + fiende.ending(), "kastet Rotfest!")
+                    fiende.kp(-230)
+                    fiende.d(50)
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(380), "liv og fikk 50 ekstra defensivpoeng.")
                 #Utforsk
                 elif fiende.race() == "snik" and fiende.kp() >= 195 and uCD >=0 and randint(1, 5) >= 3:
                     print(fiende.navn() + fiende.ending(), "kastet Utforsk!")
@@ -999,6 +1073,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
                 #gir beskjed om karakteren døde
                 if spiller.dead():
+                    input("\nDu døde! Trykk enter for å fortsette\n> ")
                     write_player_died(spiller, "leiren")
                     player_died(spiller, inv, klasser)
                     return False
@@ -1388,7 +1463,7 @@ def skog_quest(qlog, spiller):
     #q7
     desk = shroom_q7(navn)
     ferdigDesk = shroom_q7_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 14, 30, "Magiske Mikkel")
+    q = Quest(desk, ferdigDesk, 7, 30, "Magiske Mikkel")
     q.legg_til_reward(xp=11000)
     q.legg_til_ekstra_tekst("Magiske Mikkel har forbedret teknikken din, Opphold er nå mer effektiv!")
     q.legg_til_progresjonTekst("Opphold runder aktiv: ")

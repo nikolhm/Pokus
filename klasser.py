@@ -976,6 +976,8 @@ class Fiende:
         #skill-relaterte variabler
         self._untouchable = False
         self._untouchableCD = 0
+        self._oppholdt = False
+        self._oppholdtCD = 0
 
     def navn(self):
         return self._navn
@@ -1032,6 +1034,16 @@ class Fiende:
     def set_untouchable(self, u, uCD):
         self._untouchable = u
         self._untouchableCD = uCD
+
+    def oppholdt(self):
+        return self._oppholdt
+
+    def oppholdtCD(self):
+        return self._oppholdtCD
+
+    def opphold(self, oCD, o=True):
+        self._oppholdt = o
+        self._oppholdtCD = oCD
 
     #Tar imot skade gjort av spilleren som parameter. Parameteret er altså max
     #skade som kan bli gjort, men hvor mye som faktisk blir gjort avhenger av randint
@@ -1118,6 +1130,13 @@ class Fiende:
         elif self._untouchableCD == 0:
             self._untouchable = False
 
+        if self._oppholdtCD > 0:
+            self._oppholdtCD -= 1
+        elif self._oppholdtCD < 0:
+            self._oppholdtCD += 1
+        elif self._oppholdtCD == 0:
+            self._oppholdt = False
+
     def loot(self, spiller, inv):
         item = self._loot.hent_loot()
         try:
@@ -1158,7 +1177,6 @@ class Spellbook:
 
         self._utforsk = False
         self._utforskRunder = 0
-        self._opphold = 0
 
     def skriv_spellbook(self):
         print("Her er følgende angrep du kan bruke:")
@@ -1168,8 +1186,9 @@ class Spellbook:
             print("restituer (eller r)      gir deg 40 helsepoeng\n\
                          Krever 50 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.")
         if self._spiller.lvl() >= 5:
-            print("vind (eller v)           tryller frem et kraftig vindkast (150+ skade)\n\
-                         krever tryllestav og 100 konsentrasjonspoeng")
+            print("vind (eller v)           tryller frem et kraftig vindkast ({}+ skade)\n\
+                         krever tryllestav og 100 konsentrasjonspoeng".format(\
+                         150 + 150*int(self._klasser.questlog(1).hent_quest(3).ferdig())))
         if self._spiller.lvl() >= 10:
             print("super restituer (sr)     gir deg 220 helsepoeng\n\
                          Krever 100 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.")
@@ -1177,12 +1196,13 @@ class Spellbook:
             print("utforsk (u)              de neste 5 vanlige angrepene stjeler liv.\n\
                          Krever 195 konsentrasjonspoeng.")
         if self._spiller.lvl() >= 20:
-            print("opphold (o)              fienden kan ikke angripe for 3 runder.\n\
-                         Krever 350 konsentrasjonspoeng.")
+            print("opphold (o)              fienden kan ikke angripe for {} runder.\n\
+                         Krever 350 konsentrasjonspoeng.".format(\
+                         2 + int(self._klasser.questlog(6).hent_quest(6).ferdig())))
 
         gnomeqlog = self._klasser.questlog(1)
         gargyllog = self._klasser.questlog(4)
-        ekspedisjonslog= self._klasser.questlog(6)
+        ekspedisjonslog = self._klasser.questlog(6)
         bandittlog = self._klasser.questlog(7)
         #Disse spesialangrepet krever å ha fullført et bestemt quest.
         if gnomeqlog.hent_quest(4).ferdig():
@@ -1427,8 +1447,12 @@ class Spellbook:
         if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and not fiende.untouchable():
             self._spiller.bruk_kons(350)
             print(self._spiller.navn(), "kastet Opphold!")
-            self._opphold = 2
-            if self._klasser.questlog(6).hent_quest(6).ferdig(): self._opphold += 1
+            fiende.opphold(1)
+            if self._klasser.questlog(6).hent_quest(6).ferdig():
+                fiende.opphold(2)
+            elif not self._klasser.questlog(6).hent_quest(6).sjekk_ferdig() \
+            and self._klasser.questlog(6).hent_quest(6).startet():
+                self._klasser.questlog(6).hent_quest(6).progresser()
             return False
         elif self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and fiende.untouchable():
             print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
@@ -1437,14 +1461,6 @@ class Spellbook:
         elif self._spiller.lvl() >= 20:
             print("Du har ikke nok konsentrasjonspoeng!")
         return True
-
-    def opphold(self, cd=0):
-        #quest
-        if cd and self._klasser.questlog(6).hent_quest(6).startet():
-            self._klasser.questlog(6).hent_quest(6).progresser()
-
-        self._opphold += cd
-        return self._opphold
 
     def distraher(self, fiende):
         if self._klasser.questlog(7).hent_quest(3).startet():
