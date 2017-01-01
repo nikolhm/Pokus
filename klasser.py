@@ -125,7 +125,11 @@ class Butikk:
                     if inv.check_requirements(vare.item()):
                         inv.bytt(vare.item())
                         inv.penger(-vare.pris())
-                        inv.legg_til_item(vare.item())
+                        i = vare.item()
+                        s = i.statliste()
+                        inv.legg_til_item(Item(i.navn(), i.type(), a=s[0], xKp=s[1], xHp=s[2], d=s[3], \
+                        ekstraKp=s[4], dmg=s[5], hp=s[6], kp=s[7], bruk=i.bruker(), \
+                        spesialisering=i.spesialisering(), lvl=i.lvl(), blade=i.blade()))
                         print("Du kjøpte", vare.navn(), "for", vare.pris(), "gullstykker.")
                         print("Du har nå", inv.penger(), "gullstykker igjen.")
                 else:
