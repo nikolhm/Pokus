@@ -42,6 +42,7 @@ class Butikk:
                         inn = "k"
             if inn == "f" or inn == "ferdig":
                 print(self._hadeTekst)
+                input("Trykk enter for å dra tilbake\n> ")
 
     def selg(self, inv):
         print("\n***************************************************************\n////                  Du har følgende ting:                \\\\\\\\")
@@ -176,15 +177,15 @@ class Vare:
     def skriv_vare(self, inv):
         stats = finn_stats(self._item)
         if len(stats) == 0:
-            return ("{:45s} = {:4}g ({})".format(self._item.navn(), self._pris, self._kommando))
+            return ("{:45s} = {:5}g ({})".format(self._item.navn(), self._pris, self._kommando))
         elif len(stats) == 1:
-            return ("{:27s}{:18s} = {:4}g ({})".format(self._item.navn(), stats[0], self._pris, self._kommando))
+            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), stats[0], self._pris, self._kommando))
         elif len(stats) == 2:
-            return ("{:27s}{:18s} = {:4}g ({})".format(self._item.navn(), "{}, {}".format(stats[0], stats[1]), self._pris, self._kommando))
+            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), "{}, {}".format(stats[0], stats[1]), self._pris, self._kommando))
         elif len(stats) == 3:
-            return ("{:27s}{:18s} = {:4}g ({})".format(self._item.navn(), "{}, {}, {}".format(stats[0], stats[1], stats[2]), self._pris, self._kommando))
+            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), "{}, {}, {}".format(stats[0], stats[1], stats[2]), self._pris, self._kommando))
         elif len(stats) == 4:
-            return ("{:27s}{:18s} = {:4}g ({})".format(self._item.navn(), "{}, {}, {}, {}".format(stats[0], stats[1], stats[2], stats[3]), self._pris, self._kommando))
+            return ("{:27s}{:18s} = {:5}g ({})".format(self._item.navn(), "{}, {}, {}, {}".format(stats[0], stats[1], stats[2], stats[3]), self._pris, self._kommando))
 
     def legg_til_buyText(self, tekst):
         self._buyText = tekst
@@ -704,7 +705,10 @@ class Spiller:
         skade = randint(0, fiende.a())
         if fiende.weapon_dmg():
             skade = round(randint(0, fiende.a()) / 10) + fiende.weapon_dmg()
-        skade -= int(randint(0, self._d) / 4)
+        if self._d >= 0:
+            skade -= int(randint(0, self._d) / 4)
+        else:
+            skade -= int(randint(self._d, 0) / 4)
         if skade <= 0:
             print(fiende.navn() + fiende.ending() + " bommet!")
             skade = 0
@@ -1809,8 +1813,7 @@ class Item:
         self._lvl = lvl
         self._verdi = ( a + d + xHp + xKp + ekstraKp * 30 + int(hp/10) + int(kp/5) + int(dmg*0.05) ) * 8
         self._lootTekst = "en " + self._navn.lower()
-        if self._type == "weapon" or self._type == "hat" or self._type == "gloves" \
-        or self._type == "robe" or self._type == "shoes" or self._type == "beard" or self._type == "trinket":
+        if self._type in {"weapon", "hat", "gloves", "robe", "shoes", "beard", "trinket"}:
             self._wieldable = True
 
     def navn(self):
