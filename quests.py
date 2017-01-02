@@ -412,9 +412,9 @@ def shroom_q6(navn):
     for en shroom-invasjon. Jeg trenger at du, som har støtt på disse shroomsene
     før, er med i feltet og leder ann kampen mot udyrene!
 
-    Og en ting til """ + navn + """. Jeg burde kanskje ha advart deg før, men vi
-    er ikke helt sikre på hvor lojaliteten til Pàn Tú ligger. Ta alt hun sier med
-    en klype salt!
+    Og en ting til """ + navn + """. Jeg burde kanskje ha advart deg før, men vi er ikke
+    helt sikre på hvor lojaliteten til Pàn Tú ligger. Ta alt hun sier med en klype
+    salt!
 
     -- Drep 20 shrooms."""
 def shroom_q6_ferdig(navn):

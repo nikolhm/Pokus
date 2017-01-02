@@ -838,13 +838,15 @@ class Spiller:
 
             #Når man når lvl 3, 5 og 10 lærer karakteren et nytt spesialangrep.
             if self._lvl == 3:
-                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke restituer! (r)")
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Restituer! (r)")
             if self._lvl == 5:
-                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke vind! (v)")
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Vind! (v)")
             if self._lvl == 10:
-                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke super restorasjon! (sr)")
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Super Restorasjon! (sr)")
             if self._lvl == 17:
-                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke utforsk! (u)")
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Utforsk! (u)")
+            if self._lvl == 23:
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Opphold! (o)")
 
         #Skulle man miste xp, kan man potensielt miste en lvl.
         while self._xp < 0:
@@ -1214,9 +1216,9 @@ class Spellbook:
         if self._spiller.lvl() >= 17:
             print("utforsk (u)              de neste 5 vanlige angrepene stjeler liv.\n\
                          Krever 195 konsentrasjonspoeng.")
-        if self._spiller.lvl() >= 20:
+        if self._spiller.lvl() >= 23:
             print("opphold (o)              fienden kan ikke angripe for {} runder.\n\
-                         Krever 350 konsentrasjonspoeng.".format(\
+                         Krever 270 konsentrasjonspoeng.".format(\
                          2 + int(self._klasser.questlog(6).hent_quest(6).ferdig())))
 
         gnomeqlog = self._klasser.questlog(1)
@@ -1423,8 +1425,9 @@ class Spellbook:
                 self._spiller.bruk_kons(100)
                 print(self._spiller.navn(), "kastet Kjøttifiser!")
                 print("Du gjorde steinen om til en velsmakende kjøttbolle.")
+                skade = fiende.hp()
                 fiende.mist_liv(1000000)
-                print(self._spiller.navn(), "fikk", self._spiller.restorer(300), "liv.")
+                print(self._spiller.navn(), "fikk", self._spiller.restorer(skade), "liv.")
                 return False
 
             elif self._spiller.kons_igjen() >= 100:
@@ -1439,11 +1442,12 @@ class Spellbook:
                 self._spiller.bruk_kons(195)
                 print(self._spiller.navn(), "kastet Utforsk!")
                 self._utforsk = True
-                self._utforskRunder = 3
+                self._utforskRunder = 4
 
                 #Oppdaterer qlog
                 bandittQlog = self._klasser.questlog(7)
-                bandittQlog.hent_quest(1).progresser()
+                if bandittQlog.hent_quest(1).startet():
+                    bandittQlog.hent_quest(1).progresser()
                 return False
             else:
                 print("Du trenger et sverd!")
@@ -1463,8 +1467,8 @@ class Spellbook:
         return utforsk
 
     def brukOpphold(self, fiende):
-        if self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and not fiende.untouchable():
-            self._spiller.bruk_kons(350)
+        if self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 270 and not fiende.untouchable():
+            self._spiller.bruk_kons(270)
             print(self._spiller.navn(), "kastet Opphold!")
             fiende.opphold(1)
             if self._klasser.questlog(6).hent_quest(6).ferdig():
@@ -1473,11 +1477,11 @@ class Spellbook:
             and self._klasser.questlog(6).hent_quest(6).startet():
                 self._klasser.questlog(6).hent_quest(6).progresser()
             return False
-        elif self._spiller.lvl() >= 20 and self._spiller.kons_igjen() >= 350 and fiende.untouchable():
+        elif self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 270 and fiende.untouchable():
             print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
-            self._spiller.bruk_kons(350)
+            self._spiller.bruk_kons(270)
             return False
-        elif self._spiller.lvl() >= 20:
+        elif self._spiller.lvl() >= 23:
             print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
@@ -1726,7 +1730,7 @@ class Inventory:
             print("Du har", len(self._trinkets), "duppedingser. ('b' for å bytte)")
 
         for ting in self._various:
-            print("Du har en", ting.navn())
+            print("Du har en", ting.navn().lower() + ".")
 
         #Gnom
         qListeGnom = self._klasser.questlog(1).hent_qLog()

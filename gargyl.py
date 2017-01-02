@@ -107,7 +107,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                 else:
                     loot = Loot()
                     ormLoot(loot)
-                    fiende = Fiende("Orm", "dyr", loot, 2500, 300, 200, ending="en")
+                    fiende = Fiende("Orm", "dyr", loot, 2300, 155, 130, ending="en")
                     skrivOrm()
                     print("\nEn svær orm gjemte seg i kisten!\n" + spiller.navn(), "har møtt en orm!")
                     if angrip(spiller, fiende, inv, klasser, spellbook):
@@ -149,7 +149,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                     guri_dialog(spiller)
                     loot = Loot()
                     guriLoot(loot)
-                    fiende = Fiende("Guri Gargyl", "gargyl", loot, 7000, 470, 300, kp=300, bonusKp=7, weapon=200)
+                    fiende = Fiende("Guri Gargyl", "gargyl", loot, 7000, 450, 250, kp=300, bonusKp=7, weapon=100)
                     if angrip(spiller, fiende, inv, klasser, spellbook):
                         qlog.hent_quest(5).progresser_liste(0)
                         utkikk = False
@@ -316,9 +316,9 @@ def generer_statue(spiller):
 
 def generer_gargyl(spiller):
     loot = Loot()
-    hp = 1200 + randint(0, spiller.lvl()) * 25
-    a = 180 + randint(spiller.lvl() - 10, spiller.lvl() + 10) *2 + int(spiller.d() / 4)
-    d = 120 + 4 * spiller.lvl()
+    hp = 900 + randint(0, spiller.lvl()) * 20
+    a = 120 + randint(spiller.lvl() - 10, spiller.lvl() + 10) + int(spiller.d() / 8)
+    d = 120 + randint(0, 3 * spiller.lvl())
     kp = 130 + 5 * round(spiller.lvl() / 4) + randint(-10, 10)
     bkp = randint(4, 6)
     fiende = Fiende("Gargyl", "gargyl", loot, hp, a, d, kp=kp, bonusKp=bkp, ending="en")
