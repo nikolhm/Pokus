@@ -1204,14 +1204,15 @@ class Spellbook:
 
     def skriv_spellbook(self):
         print("Her er følgende angrep du kan bruke:")
-        print("angrep (eller a)         angriper vanlig")
-        print("tryllepulver (eller t)   kaster tryllepulver på fienden (100 skade)")
+        print("angrep (eller a)         angriper vanlig.")
+        if sum([bool(t) for t in self._inv.itemListe() if t.type() == "damaging"]):
+            print("tryllepulver (eller t)   kaster tryllepulver på fienden.")
         if self._spiller.lvl() >= 3:
-            print("restituer (eller r)      gir deg 40 helsepoeng\n\
+            print("restituer (eller r)      gir deg 40 helsepoeng.\n\
                          Krever 50 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.")
         if self._spiller.lvl() >= 5:
-            print("vind (eller v)           tryller frem et kraftig vindkast ({}+ skade)\n\
-                         krever tryllestav og 100 konsentrasjonspoeng".format(\
+            print("vind (eller v)           tryller frem et kraftig vindkast ({}+ skade).\n\
+                         Krever tryllestav og 100 konsentrasjonspoeng".format(\
                          150 + 150*int(self._klasser.questlog(1).hent_quest(3).ferdig())))
         if self._spiller.lvl() >= 10:
             print("super restituer (sr)     gir deg 220 helsepoeng\n\
@@ -1244,21 +1245,32 @@ class Spellbook:
                          kun brukes ved ekspedijonsleiren.")
 
     def tryllepulver(self, fiende):
-        harPulver = None
+        tempListe = []
         for o in self._inv.itemListe():
-            if o.navn() == "Tryllepulver":
-                harPulver = o
-        if harPulver:
-            self._inv.bruk_item(harPulver)
-            print(self._spiller.navn(), "kastet tryllepulver!")
-            if not fiende.untouchable():
-                fiende.mist_liv(100)
-            else:
-                fiende.mist_liv(0)
-            return False
+            if o.type() == "damaging":
+                tempListe.append(o)
+        if tempListe:
+            print("Dine mengder med tryllepulver gir følgende virkning:")
+            for t in tempListe:
+                print("{:7} {:>5} hp".format(str(int(tempListe.index(t) + 1)) + ".", "-" + str(t.statliste()[5])))
+            indeks = input("Hvilken vil du kaste? (skriv nummeret)\n> ").strip()
+            try:
+                print("{} kastet {}!".format(self._spiller.navn(), tempListe[int(indeks) - 1].navn().lower()))
+                if not fiende.untouchable():
+                    fiende.mist_liv(tempListe[int(indeks) - 1].statliste()[5])
+                else:
+                    fiende.mist_liv(0)
+                self._inv.bruk_item(tempListe[int(indeks) - 1])
+                return False
+            except ValueError:
+                print("Du må skrive et tall!")
+                return True
+            except IndexError:
+                print("Du har ikke så mange never tryllepulver!")
+                return True
         else:
-            print("Du har ikke mer tryllepulver igjen!")
-            return True
+            print("Du har ikke mer tryllepulver!")
+        return True
 
     def konsentrasjonspulver(self):
         tempListe = []
@@ -1268,7 +1280,7 @@ class Spellbook:
         if tempListe != []:
             print("Dine mengder med konsentrasjonspulver gir følgende virkning:")
             for d in tempListe:
-                print("{:7} {:>4}kp".format(str(int(tempListe.index(d) + 1)) + ".", d.kp()))
+                print("{:7} {:>4} kp".format(str(int(tempListe.index(d) + 1)) + ".", d.kp()))
             indeks = input("Hvilken vil du sniffe? (skriv nummeret)\n> ")
             try:
                 kp = self._spiller.restorer_kp(tempListe[int(indeks) - 1].kp())
@@ -1294,7 +1306,7 @@ class Spellbook:
         if tempListe != []:
             print("Du har følgende trolldrikker:")
             for d in tempListe:
-                print("{:7} {:>4}hp".format(str(int(tempListe.index(d) + 1)) + ".", d.hp()))
+                print("{:7} {:>4} hp".format(str(int(tempListe.index(d) + 1)) + ".", d.hp()))
             indeks = input("Hvilken vil du drikke? (skriv nummeret)\n> ")
             try:
                 hp = self._spiller.restorer(tempListe[int(indeks) - 1].hp())

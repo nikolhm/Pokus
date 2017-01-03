@@ -111,10 +111,13 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                     skrivOrm()
                     print("\nEn svær orm gjemte seg i kisten!\n" + spiller.navn(), "har møtt en orm!")
                     if angrip(spiller, fiende, inv, klasser, spellbook):
-                        print("\n" + spiller.navn(), "fant 350 gullstykker, en stripe konsentrasjonspulver og en trolldrikk i kisten.")
-                        item = Item("Trolldrikk", "restoring", hp=300)
+                        print("\n" + spiller.navn(), "fant 350 gullstykker, en stripe konsentrasjonspulver, " + \
+                        "en neve ormpulver og en trolldrikk i kisten.")
+                        item = Item("Trolldrikk", "restoring", hp=350)
                         inv.legg_til_item(item)
                         item = Item("Konsentrasjonspulver", "restoring", kp=200)
+                        inv.legg_til_item(item)
+                        item = Item("Ormpulver", "damaging", dmg=500)
                         inv.legg_til_item(item)
                         inv.penger(350)
 
@@ -331,6 +334,11 @@ def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
     loot.legg_til_item(tall, 60)
 
+    dmg = 150 + randint(0, int(spiller.lvl() / 2.5)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
+    item.sett_loot_tekst("en håndfull tryllepulver")
+    loot.legg_til_item(item, 10)
+
     kpkp = int(randint(1, spiller.lvl()) /10) *25 + 100
     item = Item("Konsentrasjonspulver", "restoring", kp=kpkp)
     item.sett_loot_tekst("en stripe konsentrasjonspulver")
@@ -374,6 +382,11 @@ def ormLoot(loot):
 def gargylLoot(loot, fiende, spiller):
     tall = round(30 + fiende.xp() / 10)
     loot.legg_til_item(tall, 60)
+
+    dmg = 250 + randint(0, int(spiller.lvl() / 2)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
+    item.sett_loot_tekst("en håndfull tryllepulver")
+    loot.legg_til_item(item, 10)
 
     kpkp = int(randint(1, spiller.lvl()) /10) *25 + 100
     item = Item("Konsentrasjonspulver", "restoring", kp=kpkp)
@@ -437,8 +450,8 @@ def intro_kart(klasser):
 def garg_butikk(butikk):
     butikk.legg_til_hadeTekst("\nKom tilbake snart! Heller deg enn de skumle rustningene...\n")
 
-    item = Item("Tryllepulver", "damaging", dmg=100)
-    vare = Vare(item, 50, "t")
+    item = Item("Tryllepulver", "damaging", dmg=250)
+    vare = Vare(item, 300, "t")
     butikk.legg_til_vare(vare)
 
     item = Item("Trolldrikk", "restoring", hp=300)

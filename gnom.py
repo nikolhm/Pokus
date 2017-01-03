@@ -161,7 +161,8 @@ def gnomLoot(fiende, loot, spiller):
     tall = round(10 + fiende.xp() / 10)
     loot.legg_til_item(tall, 60)
 
-    item = Item("Tryllepulver", "damaging", dmg=100)
+    dmg = 100 + randint(0, int(spiller.lvl() / 5)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
     item.sett_loot_tekst("en håndfull tryllepulver")
     loot.legg_til_item(item, 17)
 
@@ -193,11 +194,12 @@ def gnomLoot(fiende, loot, spiller):
 
 def gnomvaktLoot(fiende, loot, spiller):
     tall = round(10 + fiende.xp() / 7)
-    loot.legg_til_item(tall, 50)
+    loot.legg_til_item(tall, 40)
 
-    item = Item("Tryllepulver", "damaging", dmg=100)
+    dmg = 150 + randint(0, int(spiller.lvl() / 2.5)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
     item.sett_loot_tekst("en håndfull tryllepulver")
-    loot.legg_til_item(item, 2)
+    loot.legg_til_item(item, 10)
 
     kpkp = int(randint(1, spiller.lvl()) /10) *25 + 125
     item = Item("Konsentrasjonspulver", "restoring", kp=kpkp)

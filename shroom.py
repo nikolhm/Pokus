@@ -1200,6 +1200,11 @@ def generer_shroom(spiller):
     a=randint(10, spiller.lvl() * 10), \
     xHp=randint(0, 4)*10, blade=True), 6)
 
+    dmg = 400 + randint(0, int(spiller.lvl() / 2.5)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
+    item.sett_loot_tekst("en håndfull tryllepulver")
+    loot.legg_til_item(item, 10)
+
     item = Item("Konsentrasjonspulver", "restoring", kp=randint(15, spiller.lvl() + 5)*10)
     item.sett_loot_tekst("en stripe konsentrasjonspulver")
     loot.legg_til_item(item, 12)
@@ -1393,6 +1398,11 @@ def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
     loot.legg_til_item(tall, 30)
 
+    dmg = 250 + randint(0, int(spiller.lvl() / 2)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
+    item.sett_loot_tekst("en håndfull tryllepulver")
+    loot.legg_til_item(item, 10)
+
     kpkp = int(randint(1, spiller.lvl()) /4) *25 + 125
     item = Item("Konsentrasjonspulver", "restoring", kp=kpkp)
     item.sett_loot_tekst("en stripe konsentrasjonspulver")
@@ -1443,6 +1453,10 @@ def banditt_kart(qlog):
 def shroom_butikk(butikk):
     butikk.legg_til_hadeTekst("\nVelkommen tilbake! Og vær forsiktig der ute!\n")
 
+    item = Item("Tryllestøv", "damaging", dmg=800)
+    vare = Vare(item, 2000, "t")
+    butikk.legg_til_vare(vare)
+
     item = Item("Trolldrikk", "restoring", hp=400)
     vare = Vare(item, 500, "d")
     butikk.legg_til_vare(vare)
@@ -1473,6 +1487,10 @@ def shroom_butikk(butikk):
 
 def banditt_butikk(butikk):
     butikk.legg_til_hadeTekst("\nKom deg ut! Hvis ikke skal kjøpe og ikke skal selge, pell deg!\n")
+
+    item = Item("Bandittstøv", "damaging", dmg=500)
+    vare = Vare(item, 1200, "t")
+    butikk.legg_til_vare(vare)
 
     item = Item("Trolldrikk", "restoring", hp=600)
     vare = Vare(item, 900, "d")
@@ -1636,9 +1654,9 @@ def skog_quest(qlog, spiller):
     bq = Quest(deskBq, ferdigDeskBq, 1, 1, "Rotete Randi", bonus=True, resetIfDead=True, tilgjengelig=False)
     bq.legg_til_reward(xp=18000, gp=2)
     bq.legg_til_progresjonTekst("Sussesopp funnet: ")
-    bq.legg_til_svarTekst("Vil du gi sussesoppen til Rotete Randi?   (ja/nei)\n> ")
+    bq.legg_til_svarTekst("Vil du gi den magiske soppen til Rotete Randi?   (ja/nei)\n> ")
     bq.legg_til_ekstra_tekst(shroom_bq3_tekst())
-    bq.legg_til_alt_desk("Vil du tvinge sussesoppen til å adlyde deg istedenfor?\n> ")
+    bq.legg_til_alt_desk("Vil du tvinge den magiske soppen til å adlyde deg istedenfor?\n> ")
     bq.legg_til_alt_ektra_tekst(shroom_bq3_tekst())
     bq.legg_til_alt_reward(ep=3, xp=14000)
     qlog.legg_til_quest(bq)

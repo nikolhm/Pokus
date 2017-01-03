@@ -53,8 +53,8 @@ def hjelp():
     ---------------------------------------------------------------------------
     angrip (eller a)             angriper fienden
     tryllepulver (eller t)       kaster tryllepulver på fienden
-    trolldrikk (eller d)         drikker en trolldrikk, gir deg 150 helsepoeng
-    konsentrasjonspulver (kp)    Sniffer en stripe konsentrasjonspulver, gir 100 kp
+    trolldrikk (eller d)         drikker en trolldrikk, gir deg helsepoeng
+    konsentrasjonspulver (kp)    Sniffer en stripe konsentrasjonspulver, gir kp
     spesialangrep (eller s)      gir deg hvilke angrep du kan bruke
     erfaringspoeng (eller xp)    gir deg hvor langt igjen du har til neste nivå
     total xp                     gir deg din totale sum av erfaringspoeng
