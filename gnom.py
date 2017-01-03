@@ -513,7 +513,7 @@ def vassle_quest(qlog, spiller):
     qlog.legg_til_quest(q3)
 
     #shroom
-    avslutningstekst = """
+    avslutningstekst = giVassleVink() + """
     Gratulerer! Du har spilt ferdig kapittel 1 av Pokus!
     Da er det bare å bite negler og håpe spent på at
     kapittel 2 ser dagens lys.\n"""
