@@ -531,10 +531,10 @@ def shroom_bq3(navn):
     Slike sussesopper som ham har sterke KRAFTIGE USTOPPELIGE krefter som kan
     komme til god nytte i en kamp!\n""".format(navn)
 def shroom_bq3_tekst():
-    return """    Du har nå muligheten til å tilkalle sussesoppen i kamp!
-    For å gjøre det, skriv 'tilkall sussesopp' eller bare 'ts'. Sussesoppen vil
-    ikke adlyde deg om du er utenfor denne delen av skogen, og vil ikke komme
-    om du allerede har en alliert ved din side i kamp. Skriv 's' i kamp for å
+    return """    Du har nå muligheten til å tilkalle den magiske soppen i kamp!
+    For å gjøre det, skriv 'tilkall sopp' eller bare 'ts'. Soppen vil ikke
+    adlyde deg om du er utenfor denne delen av skogen, og vil ikke komme om 
+    du allerede har en alliert ved din side i kamp. Skriv 's' i kamp for å
     se detaljer.\n"""
 
 def kjellprat():

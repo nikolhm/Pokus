@@ -560,20 +560,21 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                 pause()
                 skrivSopp("familie")
                 if not angrip(spiller, fiende1, inv, klasser, spellbook, fiende2=fiende2, fiende3=fiende3):
-                    return False
+                    continue
                 print("\n\n    Bråket fra soppfamilien lokket flere shrooms til deg!\n")
                 pause()
-                stein = Fiende("Soppinfisert Stein", "stein", loot, hp=250, a=40, d=50, kp=50)
-                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): return False
-                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=stein): return False
-                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=generer_shroom(spiller)):
-                    return False
+                stein = Fiende("Soppinfisert Stein", "stein", loot, hp=750, a=40, d=50, kp=50)
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): continue
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=stein): continue
+                stein = Fiende("Soppinfisert Stein", "stein", loot, hp=750, a=40, d=50, kp=50)
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=generer_shroom(spiller), fiende3=stein):
+                    continue
                 clear_screen()
                 print("\n\n    * Du har nådd tjernet! Tre store shrooms vokter det! *\n")
                 pause()
                 fiender = generer_store_shrooms(spiller)
                 if not angrip(spiller, fiender[0], inv, klasser, spellbook, fiende2=fiender[1], fiende3=fiender[2]):
-                    return False
+                    continue
                 if not vassleQ.progresjon_liste()[0]:
                     avslutningsLoop(spiller)
                     vassleQ.progresser_liste(0)
@@ -582,12 +583,12 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                 else:
                     print("  * Du har allerede forurenset tjernet! Du drar tilbake til fronten. *\n")
                     pause()
-                    return True
+                    continue
 
             #Quest 9 - Snakk med Zap
             if inn == "s" and sQlog.hent_quest(8).startet() and not sQlog.hent_quest(8).progresjon():
                 alliert = Fiende("Zap", "alliert", Loot(), hp=13000, a=560, d=320, kp=800, bonusKp=20)
-                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, alliert): return False
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, alliert): continue
                 print("""
               Zap: """ + navn + """! Så godt å se deg! Jeg vet ikke hva jeg skal gjøre!
                    Zip kom forbi her for litt siden, vi sloss, og, og- vi er forrådt! Av Zip!
@@ -622,7 +623,7 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
             vekk eventuelle fiendtlige shrooms?\n""")
                 if input("Vil du dra nord til sendebudet?       (ja/nei)\n> ").lower() in {"ja", "j"}:
                     for x in range(4):
-                        if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): return False
+                        if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): continue
                     skrivBanditt()
                     print("""\n
   Bjarte Banditt: """ + navn + "? " + navn + """, er det deg?
@@ -655,14 +656,14 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                     item.sett_loot_tekst("Bjarte Banditt sine sko")
                     loot.legg_til_item(item, 50)
                     alliert = Fiende("Bjarte Banditt", "banditt", loot, hp=12000, a=450, d=-400, kp=700, bonusKp=30)
-                    if not angrip(spiller, fiende, inv, klasser, spellbook, alliert): return False
+                    if not angrip(spiller, fiende, inv, klasser, spellbook, alliert): continue
                     clear_screen()
                     skrivBanditt()
                     print("\n ** Bjarte Banditt har gått fra vettet! **\n")
                     print(spiller.navn(), "har møtt Bjarte Banditt!")
                     fiende = alliert
                     if fiende.dead(): fiende.mist_liv(-4000, True)
-                    if not angrip(spiller, fiende, inv, klasser, spellbook): return False
+                    if not angrip(spiller, fiende, inv, klasser, spellbook): continue
                     sQlog.hent_quest(7).progresser()
                     print("\nDu drar tilbake til utkanten av shroom-terretoriumet, men Pàn Tú er")
                     print("ikke å se. Kanskje du burde snakke med Zip?")
@@ -759,12 +760,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     fiende = fiende3
                     print("Du angriper nå", fiende3.navn())
 
-        if inn in {"tillkall sussesopp", "sussesopp", "tilkall", "ts"} and sQlog.hent_quest(13).ferdig() \
+        if inn in {"tillkall sopp", "sopp", "tilkall", "ts"} and sQlog.hent_quest(13).ferdig() \
         and spiller.kp() >= 200:
             if alliert:
                 print("Du har allerede en alliert i denne kampen!")
             else:
-                alliert = Fiende("Psilocybe Semilanceata", "alliert", Loot(), hp=800, a=300, d=500, kp=1500, bonusKp=22, ending="en")
+                alliert = Fiende("Psilocybe Semilanceata", "alliert", Loot(), hp=500, a=300, d=100, kp=800, bonusKp=22, ending="en")
                 print(spiller.navn(), "tilkalte en magisk sopp til å hjelpe i kampen!")
                 spiller.bruk_kons(200)
                 tur = False
@@ -777,11 +778,11 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                 alliert.kp(-70)
             elif alliert.kp() >= 70 and alliert.hp() / alliert.xHp() <= 0.6 and randint(0, 3) == 0:
                 print(alliert.navn() + alliert.ending(), "kastet Restituer!")
-                print(alliert.navn() + alliert.ending(), "restorerte", alliert.restorer(300), "liv.")
+                print(alliert.navn() + alliert.ending(), "restorerte", alliert.restorer(randint(250, 340)), "liv.")
                 alliert.kp(-70)
             elif alliert.kp() >= 150 and spiller.kp() / spiller.xKp() <= 0.35 and randint(0, 5) == 0:
                 print(alliert.navn() + alliert.ending(), "kastet Konsentrert Hjelp!")
-                print(spiller.navn(), "restorerte", spiller.restorer_kp(300), "kp.")
+                print(spiller.navn(), "restorerte", spiller.restorer_kp(randint(290, 300 + round(alliert.xKp() / 3))), "kp.")
                 alliert.kp(-150)
             elif alliert.kp() >= 130 and not randint(0, 10):
                 print(alliert.navn() + alliert.ending(), "kastet Full Kraft!")
@@ -861,7 +862,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
             #Shroom bq3
             if not sQlog.hent_quest(13).sjekk_ferdig() and sQlog.hent_quest(7).ferdig() \
-            and randint(1, 50) == 42:
+            and (fiende.race() == "shroom" and randint(1, 10) == 1 or randint(1, 50) == 42):
                 print("Du fant en magisk kosesopp! Kankje noen i leiren savner den?")
                 sQlog.hent_quest(13).progresser()
 
@@ -942,7 +943,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print(fiende.navn(), "kastet Felles Røykepause")
                     fiende.kp(-280)
                     for f in fiender:
-                        print(f.navn(), "restorerte", f.restorer(250), "liv, og fikk lungebetennelse.")
+                        print(f.navn(), "restorerte", f.restorer(randint(240, 320)), "liv, og fikk lungebetennelse.")
                 #Solidifiser
                 elif fiende.navn() in {"Cantharellus Cibarius", "Suillus Soppfar"} and fiende.kp() >= 200 \
                 and randint(1, 7) == 2:
@@ -955,7 +956,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                 and randint(1, 8) == 1:
                     fiende.kp(-350)
                     print(fiende.navn(), "kastet Raseri!")
-                    print(spiller.navn(), "mistet", spiller.mist_liv(400), "liv av raseriet.")
+                    print(spiller.navn(), "mistet", spiller.mist_liv(randint(40, 60)*10), "liv av raseriet.")
                 #Untouchable shroom
                 elif fiende.navn() in {"Suillus Soppmor", "Boletus Edulis"} and fiende.kp() >= 250 \
                 and randint(1, 7) == 1 and ("Suillus Soppbarn" in fiender or "Agaricus Augustus" in fiender):
@@ -1144,8 +1145,8 @@ def generer_store_shrooms(spiller):
     fiende = Fiende("Cantharellus Cibarius", "shroom", loot, hp=20000, a=1000, d=400, kp=340, bonusKp=5, weapon=100)
     fiender.append(fiende)
     loot.legg_til_item(randint(4000, 6000), 25)
-    loot.legg_til_item(Item("Kantarellhatt", "hat", d=250, xHp=350, xKp=25), 25)
-    loot.legg_til_item(Item("Kantarellkledning", "robe", d=340, xHp=250), 25)
+    loot.legg_til_item(Item("Kantarellhatt", "hat", d=150, xHp=250, xKp=25), 25)
+    loot.legg_til_item(Item("Kantarellkledning", "robe", d=170, xHp=320), 25)
     loot.legg_til_item(Item("Kant-handsker", "gloves", d=170, xHp=150, ekstraKp=1), 25)
 
     #Agaricus Augustus
@@ -1153,17 +1154,17 @@ def generer_store_shrooms(spiller):
     fiende = Fiende("Agaricus Augustus", "shroom", loot, hp=7500, a=140, d=10, kp=700, bonusKp=45)
     fiender.append(fiende)
     loot.legg_til_item(randint(2000, 4000), 25)
-    loot.legg_til_item(Item("Sjampinjong", "weapon", a=130, xKp=320, ekstraKp=4), 25)
-    loot.legg_til_item(Item("Agaricus Stercus", "trinket", a=30, d=25, xKp=360, ekstraKp=8), 25)
-    loot.legg_til_item(Item("Sjampskjegg", "beard", xKp=250, ekstraKp=6), 25)
+    loot.legg_til_item(Item("Sjampinjong", "weapon", a=100, xKp=320, ekstraKp=4), 25)
+    loot.legg_til_item(Item("Agaricus Stercus", "trinket", a=40, d=25, xKp=160, ekstraKp=8), 25)
+    loot.legg_til_item(Item("Sjampskjegg", "beard", xKp=130, ekstraKp=6), 25)
 
     #Boletus Edulis
     loot = Loot()
     fiende = Fiende("Boletus Edulis", "shroom", loot, hp=4500, a=700, d=130, kp=400, bonusKp=15)
     fiender.append(fiende)
     loot.legg_til_item(randint(3000, 5000), 25)
-    loot.legg_til_item(Item("Steinstav", "weapon", a=380, xKp=140), 25)
-    loot.legg_til_item(Item("Steinsverd", "weapon", a=430, blade=True), 25)
+    loot.legg_til_item(Item("Steinstav", "weapon", a=210, xKp=140), 25)
+    loot.legg_til_item(Item("Steinsverd", "weapon", a=520, blade=True), 25)
     loot.legg_til_item(Item("Steinsko", "shoes", a=140, xKp=20, d=100, xHp=50), 25)
 
     return fiender

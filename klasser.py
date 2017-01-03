@@ -1031,6 +1031,9 @@ class Fiende:
         self._kp += kp
         return self._kp
 
+    def xKp(self):
+        return self._xKp
+
     def d(self, d=0):
         self._d += d
         return self._d
@@ -1236,7 +1239,7 @@ class Spellbook:
             print("distraher (di)           tar vekk 200+ kp fra fienden\n\
                          Krever 140 konsentrasjonspoeng. Tryllestav og d gir ekstra effekt.")
         if ekspedisjonslog.hent_quest(13).ferdig() and self._spiller.hentSted() == "shroom":
-            print("tilkall sussesopp (ts)   tilkaller en magisk sopp til å kjempe ved din side\n\
+            print("tilkall sopp (ts)        tilkaller en magisk sopp til å kjempe ved din side\n\
                          Krever 200 konsentrasjonspoeng. Forsvinner etter hver kamp og kan \n\
                          kun brukes ved ekspedijonsleiren.")
 
