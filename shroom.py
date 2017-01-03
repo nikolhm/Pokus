@@ -510,7 +510,7 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
         print(spiller.navn(), "har møtt Skjegghat Shroom! Så grufullt!\n")
         loot = Loot()
         loot.legg_til_item(Item("Soppskjegg", "beard", xKp=70, ekstraKp=4), 1)
-        loot.sett_loot_tekst("et soppskjegg")
+        # loot.sett_loot_tekst("et soppskjegg")
         fiende = Fiende("Skjegghatt Shroom", "shroom", loot, a=350, d=600, hp=12345, kp=1000, bonusKp=30)
         if not angrip(spiller, fiende, inv, klasser, spellbook): return False
         sQlog.hent_quest(4).progresser()
