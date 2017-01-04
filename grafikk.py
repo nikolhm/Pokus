@@ -7,6 +7,13 @@ import platform
 import sys
 
 init()
+gray = Fore.BLACK + Style.BRIGHT
+red = Fore.RED + Style.DIM
+green = Fore.GREEN + Style.NORMAL
+brown = Fore.YELLOW + Style.DIM
+white = Fore.WHITE + Style.NORMAL
+yellow = Fore.YELLOW + Style.BRIGHT
+reset = Style.RESET_ALL
 
 def clear_screen():
     if platform.system() == "Windows":
@@ -146,6 +153,18 @@ PPPPPPPPPP                OOOOOOOOO      KKKKKKKKK    KKKKKKK       UUUUUUUUU   
         os.system(ccom)
     sys.stdout.flush()
     print(ferdig)
+
+def insertColor(string, styleDict):
+    i = 0
+    liste = list(string)
+    while i < len(liste):
+        for characters in styleDict:
+            if liste[i] in characters:
+                liste.insert(i, styleDict[characters])
+                i += 1
+        i += 1
+    liste.append(Style.RESET_ALL)
+    return "".join(liste)
 
 def skriv_ekorn1():
     print(""" ,;;:;,
@@ -1087,38 +1106,36 @@ def skrivRotte():
 o_\\\\-mm-......-mm`~~~~~~~~~~~~~""")
 
 def skrivShroom():
-    rod = Fore.RED
-    res = Style.RESET_ALL
-    shroom = """       -----------------
-     /      _     _      \\
-  / """ + rod + """__     """ + res + """(_)   (_)""" + rod + """    ___""" + res + """\\
- |  """ + rod + """\ \_____      _____/ /""" + res + """  |
-|    """ + rod + """\______\    /______/""" + res + """    |
-|)            (_)            |
+    shroom = """{1}       -----------------
+     /     {3} _     _  {1}    \\
+  / {0}__     {3}(_)   (_){0}    ___{1}\\
+ |  {0}\ \_____      _____/ /{1}  |
+|    {0}\______\  {3}_{0} /______/{1}    |
+|)           {3} (_) {1}           |
 |___________________________(|
- """ + rod + """\\\\\\\\\\\\\\\\\\\\""" + res + """||||||||""" + rod + """//////////""" + res + """
+ {0}\\\\\\\\\\\\\\\\\\\\{1}||||||||{0}//////////{1}
            |      |
            |      |
            |      |
-            \____/"""
+            \____/ {2}""".format(red, brown, reset, yellow)
 
     return shroom
 
 def skrivSkjegghattShroom():
     rod = Fore.RED
     res = Style.RESET_ALL
-    shroom = """       -----------------
-     /      _     _      \\
-  / """ + rod + """__     """ + res + """(_)   (_)""" + rod + """    ___""" + res + """\\
- |  """ + rod + """\ \_____      _____/ /""" + res + """  |
-|    """ + rod + """\______\    /______/""" + res + """    |
-|)            (_)            |
+    shroom = """{1}       -----------------
+     /     {3} _     _  {1}    \\
+  / {0}__     {3}(_)   (_){0}    ___{1}\\
+ |  {0}\ \_____      _____/ /{1}  |
+|    {0}\______\  {3}_{0} /______/{1}    |
+|)           {3} (_) {1}           |
 |___________________________(|
- """ + rod + """\\\\\\\\\\\\\\\\\\\\""" + res + """||||||||""" + rod + """//////////""" + res + """
-        ((\|      |/))
+ {4}\\\\\\\\\\\\\\\\\\\\{1}|{4}||||||{1}|{4}//////////
+        ((\{1}|      |{4}/))
          \(()(-)(())/
           \(((())))/
-            \)).))"""
+            \)).)){2}""".format(red, brown, reset, yellow, green)
 
     print(shroom)
 
@@ -1132,29 +1149,29 @@ def skrivSopp(art):
         ,'__'.
         '({1}..{0})'
           )( {2}""".format(Fore.YELLOW + dim, r + red, r), \
-"""
+"""{0}
       .-'"'-.
-     /* O O *\\
+     /*{1} O O{0} *\\
     :_.-:`:-._;
         (_)
-     \\|/(_)\\|/""", \
- """
+    {2} \\|/{0}(_){2}\\|/{3}""".format(brown, red, green, reset), \
+ """{0}
       _,---._
     ,' _____ `.
-    '-({} O O{} )-'
+    '-({1} O O{0} )-'
        \(_)/
         )O(
-       "'"'" """.format(red, r), \
-   """
+       {2}"'"'" {3}""".format(brown, red, green, r), \
+   """{0}
          _
         / \\
        / * \\
       / * * \\
      / * * * \\
     / *__*__* \\
-    `-(-{0}o{1}^{0}o{1}-)-'
+    `-(-{1}o{0}^{1}o{0}-)-'
        \(_)/
-        ) (""".format(red, r), \
+        ) ({2}""".format(yellow, red, r), \
     """
        .-'~~~-.
      .'o  oOOOo`.
@@ -1164,35 +1181,35 @@ def skrivSopp(art):
        .'  ;-- `.o.'
       ,'  ; ~~--'~
       ;  ;
-____\\\\;_\\\\//___\\|/_____""", \
-"""
+{0}____\\\\;{0}_\\\\//___\\|/_____{1}""".format(green, r), \
+"""{0}
          _.._
        .'    `.
-     .'  {}O  O {} `.
+     .'  {1}O  O {0} `.
     .____________.
-      `""`  `""'
+     {2} `""`  `""'{0}
           `  `
           ;  ;
          .  .
         '  .
        ;  :
       .    .
-     '      '""".format(red, r), \
- """
+     '      '{3}""".format(brown, red, green, r), \
+ """{0}
               ___..._
         _,--'       "`-.
       ,'.  .            \\
-    ,/:. O   O .       .'
+    ,/:.{1} O   O {0}.       .'
     |;..  .--.   _..--'
     `--:...-,-'""\\
             |:.  `.
             l;.   l
             `|:.   |
-             |:.   `.,
-            .l;.    j, ,
-         `. \`;:.   //,/
-          .\\\\)`;,|\\'/(
-           ` `itz `(,""", skrivShroom(), \
+             |:.   `.{2},
+            .{0}l;.    j{2}, ,
+         `. \{0}`;:.   /{2}/,/
+          .\\\\)`{0};,|\\'{2}/(
+           ` `itz `(,{3}""".format(brown, red, green, r), skrivShroom(), \
 """
                ____
            _.-'78o `"`--._
@@ -1226,6 +1243,10 @@ ____\\\\;_\\\\//___\\|/_____""", \
             J       L (___:)  /  .'
             :       :  """"  . `.
             `._____.'   ||   `-'	''']
+
+    sopper[4] = insertColor(sopper[4], {"oO":red, ".,;:'`":brown})
+    sopper[8] = insertColor(sopper[8], {"o78":red, "\"_.,;:'`":brown})
+    sopper[9] = insertColor(sopper[9], {"oO":red, "\"(_.,;:'`":brown})
     if art == "liten":
         print(sopper[0])
     elif art == "tre":
@@ -1237,6 +1258,9 @@ ____\\\\;_\\\\//___\\|/_____""", \
 
 def skrivTre(kvist=False):
     clear_screen()
+    g = Fore.GREEN
+    b = Fore.YELLOW + Style.DIM
+    r = Style.RESET_ALL
     trees = ["""
               &&& &&  & &&
           && &\/&\|& ()|/ @, &&
@@ -1279,7 +1303,7 @@ def skrivTre(kvist=False):
         ~|"  |~
     ~~~~       ~~~~
   ~~               ~~~""", \
-"""
+"""{}
               v .   ._, |_  .,
            `-._\\/  .  \\ /    |/_
                \\\\  _\\, y | \\//
@@ -1291,7 +1315,7 @@ def skrivTre(kvist=False):
                      |-   |
                      |   =|
                      |    |
---------------------/ ,  . \\--------._""", \
+--------------------/ ,  . \\--------._{}""".format(b, r), \
 """
               # #### ####
             ### \\/#|### |/####
@@ -1317,7 +1341,7 @@ def skrivTre(kvist=False):
                  *%    \\/ #).-"*%%*
                      _.) ,/ *%,
              _________/)#(_____________""", \
-"""
+"""{}
             '.,
               'b      *
                '$    #.
@@ -1332,7 +1356,12 @@ def skrivTre(kvist=False):
                Y7'.'
               :@):.
              .:@:'.
-           .::(@:. """]
+           .::(@:. {}""".format(b, r)]
+
+    for x in range(3):
+        trees[x] = insertColor(trees[x], {"cpd&%()@O":g, "|/\\_-":b})
+    trees[4] = insertColor(trees[4], {"#cpd&%()@O":g, "\{\}|/\\_-":b})
+    trees[5] = insertColor(trees[5], {"*cpd&%@O":g, ",()|/\\_-":b})
     if kvist:
         print(trees[6])
     else:
@@ -1340,32 +1369,37 @@ def skrivTre(kvist=False):
 
 def skrivMoseStein():
     clear_screen()
-    print("""
+    stein = """
                #\\##\\#
              #  #O##O###
             #*#  #\\##\\###
             ##*#  #\\##\\##
            . ##*#  #o##\\#
         . ._. ._*#  #\\#
-     .. . ..._--_. ._ ._-- ._""")
+     .. . ..._--_. ._ ._-- ._"""
+    print(insertColor(stein, {"#*":green, ".\\":gray, "O":red}))
 
 def skrivGuffsliffsaff():
     clear_screen()
-    print("""
+    red = Fore.RED + Style.DIM
+    b = Fore.YELLOW + Style.DIM
+    g = Fore.GREEN
+    tre = """
             , oO oOo . Oo o
           oO oOo OOo o OO Oo Oo
         o OO\\/ / \\||/  /_/___/_O
        oO oO \\/   |/ \\/OOo  O  O
       oO_\\__\\_\\   |  /_____/_oO
                \\  | /          /
-     -~~~-~~~~-`  |{,~~~~~~-~~~-~
+     -~~~-~~~~-`  |{-~~~~~~-~~~-~
                 \\ }{
                  }{{
                  }}{
                  {{}
-           , -=-~{ .-^- _
-                 `}
-                  {""")
+             -=-~{ ~-^- _
+            ^    `}
+                  {"""
+    print(insertColor(tre, {",oO.":red, "\\/|\{\}~-_":b}))
 
 def skrivHodeskalle():
     clear_screen()
@@ -1386,7 +1420,7 @@ def skrivHodeskalle():
 
 def skrivLeir():
     clear_screen()
-    print("""
+    print("""{}
                           __,--'\\
                     __,--'    :. \\.
                _,--'              \\`.
@@ -1400,11 +1434,11 @@ def skrivLeir():
           '._;   \\ .   \\   `_,-'_,-'
         \\'    `- .\\_   |\\,-'_,-'
                     `--|_,`'
-                            `/""")
+                            `/{}""".format(Fore.YELLOW + Style.DIM, Style.RESET_ALL))
 
 def skrivBandittLeir():
     clear_screen()
-    print("""
+    tre = """
             .        +          .      .          .
      .            _        .                    .            +
   ,              /;-._,-.____        ,-----.__
@@ -1429,11 +1463,12 @@ def skrivBandittLeir():
               O       |:::/{ }  |                  (o
                )  ___/#\\::`/ (O "==._____   O, (O  /`
           ~~~w/w~"~~,\\` `:/,-(~`"~~~~~~~~"~o~\\~/~w|/~
-      ~~~~~~~~~~~~~~~~~~~~~~~\\\\W~~~~~~~~~~~~\\|/~~""")
+      ~~~~~~~~~~~~~~~~~~~~~~~\\\\W~~~~~~~~~~~~\\|/~~"""
+    print(tre)
 
 def skrivBaal():
     clear_screen()
-    print("""
+    g = """
             (    .
          .   )     .
         ,   (  (  .   .
@@ -1444,7 +1479,8 @@ def skrivBaal():
        _ -.;_/ \\\\--._
       (_;-// | \\ \\-'.\\
       ( `.__ _  ___,')
-       `'(_ )_)(_)_)'""")
+       `'(_ )_)(_)_)'"""
+    print(g)
 
 def skrivTekanne():
     clear_screen()
