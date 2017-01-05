@@ -60,7 +60,7 @@ class Butikk:
             if svar == "ja" or svar == "j":
                 for x in range(len(inv.itemListe())):
                     for item in inv.itemListe():
-                        if not item.bruker():
+                        if not item.bruker() and item.navn() != "Pass":
                             inv.selg(inv.itemListe().index(item))
             elif svar == "n" or svar == "nei":
                 for x in range(len(inv.itemListe())):
@@ -108,7 +108,10 @@ class Butikk:
                     if x != 1:
                         indeks = int(input("Hva vil du bytte til? Skriv nummeret til høyre\n> "))
                         item = inv.bytt_til(kategori, indeks)
-                        input("Du har byttet til " + item.navn() + ". Trykk enter for å gå tilbake til butikken.\n> ")
+                        if item:
+                            input("Du har byttet til " + item.navn() + ". Trykk enter for å fortsette.\n> ")
+                        else:
+                            pause()
                     else:
                         print("Du har ingen ting innenfor den kategorien.")
                         input("Trykk enter for å dra tilbake til butikken.\n> ")
@@ -125,13 +128,13 @@ class Butikk:
             if vare.kommando() == kommando:
                 if inv.penger() >= vare.pris():
                     if inv.check_requirements(vare.item()):
-                        inv.bytt(vare.item())
                         inv.penger(-vare.pris())
                         i = vare.item()
                         s = i.statliste()
-                        inv.legg_til_item(Item(i.navn(), i.type(), a=s[0], xKp=s[1], xHp=s[2], d=s[3], \
+                        item = Item(i.navn(), i.type(), a=s[0], xKp=s[1], xHp=s[2], d=s[3], \
                         ekstraKp=s[4], dmg=s[5], hp=s[6], kp=s[7], bruk=i.bruker(), \
-                        spesialisering=i.spesialisering(), lvl=i.lvl(), blade=i.blade()))
+                        spesialisering=i.spesialisering(), lvl=i.lvl(), blade=i.blade())
+                        inv.legg_til_item(item, item.type() not in {"various", "restoring", "damaging"})
                         print("Du kjøpte", vare.navn(), "for", vare.pris(), "gullstykker.")
                         print("Du har nå", inv.penger(), "gullstykker igjen.")
                 else:
@@ -312,7 +315,7 @@ class Quest:
         self._startet = False
         self._ferdig = False
         self._resetIfDead = resetIfDead
-        self._reward = []
+        self._reward = [0, 0, 0, 0, 0, 0, 0, None, False, 0, 0, 0]
         self._tilgjengelig = tilgjengelig
         self._bonus = bonus
         self._giverNavn = navn
@@ -324,7 +327,7 @@ class Quest:
         self._progresjonListe = []
         self._progresjonTekstListe = []
         self._altDesk = "Vil du gjøre det motsatte?\n> "
-        self._altReward = []
+        self._altReward = [0, 0, 0, 0, 0, 0, 0, None, False, 0, 0, 0]
         self._sted = sted
 
     def navn(self):
@@ -540,7 +543,7 @@ class Quest:
         print("Gratulerer!",spiller.navn(), "fullførte", self._giverNavn, "sitt oppdrag! På en måte...\n")
 
         if self._altEkstraTekst != "":
-            print(self._ekstraTekst)
+            print(self._altEkstraTekst)
 
         #xp
         if self._altReward[0] != 0:
@@ -549,8 +552,8 @@ class Quest:
 
         #gull
         if self._altReward[1] != 0:
-            print(spiller.navn(), "får", self._reward[1], "gullstykker!")
-            inv.penger(self._reward[1])
+            print(spiller.navn(), "får", self._altReward[1], "gullstykker!")
+            inv.penger(self._altReward[1])
 
         #hp
         if self._altReward[2] != 0:
@@ -999,6 +1002,9 @@ class Fiende:
         self._untouchableCD = 0
         self._oppholdt = False
         self._oppholdtCD = 0
+        self._bleedingHp = 0
+        self._bleedingKp = 0
+        self._bleedingCD = 0
 
     def navn(self):
         return self._navn
@@ -1068,6 +1074,26 @@ class Fiende:
     def opphold(self, oCD, o=True):
         self._oppholdt = o
         self._oppholdtCD = oCD
+
+    def sett_bleeding(self, runder, hp=0, kp=0):
+        self._bleedingCD = runder
+        self._bleedingHp = hp
+        self._bleedingKp = kp
+
+    def bleeding(self):
+        return self._bleedingCD
+
+    def korrupt(self):
+        if self._bleedingCD > 0:
+            self._bleedingCD -= 1
+            hpSkade = self.mist_liv(self._bleedingHp, True)
+            kpSkade = self.mist_kp(self._bleedingKp, True)
+            if hpSkade:
+                print(self.navn() + self.ending(), "mistet", hpSkade, "hp av korrupsjonen!")
+            if kpSkade:
+                print(self.navn() + self.ending(), "mistet", kpSkade, "kp av korrupsjonen!")
+        elif self._bleedingCD < 0:
+            self._bleedingCD += 1
 
     #Tar imot skade gjort av spilleren som parameter. Parameteret er altså max
     #skade som kan bli gjort, men hvor mye som faktisk blir gjort avhenger av randint
@@ -1201,48 +1227,69 @@ class Spellbook:
 
         self._utforsk = False
         self._utforskRunder = 0
+        self._lys = False
+        self._lysRunder = 0
 
     def skriv_spellbook(self):
+        gnomeqlog = self._klasser.questlog(1)
+        gargyllog = self._klasser.questlog(4)
+        ekspedisjonslog = self._klasser.questlog(6)
+        bandittlog = self._klasser.questlog(7)
+        gp = self._spiller.good_points()
+        ep = self._spiller.evil_points()
+        eb = round(((ep + 0.1) / (gp + ep + 0.01)) * ep)
+        gb = round(((gp + 0.1) / (gp + ep + 0.01)) * gp)
+
         print("Her er følgende angrep du kan bruke:")
         print("angrep (eller a)         angriper vanlig.")
         if sum([bool(t) for t in self._inv.itemListe() if t.type() == "damaging"]):
             print("tryllepulver (eller t)   kaster tryllepulver på fienden.")
         if self._spiller.lvl() >= 3:
-            print("restituer (eller r)      gir deg 40 helsepoeng.\n\
-                         Krever 50 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.")
+            print("restituer (eller r)      gir deg {} helsepoeng.\n\
+                         Krever 50 konsentrasjonspoeng, tryllestav-kp og nivå gir ekstra effekt.".format(\
+                         40 + self._spiller.lvl() * 4 + self._inv.hent_weaponKp()))
         if self._spiller.lvl() >= 5:
-            print("vind (eller v)           tryller frem et kraftig vindkast ({}+ skade).\n\
+            print("vind (eller v)           tryller frem et kraftig vindkast ({} skade).\n\
                          Krever tryllestav og 100 konsentrasjonspoeng".format(\
-                         150 + 150*int(self._klasser.questlog(1).hent_quest(3).ferdig())))
+                         round(self._inv.hent_weaponA() * 1.5) + 150 + 150 * int(gnomeqlog.hent_quest(3).ferdig())))
         if self._spiller.lvl() >= 10:
-            print("super restituer (sr)     gir deg 220 helsepoeng\n\
-                         Krever 100 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.")
+            print("super restituer (sr)     gir deg {} helsepoeng\n\
+                         Krever 100 konsentrasjonspoeng, tryllestav og nivå gir ekstra effekt.".format(\
+                         140 + self._spiller.lvl() * 8 + self._inv.hent_weaponKp()))
         if self._spiller.lvl() >= 17:
-            print("utforsk (u)              de neste 5 vanlige angrepene stjeler liv.\n\
+            print("utforsk (u)              de neste 4 vanlige angrepene stjeler liv.\n\
                          Krever 195 konsentrasjonspoeng.")
         if self._spiller.lvl() >= 23:
             print("opphold (o)              fienden kan ikke angripe for {} runder.\n\
                          Krever 270 konsentrasjonspoeng.".format(\
-                         2 + int(self._klasser.questlog(6).hent_quest(6).ferdig())))
+                         2 + int(ekspedisjonslog.hent_quest(6).ferdig())))
 
-        gnomeqlog = self._klasser.questlog(1)
-        gargyllog = self._klasser.questlog(4)
-        ekspedisjonslog = self._klasser.questlog(6)
-        bandittlog = self._klasser.questlog(7)
         #Disse spesialangrepet krever å ha fullført et bestemt quest.
         if gnomeqlog.hent_quest(4).ferdig():
-            print("konsentrer energi (ke)   stjeler 300 helsepoeng\n\
-                         Krever 150 konsentrasjonspoeng, tryllestav gir ekstra effekt.")
+            print("konsentrer energi (ke)   stjeler {} helsepoeng\n\
+                         Krever 150 konsentrasjonspoeng, tryllestav gir ekstra effekt.".format(\
+                         300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp()))
         if gargyllog.hent_quest(4).ferdig():
             print("kjøttifiser (kj)         gjør forsteinede fiender om til kjøtt\n\
-                         Krever 100 konsentrasjonspoeng.")
+                         Krever 85 konsentrasjonspoeng.")
         if bandittlog.hent_quest(3).startet():
-            print("distraher (di)           tar vekk 200+ kp fra fienden\n\
-                         Krever 140 konsentrasjonspoeng. Tryllestav og d gir ekstra effekt.")
+            print("distraher (di)           tar vekk {} kp fra fienden\n\
+                         Krever 140 konsentrasjonspoeng. Tryllestav og d gir ekstra effekt.".format(\
+                         200 + round(self._spiller.d()/15) + self._inv.hent_weaponKp()))
         if ekspedisjonslog.hent_quest(13).ferdig() and self._spiller.hentSted() == "shroom":
             print("tilkall sopp (ts)        tilkaller en magisk sopp til å kjempe ved din side\n\
                          Krever 200 konsentrasjonspoeng. Forsvinner etter hver kamp og kan \n\
                          kun brukes ved ekspedijonsleiren.")
+
+        #Disse spesialangrepene krever ondhets- eller godhetspoeng.
+        if ekspedisjonslog.hent_quest(14).ferdig():
+            print("lys (l)                  Restorerer {} helsepoeng for alle rundt deg i 3 runder.\n\
+                         Krever 120 konsentrasjonspoeng. Godhetsbonus gir ekstra effekt.".format(\
+                         round((((gp + 0.01) / (gp + ep + 0.001)) * gp * 100) / 5)))
+        if ekspedisjonslog.hent_quest(15).ferdig():
+            print("korrupsjon (ko)          Gjør fienden korrupt og tar {} liv {}i 3 runder.\n\
+                         Krever 120 konsentrasjonspoeng. Ondhetsbonus og a gir ekstra effekt.".format(\
+                         round(self._spiller.a() / 5) + eb * 10, ("og " + str(eb*2) + " kp ")*int(eb >= 10)))
 
     def tryllepulver(self, fiende):
         tempListe = []
@@ -1354,10 +1401,7 @@ class Spellbook:
                 if fiende.untouchable():
                     fiende.mist_liv(0)
                 else:
-                    if qlog.hent_quest(3).ferdig():
-                        fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 300)
-                    else:
-                        fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 150)
+                    fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 150 + 150 * int(qlog.hent_quest(3).ferdig()))
 
                 #oppdaterer quest-variabel
                 if qlog.hent_quest(3).startet() and not qlog.hent_quest(3).ferdig():
@@ -1425,8 +1469,8 @@ class Spellbook:
     def meatify(self, fiende):
         qlog = self._klasser.questlog(4)
         if qlog.hent_quest(4).ferdig():
-            if self._spiller.kons_igjen() >= 100 and fiende.race() == "gargyl":
-                self._spiller.bruk_kons(100)
+            if self._spiller.kons_igjen() >= 85 and fiende.race() == "gargyl":
+                self._spiller.bruk_kons(85)
                 print(self._spiller.navn(), "kastet Kjøttifiser!")
                 if fiende.untouchable():
                     print(fiende.navn() + fiende.ending(), "er tvunget tilbake til sin kjøttlige form!")
@@ -1436,8 +1480,8 @@ class Spellbook:
                     fiende.set_untouchable(False, -6)
                 return False
 
-            elif self._spiller.kons_igjen() >= 100 and fiende.race() == "stein":
-                self._spiller.bruk_kons(100)
+            elif self._spiller.kons_igjen() >= 85 and fiende.race() == "stein":
+                self._spiller.bruk_kons(85)
                 print(self._spiller.navn(), "kastet Kjøttifiser!")
                 print("Du gjorde steinen om til en velsmakende kjøttbolle.")
                 skade = fiende.hp()
@@ -1445,7 +1489,7 @@ class Spellbook:
                 print(self._spiller.navn(), "fikk", self._spiller.restorer(skade), "liv.")
                 return False
 
-            elif self._spiller.kons_igjen() >= 100:
+            elif self._spiller.kons_igjen() >= 85:
                 print("Denne fienden er ikke forsteinet.")
             else:
                 print("Du har ikke nok konsentrasjonspoeng!")
@@ -1519,6 +1563,47 @@ class Spellbook:
                 return False
             else:
                 print("Du har ikke nok konsentrasjonspoeng!")
+        return True
+
+    def bruk_lys(self):
+        if self._klasser.questlog(6).hent_quest(14).ferdig() and self._spiller.kons_igjen() >= 120:
+            print("Du kastet Lys!")
+            self._lysRunder = 3
+            self._lys = True
+            self._spiller.bruk_kons(120)
+            return False
+
+        #Ikke nok kp
+        elif self._klasser.questlog(6).hent_quest(14).ferdig():
+            print("Du har ikke nok konsentrasjonspoeng!")
+        return True
+
+    def lys(self):
+        lys = False
+        if self._lys:
+            self._lysRunder -= 1
+            lys = True
+        if self._lysRunder == 0:
+            self._lys = False
+        return lys
+
+    def korrupsjon(self, fiende):
+        if self._klasser.questlog(6).hent_quest(15).ferdig() and self._spiller.kons_igjen() >= 120:
+            print("Du kastet Korrupsjon!")
+            gp = self._spiller.good_points()
+            ep = self._spiller.evil_points()
+            evilBonus = round(((ep + 0.1) / (gp + ep + 0.01)) * ep)
+            skade = round(self._spiller.a() / 5) + evilBonus * 10
+            if fiende.untouchable():
+                print(fiende.navn() + fiende.ending(), "ble ikke korrupt.")
+            else:
+                fiende.sett_bleeding(3, hp=skade, kp=evilBonus*2*int(evilBonus >= 10))
+            self._spiller.bruk_kons(120)
+            return False
+
+        #Ikke nok kp
+        elif self._klasser.questlog(6).hent_quest(15).ferdig():
+            print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
 class Inventory:
@@ -1602,14 +1687,15 @@ class Inventory:
             #Bytter stats
             self._spiller.bytt_stats(gammelStatliste, item.statliste())
             item.bruker(True)
+            return True
+        return False
 
     def bytt_til(self, kategori, i):
         item = self._categoryList[kategori - 1][i - 1]
         if item.bruker():
             item = Item("ingenting", item.type())
-        self.bytt(item)
-
-        return item
+        if self.bytt(item):
+            return item
 
     def check_requirements(self, item):
         ok = True
@@ -1692,7 +1778,7 @@ class Inventory:
                 stats = [str(t[i] + ":" + str(s[i]) + ", ") * int(bool(s[i])) for i in range(len(s))]
                 print("    {:36} {:30} {:>5}g {:>4}".format(\
                 "{} {}".format(item.navn(), "**bruker**"*int(item.bruker())), \
-                "{}{}{}{}{}{}{}".format(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7]).strip(", "),\
+                "{}{}{}{}{}{}{}{}".format(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7]).strip(", "),\
                 item.verdi(), "(" + str(x) + ")"))
             return 0
 
@@ -1745,7 +1831,10 @@ class Inventory:
             print("Du har", len(self._trinkets), "duppedingser. ('b' for å bytte)")
 
         for ting in self._various:
-            print("Du har en", ting.navn().lower() + ".")
+            if ting.navn() in {"Pass"}:
+                print("Du har et", ting.navn().lower() + ".")
+            else:
+                print("Du har en", ting.navn().lower() + ".")
 
         #Gnom
         qListeGnom = self._klasser.questlog(1).hent_qLog()

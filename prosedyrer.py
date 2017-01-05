@@ -63,6 +63,7 @@ def hjelp():
     bytt (eller b)               gir deg mulighet til å bytte stav eller hatt
     oppdrag (eller q)            gir deg hvilke oppdrag du er på
     flykt (eller f)              tar deg tilbake til borgen
+    poeng (eller p)              viser deg din moral
     hjelp (eller h)              gir deg denne listen med kommandoer
     ---------------------------------------------------------------------------
     """)
@@ -103,8 +104,10 @@ def skriv_ut(s, f):
 def pause():
     input("Trykk enter for å fortsette\n> ")
 
-def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
+def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte=[], fiender=[]):
     qlog = klasser.questlog(1)
+    if not fiender:
+        fiender.append(fiende)
     #gir xp
     if inn == "xp" or inn == "erfaringspoeng":
         spiller.xp()
@@ -139,7 +142,8 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
                 if x != 1:
                     indeks = int(input("Hva vil du bytte til? Skriv nummeret til høyre\n> "))
                     item = inv.bytt_til(kategori, indeks)
-                    input("Du har byttet til " + item.navn() + ". Trykk enter for å fortsette.\n> ")
+                    if item:
+                        input("Du har byttet til " + item.navn() + ". Trykk enter for å fortsette.\n> ")
                 else:
                     print("Du har ingen ting innenfor den kategorien.")
                     input("Trykk enter for å fortsette.\n> ")
@@ -220,6 +224,14 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
     elif inn == "di" or inn == "distraher":
         tur = spellbook.distraher(fiende)
 
+    #kaster Lys. Krever formel kjøpt og 10 gp
+    elif inn == "l" or inn == "lys":
+        tur = spellbook.bruk_lys()
+
+    #kaser Korrupsjon. Krever formel kjøpt og 10 op
+    elif inn == "ko" or inn == "korrupsjon":
+        tur = spellbook.korrupsjon(fiende)
+
     #gir liste over kommandoer.
     elif inn == "h" or inn == "hjelp":
         hjelp()
@@ -254,6 +266,20 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True):
         spiller.restorer(100000)
         spiller.restorer_kp(10000)
 
+    #aktiverer Lys
+    if not tur and spellbook.lys():
+        gp = spiller.good_points()
+        ep = spiller.evil_points()
+        mengde = round((((gp + 0.01) / (gp + ep + 0.001)) * gp * 100) / 5)
+        print(spiller.navn(), "restorerte", spiller.restorer(mengde), "liv fra lyset!")
+        for a in allierte:
+            if a:
+                print(a.navn(), "restorerte", a.restorer(mengde), "liv fra", spiller.navn() + "s lys!")
+
+    #akiverer korrupsjon
+    if not tur and fiende.bleeding() > 0:
+        fiende.korrupt()
+        
     return tur
 
 def player_died(spiller, inv, klasser):
@@ -323,10 +349,8 @@ def write_player_died(spiller, sted):
 #Koden din er ikke godt nok kommentert. Hilsen Lilly :)
 def finn_stats(item):
     statliste = item.statliste()
-    totalStats = 0
-    for s in statliste:
-        if s != 0:
-            totalStats += 1
+    totalStats = sum([int(bool(s)) for s in statliste])
+
     i1 = 0
     i2 = 0
     listestats = [0 for z in range(totalStats)]
@@ -354,13 +378,13 @@ def minnestein(spiller, inv, klasser):
         sPris = 2000
     if spiller.lvl() >= 20:
         pris = 500
-        sPris = 10000
+        sPris = 8000
     if spiller.lvl() >= 30:
         pris = 2000
-        sPris = 30000
+        sPris = 20000
     if spiller.lvl() >= 40:
-        pris = 10000
-        sPris = 60000
+        pris = 4500
+        sPris = 35000
 
     print("""                     *** MINNESTEIN ***
 
@@ -511,7 +535,7 @@ def lagre(spiller, inv, klasser, nr=0):
         lagreListe.append("Questlog\n")
         for qlog in klasser.alle_questlogger():
             for q in qlog.hent_qLog():
-                if q.startet() or q.progresjon():
+                if q.startet() or q.progresjon() or q.ferdig():
                     tekst = str(klasser.alle_questlogger().index(qlog)) + ","
                     tekst += str(qlog.hent_qLog().index(q)) + ","
                     tekst += str(int(q.startet())) + ","
@@ -609,6 +633,7 @@ def krypt(filnavn):
 
     with open(filnavn, "w", encoding="UTF-8") as fil:
         fil.write(tekst)
+#krypt("Save\\Heidi.sav")
 
 def dekrypt(filnavn):
     ingentingInteressant = "hunGunIcorN"

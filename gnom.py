@@ -443,8 +443,8 @@ def gnomequest(qlog, spiller):
     bq2.legg_til_ekstra_tekst("Supert! Her har du en tryllestav som takk! Det er en nybegynnerstav, men du trenger en for å gjøre mer avansert magi.\n")
     bq2.legg_til_progresjonTekst("Magisk oppgaveretter funnet: ")
     bq2.legg_til_svarTekst("Vil du gi den magiske oppgaveretteren til Mirakuløse Marte?   (ja/nei)\n> ")
-    bq2.legg_til_alt_desk("Vil du rive den opp og kaste den på ansiktet hennes?\n> ")
-    bq2.legg_til_alt_reward(ep=3)
+    bq2.legg_til_alt_desk("Vil du skrive en lang og ustrukturtert oppgave som Marte må rette, og som \ninneholder en karakter som ligner på Marte som må rette kjedelige oppgaver?\n> ")
+    bq2.legg_til_alt_reward(ep=2)
     qlog.legg_til_quest(bq2)
 
 def gauteDialog(spiller):

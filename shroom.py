@@ -194,6 +194,7 @@ def sti(spiller, inv, klasser, spellbook):
             h1 = True
             tekst =  spiller.navn() + " tar til høyre med første veideling\n"
         print(tekst)
+        pause()
         if randint(1, 3) == 3 and not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
             return True
 
@@ -208,6 +209,7 @@ def sti(spiller, inv, klasser, spellbook):
             h2 = True
             tekst =  spiller.navn() + " tar til høyre med andre veideling\n"
         print(tekst)
+        pause()
         if randint(1, 3) == 3 and not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
             return True
 
@@ -222,6 +224,7 @@ def sti(spiller, inv, klasser, spellbook):
             h3 = True
             tekst =  spiller.navn() + " tar til høyre med tredje veideling\n"
         print(tekst)
+        pause()
         if randint(1, 3) == 3 and not angrip(spiller, generer_banditt(spiller), inv, klasser, spellbook):
             return True
 
@@ -247,9 +250,10 @@ def sti(spiller, inv, klasser, spellbook):
             sist.\n""")
             pause()
         elif h1 and not h2 and h3:
-            print("""\n\n        *Du fant et skilt hvor det står "BANDITT-LEIR"* """)
+            print("\n")
+            skrivSkilt()
             if shroomQlog.hent_quest(0).startet():
-                print("\nDu går inn til leiren.")
+                print("     * Du går inn til leiren *")
                 input("\nTrykk enter for å fortsette\n> ")
                 return banditt_loop(spiller, inv, klasser, spellbook)
             else:
@@ -276,7 +280,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
     ferdig = False
     while not ferdig:
         skrivBandittLeir()
-        banditt_kart(bQlog)
+        banditt_kart(bQlog, inv)
 
         valg = False
         quest = False
@@ -284,6 +288,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
         skogen = False
         sopp = False
         duell = False
+        moral = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -311,6 +316,10 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                 sopp = True
                 valg = True
 
+            if inn == "m" and "Pass" in [item.navn() for item in inv.itemListe()]:
+                moral = True
+                valg = True
+
         while quest:
             inn = bQlog.oppdrag_tilgjengelige(spiller.lvl(), "stortreet").lower()
             if inn == "2" and bQlog.hent_quest(1).progresjon() == 6 and not bQlog.hent_quest(1).progresjon_liste()[0]:
@@ -332,8 +341,10 @@ def banditt_loop(spiller, inv, klasser, spellbook):
             gaaTilButikk = False
 
         while skogen:
-            tall = randint(1, 15)
-            if tall >= 14:
+            tall = randint(1, 16)
+            if tall == 16:
+                fiende = generer_guffsliffsaff(spiller)
+            elif tall >= 14:
                 fiende = generer_tre(spiller)
             elif tall >= 10:
                 fiende = generer_gnom(spiller)
@@ -413,6 +424,82 @@ def banditt_loop(spiller, inv, klasser, spellbook):
 
             q.sett_tilgjengelig(False)
 
+        while moral:
+            clear_screen()
+            gp = spiller.good_points()
+            ep = spiller.evil_points()
+            goodBonus = round(((gp + 0.1) / (gp + ep + 0.01)) * gp)
+            evilBonus = round(((ep + 0.1) / (gp + ep + 0.01)) * ep)
+            print("\n\n    " + " {}Velkommen {}, til Moralhulen!{} ".format(brown, spiller.navn(), reset).center(93, "-"))
+            print("{}    I soppenes navn dømmer vi deg utfra dine gjerninger, og belønner deg utifra dem!".format(red))
+            print("    " + "Her er din moral:".center(79))
+            print("\n    " + "{1}Godhetspoeng: {0}{3}        {2}Ondhetspoeng: {0}{4}".format(\
+            reset, blue + Style.BRIGHT, red + Style.BRIGHT, gp, ep).center(106))
+            print("\n    " + "{1}Godhetsbonus: {0}{3}        {2}Ondhetsbonus: {0}{4}".format(\
+            reset, blue + Style.BRIGHT, red + Style.BRIGHT, goodBonus, evilBonus).center(106, " "))
+            print("\n    {}Døm din gode side (g)".format(red))
+            print("    Døm din onde side (o)" + reset)
+            print("    " + "-" * 80, "\n    Skriv 'f' eller 'ferdig' for å gå tilbake")
+            inn = input("\nHva vil du gjøre?\n> ").lower()
+            if inn in {"f", "ferdig"}:
+                moral = False
+            elif inn == "g":
+                if gp < 10:
+                    print("    {}Du er ikke en god nok person for oss. Kom tilbake når du har minst 10 godhetspoeng!{}\n".format(red, reset))
+                    pause()
+                else:
+                    print("\n{}    For en rett pris, kan din godhet gi deg følgende fordeler:".format(red))
+                    print("    Glorie               d:200, hp:350          32000g (g)")
+                    if not sQlog.hent_quest(14).ferdig():
+                        print("    Lys                  Trylleformel           25000g (l)")
+                    print(reset + "\ndu har", inv.penger(), "gullstykker.")
+                    inn = input("Hva vil du kjøpe?\n> ").lower()
+                    if inn in {"glorie", "g"}:
+                        if inv.penger() >= 32000:
+                            inv.penger(-32000)
+                            inv.legg_til_item(Item("Glorie", "hat", d=200, xHp=350), True)
+                            input("Du kjøpte en glorie. Trykk enter for å fortsette\n> ")
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+                    elif inn in {"lys", "l"} and not sQlog.hent_quest(14).ferdig():
+                        if inv.penger() >= 25000:
+                            inv.penger(-25000)
+                            sQlog.hent_quest(14).sett_ferdig()
+                            print(spiller.navn(), "lærte en ny trylleformel! Du kan nå bruke Lys (l)!")
+                            pause()
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+            elif inn == "o":
+                if ep < 10:
+                    print("{}    Du er ikke en ond nok person for oss. Kom tilbake når du har minst 10 ondhetspoeng!{}\n".format(red, reset))
+                    pause()
+                else:
+                    print("\n{}    For en rett pris, kan din ondhet gi deg følgende fordeler:".format(red))
+                    print("    Lotusføtter          hp:-200, d:-110, a:135     32000g (l)")
+                    if not sQlog.hent_quest(15).ferdig():
+                        print("    Korrupsjon           Trylleformel               25000g (ko)")
+                    print(reset + "\ndu har", inv.penger(), "gullstykker.")
+                    inn = input("Hva vil du kjøpe?\n> ").lower()
+                    if inn in {"lotusføtter", "l"}:
+                        if inv.penger() >= 32000:
+                            inv.penger(-32000)
+                            inv.legg_til_item(Item("Lotusføtter", "shoes", d=-110, xHp=-200, a=135), True)
+                            input("Du bandt føttene dine. Trykk enter for å fortsette\n> ")
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+                    elif inn in {"korrupsjon", "ko"} and not sQlog.hent_quest(15).ferdig():
+                        if inv.penger() >= 25000:
+                            inv.penger(-25000)
+                            sQlog.hent_quest(15).sett_ferdig()
+                            print(spiller.navn(), "lærte en ny trylleformel! Du kan nå bruke Korrupsjon (ko)!")
+                            pause()
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+
     if ferdig:
         return False
 
@@ -463,7 +550,9 @@ def kjellLoop(spiller, inv, klasser, spellbook, bjarteQ):
         return True
     elif input("\nØnsker du å angripe Kjedelige Kjell og kutte av ham fingeren?\n> ").lower() in {"ja", "j"}:
         loot = Loot()
-        loot.legg_til_item(Item("Kjedelige sko", "shoes", d=100, xHp=70), 1)
+        item = Item("Kjedelige sko", "shoes", d=100, xHp=70)
+        item.sett_loot_tekst("et par kjedelige sko")
+        loot.legg_til_item(item, 1)
         fiende = Fiende("Kjedelige Kjell", "magiker", loot, a=350, hp=3000, d=240, kp=350, bonusKp=4)
         if not angrip(spiller, fiende, inv, klasser, spellbook):
             return False
@@ -728,9 +817,10 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             tur = False
             inn = ""
             print(spiller.navn(), "er bundet fast.")
+            kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=tur, fiender=fiender, allierte=[alliert])
         else:
             inn = input("\nHva vil du gjøre?\n> ").lower()
-            tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
+            tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook, fiender=fiender, allierte=[alliert])
 
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til leiren.")
@@ -845,7 +935,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
             #Shroom bq1
             if fiende.race() == "tre" and bQlog.hent_quest(2).ferdig() and \
-            not sQlog.hent_quest(10).sjekk_ferdig() and randint(1, 5) == 1:
+            not sQlog.hent_quest(10).sjekk_ferdig() and randint(1, 15) == 1:
                 sQlog.hent_quest(10).progresser()
                 print("Du klarte å lage et totem ut av restene til", fiende.navn() + fiende.ending())
 
@@ -1225,7 +1315,7 @@ def generer_smaatt(spiller):
         item = Item("Fossil", "trinket", a=30, xKp=75, xHp=25, ekstraKp=randint(3, 5))
         loot.legg_til_item(item, 8)
         skrivMoseStein()
-        print(spiller.navn(), "har møtt på en levende stein!")
+        print(spiller.navn(), "har møtt på en levende mosegrodd stein!")
         fiende =  Fiende("Mosegrodd stein", "stein", loot,  a=randint(90, 190), d=100, hp=randint(900, 1100), kp=randint(100, 110))
         dynamiskLoot(loot, fiende, spiller)
         return fiende
@@ -1440,7 +1530,7 @@ def skog_kart(qlog):
     Minnesteinen (l)           Graver din progresjon i skogens omtrent-funksjonelle minnestein
     Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n""")
 
-def banditt_kart(qlog):
+def banditt_kart(qlog, inv):
     print("""
     Velkommen til banditt-leiren! Her er stedene du kan dra:
     Skogen (s)                 Se hvem du finner i utkanten av leiren
@@ -1449,6 +1539,8 @@ def banditt_kart(qlog):
     Duellringen (d)            Test dine ferdigheter i bandittenes interne duellring""")
     if qlog.hent_qLog()[2].startet():
         print("    Soppstedet (p)             Dra til det hemmelige soppstedet")
+    if "Pass" in [item.navn() for item in inv.itemListe()]:
+        print("    Moralhulen (m)             Sjekk din moral i moralhulen")
     print("    Ekspedisjonsleiren (f)     Dra tilbake til ekspedisjonsleiren\n")
 
 def shroom_butikk(butikk):
@@ -1505,12 +1597,17 @@ def banditt_butikk(butikk):
     vare = Vare(item, 11000, "m")
     butikk.legg_til_vare(vare)
 
-    item = Item("Hvite hansker", "gloves", xKp=-60, d=125, xHp=250)
+    item = Item("Hvite hansker", "gloves", xKp=-60, d=125, xHp=250, lvl=25)
     vare = Vare(item, 14800, "h")
     butikk.legg_til_vare(vare)
 
     item = Item("Svart kappe", "robe", xKp=15, d=200, xHp=350)
     vare = Vare(item, 27000, "p")
+    butikk.legg_til_vare(vare)
+
+    item = Item("Pass", "various")
+    item.sett_loot_tekst("et pass")
+    vare = Vare(item, 10000, "x")
     butikk.legg_til_vare(vare)
 
 def skog_quest(qlog, spiller):
@@ -1625,7 +1722,7 @@ def skog_quest(qlog, spiller):
     bq.legg_til_svarTekst("Vil du fortelle Fanatiske Ferdinand at han er hjernevasket?   (ja/nei)\n> ")
     bq.legg_til_ekstra_tekst("Hvaaaa? Det kan umulig stemme? De- dette, men, hvorfor? Hvem er jeg? HVEM ER JEG??")
     bq.legg_til_alt_desk("Vil du gi totemet til Fanatiske Ferdinand?\n> ")
-    item = Item("Fanatisk stav", "weapon", a=200, d=-10, xHp=-30)
+    item = Item("Fanatisk stav", "weapon", a=150, d=-10, xHp=-30)
     bq.legg_til_alt_reward(ep=3, kp=50, xp=6000, item=item)
     qlog.legg_til_quest(bq)
 
@@ -1633,7 +1730,7 @@ def skog_quest(qlog, spiller):
     deskBq = shroom_bq2(navn)
     ferdigDeskBq = "    Har du noe informasjon? Fortell!\n"
     bq = Quest(deskBq, ferdigDeskBq, 5, 1, "Simon Sporfinner", bonus=True, resetIfDead=True, tilgjengelig=False)
-    bq.legg_til_reward(xp=14000)
+    bq.legg_til_reward(xp=14000, gp=1)
     bq.legg_til_progresjonTekst("korrespondanser funnet: ")
     bq.legg_til_svarTekst("Vil du gi informasjonen til Simon Sporfinner?   (ja/nei)\n> ")
     bq.legg_til_ekstra_tekst(shroom_bq2_tekst())
@@ -1661,6 +1758,12 @@ def skog_quest(qlog, spiller):
     bq.legg_til_alt_ektra_tekst(shroom_bq3_tekst())
     bq.legg_til_alt_reward(ep=3, xp=14000)
     qlog.legg_til_quest(bq)
+
+    #q15
+    qlog.legg_til_quest(Quest("", "", 1, 1, "Lys", bonus=True, tilgjengelig=False))
+
+    #q16
+    qlog.legg_til_quest(Quest("", "", 1, 1, "Korrupsjon", bonus=True, tilgjengelig=False))
 
 def banditt_quest(qlog, spiller):
     navn = spiller.navn()

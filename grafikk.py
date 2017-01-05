@@ -13,6 +13,9 @@ green = Fore.GREEN + Style.NORMAL
 brown = Fore.YELLOW + Style.DIM
 white = Fore.WHITE + Style.NORMAL
 yellow = Fore.YELLOW + Style.BRIGHT
+blue = Fore.BLUE + Style.NORMAL
+magenta = Fore.MAGENTA + Style.NORMAL
+cyan = Fore.CYAN + Style.NORMAL
 reset = Style.RESET_ALL
 
 def clear_screen():
@@ -451,8 +454,6 @@ def skrivGaute():
   /            '\\\\//'            \\
  /       |  lgs  \/   nhm  |      \\""" + Style.RESET_ALL)
 
-
-
 def skrivEnhjorning():
     if platform.system() == "Windows":
         os.system("cls")
@@ -563,16 +564,16 @@ def skrivStein():
         os.system("cls")
     else:
         os.system("clear")
-    print("""                   ooo OOO OOO ooo
+    print("""{1}                   ooo OOO OOO ooo
                oOO                 OOo
            oOO                         OOo
         oOO                               OOo
       oOO                                   OOo
     oOO                                       OOo
    oOO                                         OOo
-  oOO         __                  ___           OOo
- oOO          \ \_____      _____/ /             OOo
- oOO           \______\    /______/              OOo
+  oOO      {0}   __                  ___    {1}       OOo
+ oOO       {0}   \ \_____      _____/ /   {1}          OOo
+ oOO       {0}    \______\    /______/    {1}          OOo
  oOO                                             OOo
  oOO                                             OOo
  oOO                                             OOo
@@ -583,7 +584,7 @@ def skrivStein():
         oO                                OOo;;;;;;;;;;;;;
            oOO                         OOo;;;;;;;;;;;;;;;;;;;;
                oOO                 OOo;;;;;;;;;;;;;;;;;;;;;;;;;;
-                   ooo OOO OOO ooo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;nhm""")
+                   ooo OOO OOO ooo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;nhm{2}""".format(red, [gray, white][randint(0,1)], reset))
 
 def skrivGargylslott():
     if platform.system() == "Windows":
@@ -643,7 +644,7 @@ def skrivStatue():
         os.system("cls")
     else:
         os.system("clear")
-    statuer = ["""              {}
+    statuer = ["""              {0}{{}}{1}
              .--.
             /.--.\\
             |====|
@@ -662,8 +663,8 @@ def skrivStatue():
            |  ||  |
            |  ||  |
           _\.:||:./_
-    jgs  /____/\____\\""",
-    """   ,   A           {}
+    jgs  /____/\____\\ """.format([green, blue, yellow, brown, gray, magenta, cyan][randint(0, 6)], reset), \
+    """   ,   A           {0}{{}}{1}
   / \, | ,        .--.
  |    =|= >      /.--.\\
   \ /` | `       |====|
@@ -682,8 +683,8 @@ def skrivStatue():
        |        |  ||  |
        |        |  ||  |
        |       _\.:||:./_
-       | jgs  /____/\____\\""",
-       """        {}
+       | jgs  /____/\____\\ """.format([green, blue, yellow, brown, gray, magenta, cyan][randint(0, 6)], reset), \
+       """        {0}{{}}{1}
        .--.
       /.--.\\
       |====|
@@ -702,12 +703,12 @@ def skrivStatue():
      |  ||  |
      |  ||  |
     _\.:||:./_
-jgs/____/\____\\""",
+jgs/____/\____\\""".format([green, blue, yellow, brown, gray, magenta, cyan][randint(0, 6)], reset), \
          """      /\\
       ||
       ||
       ||
-      ||           {}
+      ||           {0}{{}}{1}
       ||          .--.
       ||         /.--.\\
       ||         |====|
@@ -726,8 +727,8 @@ jgs/____/\____\\""",
                 |  ||  |
                 |  ||  |
                _\.:||:./_
-         jgs  /____/\____\\""",
-         """   ,   A           {}
+         jgs  /____/\____\\""".format([green, blue, yellow, brown, gray, magenta, cyan][randint(0, 6)], reset), \
+         """   ,   A           {0}{{}}{1}
   / \, | ,        .--.
  |    =|= >      /.--.\\
   \ /` | `       |====|
@@ -746,12 +747,12 @@ jgs/____/\____\\""",
        |        |  ||  |
        |        |  ||  |
        |       _\.:||:./_
-       | jgs  /____/\____\\""",
+       | jgs  /____/\____\\""".format([green, blue, yellow, brown, gray, magenta, cyan][randint(0, 6)], reset), \
        """      /\\
       ||
       ||
       ||
-      ||           {}
+      ||           {0}{{}}{1}
       ||          .--.
       ||         /.--.\\
       ||         |====|
@@ -770,8 +771,8 @@ jgs/____/\____\\""",
                 |  ||  |
                 |  ||  |
                _\.:||:./_
-         jgs  /____/\____\\""",
-         """                   {}
+         jgs  /____/\____\\""".format([green, blue, yellow, brown, gray, magenta, cyan][randint(0, 6)], reset), \
+         """                   {0}{{}}{1}
                   .--.
                  /.--.\\
                  |====|
@@ -790,18 +791,18 @@ jgs/____/\____\\""",
       ||        |  ||  |
       ||        |  ||  |
       ||       _\.:||:./_
-      \/ jgs  /____/\____\\"""]
+      \/ jgs  /____/\____\\""".format([green, blue, yellow, brown, gray, magenta, cyan][randint(0, 6)], reset)]
 
     indeks = randint(0,6)
     print(statuer[indeks])
 
 def skrivOrm():
     clear_screen()
-    print("""
+    print("""{0}
                           _,..,,,_
                      '``````^~"-,_`"-,_
-       .-~c~-.                    `~:. ^-.
-   `~~~-.c    ;                      `:.  `-,     _.-~~^^~:.
+       .-~{1}c{0}~-.                    `~:. ^-.
+   `~~~-.{1}c{0}    ;                      `:.  `-,     _.-~~^^~:.
          `.   ;      _,--~~~~-._       `:.   ~. .~          `.
           .` ;'   .:`           `:       `:.   `    _.:-,.    `.
         .' .:   :'    _.-~^~-.    `.       `..'   .:      `.    '
@@ -809,7 +810,7 @@ def skrivOrm():
        :  `-'   .:'             `.    `^~~^`   .:.  `.      ;    ;
         `-.__,-~                  ~-.        ,' ':    '.__.`    :'
                                      ~--..--'     ':.     jgs .:'
-                                                     ':..___.:'\n""")
+                                                     ':..___.:'\n{2}""".format(green, red, reset))
 
 def skrivTroll():
     if platform.system() == "Windows":
@@ -1497,6 +1498,20 @@ def skrivTekanne():
                   (_;-// | \\ \\-'.\\
                   ( `.__ _  ___,')
                    `'(_ )_)(_)_)'""")
+
+def skrivSkilt():
+    clear_screen()
+    print("""        ,___..__.___._.__,
+        |*              *I
+        |  BANDITT-LEIR  |
+        I   velkommen    |
+        L_.__..____._____i
+                ||
+                ||
+                ||
+                ||
+            /,\.||/;._.
+           `           `""")
 
 def skrivHellHound():
     print("""
