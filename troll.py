@@ -85,21 +85,12 @@ def troll_loop(spiller, inv, klasser, spellbook):
             lagre = False
 
         while cave:
-            #Fiende 1
-            fiende = generer_troll(spiller)
-            skriv_ut(spiller, fiende)
-            if not angrip(spiller, fiende, inv, klasser, spellbook):
-                cave = False
-                break
-            #qlog.hent_quest(1).progresser()
-
-            #Fiende 2
-            fiende = generer_troll(spiller)
-            skriv_ut(spiller, fiende)
-            if not angrip(spiller, fiende, inv, klasser, spellbook):
-                cave = False
-                break
-            #qlog.hent_quest(1).progresser_liste(0)
+            for x in range(5):
+                fiende = generer_troll(spiller)
+                skriv_ut(spiller, fiende)
+                if not angrip(spiller, fiende, inv, klasser, spellbook):
+                    cave = False
+                    break
 
             #Fiende 3
             skrivStortTroll()
@@ -145,7 +136,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
         tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
 
         if inn == "f" or inn == "flykt":
-            print(spiller.navn(), "drar tilbake til stallen.")
+            print(spiller.navn(), "drar tilbake til hytta.")
             return False
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
@@ -168,7 +159,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 
             #gir beskjed om karakteren døde
             if spiller.dead():
-                write_player_died(spiller, "stallen")
+                write_player_died(spiller, "hytta")
                 player_died(spiller, inv, klasser)
                 return False
 
