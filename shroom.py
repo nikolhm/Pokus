@@ -1554,7 +1554,7 @@ def shroom_butikk(butikk):
     vare = Vare(item, 500, "d")
     butikk.legg_til_vare(vare)
 
-    item = Item("Trolldrikk", "restoring", hp=750)
+    item = Item("Trolldrikk", "restoring", hp=750, lvl=24)
     vare = Vare(item, 1600, "d2")
     butikk.legg_til_vare(vare)
 
@@ -1562,15 +1562,15 @@ def shroom_butikk(butikk):
     vare = Vare(item, 1000, "k")
     butikk.legg_til_vare(vare)
 
-    item = Item("Konsentrasjonspulver", "restoring", kp=750)
+    item = Item("Konsentrasjonspulver", "restoring", kp=750, lvl=24)
     vare = Vare(item, 3000, "k2")
     butikk.legg_til_vare(vare)
 
-    item = Item("Ekspedisjonsstav", "weapon", a=170, xKp=80)
+    item = Item("Ekspedisjonsstav", "weapon", a=170, xKp=80, lvl=25)
     vare = Vare(item, 25000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Eks. sverd", "weapon", a=430, xHp=80, blade=True)
+    item = Item("Eks. sverd", "weapon", a=430, xHp=80, blade=True, lvl=27)
     vare = Vare(item, 34000, "e")
     butikk.legg_til_vare(vare)
 
@@ -1593,15 +1593,15 @@ def banditt_butikk(butikk):
     vare = Vare(item, 1700, "k")
     butikk.legg_til_vare(vare)
 
-    item = Item("Bandittmaske", "beard", xKp=40, ekstraKp=4, xHp=25)
+    item = Item("Bandittmaske", "beard", xKp=40, ekstraKp=4, xHp=25, lvl=21)
     vare = Vare(item, 11000, "m")
     butikk.legg_til_vare(vare)
 
-    item = Item("Hvite hansker", "gloves", xKp=-60, d=125, xHp=250, lvl=25)
+    item = Item("Hvite hansker", "gloves", xKp=-60, d=125, xHp=250, lvl=23)
     vare = Vare(item, 14800, "h")
     butikk.legg_til_vare(vare)
 
-    item = Item("Svart kappe", "robe", xKp=15, d=200, xHp=350)
+    item = Item("Svart kappe", "robe", xKp=15, d=200, xHp=350, lvl=30)
     vare = Vare(item, 27000, "p")
     butikk.legg_til_vare(vare)
 

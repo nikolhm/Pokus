@@ -1,3 +1,8 @@
+"""
+                    *~ Pokus 1.0 ~*
+                          av
+                   Gaute Svanes Lunde
+"""
 from klasser import *
 from prosedyrer import *
 from grafikk import *

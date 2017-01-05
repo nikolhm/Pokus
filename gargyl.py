@@ -3,7 +3,6 @@
                            av
                    Gaute Svanes Lunde
 """
-#Start med å importere alle de nødvendige delfilene.
 from klasser import *
 from grafikk import *
 from quests import *
