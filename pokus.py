@@ -3,7 +3,6 @@
                            October 2016
                       Magic Wand Productions
 """
-from install import *
 try:
     from colorama import *
 except ImportError:
