@@ -3,6 +3,8 @@ from os import listdir
 from os import system
 import platform
 import sys
+from uuid import UUID
+import knownpaths
 
 #Verdenskart.
 def verdenskart(spiller):
@@ -279,7 +281,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     #akiverer korrupsjon
     if not tur and fiende.bleeding() > 0:
         fiende.korrupt()
-        
+
     return tur
 
 def player_died(spiller, inv, klasser):
@@ -370,6 +372,9 @@ def finn_stats(item):
     return returnListe
 
 #Prosedyrer og funksjoner knyttet til lagring og lasting av filer:
+
+docFolder = knownpaths.get_path(UUID('{FDD39AD0-238F-46AF-ADB4-6C85480369C7}'))
+
 def minnestein(spiller, inv, klasser):
     pris = 100
     sPris = 500
@@ -433,22 +438,23 @@ def load_screen():
     while inn != "1" and inn != "2" and inn != "3":
         inn = input("Hva vil du gjøre?\n> ")
     if inn == "1":
-        if osys == "Windows":
-            system("cls")
-        else:
-            system("clear")
+        clear_screen()
         return False
     elif inn == "2":
-        filer = listdir("Save")
+        if osys == "Windows":
+            if "pokus_saves" not in listdir(docFolder):
+                os.system("mkdir " + docFolder + "\\pokus_saves")
+            filer = listdir(docFolder + "\\pokus_saves")
+        else:
+            if "Save" not in listdir():
+                os.system("mkdir Save")
+            filer = listdir("Save")
         if filer == []:
             print("Du har ingen lagrede filer!")
             input("\nTrykk enter for å fortsette\n> ")
             return load_screen()
         else:
-            if osys == "Windows":
-                system("cls")
-            else:
-                system("clear")
+            clear_screen()
             print("""    *********************************************
             Her er spillene du kan laste:
     - - - - - - - - - - - - - - - - - - - - - - -""")
@@ -464,7 +470,7 @@ def load_screen():
             while inn != "0":
                 try:
                     if osys == "Windows":
-                        return "Save\\" + filer[int(inn) -1]
+                        return docFolder + "\\pokus_saves\\" + filer[int(inn) -1]
                     else:
                         return "Save/" + filer[int(inn) -1]
                 except ValueError:
@@ -479,9 +485,9 @@ def load_screen():
 def lagre(spiller, inv, klasser, nr=0):
     osys = platform.system()
     if osys == "Windows":
-        filnavn = "Save\\" + spiller.navn() + ".sav"
+        filnavn = docFolder + "\\pokus_saves\\" + spiller.navn() + ".sav"
         if nr:
-            filnavn = "Save\\" + spiller.navn() + "(" + str(nr) + ")" ".sav"
+            filnavn = docFolder + "\\pokus_saves\\" + spiller.navn() + "(" + str(nr) + ")" ".sav"
     else:
         filnavn = "Save/" + spiller.navn() + ".sav"
         if nr:
