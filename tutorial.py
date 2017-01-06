@@ -31,13 +31,13 @@ def mainloop(spiller, inv, klasser, spellbook):
     Zip: Jeg drar ikke fra deg!""", navn + ", kan du dra ut og lete?\n")
     input(navn + ": Jeg er ikke særlig god på å løse nøtter! Fikk f.eks aldri til Rubik's cube...\n*Trykk enter for å fortsette*\n> ")
     print("""
-    Zap: Ikke slike nøtter, faktiske nøtter! Det kan være du må sloss med noen
+    Zap: Ikke slike nøtter, faktiske nøtter! Det kan være du må slåss med noen
          ekorn over dem.\n""")
     input(navn + """: Ekorn? Hva skjedde med å begynne med rotter? Ekorn er alt for søte
-til å drepe! Dessuten aner jeg ikke hvordan jeg sloss med noe som helst!
+til å drepe! Dessuten aner jeg ikke hvordan jeg slåss med noe som helst!
 *Trykk enter for å fortsette*\n> """)
     print("""
-    Zip: Rottene er i streik. Og hva mener du med at du ikke vet hvordan du sloss?
+    Zip: Rottene er i streik. Og hva mener du med at du ikke vet hvordan du slåss?
          Var det ikke du som nettopp med en hånd på ryggen bekjempet den stor-
     Zap: AAAAARG det gjør vondt! Vi har ikke tid til dette!""")
     qlog.snakk(0, spiller, inv)

@@ -1250,7 +1250,7 @@ class Spellbook:
                          40 + self._spiller.lvl() * 4 + self._inv.hent_weaponKp()))
         if self._spiller.lvl() >= 5:
             print("vind (eller v)           tryller frem et kraftig vindkast ({} skade).\n\
-                         Krever tryllestav og 100 konsentrasjonspoeng".format(\
+                         Krever tryllestav og 100 konsentrasjonspoeng.".format(\
                          round(self._inv.hent_weaponA() * 1.5) + 150 + 150 * int(gnomeqlog.hent_quest(3).ferdig())))
         if self._spiller.lvl() >= 10:
             print("super restituer (sr)     gir deg {} helsepoeng\n\
@@ -1270,7 +1270,7 @@ class Spellbook:
                          Krever 150 konsentrasjonspoeng, tryllestav gir ekstra effekt.".format(\
                          300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp()))
         if gargyllog.hent_quest(4).ferdig():
-            print("kjøttifiser (kj)         gjør forsteinede fiender om til kjøtt\n\
+            print("kjøttifiser (kj)         gjør forsteinede fiender om til kjøtt.\n\
                          Krever 85 konsentrasjonspoeng.")
         if bandittlog.hent_quest(3).startet():
             print("distraher (di)           tar vekk {} kp fra fienden\n\
@@ -1516,7 +1516,10 @@ class Spellbook:
             print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
-    def utforsk(self):
+    def utforsk(self, b=True):
+        if not b:
+            self._utforskRunder = 0
+
         utforsk = False
         if self._utforsk:
             self._utforskRunder -= 1
@@ -1791,7 +1794,7 @@ class Inventory:
                 kp += 1
             if x.navn() == "Trolldrikk":
                 td += 1
-            if x.navn() == "Tryllepulver":
+            if x.navn() in {"Tryllepulver", "Ormpulver"}:
                 tp += 1
 
         print("Du har", self._penger, "gullstykker.")

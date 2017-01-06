@@ -249,6 +249,7 @@ def sti(spiller, inv, klasser, spellbook):
             På en eller annen måte finner du veien tilbake til leirbålet du var med
             sist.\n""")
             pause()
+            skrivBaal()
         elif h1 and not h2 and h3:
             print("\n")
             skrivSkilt()
@@ -526,7 +527,7 @@ def kjellLoop(spiller, inv, klasser, spellbook, bjarteQ):
         return True
     print("\n    " + spiller.navn() + """!
     Hva sier du, vil du ha fingeren min? Det er den mest uforskammede
-    forespørselen jeg noensinne har hørt! Om du vil ha den, må du sloss
+    forespørselen jeg noensinne har hørt! Om du vil ha den, må du slåss
     mot meg først! Ved mindre...
 
     Jeg har en idé. Om det er sant som du sier, at dette er den eneste
@@ -562,7 +563,7 @@ def kjellLoop(spiller, inv, klasser, spellbook, bjarteQ):
 def ussleUlvLoop(spiller, inv, klasser, spellbook):
     print("    Tusen takk " + spiller.navn() + """!
     Nå kan jeg endelig vinne hjertet til Fagre Frida! Håper ikke jeg må
-    sloss mot eksen hennes, har hørt hun er ganske grusom...
+    slåss mot eksen hennes, har hørt hun er ganske grusom...
 
     Uansett, takk for hjelpen! Dessverre kan jeg ikke etterlate noen
     løse tråder, tenk om andre skulle lært de samme kunstene av deg?
@@ -890,11 +891,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
+            spellbook.utforsk(False)
 
             #Quests:
             #Banditt q1:
             if fiende.navn() == "Banditt" and bQlog.hent_quest(0).startet() and not \
-            bQlog.hent_quest(0).ferdig() and randint(0, 2) == 1:
+            bQlog.hent_quest(0).sjekk_ferdig() and randint(0, 2) == 1:
                 print("Du fant et av Lugubre Lasses lommeur!")
                 bQlog.hent_quest(0).progresser()
 
@@ -930,7 +932,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     q.progresser_liste(3)
 
             #Shroom q6
-            if sQlog.hent_quest(5).startet() and not sQlog.hent_quest(5).ferdig():
+            if sQlog.hent_quest(5).startet() and not sQlog.hent_quest(5).ferdig() \
+            and fiende.race() == "shroom":
                 sQlog.hent_quest(5).progresser()
 
             #Shroom bq1
@@ -1313,6 +1316,7 @@ def generer_smaatt(spiller):
     if tall == 1:
         loot.legg_til_item(randint(100, 300), 92)
         item = Item("Fossil", "trinket", a=30, xKp=75, xHp=25, ekstraKp=randint(3, 5))
+        item.sett_loot_tekst("et fossil")
         loot.legg_til_item(item, 8)
         skrivMoseStein()
         print(spiller.navn(), "har møtt på en levende mosegrodd stein!")
@@ -1437,7 +1441,7 @@ def generer_duellant(nr, spiller):
         fiende = Fiende("Patetiske Patrick", "menneske", loot, a=300, hp=2350, d=200)
     elif nr == 1:
         loot.legg_til_item(1050, 1)
-        fiende = Fiende("Store Sture", "menneske", loot, a=400, hp=10000, d=600, kp=200, bonusKp=1)
+        fiende = Fiende("Store Sture", "menneske", loot, a=330, hp=10000, d=600, kp=200, bonusKp=1)
     elif nr == 2:
         item = Item("Sandras Sko", "shoes", d=100, xHp=40, xKp=20)
         item.sett_loot_tekst("Smidige Sandra sine sko")
@@ -1810,7 +1814,7 @@ def banditt_quest(qlog, spiller):
     #q5
     desk5 = banditt_q5(navn)
     ferdigDesk5 = banditt_q5_ferdig(navn)
-    q5 = Quest(desk5, ferdigDesk5, 1, 26, "Fagre Frida", tilgjengelig=False)
+    q5 = Quest(desk5, ferdigDesk5, 1, 27, "Fagre Frida", tilgjengelig=False)
     q5.legg_til_reward(xp=20000, kp=10, ekstraKp=3, hp=30, gull=2000)
     q5.legg_til_progresjonTekst("Onde Olga bekjempet: ")
     q5.legg_til_svarTekst("\nVil du, min helt, utfordre eksen min til duell?     (ja/nei)\n> ")

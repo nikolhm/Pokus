@@ -279,7 +279,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     #akiverer korrupsjon
     if not tur and fiende.bleeding() > 0:
         fiende.korrupt()
-        
+
     return tur
 
 def player_died(spiller, inv, klasser):
@@ -633,7 +633,6 @@ def krypt(filnavn):
 
     with open(filnavn, "w", encoding="UTF-8") as fil:
         fil.write(tekst)
-#krypt("Save\\Heidi.sav")
 
 def dekrypt(filnavn):
     ingentingInteressant = "hunGunIcorN"
