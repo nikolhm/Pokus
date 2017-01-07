@@ -655,10 +655,10 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                     continue
                 print("\n\n    Bråket fra soppfamilien lokket flere shrooms til deg!\n")
                 pause()
-                stein = Fiende("Soppinfisert Stein", "stein", loot, hp=750, a=40, d=50, kp=50)
+                stein = Fiende("Soppinfisert Stein", "stein", loot, hp=750, a=80, d=50, kp=50)
                 if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): continue
                 if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=stein): continue
-                stein = Fiende("Soppinfisert Stein", "stein", loot, hp=750, a=40, d=50, kp=50)
+                stein = Fiende("Soppinfisert Stein", "stein", loot, hp=850, a=90, d=50, kp=50)
                 if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=generer_shroom(spiller), fiende3=stein):
                     continue
                 clear_screen()
@@ -854,14 +854,15 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print("Du angriper nå", fiende3.navn())
 
         if inn in {"tillkall sopp", "sopp", "tilkall", "ts"} and sQlog.hent_quest(13).ferdig() \
-        and spiller.kp() >= 200:
+        and spiller.kp() >= 350:
             if alliert:
                 print("Du har allerede en alliert i denne kampen!")
             else:
                 alliert = Fiende("Psilocybe Semilanceata", "alliert", Loot(), hp=500, a=300, d=100, kp=800, bonusKp=22, ending="en")
                 print(spiller.navn(), "tilkalte en magisk sopp til å hjelpe i kampen!")
-                spiller.bruk_kons(200)
+                spiller.bruk_kons(350)
                 tur = False
+                kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=tur, fiender=fiender, allierte=[alliert])
 
         #alliert gjør sin tur
         if alliert and not tur and not fiende.dead():
@@ -873,7 +874,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                 print(alliert.navn() + alliert.ending(), "kastet Restituer!")
                 print(alliert.navn() + alliert.ending(), "restorerte", alliert.restorer(randint(250, 340)), "liv.")
                 alliert.kp(-70)
-            elif alliert.kp() >= 150 and spiller.kp() / spiller.xKp() <= 0.35 and randint(0, 5) == 0:
+            elif alliert.kp() >= 150 and spiller.kp() / spiller.xKp() <= 0.55 and randint(0, 5) == 0:
                 print(alliert.navn() + alliert.ending(), "kastet Konsentrert Hjelp!")
                 print(spiller.navn(), "restorerte", spiller.restorer_kp(randint(290, 300 + round(alliert.xKp() / 3))), "kp.")
                 alliert.kp(-150)
@@ -934,7 +935,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
             #Shroom q6
             if sQlog.hent_quest(5).startet() and not sQlog.hent_quest(5).ferdig() \
-            and fiende.race() == "shroom":
+            and fiende.race() == "shroom" and not fiende.navn() == "Liten sopp":
                 sQlog.hent_quest(5).progresser()
 
             #Shroom bq1
@@ -1024,8 +1025,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print(fiende.navn(), "kastet Intensivér!")
                     fiende.kp(-500)
                     for f in fiender:
-                        f.a(20)
-                        print(f.navn(), "fikk 20 angrepspoeng.")
+                        f.a(35)
+                        print(f.navn(), "fikk 35 angrepspoeng.")
                 #distraher
                 elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and fiende.kp() >= 230 \
                 and randint(1, 10) == 1:
@@ -1041,11 +1042,11 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                         print(f.navn(), "restorerte", f.restorer(randint(240, 320)), "liv, og fikk lungebetennelse.")
                 #Solidifiser
                 elif fiende.navn() in {"Cantharellus Cibarius", "Suillus Soppfar"} and fiende.kp() >= 200 \
-                and randint(1, 7) == 2:
+                and randint(1, 8) == 2:
                     fiende.kp(-200)
-                    fiende.d(30)
+                    fiende.d(50)
                     print(fiende.navn(), "kastet Solidifiser!")
-                    print(fiende.navn(), "fikk 30 defensivpoeng.")
+                    print(fiende.navn(), "fikk 50 defensivpoeng.")
                 #Raseri
                 elif fiende.navn() in {"Suillus Soppmor", "Boletus Edulis"} and fiende.kp() >= 350 \
                 and randint(1, 8) == 1:
@@ -1163,7 +1164,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print(fiende.navn() + fiende.ending(), "tok på deg!")
                     print(fiende.navn() + fiende.ending(), "transformerer seg.")
                     input("Trykk enter for å fortsette\n> ")
-                    fiende = generer_guffsliffsaff(spiller, True)
+                    fiende = generer_guffsliffsaff(spiller, True, fiende)
                     fiende1 = fiende
                     fiender = [fiende]
                     target = fiende
@@ -1240,7 +1241,7 @@ def generer_store_shrooms(spiller):
     fiende = Fiende("Cantharellus Cibarius", "shroom", loot, hp=20000, a=1000, d=400, kp=340, bonusKp=5, weapon=100)
     fiender.append(fiende)
     loot.legg_til_item(randint(4000, 6000), 25)
-    loot.legg_til_item(Item("Kantarellhatt", "hat", d=150, xHp=250, xKp=25), 25)
+    loot.legg_til_item(Item("Kantarellhatt", "hat", d=170, xHp=250, xKp=25), 25)
     loot.legg_til_item(Item("Kantarellkledning", "robe", d=170, xHp=320), 25)
     loot.legg_til_item(Item("Kant-handsker", "gloves", d=170, xHp=150, ekstraKp=1), 25)
 
@@ -1249,7 +1250,7 @@ def generer_store_shrooms(spiller):
     fiende = Fiende("Agaricus Augustus", "shroom", loot, hp=7500, a=140, d=10, kp=700, bonusKp=45)
     fiender.append(fiende)
     loot.legg_til_item(randint(2000, 4000), 25)
-    loot.legg_til_item(Item("Sjampinjong", "weapon", a=100, xKp=320, ekstraKp=4), 25)
+    loot.legg_til_item(Item("Sjampinjong", "weapon", a=100, xKp=210, ekstraKp=4), 25)
     loot.legg_til_item(Item("Agaricus Stercus", "trinket", a=40, d=25, xKp=160, ekstraKp=8), 25)
     loot.legg_til_item(Item("Sjampskjegg", "beard", xKp=130, ekstraKp=6), 25)
 
@@ -1259,7 +1260,7 @@ def generer_store_shrooms(spiller):
     fiender.append(fiende)
     loot.legg_til_item(randint(3000, 5000), 25)
     loot.legg_til_item(Item("Steinstav", "weapon", a=210, xKp=140), 25)
-    loot.legg_til_item(Item("Steinsverd", "weapon", a=520, blade=True), 25)
+    loot.legg_til_item(Item("Steinsverd", "weapon", a=370, xHp=40, blade=True), 25)
     loot.legg_til_item(Item("Steinsko", "shoes", a=140, xKp=20, d=100, xHp=50), 25)
 
     return fiender
@@ -1391,6 +1392,7 @@ def generer_tre(spiller):
     xHp=randint(80, 120 + (spiller.lvl()*2)), \
     xKp=randint(0, 2 + int(spiller.lvl()/10))*10, \
     d=randint(0, 2) * 25)
+    item.sett_loot_tekst("et par silkehansker")
     loot.legg_til_item(item, 10)
 
     a = randint(30, 5 * spiller.lvl())
@@ -1426,8 +1428,10 @@ def generer_guffsliffsaff(spiller, b=False, fSpiller=None):
         fiende.mist_liv(2300 - round((fSpiller.hp() / fSpiller.xHp()) *2300), stille=True)
         dynamiskLoot(loot, fiende, spiller)
         return fiende
+    skade = round((fSpiller.xHp() - fSpiller.hp()) / 2)
     fiende = Fiende(spiller.navn() + " v2", "guffsliffsaff", loot, a=spiller.a(), hp=spiller.xHp(),\
     d=spiller.d(), kp=spiller.xKp(), bonusKp=spiller.ekstraKp()-5)
+    fiende.mist_liv(skade, True)
     dynamiskLoot(loot, fiende, spiller)
     return fiende
 
@@ -1575,7 +1579,7 @@ def shroom_butikk(butikk):
     vare = Vare(item, 25000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Eks. sverd", "weapon", a=430, xHp=80, blade=True, lvl=27)
+    item = Item("Eks. sverd", "weapon", a=310, xHp=80, blade=True, lvl=27)
     vare = Vare(item, 34000, "e")
     butikk.legg_til_vare(vare)
 
@@ -1686,7 +1690,7 @@ def skog_quest(qlog, spiller):
     q = Quest(desk, ferdigDesk, 7, 30, "Magiske Mikkel")
     q.legg_til_reward(xp=11000)
     q.legg_til_ekstra_tekst("Magiske Mikkel har forbedret teknikken din, Opphold er nå mer effektiv!")
-    q.legg_til_progresjonTekst("Opphold runder aktiv: ")
+    q.legg_til_progresjonTekst("Fiender Oppholdt: ")
     q.legg_til_svarTekst("\nVil du forbedre teknikken din?     (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 

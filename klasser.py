@@ -1288,7 +1288,7 @@ class Spellbook:
                          Krever 195 konsentrasjonspoeng.")
         if self._spiller.lvl() >= 23:
             print("opphold (o)              fienden kan ikke angripe for {} runder.\n\
-                         Krever 270 konsentrasjonspoeng.".format(\
+                         Krever 250 konsentrasjonspoeng.".format(\
                          2 + int(ekspedisjonslog.hent_quest(6).ferdig())))
 
         #Disse spesialangrepet krever å ha fullført et bestemt quest.
@@ -1308,7 +1308,7 @@ class Spellbook:
                          200 + round(self._spiller.d()/15) + self._inv.hent_weaponKp()))
         if ekspedisjonslog.hent_quest(13).ferdig() and self._spiller.hentSted() == "shroom":
             print("tilkall sopp (ts)        tilkaller en magisk sopp til å kjempe ved din side\n\
-                         Krever 200 konsentrasjonspoeng. Forsvinner etter hver kamp og kan \n\
+                         Krever 350 konsentrasjonspoeng. Forsvinner etter hver kamp og kan \n\
                          kun brukes ved ekspedijonsleiren.")
 
         #Disse spesialangrepene krever ondhets- eller godhetspoeng.
@@ -1583,8 +1583,8 @@ class Spellbook:
         return utforsk
 
     def brukOpphold(self, fiende):
-        if self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 270 and not fiende.untouchable():
-            self._spiller.bruk_kons(270)
+        if self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 250 and not fiende.untouchable():
+            self._spiller.bruk_kons(250)
             print(self._spiller.navn(), "kastet Opphold!")
             fiende.opphold(1)
             if self._klasser.questlog(6).hent_quest(6).ferdig():
@@ -1593,9 +1593,9 @@ class Spellbook:
             and self._klasser.questlog(6).hent_quest(6).startet():
                 self._klasser.questlog(6).hent_quest(6).progresser()
             return False
-        elif self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 270 and fiende.untouchable():
+        elif self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 250 and fiende.untouchable():
             print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
-            self._spiller.bruk_kons(270)
+            self._spiller.bruk_kons(250)
             return False
         elif self._spiller.lvl() >= 23:
             print("Du har ikke nok konsentrasjonspoeng!")
