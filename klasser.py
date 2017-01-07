@@ -1028,7 +1028,8 @@ class Fiende:
     def ending(self):
         return self._ending
 
-    def weapon_dmg(self):
+    def weapon_dmg(self, dmg=0):
+        self._weaponDmg += dmg
         return self._weaponDmg
 
     def return_loot(self):

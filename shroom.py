@@ -634,38 +634,39 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                 item = Item("Konsentrasjonspulver", "restoring", kp=550)
                 item.sett_loot_tekst("en stripe konsentrasjonspulver")
                 loot.legg_til_item(item, 1)
-                fiende1 = Fiende("Suillus Soppfar", "shroom", loot, hp=5000, a=300, d=400, kp=250, bonusKp=25, weapon=400)
+                fiende = Fiende("Suillus Soppfar", "shroom", loot, hp=5000, a=300, d=400, kp=250, bonusKp=25, weapon=400)
+                fiender = []
                 loot = Loot()
                 item = Item("Konsentrasjonspulver", "restoring", kp=500)
                 item.sett_loot_tekst("en stripe konsentrasjonspulver")
                 loot.legg_til_item(item, 1)
-                fiende2 = Fiende("Suillus Soppmor", "shroom", loot, hp=4000, a=600, d=10, kp=400, bonusKp=25)
+                fiender.append(Fiende("Suillus Soppmor", "shroom", loot, hp=4000, a=600, d=10, kp=400, bonusKp=25))
                 loot = Loot()
                 item = Item("Konsentrasjonspulver", "restoring", kp=450)
                 item.sett_loot_tekst("en stripe konsentrasjonspulver")
                 loot.legg_til_item(item, 1)
-                fiende3 = Fiende("Suillus Soppbarn","shroom", loot, hp=2000, a=100, d=1000, kp=1000, bonusKp=25)
+                fiender.append(Fiende("Suillus Soppbarn","shroom", loot, hp=2000, a=100, d=1000, kp=1000, bonusKp=25))
                 print("\n      * Dette er en kamp med flere fiender. Du kan kun angripe en fiende *")
                 print("        om gangen, men alle fiendene vil angripe deg. For å skifte ")
                 print("        hvilken fiende du angriper, skriv 'skift fiende', 'skift' eller")
                 print("        bare 'sf'. Du bruker ikke en tur på å skifte fiende.\n")
                 pause()
                 skrivSopp("familie")
-                if not angrip(spiller, fiende1, inv, klasser, spellbook, fiende2=fiende2, fiende3=fiende3):
+                if not angrip(spiller, fiende, inv, klasser, spellbook, fiender=fiender):
                     continue
                 print("\n\n    Bråket fra soppfamilien lokket flere shrooms til deg!\n")
                 pause()
                 stein = Fiende("Soppinfisert Stein", "stein", loot, hp=750, a=80, d=50, kp=50)
                 if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): continue
-                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=stein): continue
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiender=[stein]): continue
                 stein = Fiende("Soppinfisert Stein", "stein", loot, hp=850, a=90, d=50, kp=50)
-                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiende2=generer_shroom(spiller), fiende3=stein):
+                if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook, fiender=[generer_shroom(spiller), stein]):
                     continue
                 clear_screen()
                 print("\n\n    * Du har nådd tjernet! Tre store shrooms vokter det! *\n")
                 pause()
                 fiender = generer_store_shrooms(spiller)
-                if not angrip(spiller, fiender[0], inv, klasser, spellbook, fiende2=fiender[1], fiende3=fiender[2]):
+                if not angrip(spiller, fiender[0], inv, klasser, spellbook, fiender=fiender[1:]):
                     continue
                 if not vassleQ.progresjon_liste()[0]:
                     avslutningsLoop(spiller)
@@ -723,9 +724,9 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                   Det er høyst beklagelig at vi må benytte oss av tosker som denne for
                   å kommunisere, men slik den politiske situasjonen er nå ser vi ingen
                   annen mulighet. Tiden renner ut fort, og det vi har å si er viktig,
-                  så lytt nøye """ + navn + """. Vi er ikke den Bamhjertiges egne barn,
+                  så lytt nøye """ + navn + """. Vi er ikke den barmhjertiges egne barn,
                   men man kan si vi er dens barnebarn. Vi er ikke en intensjon, men et
-                  heldig uhell fremkalt av den Bamhjertiges første barn. Vi er bevis på
+                  heldig uhell fremkalt av den barmhjertiges første barn. Vi er bevis på
                   en ny sirkel av liv.\n""" + Style.RESET_ALL)
                     input("Trykk enter for å fortsette\n> ")
                     print(Fore.RED + """
@@ -782,33 +783,28 @@ def avslutningsLoop(spiller):
                        selv! Hvilken ondskap vil gjøre noe slikt!\n {}""".format(red, r))
     pause()
     print("""
-Cantharellus Cibarius:{} Den Bamhjertige vil ikke glemme dette! Selv om han ikke
+Cantharellus Cibarius:{} Den barmhjertige vil ikke glemme dette! Selv om han ikke
                        er vår direkte skaper, vil han beskytte oss slik han
                        beskytter alle andre! Tyranniet deres vil ende, og en
                        dag vil en stakkers kantarell som meg bli husket som en
                        martyr! Alle vil tilbe meg!\n {}""".format(red, r))
     pause()
     print("""
-    Agaricus Augustus:{} Ahh, ikke han og. Dette er hvorfor den Bamhjertige ikke
+    Agaricus Augustus:{} Ahh, ikke han og. Dette er hvorfor den barmhjertige ikke
                        lar oss være med på rådsmøter. Hvordan skal man gjennomføre
                        revolusjon når man konstant krever tilbedelse? Blir ikke
                        noe bedre verden av det, da er vi jo like ille som Vassle
                        selv. Dra nå {}, la oss visne i fred!\n {}""".format(red, navn, r))
     input("Trykk enter for å dra tilbake til Ekspedisjonsleiren\n> ")
 
-def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None, fiende3=None):
+def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
     sQlog = klasser.questlog(6)
     bQlog = klasser.questlog(7)
-    fiende1 = fiende
-    fiender = [fiende1]
+    fiender = [fiende] + fiender
     if alliert: alliert.skriv_ut()
     skriv_ut(spiller, fiende)
-    if fiende2:
-        fiende2.skriv_ut()
-        fiender.append(fiende2)
-    if fiende3:
-        fiende3.skriv_ut()
-        fiender.append(fiende3)
+    for f in fiender[1:]:
+        f.skriv_ut()
     uCD = 0 #utforsk CoolDown
     bundetCD = 0
     pantu = False
@@ -829,29 +825,18 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             return False
 
         #Skift fiende - kun når det er flere fiender til stedet.
-        if inn in {"skift fiende", "skift", "sf", "bytt fiende", "bf"} and fiende2:
+        if inn in {"skift fiende", "skift", "sf", "bytt fiende", "bf"} and len(fiender) >= 2:
             print("    ------------------------- SKIFT FIENDE -------------------------")
-            print("    Fiende 1: {:55s} {}".format(fiende1.skriv_ut(True), " DØD" * int(fiende1.dead())))
-            print("    Fiende 2: {:55s} {}".format(fiende2.skriv_ut(True), " DØD" * int(fiende2.dead())))
-            if fiende3:
-                print("    Fiende 3: {:55s} {}".format(fiende3.skriv_ut(True), " DØD" * int(fiende3.dead())))
+            x = 0
+            while x < len(fiender):
+                print("    Fiende {}: {:55s}".format(x+1, fiender[x].skriv_ut(True)))
+                x += 1
             print("    ------------------------- *****~***** -------------------------")
             inn = input("\nHvem vil du angripe?\n> ").lower()
-            if inn in {"fiende 1", "fiende1", "1", fiende1.navn()}:
-                if fiende1.dead(): print("Denne fienden er død!")
-                else:
-                    fiende = fiende1
-                    print("Du angriper nå", fiende1.navn())
-            if inn in {"fiende 2", "fiende2", "2", fiende2.navn()}:
-                if fiende2.dead(): print("Denne fienden er død!")
-                else:
-                    fiende = fiende2
-                    print("Du angriper nå", fiende2.navn())
-            if fiende3 and inn in {"fiende 3", "fiende3", "3", fiende3.navn()}:
-                if fiende3.dead(): print("Denne fienden er død!")
-                else:
-                    fiende = fiende3
-                    print("Du angriper nå", fiende3.navn())
+            for x in range(0, len(fiender)):
+                if inn in {"fiende {}".format(x+1), "fiende{}".format(x+1), str(x+1), fiender[x].navn().lower()}:
+                    fiende = fiender[x]
+                    print("Du angriper nå", fiender[x].navn())
 
         if inn in {"tillkall sopp", "sopp", "tilkall", "ts"} and sQlog.hent_quest(13).ferdig() \
         and spiller.kp() >= 350:
@@ -865,6 +850,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                 kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=tur, fiender=fiender, allierte=[alliert])
 
         #alliert gjør sin tur
+        target = fiende
+        if fiende.dead() or fiende.untouchable():
+            fiende = fiender[fiender.index(fiende) - 1]
         if alliert and not tur and not fiende.dead():
             if alliert.kp() >= 70 and spiller.hp() / spiller.xHp() <= 0.6 and randint(0, 3) == 0:
                 print(alliert.navn() + alliert.ending(), "kastet en Hjelpende Hånd! Du kjenner en hånd massere deg på ryggen.")
@@ -885,6 +873,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
             else:
                 print(alliert.navn(), "angrep", fiende.navn() + fiende.ending() + ".")
                 fiende.angrepet(alliert.a(), alliert.weapon_dmg(), angriper=alliert)
+        fiende = target
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
         if fiende.dead():
@@ -964,17 +953,22 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
             input("Trykk enter for å fortsette\n> ")
             fiender.remove(fiende)
-            if not fiende1.dead():
-                fiende = fiende1
-            elif fiende2 and not fiende2.dead():
-                fiende = fiende2
-            elif fiende3 and not fiende3.dead():
-                fiende = fiende3
-            if fiende.dead():
+            if not fiender:
                 return True
+            fiende = fiender[0]
 
         #Fiendens tur
         if not tur:
+            #Tre fiender-system: soppfamilie og sistebossene
+            dmg, tank, heal = None, None, None
+            for f in fiender:
+                if f.navn() in {"Suillus Soppmor", "Boletus Edulis"}:
+                    dmg = f
+                if f.navn() in {"Cantharellus Cibarius", "Suillus Soppfar"}:
+                    tank = f
+                if f.navn() in {"Suillus Soppbarn", "Agaricus Augustus"}:
+                    heal = f
+
             target = fiende
             for i in range(len(fiender)):
                 fiende = fiender[i]
@@ -996,9 +990,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                 elif fiende.navn() == spiller.navn() + " v2" and fiende.hp() <= int(fiende.xHp() / 4):
                     print("Guffsliffsaffen er for svak til å opprettholde formen sin!")
                     print("Guffsliffsaffen transformerer seg igjen.")
+                    fiender.remove(fiende)
                     fiende = generer_guffsliffsaff(spiller, "kvist", fiende)
-                    fiender = [fiende]
-                    fiende1 = fiende
+                    fiender.insert(0, fiende)
                     target = fiende
                     input("Trykk enter for å fortsette\n> ")
                 #Shrooms - Bakkekontakt
@@ -1012,59 +1006,74 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print(fiende.navn() + fiende.ending(), "har tilkalt røtter fra bakken som binder deg fast!")
                     bundetCD = 2
                     fiende.kp(-300)
-                #Tre fiender-system: soppfamilie og sistebossene
+                #tre fiender: tank, heal og dmg
                 #heal
-                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and not fiende1.dead() and \
-                fiende.kp() >= 450 and randint(1, 3) == 1 and fiende1.hp() <= fiende1.xHp() - 500:
+                elif fiende == heal and tank in fiender and fiende.kp() >= 450 and \
+                randint(1, 3) == 1 and tank.hp() <= tank.xHp() - 500:
                     print(fiende.navn(), "kastet Motivér!")
-                    print(fiende1.navn(), "restorerte", fiende1.restorer(1000), "liv.")
+                    print(tank.navn(), "restorerte", tank.restorer(1000), "liv.")
                     fiende.kp(-450)
                 #Intensivèr
-                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and fiende.kp() >= 500 \
-                and randint(1, 15) == 1:
+                elif fiende == heal and fiende.kp() >= 500 and randint(1, 15) == 1:
                     print(fiende.navn(), "kastet Intensivér!")
                     fiende.kp(-500)
                     for f in fiender:
                         f.a(35)
                         print(f.navn(), "fikk 35 angrepspoeng.")
                 #distraher
-                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and fiende.kp() >= 230 \
-                and randint(1, 10) == 1:
+                elif fiende == heal and fiende.kp() >= 230 and randint(1, 10) == 1:
                     print(fiende.navn(), "kastet Distraher!")
                     print(spiller.navn(), "mistet", spiller.mist_kp(randint(150, 230)), "kp.")
                     fiende.kp(-230)
                 #felles røykepause
-                elif fiende.navn() in {"Suillus Soppbarn", "Agaricus Augustus"} and fiende.kp() >= 280 \
-                and randint(1, 4) == 1:
+                elif fiende == heal and fiende.kp() >= 280 and randint(1, 4) == 1:
                     print(fiende.navn(), "kastet Felles Røykepause")
                     fiende.kp(-280)
                     for f in fiender:
-                        print(f.navn(), "restorerte", f.restorer(randint(240, 320)), "liv, og fikk lungebetennelse.")
+                        mengde = f.restorer(randint(240, 320))
+                        if mengde: print(f.navn(), "restorerte", mengde, "liv, og fikk lungebetennelse.")
                 #Solidifiser
-                elif fiende.navn() in {"Cantharellus Cibarius", "Suillus Soppfar"} and fiende.kp() >= 200 \
-                and randint(1, 8) == 2:
-                    fiende.kp(-200)
-                    fiende.d(50)
+                elif fiende == tank and fiende.kp() >= 130 and randint(1, 10) == 2:
+                    fiende.kp(-130)
+                    mengde = 50
+                    if fiende.hp() / fiende.xHp() <= 0.25:
+                        mengde = 150
+                    fiende.d(mengde)
                     print(fiende.navn(), "kastet Solidifiser!")
-                    print(fiende.navn(), "fikk 50 defensivpoeng.")
+                    print(fiende.navn(), "fikk {} defensivpoeng.".format(mengde))
+                #Tilkall småsopp
+                elif fiende.navn() == "Cantharellus Cibarius" and fiende.kp() >= 150 and randint(1, 10) == 1:
+                    print(fiende.navn() + fiende.ending(), "tilkalte en eksplosiv sopp!")
+                    fiende.kp(-200)
+                    fiender.append(generer_eksplosiv_sopp(spiller))
+                    fiender[-1].mist_kp(50, True)
+                #Eksploder
+                elif fiende.navn() == "Eksplosiv Sopp" and randint(1, 2) == 1 and fiende.kp() >= 15:
+                    print("Den eksplosive soppen eksploderte!")
+                    print(spiller.navn(), "mistet", spiller.mist_liv(randint(1000, 1400)), "liv fra eksplosjonen.")
+                    fiender.remove(fiende)
+                #Desperat
+                elif fiende == tank and int(fiende.xHp() / 2) > fiende.hp() > 1000 and fiende.kp() >= 170 and not randint(0, 5):
+                    print(fiende.navn() + fiende.ending(), "kastet Desperat!")
+                    print(fiende.navn() + fiende.ending(), "ofret 500 hp, og ble sterkere!")
+                    fiende.mist_liv(500, True)
+                    fiende.kp(-170)
+                    fiende.weapon_dmg(90)
                 #Raseri
-                elif fiende.navn() in {"Suillus Soppmor", "Boletus Edulis"} and fiende.kp() >= 350 \
-                and randint(1, 8) == 1:
+                elif fiende == dmg and fiende.kp() >= 350 and randint(1, 8) == 1:
                     fiende.kp(-350)
                     print(fiende.navn(), "kastet Raseri!")
-                    print(spiller.navn(), "mistet", spiller.mist_liv(randint(40, 60)*10), "liv av raseriet.")
+                    print(spiller.navn(), "mistet", spiller.mist_liv(randint(50, 70)*10), "liv av raseriet.")
                 #Untouchable shroom
-                elif fiende.navn() in {"Suillus Soppmor", "Boletus Edulis"} and fiende.kp() >= 250 \
-                and randint(1, 7) == 1 and ("Suillus Soppbarn" in fiender or "Agaricus Augustus" in fiender):
+                elif fiende == dmg and fiende.kp() >= 250 and randint(1, 7) == 1 and heal:
                     fiende.kp(-250)
                     if fiende.navn() == "Suillus Soppmor":
                         print(fiende.navn(), "kastet Beskytt Barn!")
-                        print(fiende3.navn(), "går i ett med jorden for to runder.")
-                        fiende3.set_untouchable(True, 2)
+                        print(heal.navn(), "går i ett med jorden for to runder.")
                     else:
                         print(fiende.navn(), "kastet Beskytt Sjampinjong!")
-                        print(fiende2.navn(), "går i ett med jorden for to runder.")
-                        fiende2.set_untouchable(True, 2)
+                        print(heal.navn(), "går i ett med jorden for to runder.")
+                    heal.set_untouchable(True, 2)
                 #Trær
                 elif fiende.race() == "tre" and fiende.kp() >= 230 and randint(1, 8) == 4:
                     print(fiende.navn() + fiende.ending(), "kastet Rotfest!")
@@ -1164,9 +1173,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                     print(fiende.navn() + fiende.ending(), "tok på deg!")
                     print(fiende.navn() + fiende.ending(), "transformerer seg.")
                     input("Trykk enter for å fortsette\n> ")
+                    fiender.remove(fiende)
                     fiende = generer_guffsliffsaff(spiller, True, fiende)
-                    fiende1 = fiende
-                    fiender = [fiende]
+                    fiender.insert(0, fiende)
                     target = fiende
                 #Vanlig angrep
                 else:
@@ -1219,15 +1228,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
                 alliert.gen_kons()
                 alliert.skriv_ut()
             spiller.skriv_ut()
-            if not fiende1.dead():
-                fiende1.gen_kons()
-                fiende1.skriv_ut()
-            if fiende2 and not fiende2.dead():
-                fiende2.gen_kons()
-                fiende2.skriv_ut()
-            if fiende3 and not fiende3.dead():
-                fiende3.gen_kons()
-                fiende3.skriv_ut()
+            for f in fiender:
+                f.gen_kons()
+                f.skriv_ut()
             if bundetCD > 0:
                 input("Trykk enter for å fortsette\n> ")
 
@@ -1238,12 +1241,14 @@ def generer_store_shrooms(spiller):
 
     #Cantharellus Cibarius
     loot = Loot()
-    fiende = Fiende("Cantharellus Cibarius", "shroom", loot, hp=20000, a=1000, d=400, kp=340, bonusKp=5, weapon=100)
+    fiende = Fiende("Cantharellus Cibarius", "shroom", loot, hp=20000, a=1000, d=400, kp=340, bonusKp=5, weapon=430)
     fiender.append(fiende)
     loot.legg_til_item(randint(4000, 6000), 25)
     loot.legg_til_item(Item("Kantarellhatt", "hat", d=170, xHp=250, xKp=25), 25)
     loot.legg_til_item(Item("Kantarellkledning", "robe", d=170, xHp=320), 25)
-    loot.legg_til_item(Item("Kant-handsker", "gloves", d=170, xHp=150, ekstraKp=1), 25)
+    item = Item("Kant-hansker", "gloves", d=170, xHp=150, ekstraKp=1)
+    item.sett_loot_tekst("et par kantarell-hansker")
+    loot.legg_til_item(item, 25)
 
     #Agaricus Augustus
     loot = Loot()
@@ -1252,7 +1257,9 @@ def generer_store_shrooms(spiller):
     loot.legg_til_item(randint(2000, 4000), 25)
     loot.legg_til_item(Item("Sjampinjong", "weapon", a=100, xKp=210, ekstraKp=4), 25)
     loot.legg_til_item(Item("Agaricus Stercus", "trinket", a=40, d=25, xKp=160, ekstraKp=8), 25)
-    loot.legg_til_item(Item("Sjampskjegg", "beard", xKp=130, ekstraKp=6), 25)
+    item = Item("Sjampskjegg", "beard", xKp=130, ekstraKp=6)
+    item.sett_loot_tekst("et sjampskjegg")
+    loot.legg_til_item(item, 25)
 
     #Boletus Edulis
     loot = Loot()
@@ -1260,8 +1267,12 @@ def generer_store_shrooms(spiller):
     fiender.append(fiende)
     loot.legg_til_item(randint(3000, 5000), 25)
     loot.legg_til_item(Item("Steinstav", "weapon", a=210, xKp=140), 25)
-    loot.legg_til_item(Item("Steinsverd", "weapon", a=370, xHp=40, blade=True), 25)
-    loot.legg_til_item(Item("Steinsko", "shoes", a=140, xKp=20, d=100, xHp=50), 25)
+    item = Item("Steinsverd", "weapon", a=370, xHp=40, blade=True)
+    item.sett_loot_tekst("et steinsverd")
+    loot.legg_til_item(item, 25)
+    item = Item("Steinsko", "shoes", a=140, xKp=20, d=100, xHp=50)
+    item.sett_loot_tekst("et par steinsko")
+    loot.legg_til_item(item, 25)
 
     return fiender
 
@@ -1307,6 +1318,14 @@ def generer_shroom(spiller):
 
     item = Item("Trolldrikk", "restoring", hp=300 + randint(0, spiller.lvl())*10)
     loot.legg_til_item(item, 15)
+
+    item = Item("Lærling-drakt", "robe", a=randint(30, 60), \
+    xHp=120 + int(randint(0, ((int(spiller.lvl() / 30) * (spiller.lvl() - 30)) * 50) - \
+    (int(spiller.lvl() / 35) * (spiller.lvl() - 35) * 30)) / 10) * 10, \
+    d=80 + int(randint(0, ((int(spiller.lvl() / 30) * (spiller.lvl() - 30)) * 25) - \
+    (int(spiller.lvl() / 35) * (spiller.lvl() - 35) * 20)) / 10) * 10, lvl=36)
+    item.sett_loot_tekst("en " + ["glitrende", "fillete", "gammel", "sopp-luktende"][randint(0, 3)] + " lærling-drakt")
+    loot.legg_til_item(item, 1)
 
     skrivSopp(fiende.navn())
     print(spiller.navn(), "har møtt en", fiende.navn() + "!")
@@ -1355,6 +1374,13 @@ def generer_liten_sopp(spiller):
     d=randint(100, 600), \
     hp=500 + randint(0, spiller.lvl())*10, \
     kp=randint(80, 150))
+    dynamiskLoot(loot, fiende, spiller)
+    return fiende
+
+def generer_eksplosiv_sopp(spiller):
+    loot = Loot()
+    loot.legg_til_item(randint(500, 1000), 120)
+    fiende = Fiende("Eksplosiv Sopp", "shroom", loot, a=40, d=10, hp=randint(25, 45)*10, kp=randint(2, 4)*10)
     dynamiskLoot(loot, fiende, spiller)
     return fiende
 
