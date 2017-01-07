@@ -264,6 +264,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
+            spellbook.utforsk(False)
             input("Trykk enter for å fortsette\n> ")
             return True
 
@@ -497,7 +498,7 @@ def garg_quest(qlog, spiller):
     #q1
     desk1 = garg_q1(navn)
     ferdigDesk1 = garg_q1_ferdig(navn)
-    q1 = Quest(desk1, ferdigDesk1, 7, 15, "Zap")
+    q1 = Quest(desk1, ferdigDesk1, 7, 16, "Zap")
     q1.legg_til_reward(xp=2000, gull=300)
     q1.legg_til_progresjonTekst("Steiner ryddet: ")
     q1.legg_til_svarTekst("\nKan jeg regne med din hjelp?     (ja/nei)\n> ")
@@ -506,7 +507,7 @@ def garg_quest(qlog, spiller):
     #q2
     desk2 = garg_q2(navn)
     ferdigDesk2 = garg_q2_ferdig(navn)
-    q2 = Quest(desk2, ferdigDesk2, 1, 15, "Zap")
+    q2 = Quest(desk2, ferdigDesk2, 1, 16, "Zap")
     q2.legg_til_reward(xp=4000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=2)
     q2.legg_til_progresjonTekst("Logg funnet: ")
     q2.legg_til_svarTekst("\nVil du hjelpe?    (ja/nei)\n> ")
@@ -545,7 +546,7 @@ def garg_quest(qlog, spiller):
     #q6
     desk6 = garg_q6(navn)
     ferdigDesk6 = garg_q6_ferdig(navn)
-    q6 = Quest(desk6, ferdigDesk6, 7, 17, "Zap", tilgjengelig=False)
+    q6 = Quest(desk6, ferdigDesk6, 7, 18, "Zap", tilgjengelig=False)
     q6.legg_til_reward(xp=10000, gull=1000, hp=50, kp=20, ekstraKp=1)
     q6.legg_til_progresjonTekst("Gargyler tillintetgjort: ")
     q6.legg_til_progresjon(1)

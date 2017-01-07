@@ -278,6 +278,7 @@ def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, 
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
+            spellbook.utforsk(False)
 
             #øker antall gnomer drept i quest 1
             if qlog.hent_quest(0).startet() and not qlog.hent_quest(0).ferdig():
@@ -372,7 +373,7 @@ def gnomequest(qlog, spiller):
     q1 = Quest(desk1, ferdigDesk1, 10, 1, "Mette Merkelig")
     q1.legg_til_reward(xp=500, gull=100)
     q1.legg_til_progresjonTekst("Gnomer myrdet: ")
-    q1.legg_til_svarTekst("Vil du hjelpe oss?    (ja/nei)\n> ")
+    q1.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q1)
 
 
@@ -382,7 +383,7 @@ def gnomequest(qlog, spiller):
     q2 = Quest(desk2, ferdigDesk2, 300, 3, "Gale Gizly")
     q2.legg_til_reward(xp=1000, gull=120, hp=20, settTilgjengelig=True, settTilgjengeligIndeks=4)
     q2.legg_til_progresjonTekst("Helsepoeng restorert: ")
-    q2.legg_til_svarTekst("Vil du hjelpe meg?    (ja/nei)\n> ")
+    q2.legg_til_svarTekst("\nVil du hjelpe meg?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
 
     #q3
@@ -391,7 +392,7 @@ def gnomequest(qlog, spiller):
     q3 = Quest(desk3, ferdigDesk3, 6, 5, "Fine Fredrikke", resetIfDead=True)
     q3.legg_til_reward(xp=2000, kp=15)
     q3.legg_til_progresjonTekst("Sminkeartikler funnet: ")
-    q3.legg_til_svarTekst("Vil du hjelpe meg bli borgens vakreste igjen?    (ja/nei)\n> ")
+    q3.legg_til_svarTekst("\nVil du hjelpe meg bli borgens vakreste igjen?    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)
 
     #q4
@@ -401,7 +402,7 @@ def gnomequest(qlog, spiller):
     q4.legg_til_reward(xp=4000, ekstraKp=5)
     q4.legg_til_ekstra_tekst(spiller.navn()+" har lært en kraftigere versjon av 'vind'!")
     q4.legg_til_progresjonTekst("Vindkast utført: ")
-    q4.legg_til_svarTekst("Vil du bli en superawesome magiker?    (ja/nei)\n> ")
+    q4.legg_til_svarTekst("\nVil du bli en superawesome magiker?    (ja/nei)\n> ")
     qlog.legg_til_quest(q4)
 
     #q5
@@ -412,7 +413,7 @@ def gnomequest(qlog, spiller):
     q5.legg_til_reward(xp=8000, item=item)
     q5.legg_til_ekstra_tekst(spiller.navn() + " har lært et nytt spesialangrep, 'konsentrer energi' (ke)!")
     q5.legg_til_progresjonTekst("Super restituer utført: ")
-    q5.legg_til_svarTekst("Vil du lære hemmeligheten?    (ja/nei)\n> ")
+    q5.legg_til_svarTekst("\nVil du lære hemmeligheten?    (ja/nei)\n> ")
     qlog.legg_til_quest(q5)
 
     #q6
@@ -421,7 +422,7 @@ def gnomequest(qlog, spiller):
     q6 = Quest(desk6, ferdigDesk6, 5, 15, "Symmetriske Sara", resetIfDead=True)
     q6.legg_til_reward(xp=10000, gull=2000, hp=50, kp=40, ekstraKp=2)
     q6.legg_til_progresjonTekst("Gautes gnomevakter bekjempet: ")
-    q6.legg_til_svarTekst("Vil konfrontere Gaute Gnome den Grusomme?    (ja/nei)\n> ")
+    q6.legg_til_svarTekst("\nVil konfrontere Gaute Gnome den Grusomme?    (ja/nei)\n> ")
     q6.legg_til_progresjon(1)
     q6.legg_til_progresjonTekstListe("Gaute Gnom den Grusomme bekjempet: ", 0)
     qlog.legg_til_quest(q6)
@@ -496,7 +497,7 @@ def vassle_quest(qlog, spiller):
     q1 = Quest(desk1, ferdigDesk1, 1, 16, "Overtrollmann Vassle", sted="Fjellhytta")
     q1.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q1.legg_til_progresjonTekst("Ubalanse med fjellhytta gjennbalansert: ")
-    q1.legg_til_svarTekst("Vil du undersøke ubalansen med fjellhytta?    (ja/nei)\n> ")
+    q1.legg_til_svarTekst("\nVil du undersøke ubalansen med fjellhytta?    (ja/nei)\n> ")
     qlog.legg_til_quest(q1)
 
     #cerberus
@@ -505,7 +506,7 @@ def vassle_quest(qlog, spiller):
     q2 = Quest(desk2, ferdigDesk2, 1, 16, "Overtrollmann Vassle", sted="Vulkanen")
     q2.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q2.legg_til_progresjonTekst("Ubalanse med vulkanen gjennbalansert: ")
-    q2.legg_til_svarTekst("Vil du undersøke ubalansen med vulkanen?    (ja/nei)\n> ")
+    q2.legg_til_svarTekst("\nVil du undersøke ubalansen med vulkanen?    (ja/nei)\n> ")
     qlog.legg_til_quest(q2)
 
     #gargyl
@@ -514,7 +515,7 @@ def vassle_quest(qlog, spiller):
     q3 = Quest(desk3, ferdigDesk3, 1, 16, "Overtrollmann Vassle", sted="Slottet")
     q3.legg_til_reward(xp=20000, gull=5000, hp=100, kp=70, ekstraKp=2, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Ubalanse med slottet gjennbalansert: ")
-    q3.legg_til_svarTekst("Vil du undersøke ubalansen med slottet?    (ja/nei)\n> ")
+    q3.legg_til_svarTekst("\nVil du undersøke ubalansen med slottet?    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)
 
     #shroom
@@ -529,6 +530,6 @@ def vassle_quest(qlog, spiller):
     q4.legg_til_progresjonTekst("Ekspedisjon funnet: ")
     q4.legg_til_progresjon(1)
     q4.legg_til_progresjonTekstListe("Ubalanse i skogen gjennbalansert: ", 0)
-    q4.legg_til_svarTekst("Vil du redde dagen, skogen og kanskje verden?    (ja/nei)\n> ")
+    q4.legg_til_svarTekst("\nVil du redde dagen, skogen og kanskje verden?    (ja/nei)\n> ")
     q4.legg_til_ekstra_tekst(avslutningstekst)
     qlog.legg_til_quest(q4)

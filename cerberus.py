@@ -72,9 +72,9 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
                 fiende = generer_fisk(spiller)
 
             skriv_ut(spiller, fiende)
-            regnbue = angrip(spiller, fiende, inv, klasser, spellbook)
+            vulkan = angrip(spiller, fiende, inv, klasser, spellbook)
 
-            if regnbue and qlog.hent_quest(0).startet():
+            if vulkan and qlog.hent_quest(0).startet():
                 qlog.hent_quest(0).progresser()
 
     if ferdig:
@@ -102,10 +102,22 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
-            if fiende.kp() >= 50 and randint(0, 1) == 1:
+            if fiende.kp() >= 90 and not randint(0, 10) and not fiende.burning() and True: #fiende.race() == "cerberus":
+                if randint(0, 1):
+                    print(fiende.navn() + fiende.ending(), "satte fyr på seg selv!")
+                    fiende.a(50)
+                    fiende.d(70)
+                    fiende.sett_burning()
+                else:
+                    print(fiende.navn() + fiende.ending(), "satte fyr på", spiller.navn() + "!")
+                    print(spiller.navn(), "mistet", spiller.mist_liv(round(spiller.xHp() * 0.05)), "liv fra flammene.")
+                    spiller.sett_burning(CD=3, dmg=round(spiller.xHp() * 0.05))
+                fiende.kp(-90)
+
+            elif fiende.kp() >= 50 and randint(0, 100) == 1:
                 print(fiende.navn() + fiende.ending(), "kastet Restituer!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp!")
-                fiende.bruk_kons(50)
+                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(90, 110)), "hp!")
+                fiende.kp(-50)
             else:
                 spiller.angrepet(fiende)
 
@@ -120,6 +132,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 spiller.kons()
                 fiende.gen_kons()
                 skriv_ut(spiller, fiende)
+                if fiende.burning():
+                    print(fiende.navn() + fiende.ending(), "brenner!")
 
 def generer_enhjorning(spiller):
     loot = Loot()

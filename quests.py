@@ -334,7 +334,7 @@ def shroom_q3(navn):
     til at jeg trenger hjelp fra deg. Til vanlig katalogiserer jeg alle nye
     tresorter jeg finner selv, men til tross for min ekstraordinære egenskap
     til å teleportere meg dit jeg vil, duger jeg ikke når det kommer til kamp.
-    Kan du gi meg 'temme' eksemplarer av noen av de fascinerende tresortene
+    Kan du gi meg 'tamme' eksemplarer av noen av de fascinerende tresortene
     som pryder denne kanten av skogen?
 
     -- Oppdag et knippe forskjellige tresorter."""
@@ -380,7 +380,7 @@ def shroom_q5(navn):
 
     -- Let i området opp bakken etter Pàn Tú."""
 def shroom_q5_ferdig(navn):
-    return "    Du må være " + navn + """!
+    return "    Du må være " + navn + """! Mitt navn er Pàn Tú.
     Jeg har hørt mye om deg, men nå er ikke tiden for hyggelige introduksjoner.
     Jeg har lokalisert Shroomsenes tilholdsted og tilegnet meg svært verdifull
     informasjon. Zip sier jeg kan stole på deg, så her er den: Shroomsene er
@@ -504,7 +504,7 @@ def shroom_bq1(navn):
     """
 def shroom_bq1_ferdig(navn):
     return """    Fantastisk! Dommedagen er snart på oss, og det er viktig å vise soppen
-    hvilken side vi egentlig står på! Bli med meg, """ + navn + " i et kjapt blodoffer!\n"
+    hvilken side vi egentlig står på! Bli med meg """ + navn + ", i et kjapt blodoffer!\n"
 
 def shroom_bq2(navn):
     return """    Pàn Tú er en forræder!
@@ -533,7 +533,7 @@ def shroom_bq3(navn):
 def shroom_bq3_tekst():
     return """    Du har nå muligheten til å tilkalle den magiske soppen i kamp!
     For å gjøre det, skriv 'tilkall sopp' eller bare 'ts'. Soppen vil ikke
-    adlyde deg om du er utenfor denne delen av skogen, og vil ikke komme om 
+    adlyde deg om du er utenfor denne delen av skogen, og vil ikke komme om
     du allerede har en alliert ved din side i kamp. Skriv 's' i kamp for å
     se detaljer.\n"""
 
@@ -563,7 +563,7 @@ def banditt_q1_ferdig(navn):
     seg for å ikke invitere meg med på lommeur-jakt!\n"""
 
 def banditt_q2(navn):
-    return """Hei du!
+    return """    Hei du!
     Du ser ut som en kapabel banditt som er godt kjent med sverdfekternes
     eldgamle kampkunster. Kan du vise meg dine triks? Du skjønner det at
     Fagre Frida, den vakreste, smarteste, mest fantastiske personen som noen
@@ -614,7 +614,7 @@ def banditt_q5(navn):
     blitt særdeles hovmoden i det siste. Hun pleide å være tolererbar, men
     i det siste har hun blitt umotståel- ehm, utålelig! Hun burde virkelig
     bli jekket ned et par hakk, til felles gode for alle her i leiren. Hun
-    pleier å henge med duellringen, kanskje du kan offentlig bekjemper henne
+    pleier å henge ved duellringen, kanskje du kan offentlig bekjemper henne
     med dine fantastiske evner i ringen? Så kan vi se nærmere på dine evner
     privat etterpå.
 
@@ -628,7 +628,7 @@ def banditt_q5_ferdig(navn):
     deg er der ute et sted.\n"""
 
 def banditt_q6(navn):
-    return "    Hvem er du? Du ser ut som en " + navn + ". Yup, definitivt " + navn + """".
+    return "    Hvem er du? Du ser ut som en " + navn + ". Yup, definitivt " + navn + """.
     Uansett hvem du er, her er vi alle felles banditter, og i disse harde tidene må
     vi banditter stå sammen mot de ondskapsfulle magikerne! De har alltid vært en
     pest og en plage, stanset våre robberier og jaget oss vekk til denne skogen.
@@ -726,8 +726,8 @@ def banditt_dq12_ferdig(navn):
     return """    D- du har beseiret meg! Hvordan er det mulig?
     Hvem har sendt deg """ + navn + """?
 
-    Fagre Frida altså. Hun er ikke så dum som hun ser ut, kanskje
-    jeg burde gi henne en ny sjanse\n"""
+    Fagre Frida altså. Hun er ikke så dum som hun ser ut,
+    kanskje jeg burde gi henne en ny sjanse\n"""
 
 #Overtrollmann Vassles quests:
 def vassle_troll(navn):
@@ -737,7 +737,7 @@ def vassle_troll(navn):
     andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
     ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
     til å utslette menneskeheten, og dessuten finne ut hvorfor de har
-    fått magiske evner i det første.
+    fått magiske evner i utgangspunktet.
 
     Jeg har sendt ut ... til fjellhytta for å utforske ubalansen som har
     oppstått i fjellkjeden der. Området er kjent for å være en typisk
@@ -756,7 +756,7 @@ def vassle_cerberus(navn):
     andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
     ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
     til å utslette menneskeheten, og dessuten finne ut hvorfor de har
-    fått magiske evner i det første.
+    fått magiske evner i utgangspunktet.
 
     Jeg har sendt ut ... til vulkanen for å utforske ubalansen som har
     oppstått der. Det har blitt sett svære hunder med opptil flere hoder
@@ -775,7 +775,7 @@ def vassle_gargyl(navn):
     andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
     ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
     til å utslette menneskeheten, og dessuten finne ut hvorfor de har
-    fått magiske evner i det første.
+    fått magiske evner i utgangspunktet.
 
     Jeg har sendt ut Zap til slottet i enden av skogen her for å utforske
     ubalansen som har oppstått der. Vi er ikke helt sikker på hva som
@@ -788,7 +788,7 @@ def vassle_gargyl(navn):
 def vassle_gargyl_ferdig(navn):
     return "    Tusen takk " + navn + """!
     Med dette problemet løst, har vi en mindre ting å tenke på. Likevel
-    er urovekkende å høre at det kanskje er en mystisk magiker som står
+    er det urovekkende å høre at det kanskje er en mystisk magiker som står
     bak det hele. Hva kan motivet være? Noe sier meg at disse problemene
     ikke vil ta en slutt før vi får stoppet denne magikeren. Men det må
     vi ta senere, for vi har flere problemer! En stor ubalanse har oppstått
@@ -804,8 +804,8 @@ def vassle_shroom(navn):
     dem siden, men det kom nettopp en budskapsrotte med beskjeden
     "skogen lever". Vi har prøvd å sende rotter tilbake, men ingen
     har overlevd turen, og nå streiker de igjen grunnet 'for høy
-    yrkesrisiko'. Alt håp henger på dine skuldre """ + navn + """! Finn
-    ut hva som har skjedd med ekspedisjonen, og rett opp i ubalansen!
+    yrkesrisiko'. Alt håp henger på dine skuldre """ + navn + """! Finn ut
+    hva som har skjedd med ekspedisjonen, og rett opp ubalansen!
 
     -- Finn ekspedisjonen og rett den magiske ubalansen i skogen."""
 def vassle_shroom_ferdig(navn):

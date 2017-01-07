@@ -129,6 +129,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         return verdenskart(spiller)
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
+    forsterkCD = 0
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
 
@@ -150,10 +151,17 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
-            if fiende.kp() >= 50 and randint(0, 1) == 1:
+            if fiende.race() == "troll" and fiende.kp() >= 80 and not randint(0, 10):
+                print(fiende.navn() + fiende.ending(), "kastet Forsterk!")
+                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(250, 300)), \
+                "hp, og forbereder seg på et kraftig slag!")
+                fiende.kp(-80)
+                fiende.a(450)
+                forsterkCD = 2
+            elif fiende.kp() >= 50 and randint(0, 4) == 1 and not forsterkCD:
                 print(fiende.navn() + fiende.ending(), "kastet Restituer!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(100), "hp!")
-                fiende.bruk_kons(50)
+                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(90, 110)), "hp!")
+                fiende.kp(-50)
             else:
                 spiller.angrepet(fiende)
 
@@ -168,6 +176,10 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 spiller.kons()
                 fiende.gen_kons()
                 skriv_ut(spiller, fiende)
+                if forsterkCD > 0:
+                    forsterkCD -= 1
+                    if forsterkCD == 0:
+                        fiende.a(-450)
 
 def generer_troll(spiller):
     loot = Loot()
