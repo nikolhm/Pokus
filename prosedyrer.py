@@ -3,8 +3,9 @@ from os import listdir
 from os import system
 import platform
 import sys
-from uuid import UUID
-import knownpaths
+if platform.system() == "Windows":
+    from uuid import UUID
+    import knownpaths
 
 #Verdenskart.
 def verdenskart(spiller):
@@ -373,7 +374,10 @@ def finn_stats(item):
 
 #Prosedyrer og funksjoner knyttet til lagring og lasting av filer:
 
-docFolder = knownpaths.get_path(UUID('{FDD39AD0-238F-46AF-ADB4-6C85480369C7}'))
+if platform.system() == "Windows":
+    docFolder = knownpaths.get_path(UUID('{FDD39AD0-238F-46AF-ADB4-6C85480369C7}'))
+else:
+    docFolder = ""
 
 def minnestein(spiller, inv, klasser):
     pris = 100
