@@ -181,6 +181,9 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
                 fiende.angrepet(spiller.a())
         else:
             print("Angrep er nyttesløst i fiendens nåværende form.")
+        #burning
+        if fiende.burning():
+            print(spiller.navn(), "mistet", spiller.mist_liv(randint(30, 70)), "liv fra flammene under angrepet.")
         tur = False
 
     #angriper fienden med tryllepulver.
@@ -209,6 +212,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     #kaster konsentrer energi. Krever fullførelse av quest.
     elif inn == "ke" or inn == "konsentrer energi":
         tur = spellbook.konsentrer_energi(fiende)
+
+    #kaster Nedkjøl. Krever fullførelse av quest.
+    elif inn == "n" or inn == "nedkjøl":
+        tur = spellbook.freeze(fiende)
 
     #kaster kjøttifiser. Krever utførelse av quest.
     elif inn == "kj" or inn == "kjøttifiser":
@@ -281,6 +288,12 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     #akiverer korrupsjon
     if not tur and fiende.bleeding() > 0:
         fiende.korrupt()
+
+    #aktiverer burning
+    if not tur and spiller.burning()[0]:
+        print(spiller.navn(), "mistet", spiller.mist_liv(randint(\
+        spiller.burning()[1] - round(spiller.burning()[1] / 20), \
+        spiller.burning()[1] + round(spiller.burning()[1] / 20))), "liv fra flammene.")
 
     return tur
 

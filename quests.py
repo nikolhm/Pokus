@@ -380,7 +380,7 @@ def shroom_q5(navn):
 
     -- Let i området opp bakken etter Pàn Tú."""
 def shroom_q5_ferdig(navn):
-    return "    Du må være " + navn + """!
+    return "    Du må være " + navn + """! Mitt navn er Pàn Tú.
     Jeg har hørt mye om deg, men nå er ikke tiden for hyggelige introduksjoner.
     Jeg har lokalisert Shroomsenes tilholdsted og tilegnet meg svært verdifull
     informasjon. Zip sier jeg kan stole på deg, så her er den: Shroomsene er
@@ -504,7 +504,7 @@ def shroom_bq1(navn):
     """
 def shroom_bq1_ferdig(navn):
     return """    Fantastisk! Dommedagen er snart på oss, og det er viktig å vise soppen
-    hvilken side vi egentlig står på! Bli med meg, """ + navn + " i et kjapt blodoffer!\n"
+    hvilken side vi egentlig står på! Bli med meg """ + navn + ", i et kjapt blodoffer!\n"
 
 def shroom_bq2(navn):
     return """    Pàn Tú er en forræder!

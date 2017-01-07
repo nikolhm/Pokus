@@ -656,6 +656,10 @@ class Spiller:
         #Kart
         self._kartListe = [False for x in range(20)]
 
+        #Tilstander fra fienden
+        self._burningCD = 0
+        self._burnDmg = 0
+
     def lagre_stats(self, inv):
         for item in inv.itemListe():
             if item.bruker():
@@ -778,6 +782,10 @@ class Spiller:
         self._kp += self._ekstraKp
         if self._kp > self._xKp:
             self._kp = self._xKp
+
+        #progresserer cooldowns
+        if self._burningCD:
+            self._burningCD -= 1
 
     #returnerer nåværende kp
     def kons_igjen(self):
@@ -961,6 +969,13 @@ class Spiller:
         self._evilPoints += p
         return self._evilPoints
 
+    def sett_burning(self, CD=3, dmg=40):
+        self._burningCD = CD
+        self._burnDmg = dmg
+
+    def burning(self):
+        return self._burningCD, self._burnDmg
+
 class Loot:
     def __init__(self):
         self._loot = []
@@ -1005,6 +1020,7 @@ class Fiende:
         self._bleedingHp = 0
         self._bleedingKp = 0
         self._bleedingCD = 0
+        self._burningCD = 0
 
     def navn(self):
         return self._navn
@@ -1094,6 +1110,12 @@ class Fiende:
                 print(self.navn() + self.ending(), "mistet", kpSkade, "kp av korrupsjonen!")
         elif self._bleedingCD < 0:
             self._bleedingCD += 1
+
+    def sett_burning(self, CD=4):
+        self._burningCD = CD
+
+    def burning(self):
+        return self._burningCD
 
     #Tar imot skade gjort av spilleren som parameter. Parameteret er altså max
     #skade som kan bli gjort, men hvor mye som faktisk blir gjort avhenger av randint
@@ -1186,6 +1208,11 @@ class Fiende:
             self._oppholdtCD += 1
         elif self._oppholdtCD == 0:
             self._oppholdt = False
+        if self._burningCD > 0:
+            self._burningCD -= 1
+            if not self._burningCD:
+                self.a(-50)
+                self.d(-70)
 
     def loot(self, spiller, inv):
         item = self._loot.hent_loot()
@@ -1269,6 +1296,9 @@ class Spellbook:
             print("konsentrer energi (ke)   stjeler {} helsepoeng\n\
                          Krever 150 konsentrasjonspoeng, tryllestav gir ekstra effekt.".format(\
                          300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp()))
+        if True: #trollog.hent_quest(x).ferdig():
+            print("nedkjøl (n)              Slukker tilstedeværende flammer.\n\
+                         Krever 70 konsentrasjonspoeng.")
         if gargyllog.hent_quest(4).ferdig():
             print("kjøttifiser (kj)         gjør forsteinede fiender om til kjøtt.\n\
                          Krever 85 konsentrasjonspoeng.")
@@ -1464,6 +1494,30 @@ class Spellbook:
             else:
                 print("Du har ikke nok konsentrasjonspoeng!")
                 return True
+        return True
+
+    def freeze(self, fiende):
+        if True: #quest er fullført
+            if self._spiller.kp() >= 70 and (fiende.burning() or self._spiller.burning()[0]):
+                print(self._spiller.navn(), "kastet Nedkjøl!")
+                self._spiller.bruk_kons(70)
+                if fiende.burning():
+                    print(fiende.navn() + fiende.ending(), "er ikke lenger brennende.")
+                    fiende.sett_burning(0)
+                    fiende.a(-50)
+                    fiende.d(-70)
+                if self._spiller.burning()[0]:
+                    print(self._spiller.navn(), "er ikke lenger brennende.")
+                    self._spiller.sett_burning(0, 0)
+                return False
+
+            #ingen som brenner
+            elif self._spiller.kp() >= 70:
+                print("Det er ingen som brenner!")
+
+            #ikke nok kp
+            else:
+                print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
     def meatify(self, fiende):

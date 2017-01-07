@@ -591,8 +591,9 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
         print("""
         ** Du sanser en sterk magisk kraft i nærheten! **\n""")
         input("Trykk enter for å gå videre\n> ")
+        clear_screen()
         skrivSkjegghattShroom()
-        print("        ** En levende forvokst sopp kommer bort til deg **\n")
+        print("** En levende forvokst sopp kommer bort til deg **\n")
         print(  """Skjegghatt Shroom: """ + Fore.RED + "Du er ikke velkommen her " + spiller.navn() + ".\n" + Style.RESET_ALL)
         input("Trykk enter for å fortsette\n> ")
         clear_screen()
@@ -908,7 +909,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiende2=None,
 
             #Shroom q2
             if fiende.race() == "gnom" and sQlog.hent_quest(1).startet() and \
-            not sQlog.hent_quest(1).ferdig() and randint(1, 6) >= 4:
+            not sQlog.hent_quest(1).sjekk_ferdig() and randint(1, 6) >= 4:
                 sQlog.hent_quest(1).progresser()
                 print("Du fant en av de stjålne forsyningene!")
 
