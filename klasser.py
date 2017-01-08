@@ -60,12 +60,12 @@ class Butikk:
             if svar == "ja" or svar == "j":
                 for x in range(len(inv.itemListe())):
                     for item in inv.itemListe():
-                        if not item.bruker() and item.navn() != "Pass":
+                        if not item.bruker() and not item.spar() and item.navn() != "Pass":
                             inv.selg(inv.itemListe().index(item))
             elif svar == "n" or svar == "nei":
                 for x in range(len(inv.itemListe())):
                     for item in inv.itemListe():
-                        if not item.bruker() and item.wieldable():
+                        if not item.bruker() and not item.spar() and item.wieldable():
                             inv.selg(inv.itemListe().index(item))
             else:
                 return ""
@@ -1736,12 +1736,23 @@ class Inventory:
         if self.check_requirements(item):
             #Lager tom statliste
             gammelStatliste = [0 for x in range(len(item.statliste()))]
+            gammelItem = None
 
             #Finner gamle stats
             for objekt in self._items:
                 if objekt.type() == item.type() and objekt.bruker():
                     gammelStatliste = objekt.statliste()
                     objekt.ikke_bruk()
+                    gammelItem = objekt
+
+            #Sparer sverd/tryllestav fra å bli solgt under *alt* i butikken
+            if gammelItem and gammelItem.type() == "weapon":
+                if gammelItem.blade() and not item.blade() or item.blade() and not gammelItem.blade():
+                    gammelItem.spar(True)
+                    for objekt in self._weapons:
+                        if objekt != gammelItem:
+                            objekt.spar(False)
+            item.spar(False)
 
             #Bytter stats
             self._spiller.bytt_stats(gammelStatliste, item.statliste())
@@ -1752,7 +1763,7 @@ class Inventory:
     def bytt_til(self, kategori, i):
         item = self._categoryList[kategori - 1][i - 1]
         if item.bruker():
-            item = Item("ingenting", item.type())
+            item = Item("ingenting", item.type(), blade=item.blade())
         if self.bytt(item):
             return item
 
@@ -1836,7 +1847,7 @@ class Inventory:
                 t = item.statlisteTekst()
                 stats = [str(t[i] + ":" + str(s[i]) + ", ") * int(bool(s[i])) for i in range(len(s))]
                 print("    {:36} {:30} {:>5}g {:>4}".format(\
-                "{} {}".format(item.navn(), "**bruker**"*int(item.bruker())), \
+                "{} {}{}".format(item.navn(), "**bruker**"*int(item.bruker()), "*sparer*"*int(item.spar())), \
                 "{}{}{}{}{}{}{}{}".format(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7]).strip(", "),\
                 item.verdi(), "(" + str(x) + ")"))
             return 0
@@ -1970,6 +1981,7 @@ class Item:
         self._lvl = lvl
         self._verdi = ( a + d + xHp + xKp + ekstraKp * 30 + int(hp/10) + int(kp/5) + int(dmg*0.05) ) * 8
         self._lootTekst = "en " + self._navn.lower()
+        self._spar = False
         if self._type in {"weapon", "hat", "gloves", "robe", "shoes", "beard", "trinket"}:
             self._wieldable = True
 
@@ -2016,6 +2028,11 @@ class Item:
 
     def ikke_bruk(self):
         self._bruker = False
+
+    def spar(self, b=None):
+        if b is True: self._spar = True
+        if b is False: self._spar = False
+        return self._spar
 
     def sett_verdi(self, verdi):
         self._verdi = verdi
