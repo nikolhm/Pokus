@@ -517,6 +517,7 @@ def lagre(spiller, inv, klasser, nr=0):
             fil = open("012bsd13ryvjbkuj54ub7.sav")
             fil.close()
         lagre(spiller, inv, klasser, nr +1)
+        return
     except FileNotFoundError:
         try:
             dekrypt(filnavn)
@@ -563,8 +564,6 @@ def lagre(spiller, inv, klasser, nr=0):
                     tekst += str(qlog.hent_qLog().index(q)) + ","
                     tekst += str(int(q.startet())) + ","
                     tekst += str(int(q.ferdig())) + ","
-                    tekst += str(int(q.hent_sett_tilgjengelig_reward()[0])) + ","
-                    tekst += str(q.hent_sett_tilgjengelig_reward()[1]) + ","
                     tekst += str(q.progresjon())
                     for progresjon in q.progresjon_liste():
                         tekst += "," + str(progresjon)
@@ -607,35 +606,21 @@ def last_fil(spiller, inv, klasser, filnavn):
         linje = fil.readline().strip()
         while linje != "":
             questInf = linje.split(",")
-            start = 0
-            slutt = 0
-            minus = 0
-            settTilgjengeligListe = []
-            for x in range(len(questInf)):
-                if settTilgjengeligListe and "]" in questInf[x - minus]:
-                    settTilgjengeligListe.append(int(questInf.pop(x - minus).strip("]")))
-                    break
-                elif settTilgjengeligListe:
-                    settTilgjengeligListe.append(int(questInf.pop(x - minus)))
-                    minus += 1
-                if "[" in questInf[x]:
-                    settTilgjengeligListe.append(int(questInf[x].strip("[")))
-            if settTilgjengeligListe:
-                questInf[5] = settTilgjengeligListe
             qlog = klasser.questlog(int(questInf[0]))
             q = qlog.hent_quest(int(questInf[1]))
             q.start((bool(int(questInf[2]))))
             q.sett_ferdig(bool(int(questInf[3])))
-            if q.ferdig() and int(questInf[4]):
-                if settTilgjengeligListe:
-                    for i in settTilgjengeligListe:
-                        qlog.hent_quest(i).sett_tilgjengelig()
-                else:
-                    qlog.hent_quest(int(questInf[5])).sett_tilgjengelig()
-            q.progresser(int(questInf[6]))
+            if q.ferdig():
+                if q.hent_sett_tilgjengelig_reward()[0]:
+                    try:
+                        for x in q.hent_sett_tilgjengelig_reward()[1]:
+                            qlog.hent_quest(x).sett_tilgjengelig()
+                    except TypeError:
+                        qlog.hent_quest(q.hent_sett_tilgjengelig_reward()[1]).sett_tilgjengelig()
+            q.progresser(int(questInf[4]))
             if q.progresjon_liste():
-                for x in range(7, 7 + len(q.progresjon_liste())):
-                    q.progresser_liste(x - 7, int(questInf[x]))
+                for x in range(5, 5 + len(q.progresjon_liste())):
+                    q.progresser_liste(x - 5, int(questInf[x]))
             linje = fil.readline().strip()
     krypt(filnavn)
 
@@ -663,7 +648,7 @@ def dekrypt(filnavn):
     tekst = ""
     with open(filnavn, encoding="UTF-8") as fil:
         for linje in fil:
-            bokstaver = list(linje.strip())
+            bokstaver = list(linje.strip("\n"))
             for x in range(len(bokstaver)):
                 bokstaver[x] = chr(ord(bokstaver[x]) - ord(ingentingInteressant[x % len(ingentingInteressant)]))
             skalSkrive.append("".join(bokstaver))
