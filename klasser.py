@@ -1574,6 +1574,7 @@ class Spellbook:
     def utforsk(self, b=True):
         if not b:
             self._utforskRunder = 0
+            self._utforsk = False
 
         utforsk = False
         if self._utforsk:

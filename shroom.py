@@ -724,9 +724,9 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
                   Det er høyst beklagelig at vi må benytte oss av tosker som denne for
                   å kommunisere, men slik den politiske situasjonen er nå ser vi ingen
                   annen mulighet. Tiden renner ut fort, og det vi har å si er viktig,
-                  så lytt nøye """ + navn + """. Vi er ikke den barmhjertiges egne barn,
+                  så lytt nøye """ + navn + """. Vi er ikke den Barmhjertiges egne barn,
                   men man kan si vi er dens barnebarn. Vi er ikke en intensjon, men et
-                  heldig uhell fremkalt av den barmhjertiges første barn. Vi er bevis på
+                  heldig uhell fremkalt av den Barmhjertiges første barn. Vi er bevis på
                   en ny sirkel av liv.\n""" + Style.RESET_ALL)
                     input("Trykk enter for å fortsette\n> ")
                     print(Fore.RED + """
@@ -783,14 +783,14 @@ def avslutningsLoop(spiller):
                        selv! Hvilken ondskap vil gjøre noe slikt!\n {}""".format(red, r))
     pause()
     print("""
-Cantharellus Cibarius:{} Den barmhjertige vil ikke glemme dette! Selv om han ikke
+Cantharellus Cibarius:{} Den Barmhjertige vil ikke glemme dette! Selv om han ikke
                        er vår direkte skaper, vil han beskytte oss slik han
                        beskytter alle andre! Tyranniet deres vil ende, og en
                        dag vil en stakkers kantarell som meg bli husket som en
                        martyr! Alle vil tilbe meg!\n {}""".format(red, r))
     pause()
     print("""
-    Agaricus Augustus:{} Ahh, ikke han og. Dette er hvorfor den barmhjertige ikke
+    Agaricus Augustus:{} Ahh, ikke han og. Dette er hvorfor den Barmhjertige ikke
                        lar oss være med på rådsmøter. Hvordan skal man gjennomføre
                        revolusjon når man konstant krever tilbedelse? Blir ikke
                        noe bedre verden av det, da er vi jo like ille som Vassle
@@ -843,7 +843,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
             if alliert:
                 print("Du har allerede en alliert i denne kampen!")
             else:
-                alliert = Fiende("Psilocybe Semilanceata", "alliert", Loot(), hp=500, a=300, d=100, kp=800, bonusKp=22, ending="en")
+                alliert = Fiende("Psilocybe Semilanceata", "alliert", Loot(), hp=500, a=300, d=300, kp=800, bonusKp=22, ending="en")
                 print(spiller.navn(), "tilkalte en magisk sopp til å hjelpe i kampen!")
                 spiller.bruk_kons(350)
                 tur = False
@@ -854,7 +854,13 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
         if fiende.dead() or fiende.untouchable():
             fiende = fiender[fiender.index(fiende) - 1]
         if alliert and not tur and not fiende.dead():
-            if alliert.kp() >= 70 and spiller.hp() / spiller.xHp() <= 0.6 and randint(0, 3) == 0:
+            if alliert.untouchable():
+                print(alliert.navn() + alliert.ending(), "er bundet fast.")
+            elif alliert.navn() == "Magiske Mikkel" and alliert.kp() >= 250 and randint(1, 10) == 1 and not fiende.oppholdt():
+                print("Magiske Mikkel kastet Opphold!")
+                alliert.kp(-250)
+                fiende.opphold(2)
+            elif alliert.kp() >= 70 and spiller.hp() / spiller.xHp() <= 0.6 and randint(0, 3) == 0:
                 print(alliert.navn() + alliert.ending(), "kastet en Hjelpende Hånd! Du kjenner en hånd massere deg på ryggen.")
                 print(spiller.navn(), "restorerte", spiller.restorer(randint(290, 320 + round(alliert.xKp() / 2))), "liv.")
                 alliert.kp(-70)
@@ -983,6 +989,11 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                         print(fiende.navn() + fiende.ending(), "kastet Avskjær Hjelp!")
                         alliert.mist_kp(1000)
                         fiende.kp(-450)
+                    elif fiende.kp() >= 250 and randint(1, 10) == 1 and fiende.race() == "shroom":
+                        print(fiende.navn() + fiende.ending(), "har tilkalt røtter fra bakken som binder {} fast!".format(\
+                        alliert.navn() + alliert.ending()))
+                        alliert.set_untouchable(True, randint(1, 2))
+                        fiende.kp(-250)
                     else:
                         alliert.angrepet(fiende.a(), fiende.weapon_dmg(), angriper=fiende)
 
@@ -1033,7 +1044,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                         mengde = f.restorer(randint(240, 320))
                         if mengde: print(f.navn(), "restorerte", mengde, "liv, og fikk lungebetennelse.")
                 #Solidifiser
-                elif fiende == tank and fiende.kp() >= 130 and randint(1, 10) == 2:
+                elif fiende == tank and fiende.kp() >= 130 and randint(1, 10) == 2 and fiende.hp() / fiende.xHp() <= 0.8:
                     fiende.kp(-130)
                     mengde = 50
                     if fiende.hp() / fiende.xHp() <= 0.25:
@@ -1044,7 +1055,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                 #Tilkall småsopp
                 elif fiende.navn() == "Cantharellus Cibarius" and fiende.kp() >= 150 and randint(1, 10) == 1:
                     print(fiende.navn() + fiende.ending(), "tilkalte en eksplosiv sopp!")
-                    fiende.kp(-200)
+                    fiende.kp(-150)
                     fiender.append(generer_eksplosiv_sopp(spiller))
                     fiender[-1].mist_kp(50, True)
                 #Eksploder
@@ -1161,7 +1172,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                     else:
                         spiller.angrepet(fiende)
                 #Restituer
-                elif fiende.kp() >= 50 and randint(0, 2) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0:
+                elif fiende.kp() >= 50 and randint(0, 2) == 1 and fiende.hp() < (fiende.xHp() - 90) and uCD >= 0\
+                and (fiende.navn() != "Cantharellus Cibarius" or not randint(0, 6)):
                     print(fiende.navn() + fiende.ending(), "kastet Restituer!")
                     if fiende.race() in {"shroom"} or fiende.navn() in {"Bjarte Banditt"}:
                         print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(160, 340)), "hp.")
@@ -1241,7 +1253,7 @@ def generer_store_shrooms(spiller):
 
     #Cantharellus Cibarius
     loot = Loot()
-    fiende = Fiende("Cantharellus Cibarius", "shroom", loot, hp=20000, a=1000, d=400, kp=340, bonusKp=5, weapon=430)
+    fiende = Fiende("Cantharellus Cibarius", "shroom", loot, hp=20000, a=1000, d=400, kp=340, bonusKp=5, weapon=390)
     fiender.append(fiende)
     loot.legg_til_item(randint(4000, 6000), 25)
     loot.legg_til_item(Item("Kantarellhatt", "hat", d=170, xHp=250, xKp=25), 25)

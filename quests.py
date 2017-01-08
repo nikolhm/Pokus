@@ -451,7 +451,7 @@ def shroom_q8(navn):
 
     -- Møt kontakten til Pàn Tú."""
 def shroom_q8_ferdig(navn):
-    return """    Så de er ikke den barmhjertiges barn altså. Det forklarer en del!
+    return """    Så de er ikke den Barmhjertiges barn altså. Det forklarer en del!
     Pàn Tú har forduftet sier du? Kanskje jeg burde dra ut i skogen og... lete
     etter henne. Ja. Definitivt! Hold et åpent sinn """ + navn + "!\n"
 
@@ -514,7 +514,7 @@ def shroom_bq2(navn):
     og kastet i skogen, men om du finner noen biter av lapper eller andre
     hint, kom rett til meg med det!\n"""
 def shroom_bq2_tekst():
-    return """    Alle korrespondanser ser ut til å omhandle 'den barmhjertige'.
+    return """    Alle korrespondanser ser ut til å omhandle 'den Barmhjertige'.
     Motivene er uklare, men det virker ikke som om de er direkte i liga med
     shroomsene. Dette er høyst merkverdig og svært alvorlig, og en sak jeg skal
     ta opp med Overtrollmann Vassle. Ikke snakk om dette til noen, og helst glem
@@ -810,7 +810,7 @@ def vassle_shroom(navn):
     -- Finn ekspedisjonen og rett den magiske ubalansen i skogen."""
 def vassle_shroom_ferdig(navn):
     return "    Du er en helt " + navn + """!
-    Denne magikeren, 'den barmhjertige' er en pest og en plage og må
+    Denne magikeren, 'den Barmhjertige' er en pest og en plage og må
     stanses omgåelig! Vær forsiktig med den informasjonen du tilegner
     deg fra hans agenter, jeg tror vi har å gjøre med en magiker jeg
     kjente en gang for lenge siden, og han er en manipulerende løgner
