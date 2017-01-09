@@ -221,6 +221,23 @@ def garg_q6_ferdig(navn):
     Dra tilbake til Magi-borgen og rapporter suksessen vår til Overtrollmann
     Vassle!\n"""
 
+def garg_q7(navn):
+    return """    Hei {}!
+    Si meg, hva vet du om smertedrepernes vakre kunst? Ingenting?
+    La meg gi deg en kort introduksjon: Vi i Foreningen for Smertedrepere har som
+    filosofi at det å ta skade slett ikke er en svakhet, men en lærdom, en lekse,
+    kunnskap man kan ta med seg videre i livet! Men for å lære noe som helst av smerten
+    må man tåle den først. Derfor spesialiserer vi oss innen kunsten å tåle så mye
+    skade som mulig!
+
+    Vi i Foreningen for Smertedrepere rekrutterer nye medlemmer, men vi har strenge
+    medlemmskrav. Alle som søker, må ha mistet minst 25000 helsepoeng fra fiender
+    rundt slottet her!
+
+    -- Mist 25000 helsepoeng fra fiender rundt slottet.""".format(navn)
+def garg_q7_ferdig(navn):
+    return "    Utmerket {}! Du finner vårt kontor opp trappen fra hovedhallen. Ser deg der!\n".format(navn)
+
 def garg_bq1(navn):
     return "    Hei " + navn + """!
     Jeg har klart å havne på feil side med slottets loggfører, og som straff

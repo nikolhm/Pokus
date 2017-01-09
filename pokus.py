@@ -29,8 +29,10 @@ if lastTidligere:
     spiller = Spiller(last_navn(lastTidligere))
 else:
     navn = ""
-    while len(navn) == 0:
+    while len(navn) == 0 or "," in navn:
         navn = input("Velg et navn til karakteren din:\n> ")
+        if "," in navn:
+            print("Du kan ikke ha komma i navnet ditt.\n")
     spiller = Spiller(navn)
 
 klasser = Klasser()

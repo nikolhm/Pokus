@@ -27,6 +27,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
         utkikk = False
         lagre = False
         guri = False
+        smertedreper = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -60,6 +61,10 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
 
             if inn == "g" and qlog.hent_quest(5).ferdig():
                 guri = True
+                valg = True
+
+            if inn == "o" and qlog.hent_quest(6).ferdig():
+                smertedreper = True
                 valg = True
 
         while quest:
@@ -97,8 +102,8 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                     print(spiller.navn(), "fant noen gamle, uforståelige skrifter i kisten.")
 
                     #bq1
-                    if randint(0, 10) > 7 and qlog.hent_quest(6).progresjon() == 0:
-                        qlog.hent_quest(6).progresser()
+                    if randint(0, 10) > 7 and qlog.hent_quest(7).progresjon() == 0:
+                        qlog.hent_quest(7).progresser()
                         print(spiller.navn(), "fant en levende kosebamse i kisten! Hvem kan det være sin?")
 
                     input("Trykk enter for å dra tilbake\n> ")
@@ -121,8 +126,8 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                         inv.penger(350)
 
                         #bq1
-                        if randint(0, 10) > 6 and qlog.hent_quest(6).progresjon() == 0:
-                            qlog.hent_quest(6).progresser()
+                        if randint(0, 10) > 6 and qlog.hent_quest(7).progresjon() == 0:
+                            qlog.hent_quest(7).progresser()
                             print(spiller.navn(), "fant en levende kosebamse i kisten! Hvem kan det være sin?")
 
                         input("Trykk enter for å dra tilbake\n> ")
@@ -178,6 +183,70 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
             if not angrip(spiller, fiende, inv, klasser, spellbook):
                 guri = False
 
+        while smertedreper:
+            medlem = spiller.spesialisering() == "Smertedreper"
+            print(" "*4 + "Velkommen {}til Foreningen for Smertedrepere!".format("tilbake " * int(medlem)).center(65 + 15*int(not medlem), "-"))
+            if medlem:
+                print("\n    Som medlem tilbyr vi deg internpriser på trolldrikker!")
+                print("\n    Trolldrikk             +700hp                  1100g (d)")
+                print("    Meld deg ut            Fjerner spesialisering   500g (u)")
+                print("\nDu har", inv.penger(), "gullstykker. Skriv 'f' eller 'ferdig' for å dra tilbake.")
+                inn = input("Hva vil du gjøre?\n> ").lower().strip()
+                if inn in {"f", "ferdig"}:
+                    smertedreper = False
+                elif inn == "d":
+                    if inv.penger() >= 1100:
+                        inv.legg_til_item(Item("Trolldrikk", "restoring", hp=700))
+                        inv.penger(-1100)
+                        print("Du kjøpte en trolldrikk for 1100 gullstykker.")
+                    else:
+                        print("Du har ikke råd!")
+                    pause()
+                elif inn == "u":
+                    print("Foreningen for Smertedrepere krever 500 i gebyr for papirarbeid.")
+                    inn = input("Er du sikker på at du vil melde deg ut? \nDu må betale ny medlemsavgift om du vil melde deg inn igjen.   (ja/nei)\n> ").lower().strip()
+                    if inn in {"j", "ja", "sure"}:
+                        if inv.penger() >= 500:
+                            inv.penger(-500)
+                            spiller.spesialisering(False)
+                            spiller.hev_d(-200)
+                            print("Du har meldt deg ut av Foreningen for Smertedrepere.")
+                            smertedreper = False
+                            inv.fjern_spesialiserte_items("Smertedreper")
+                            pause()
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+            else:
+                print("\n    Som medlem kan vi tilby deg eksklusiv tilgang til en helt spesiell trylleformel")
+                print("    som gir deg ekstra defensivpoeng i fire runder! Denne trylleformelen vil kun være ")
+                print("    tilgjengelig så lenge du er medlem i foreningen vår. Du vil også nyte andre goder,")
+                print("    som en permanent defensivbonus på 200 defensivpoeng, høykvalitets-trolldrikker til")
+                print("    innkjøpspris i vår lokale butikk, og ikke minst mulighet til å bruke utstyr du ")
+                print("    finner i villmarken som kun smertedrepere vet hvordan brukes. Alt dette kan bli")
+                print("    ditt for en medlemsavgift på skarve 8000 gullstykker!")
+                print("\nDu har", inv.penger(), "gullstykker.")
+                inn = input("Vil du bli en smertedreper?\n> ").lower().strip()
+                if inn in {"ja", "j", "yes", "ja!", "hell yes!"}:
+                    if inv.penger() >= 8000 and not spiller.spesialisering():
+                        inv.penger(-8000)
+                        spiller.spesialisering("Smertedreper")
+                        spiller.hev_d(200)
+                        print("\nGratulerer! Du er nå offisielt en smertedreper!\n")
+                        pause()
+                    elif inv.penger() >= 8000:
+                        print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
+                        print("    en smertedreper, kan du melde deg ut av den foreningen du for øyeblikket er ")
+                        print("    medlem i og komme tilbake senere!")
+                        smertedreper = False
+                        pause()
+                    else:
+                        print("Du har ikke nok gullstykker til å betale medlemsavgiften!")
+                        smertedreper = False
+                        pause()
+                else:
+                    smertedreper = False
+
     if ferdig:
         return verdenskart(spiller)
 
@@ -201,6 +270,7 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
     qlog = klasser.questlog(4)
     sQlog = klasser.questlog(6)
     while True:
+        clear_screen()
         intro_kart(klasser)
         inn = input("\nHvor vil du dra?\n> ").lower()
 
@@ -251,11 +321,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
 
-        if inn == "f" or inn == "flykt":
-            print(spiller.navn(), "drar tilbake til slottsgården.")
-            return False
-
         tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
+
+        if inn == "f" or inn == "flykt":
+            print(spiller.navn(), "drar tilbake til slottet.")
+            pause()
+            return False
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
         if fiende.dead():
@@ -264,7 +335,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
-            spellbook.utforsk(False)
+            spellbook.reset()
             input("Trykk enter for å fortsette\n> ")
             return True
 
@@ -291,10 +362,14 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                     print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(100, 180)), "liv.")
                 fiende.bruk_kons(40)
             else:
-                spiller.angrepet(fiende)
+                skade = spiller.angrepet(fiende)
+                if qlog.hent_quest(6).startet():
+                    qlog.hent_quest(6).progresser(skade)
 
             #gir beskjed om karakteren døde
             if spiller.dead():
+                input("\nDu døde! Trykk enter for å fortsette\n> ")
+                spellbook.reset()
                 write_player_died(spiller, "slottet")
                 player_died(spiller, inv, klasser)
                 return False
@@ -400,7 +475,7 @@ def gargylLoot(loot, fiende, spiller):
     hp = randint(0, 4) * 10
     kp = randint(1, 5) * 10
     ekp = randint(1, 4)
-    item = Item("Stein", "trinket", xHp=hp, kp=kp, ekstraKp=ekp)
+    item = Item("Perle", "trinket", xHp=hp, xKp=kp, ekstraKp=ekp)
     loot.legg_til_item(item, 5)
 
 def guriLoot(loot):
@@ -423,6 +498,8 @@ def garg_kart(qlog):
     Slottsgården (s)           Dra til slottsgården
     Butikken (k)               Se hva Tina har tilgjengelig i 'Skattekammeret'
     Møtehallen (q)             Diskuter angrepsstrategi i møtehallen""")
+    if qlog.hent_qLog()[6].ferdig():
+        print("    Opp trappen (o)            Besøk hovedkontoret til Foreningen for Smertedrepere")
     if qlog.hent_qLog()[1].startet():
         print("    Fangekjelleren (a)         Dra til fangekjelleren og finn skjulte skatter!")
     if qlog.hent_qLog()[2].startet():
@@ -547,12 +624,21 @@ def garg_quest(qlog, spiller):
     desk6 = garg_q6(navn)
     ferdigDesk6 = garg_q6_ferdig(navn)
     q6 = Quest(desk6, ferdigDesk6, 7, 18, "Zap", tilgjengelig=False)
-    q6.legg_til_reward(xp=10000, gull=1000, hp=50, kp=20, ekstraKp=1)
+    q6.legg_til_reward(xp=10000, gull=1000, hp=50, kp=20, ekstraKp=1, settTilgjengelig=True, settTilgjengeligIndeks=6)
     q6.legg_til_progresjonTekst("Gargyler tillintetgjort: ")
     q6.legg_til_progresjon(1)
     q6.legg_til_progresjonTekstListe("Guri Gargyl slaktet: ", 0)
     q6.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q6)
+
+    #q7
+    desk = garg_q7(navn)
+    ferdigDesk = garg_q7_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 25000, 25, "Simon Smertedreper")
+    q.legg_til_reward(xp=10000, gull=5000, d=50)
+    q.legg_til_progresjonTekst("Helsepoeng mistet: ")
+    q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Smertedreper?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
 
     #bq1
     deskBq1 = garg_bq1(navn)

@@ -822,6 +822,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
 
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til leiren.")
+            pause()
             return False
 
         #Skift fiende - kun når det er flere fiender til stedet.
@@ -888,7 +889,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
-            spellbook.utforsk(False)
+            spellbook.reset()
 
             #Quests:
             #Banditt q1:
@@ -1216,6 +1217,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                 #gir beskjed om karakteren døde
                 if spiller.dead():
                     input("\nDu døde! Trykk enter for å fortsette\n> ")
+                    spellbook.reset()
                     write_player_died(spiller, "leiren")
                     player_died(spiller, inv, klasser)
                     return False
@@ -1339,6 +1341,11 @@ def generer_shroom(spiller):
     item.sett_loot_tekst("en " + ["glitrende", "fillete", "gammel", "sopp-luktende"][randint(0, 3)] + " lærling-drakt")
     loot.legg_til_item(item, 1)
 
+    item = Item("Vernehansker", "gloves", xKp=randint(0, 4) * 5, d=randint(100, 150 + spiller.lvl() * 2), \
+    xHp=randint(14, 20 + round(spiller.lvl() / 2)) * 10, spesialisering="Smertedreper")
+    item.sett_loot_tekst("et par soppgift-skjermende vernehansker")
+    loot.legg_til_item(item, 1)
+
     skrivSopp(fiende.navn())
     print(spiller.navn(), "har møtt en", fiende.navn() + "!")
     return fiende
@@ -1439,6 +1446,12 @@ def generer_tre(spiller):
     if not randint(0, 9): ekstraKp = randint(1, 1 + int(spiller.lvl()/30))
     item = Item("Bladpyntet stav", "weapon", a=a, xKp=xKp, ekstraKp=ekstraKp)
     loot.legg_til_item(item, 10)
+
+    item = Item("Tretopp", "hat", d=170 + randint(0, int(spiller.lvl() / 2)) * 10, \
+    xHp=100 + randint(0, round(spiller.lvl() / 4) * 10), spesialisering="Smertedreper")
+    item.sett_loot_tekst("en tretopp som kan brukes som en hatt")
+    loot.legg_til_item(item, 3)
+
     return fiende
 
 def generer_gnom(spiller):
@@ -1512,7 +1525,7 @@ def generer_banditt(spiller):
     loot = Loot()
     fiende = Fiende("Banditt", "menneske", loot, \
     hp=randint(90, 120 + spiller.lvl())*10, \
-    a=randint(100, 150), \
+    a=randint(100, 150 + (spiller.lvl() - 20) * 10), \
     d=randint(50, 160), ending="en")
     bandittLoot(loot, fiende, spiller)
     skrivBanditt()

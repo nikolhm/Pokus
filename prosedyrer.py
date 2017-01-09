@@ -234,6 +234,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     elif inn == "di" or inn == "distraher":
         tur = spellbook.distraher(fiende)
 
+    #kaster Solidifiser. Krever spesialisering Smertedreper
+    elif inn == "so" or inn == "solidifiser":
+        tur = spellbook.brukSolidifiser()
+
     #kaster Lys. Krever formel kjøpt og 10 gp
     elif inn == "l" or inn == "lys":
         tur = spellbook.bruk_lys()
@@ -246,9 +250,14 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     elif inn == "h" or inn == "hjelp":
         hjelp()
 
+    #spilleren gjør ingenting.
     elif inn == "ingenting":
         print(spiller.navn(), "gjør ingenting.")
         tur = False
+
+    #resetter spellbook om man flykter fra en kamp.
+    elif inn == "f" or inn == "flykt":
+        spellbook.reset()
 
     #Intet spill er komplett uten en juksekode. Dessuten særdeles
     #brukbart for å teste programmet. Dreper en fiende på første forsøk.
@@ -295,6 +304,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         print(spiller.navn(), "mistet", spiller.mist_liv(randint(\
         spiller.burning()[1] - round(spiller.burning()[1] / 20), \
         spiller.burning()[1] + round(spiller.burning()[1] / 20))), "liv fra flammene.")
+
+    #progresserer solidifiser
+    if not tur:
+        spellbook.solidifiserCD(fiende, fiender)
 
     return tur
 

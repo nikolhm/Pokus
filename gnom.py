@@ -269,6 +269,7 @@ def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, 
             if not qlog.hent_quest(5).sjekk_ferdig():
                 qlog.hent_quest(5).reset_progresjon()
             print(spiller.navn(), "drar tilbake til borgen.")
+            pause()
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot, xp, og
         #eventuell quest-progresjon.
@@ -278,7 +279,7 @@ def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, 
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
-            spellbook.utforsk(False)
+            spellbook.reset()
 
             #øker antall gnomer drept i quest 1
             if qlog.hent_quest(0).startet() and not qlog.hent_quest(0).ferdig():
@@ -324,6 +325,8 @@ def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, 
 
             #gir beskjed om karakteren døde
             if spiller.dead():
+                input("\nDu døde! Trykk enter for å fortsette\n> ")
+                spellbook.reset()
                 write_player_died(spiller, "borgen")
                 player_died(spiller, inv, klasser)
                 angrep = False

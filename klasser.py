@@ -755,6 +755,8 @@ class Spiller:
     def spesialisering(self, spesialisering=""):
         if spesialisering:
             self._spesialisering = spesialisering
+        elif spesialisering is False:
+            self._spesialisering = ""
         return self._spesialisering
 
     #Angir om brukeren har lagret en gang før.
@@ -771,6 +773,8 @@ class Spiller:
         print("Helsepoeng:           ", self._hp, "/", self._xHp, sep="")
         print("Konsentrasjonspoeng:  ", self._kp, "/", self._xKp, sep="")
         print("KP per runde:        ", self._ekstraKp)
+        if self._spesialisering:
+            print("Spesialisering:      ", self._spesialisering)
         print("Erfaringspoeng:       ", self._xp, "/", self._xpListe[self._lvl - 1], sep="")
         print("Nivå:                ", self._lvl)
 
@@ -1257,6 +1261,8 @@ class Spellbook:
         self._utforskRunder = 0
         self._lys = False
         self._lysRunder = 0
+        self._solidifiserCD = 0
+        self._solidifiserMengde = 0
 
     def skriv_spellbook(self):
         gnomeqlog = self._klasser.questlog(1)
@@ -1308,9 +1314,16 @@ class Spellbook:
                          Krever 140 konsentrasjonspoeng. Tryllestav og d gir ekstra effekt.".format(\
                          200 + round(self._spiller.d()/15) + self._inv.hent_weaponKp()))
         if ekspedisjonslog.hent_quest(13).ferdig() and self._spiller.hentSted() == "shroom":
-            print("tilkall sopp (ts)        tilkaller en magisk sopp til å kjempe ved din side\n\
+            print("tilkall sopp (ts)        tilkaller en magisk sopp til å kjempe ved din side.\n\
                          Krever 350 konsentrasjonspoeng. Forsvinner etter hver kamp og kan \n\
                          kun brukes ved ekspedijonsleiren.")
+
+        #Disse spesialangrepene krever spesialisering.
+        if self._spiller.spesialisering() == "Smertedreper":
+            print("solidifiser (so)         gir deg {} defensivpoeng i 4 runder.\n\
+                         Krever 65 konsentrasjonspoeng. Nivå og tryllestav gir ekstra effekt.".format(\
+                         250 + round((self._inv.hent_weaponA() + self._inv.hent_weaponKp()) / 2) + \
+                         self._spiller.lvl() * 10))
 
         #Disse spesialangrepene krever ondhets- eller godhetspoeng.
         if ekspedisjonslog.hent_quest(14).ferdig():
@@ -1571,11 +1584,7 @@ class Spellbook:
             print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
-    def utforsk(self, b=True):
-        if not b:
-            self._utforskRunder = 0
-            self._utforsk = False
-
+    def utforsk(self):
         utforsk = False
         if self._utforsk:
             self._utforskRunder -= 1
@@ -1665,6 +1674,44 @@ class Spellbook:
             print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
+    def brukSolidifiser(self):
+        if self._spiller.spesialisering() == "Smertedreper":
+            if self._spiller.kp() >= 65 and not self._solidifiserCD:
+                self._solidifiserMengde = 250 + round((self._inv.hent_weaponA() + self._inv.hent_weaponKp()) / 2) + self._spiller.lvl() * 10
+                print(self._spiller.navn(), "kastet Solidifiser!")
+                print(self._spiller.navn(), "fikk", self._solidifiserMengde, "defensivpoeng.")
+                self._spiller.hev_d(self._solidifiserMengde)
+                self._solidifiserCD = 5
+                self._spiller.bruk_kons(65)
+                return False
+            #fremdeles aktiv
+            elif self._spiller.kp() >= 65:
+                print("Solidifiser er fremdeles aktiv!")
+            #ikke nok kp
+            else:
+                print("Du har ikke nok konsentrajsonspoeng!")
+        return True
+
+    def solidifiserCD(self, fiende, fiender):
+        if self._solidifiserCD > 0:
+            self._solidifiserCD -= 1
+            if not self._solidifiserCD:
+                self._spiller.hev_d(-self._solidifiserMengde)
+                print("Effekten fra", self._spiller.navn(), "sin Solidifiser-formel tok slutt.")
+            elif fiende.dead() and not len(fiender) > 1:
+                self._spiller.hev_d(-self._solidifiserMengde)
+                self._solidifiserCD = 0
+
+    def reset(self):
+        if self._solidifiserCD:
+            self._spiller.hev_d(-self._solidifiserMengde)
+        self._utforsk = False
+        self._utforskRunder = 0
+        self._lys = False
+        self._lysRunder = 0
+        self._solidifiserCD = 0
+        self._solidifiserMengde = 0
+
 class Inventory:
     def __init__(self, spiller, klasser):
         self._spiller = spiller
@@ -1695,8 +1742,7 @@ class Inventory:
         return self._items
 
     def legg_til_item(self, item, bruk=False):
-        if bruk:
-            self.bytt(item)
+        if bruk and self.bytt(item):
             item.bruker(True)
 
         self._items.append(item)
@@ -1792,6 +1838,17 @@ class Inventory:
             print(tekst)
 
         return ok
+
+    def fjern_spesialiserte_items(self, spesialisering):
+        itemListe = []
+        for item in self._items:
+            if item.spesialisering() == spesialisering and item.bruker():
+                itemListe.append(item.navn())
+                ingenting = Item("ingenting", item.type(), blade=item.blade())
+                self.bytt(ingenting)
+        if len(itemListe) > 1:
+            itemListe[len(itemListe) -1] = itemListe[len(itemListe) -2] + " og " + itemListe.pop(len(itemListe) -1)
+        print(self._spiller.navn(), "fjernet " + ", ".join(itemListe).strip(", ") + ".")
 
     def har_type(self, typeObjekt):
         for item in self._items:

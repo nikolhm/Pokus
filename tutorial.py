@@ -70,8 +70,8 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
     item = Item("Nøtt", "various")
     loot.legg_til_item(item, 100)
     fiende = Fiende("Nusselig ekorn", "dyr", loot, 30, 10, 0)
-    print("\n" + navn, "har møtt et nusselig ekorn!")
     skriv_ekorn1()
+    print("\n" + navn, "har møtt et nusselig ekorn!")
     skriv_ut(spiller, fiende)
 
     while not fiende.dead():
@@ -164,8 +164,8 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
 
     loot = Loot()
     fiende = Fiende("Grufullt ekorn", "dyr", loot, 50, 10, 0)
-    print(navn, "har møtt et grufullt ekorn!\n")
     skriv_ekorn2()
+    print(navn, "har møtt et grufullt ekorn!\n")
     print("\n    ~Det ser ut til at du får teste teorien i praksis! Så beleilig...~\n")
     skriv_ut(spiller, fiende)
     while not fiende.dead():
@@ -212,8 +212,8 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
     item.sett_loot_tekst("en håndfull tryllepulver")
     loot.legg_til_item(item, 100)
     fiende = Fiende("Mistenkelig ekorn", "dyr", loot, 15, 3, 4)
-    print("\n" + navn, "har møtt et Mistenkelig ekorn!")
     skriv_ekorn1()
+    print("\n" + navn, "har møtt et Mistenkelig ekorn!")
     skriv_ut(spiller, fiende)
     while not fiende.dead():
         inn = input("\nHva vil du gjøre?\n> ").lower()
@@ -233,8 +233,8 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
 
     loot = Loot()
     fiende = Fiende("Gigantisk ekorn", "dyr", loot, 100, 20, 100)
-    print("\n" + navn, "har møtt et gigantisk ekorn!")
     skriv_ekorn3()
+    print("\n" + navn, "har møtt et gigantisk ekorn!")
     print("""
     ~Det er et stykke stort ekorn! Det vokter helt sikkert en gigantisk nøtt!
     Hmm, det ser ut til at defensiv-nivået til dette ekornet er skyhøyt! Du har

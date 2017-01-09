@@ -147,6 +147,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             spiller.kons()
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
+            spellbook.reset()
             input("Trykk enter for å fortsette\n> ")
             return True
 
@@ -167,6 +168,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 
             #gir beskjed om karakteren døde
             if spiller.dead():
+                input("\nDu døde! Trykk enter for å fortsette\n> ")
+                spellbook.reset()
                 write_player_died(spiller, "hytta")
                 player_died(spiller, inv, klasser)
                 return False
