@@ -8,7 +8,7 @@ Det er et hobby-prosjekt og setter ut for å være så useriøst som mulig. Mål
 Vi har laget installere på nettsiden vår: https://pokus.org/ for Windows, MAC OS X og Linux.
 Instruksjoner ligger på nettsiden. Alternativt kan det kjøres fra kildekoden.
 
-## Instruksjoner for Kjøring av kildekode:
+## Instruksjoner for kjøring av kildekode:
 
 1. Last ned og installer [Python 3](https://www.python.org/downloads/) (helst versjon 3.5), eller bruk en tidligere installasjon.
 2. Installer [colorama](https://pypi.python.org/pypi/colorama).
