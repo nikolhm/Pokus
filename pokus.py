@@ -3,10 +3,7 @@
                            October 2016
                       Magic Wand Productions
 """
-try:
-    from colorama import *
-except ImportError:
-    install("colorama")
+from colorama import *
 init()
 from klasser import *
 from random import randint
