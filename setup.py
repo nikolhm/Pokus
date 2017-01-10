@@ -30,7 +30,7 @@ bdist_msi_options = {'data': msi_data}
 icoPath = "favicon.ico"
 
 #bdist_mac_options = {"iconfile": }
-bdist_dmg_options = {"volume_label": "Pokus", "aplications_shortcut": True}
+bdist_dmg_options = {"volume_label": "Pokus", "applications_shortcut": True}
 
 base = None
 
