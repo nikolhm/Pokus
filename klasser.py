@@ -626,10 +626,11 @@ class Quest:
 
 class Spiller:
     #Oppretter alle variablene som trengs i klassen i konstruktøren.
-    def __init__(self, navn):
+    def __init__(self, navn_og_sex):
         #hp = helsepoeng, kp xHp = max hp, kp = konsentrasjonspoeng (mana/energy)
         #a = angrep, d = defensiv, xp = erfaringspoeng (experience points), xXp = total xp
-        self._navn = navn
+        self._navn = navn_og_sex[0]
+        self._sex = navn_og_sex[1]
         self._xHp = 100
         self._hp = 100
         self._kp = 60
@@ -664,10 +665,10 @@ class Spiller:
         for item in inv.itemListe():
             if item.bruker():
                 self.bytt_stats(item.statliste(), [0, 0, 0, 0, 0])
-        stats = [self._navn, self._xHp, self._hp, self._kp, self._xKp, self._ekstraKp, \
-        self._a, self._d, self._xXp, self._xp, self._spesialisering, self._sted, \
-        int(self._fuglelukt), self._lvl, int(self._firstSave), self._goodPoints, \
-        self._evilPoints, self._kartListe]
+        stats = [self._sex, self._navn, self._xHp, self._hp, self._kp, self._xKp, \
+        self._ekstraKp, self._a, self._d, self._xXp, self._xp, self._spesialisering, \
+        self._sted, int(self._fuglelukt), self._lvl, int(self._firstSave), \
+        self._goodPoints, self._evilPoints, self._kartListe]
         for item in inv.itemListe():
             if item.bruker():
                 self.bytt_stats([0, 0, 0, 0, 0], item.statliste())
@@ -746,6 +747,10 @@ class Spiller:
     #både "du" og karakterens navn blir brukt i spillet.
     def navn(self):
         return self._navn
+
+    #Generelt er spillet kjønnsnøytralt.
+    def sex(self):
+        return self._sex
 
     #Returnerer lvl
     def lvl(self):
@@ -1263,6 +1268,9 @@ class Spellbook:
         self._lysRunder = 0
         self._solidifiserCD = 0
         self._solidifiserMengde = 0
+        self._tankebobleCD = 0
+        self._forsterkCD = 0
+        self._forsterkMengde = 0
 
     def skriv_spellbook(self):
         gnomeqlog = self._klasser.questlog(1)
@@ -1324,6 +1332,16 @@ class Spellbook:
                          Krever 65 konsentrasjonspoeng. Nivå og tryllestav gir ekstra effekt.".format(\
                          250 + round((self._inv.hent_weaponA() + self._inv.hent_weaponKp()) / 2) + \
                          self._spiller.lvl() * 10))
+
+        if self._spiller.spesialisering() == "Klartenker":
+            print("tankeboble (ta)          gir deg {} konsentrasjonspoeng i 3 runder.\n\
+                         Krever 100 konsentrasjonspoeng. Nivå og kp gir ekstra effekt.".format(\
+                         50 + (self._spiller.lvl() - 20) * 4 + round(self._spiller.xKp() / 75)))
+
+        if self._spiller.spesialisering() == "Muskelbunt":
+            print("forsterk (fo)            gir deg {} angrepspoeng i 3 runder.\n\
+                         Krever 70 konsentrasjonspoeng. Nivå og våpen-a gir ekstra effekt.".format(\
+                         200 + round(self._inv.hent_weaponA() * 1.2) + self._spiller.lvl() * 3))
 
         #Disse spesialangrepene krever ondhets- eller godhetspoeng.
         if ekspedisjonslog.hent_quest(14).ferdig():
@@ -1689,7 +1707,7 @@ class Spellbook:
                 print("Solidifiser er fremdeles aktiv!")
             #ikke nok kp
             else:
-                print("Du har ikke nok konsentrajsonspoeng!")
+                print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
     def solidifiserCD(self, fiende, fiender):
@@ -1702,6 +1720,52 @@ class Spellbook:
                 self._spiller.hev_d(-self._solidifiserMengde)
                 self._solidifiserCD = 0
 
+    def brukForsterk(self):
+        if self._spiller.spesialisering() == "Muskelbunt":
+            if self._spiller.kp() >= 70 and not self._forsterkCD:
+                self._forsterkMengde = 200 + round(self._inv.hent_weaponA() * 1.2) + self._spiller.lvl() * 3
+                print(self._spiller.navn(), "kastet Forsterk!")
+                print(self._spiller.navn(), "fikk", self._forsterkMengde, "angrepspoeng.")
+                self._spiller.hev_a(self._forsterkMengde)
+                self._forsterkCD = 4
+                self._spiller.bruk_kons(70)
+                return False
+            #fremdeles aktiv
+            elif self._spiller.kp() >= 70:
+                print("Forsterk er fremdeles aktiv!")
+            #ikke nok kp
+            else:
+                print("Du har ikke nok konsentrasjonspoeng!")
+        return True
+
+    def forsterkCD(self, fiende, fiender):
+        if self._forsterkCD > 0:
+            self._forsterkCD -= 1
+            if not self._forsterkCD:
+                self._spiller.hev_a(-self._forsterkMengde)
+                print("Effekten fra", self._spiller.navn(), "sin Forsterk-formel tok slutt.")
+            elif fiende.dead() and not len(fiender) > 1:
+                self._spiller.hev_a(-self._forsterkMengde)
+                self._forsterkCD = 0
+
+    def brukTankeboble(self):
+        if self._spiller.spesialisering() == "Klartenker":
+            if self._spiller.kp() >= 100:
+                print(self._spiller.navn(), "kastet Tankeboble!")
+                self._spiller.bruk_kons(100)
+                self._tankebobleCD = 3
+                return False
+            else:
+                print("Du har ikke nok konsentrasjonspoeng!")
+        return True
+
+    def tankeboble(self):
+        if self._tankebobleCD > 0:
+            self._tankebobleCD -= 1
+            mengde = 50 + (self._spiller.lvl() - 20) * 4 + round(self._spiller.xKp() / 75)
+            print(self._spiller.navn(), "fikk", self._spiller.restorer_kp(mengde), "kp fra tankeboblen.")
+        return self._tankebobleCD
+
     def reset(self):
         if self._solidifiserCD:
             self._spiller.hev_d(-self._solidifiserMengde)
@@ -1711,6 +1775,7 @@ class Spellbook:
         self._lysRunder = 0
         self._solidifiserCD = 0
         self._solidifiserMengde = 0
+        self._tankebobleCD = 0
 
 class Inventory:
     def __init__(self, spiller, klasser):
@@ -1848,7 +1913,8 @@ class Inventory:
                 self.bytt(ingenting)
         if len(itemListe) > 1:
             itemListe[len(itemListe) -1] = itemListe[len(itemListe) -2] + " og " + itemListe.pop(len(itemListe) -1)
-        print(self._spiller.navn(), "fjernet " + ", ".join(itemListe).strip(", ") + ".")
+        if itemListe:
+            print(self._spiller.navn(), "fjernet " + ", ".join(itemListe).strip(", ") + ".")
 
     def har_type(self, typeObjekt):
         for item in self._items:
@@ -1918,7 +1984,7 @@ class Inventory:
                 kp += 1
             if x.navn() == "Trolldrikk":
                 td += 1
-            if x.navn() in {"Tryllepulver", "Ormpulver"}:
+            if x.type() == "damaging":
                 tp += 1
 
         print("Du har", self._penger, "gullstykker.")

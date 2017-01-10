@@ -108,7 +108,9 @@ def pause():
     input("Trykk enter for å fortsette\n> ")
 
 def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte=[], fiender=[]):
-    qlog = klasser.questlog(1)
+    kp = spiller.kp()
+    fHp = fiende.hp()
+
     if not fiender:
         fiender.append(fiende)
     #gir xp
@@ -175,7 +177,8 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         if not fiende.untouchable():
             weapon = inv.har_type("weapon")
             if weapon and weapon.blade():
-                skade = fiende.angrepet(spiller.a(), inv.hent_weaponA())
+                skade = fiende.angrepet(spiller.a(), round(inv.hent_weaponA() * \
+                (1 + (0.15 * int(spiller.spesialisering() == "Muskelbunt")))))
                 if spellbook.utforsk():
                     print(spiller.navn(), "fikk", spiller.restorer(skade), "liv!")
             else:
@@ -230,19 +233,27 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     elif inn == "o" or inn == "opphold":
         tur = spellbook.brukOpphold(fiende)
 
-    #kaster Distraher. Krever fullførelse av quest
+    #kaster Distraher. Krever fullførelse av quest.
     elif inn == "di" or inn == "distraher":
         tur = spellbook.distraher(fiende)
 
-    #kaster Solidifiser. Krever spesialisering Smertedreper
+    #kaster Solidifiser. Krever spesialisering Smertedreper.
     elif inn == "so" or inn == "solidifiser":
         tur = spellbook.brukSolidifiser()
 
-    #kaster Lys. Krever formel kjøpt og 10 gp
+    #kaster Tankeboble. Krever spesialisering Klartenker.
+    elif inn == "ta" or inn == "tankeboble":
+        tur = spellbook.brukTankeboble()
+
+    #kaster Forsterk. Krever spesialisering Muskelbunt.
+    elif inn == "fo" or inn == "forsterk":
+        tur = spellbook.brukForsterk()
+
+    #kaster Lys. Krever formel kjøpt og 10 gp.
     elif inn == "l" or inn == "lys":
         tur = spellbook.bruk_lys()
 
-    #kaser Korrupsjon. Krever formel kjøpt og 10 op
+    #kaser Korrupsjon. Krever formel kjøpt og 10 op.
     elif inn == "ko" or inn == "korrupsjon":
         tur = spellbook.korrupsjon(fiende)
 
@@ -305,9 +316,18 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         spiller.burning()[1] - round(spiller.burning()[1] / 20), \
         spiller.burning()[1] + round(spiller.burning()[1] / 20))), "liv fra flammene.")
 
-    #progresserer solidifiser
+    #progresserer solidifiser, forsterk og tankeboble
     if not tur:
         spellbook.solidifiserCD(fiende, fiender)
+        spellbook.forsterkCD(fiende, fiender)
+        spellbook.tankeboble()
+
+    #progresserer klartenker-quest. Avgjør hvor mye kp som er brukt.
+    if klasser.questlog(4).hent_quest(8).startet() and kp - spiller.kp() > 0:
+        klasser.questlog(4).hent_quest(8).progresser(kp - spiller.kp())
+
+    if klasser.questlog(4).hent_quest(9).startet():
+        klasser.questlog(4).hent_quest(9).progresser(fHp - fiende.hp())
 
     return tur
 
@@ -592,13 +612,14 @@ def last_navn(filnavn):
     dekrypt(filnavn)
     with open(filnavn) as fil:
         linje = fil.readline()
-        return fil.readline().strip().split(",")[0]
+        return fil.readline().strip().split(",")[:2]
 
 def last_fil(spiller, inv, klasser, filnavn):
     with open(filnavn) as fil:
         linje = fil.readline()
         linje = fil.readline().strip()
         spillerInf = linje.split(",")
+        spillerInf.pop(0)
         spillerInf.pop(0)
         linje = fil.readline().strip()
         kartliste = linje.split(",")

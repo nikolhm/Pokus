@@ -8,7 +8,6 @@ from grafikk import *
 from quests import *
 from prosedyrer import *
 
-
 #Mainloop:
 def troll_loop(spiller, inv, klasser, spellbook):
     qlog = klasser.questlog(2)
@@ -131,6 +130,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
 def angrip(spiller, fiende, inv, klasser, spellbook):
     forsterkCD = 0
     while True:
+        
         inn = input("\nHva vil du gjøre?\n> ").lower()
 
         #tur angir at det er brukeren sin tur til å handle.
@@ -164,7 +164,11 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(90, 110)), "hp!")
                 fiende.kp(-50)
             else:
-                spiller.angrepet(fiende)
+                skade = spiller.angrepet(fiende)
+
+                #progresserer Smertedreper-quest
+                if klasser.questlog(4).hent_quest(6).startet():
+                    klasser.questlog(4).hent_quest(6).progresser(skade)
 
             #gir beskjed om karakteren døde
             if spiller.dead():

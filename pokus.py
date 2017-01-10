@@ -33,7 +33,14 @@ else:
         navn = input("Velg et navn til karakteren din:\n> ")
         if "," in navn:
             print("Du kan ikke ha komma i navnet ditt.\n")
-    spiller = Spiller(navn)
+    sex = ""
+    while sex not in {"male", "female"}:
+        sex = input("Er du kvinne eller mann?\n> ").lower().strip()
+        if sex in {"m", "mann", "gutt", "g"}:
+            sex = "male"
+        elif sex in {"j", "jente", "k", "kvinne", "dame", "d"}:
+            sex = "female"
+    spiller = Spiller([navn, sex])
 
 klasser = Klasser()
 inv = Inventory(spiller, klasser)

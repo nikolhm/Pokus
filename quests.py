@@ -221,23 +221,6 @@ def garg_q6_ferdig(navn):
     Dra tilbake til Magi-borgen og rapporter suksessen vår til Overtrollmann
     Vassle!\n"""
 
-def garg_q7(navn):
-    return """    Hei {}!
-    Si meg, hva vet du om smertedrepernes vakre kunst? Ingenting?
-    La meg gi deg en kort introduksjon: Vi i Foreningen for Smertedrepere har som
-    filosofi at det å ta skade slett ikke er en svakhet, men en lærdom, en lekse,
-    kunnskap man kan ta med seg videre i livet! Men for å lære noe som helst av smerten
-    må man tåle den først. Derfor spesialiserer vi oss innen kunsten å tåle så mye
-    skade som mulig!
-
-    Vi i Foreningen for Smertedrepere rekrutterer nye medlemmer, men vi har strenge
-    medlemmskrav. Alle som søker, må ha mistet minst 25000 helsepoeng fra fiender
-    rundt slottet her!
-
-    -- Mist 25000 helsepoeng fra fiender rundt slottet.""".format(navn)
-def garg_q7_ferdig(navn):
-    return "    Utmerket {}! Du finner vårt kontor opp trappen fra hovedhallen. Ser deg der!\n".format(navn)
-
 def garg_bq1(navn):
     return "    Hei " + navn + """!
     Jeg har klart å havne på feil side med slottets loggfører, og som straff
@@ -249,6 +232,50 @@ def garg_bq1(navn):
     """
 def garg_bq1_ferdig(navn):
     return "    Bamse!!! Gi meg bamse!\n"
+
+def smertedreper_intro(navn):
+    return """    Hei {}!
+    Si meg, hva vet du om smertedrepernes vakre kunst? Ingenting?
+    La meg gi deg en kort introduksjon: Vi i Foreningen for Smertedrepere har som
+    filosofi at det å ta skade slett ikke er en svakhet, men en lærdom, en lekse,
+    kunnskap man kan ta med seg videre i livet! Men for å lære noe som helst av smerten
+    må man tåle den først. Derfor spesialiserer vi oss innen kunsten å tåle så mye
+    skade som mulig!
+
+    Vi i Foreningen for Smertedrepere rekrutterer nye medlemmer, men vi har strenge
+    medlemmskrav. Alle som søker, må ha mistet minst 25000 helsepoeng fra fiender!
+
+    -- Mist 25000 helsepoeng fra fiender.""".format(navn)
+def smertedreper_intro_ferdig(navn):
+    return "    Utmerket {}! Du finner vårt kontor opp trappen fra hovedhallen. Ser deg der!\n".format(navn)
+
+def klartenker_intro(navn):
+    return """    Hei {}!
+    Har du hørt om klartenkere før? Klartenkere er oss som er helt klar i hodet,
+    spesielt etter en god stripe konsentrasjonspulver! Vi konsentrerer oss om
+    konsentrasjon, og mener det er essensen av suksess i enhver kamp. Konsentrason
+    er det som gjør oss magikere til magikere, og uten den ligger vi tynt an!
+
+    Vi i de Klartenkendes Forening rekrutterer nye medlemmer, men for å søke om
+    å bli medlem krever vi at du har brukt minst 15000 konsentrasjonspoeng!
+
+    -- Bruk 15000 konsentrasjonspoeng.""".format(navn)
+def klartenker_intro_ferdig(navn):
+    return "    Flott! Du finner vårt hovedkontor der borte. Snakkes der!"
+
+def muskelbunt_intro(navn):
+    return """    Hei {}!
+    Hvilket forhold har du til muskelbunter? Vi er ikke så skumle som vi høres
+    ut, men definitivt så farlige som vi høres ut! Vi i Muskelbunters Felles-
+    forening mener at trylletriks er hendig å ha opp ermet, men til syvende og
+    sist er det vanlige angrep som avgjør en kamp.
+
+    Vi i de Muskelbunters Forening rekrutterer nye medlemmer, men for å søke om
+    å bli medlem krever vi at du har tatt 40000 helsepoeng fra fiender!
+
+    -- Ta 40000 helsepoeng fra fiender.""".format(navn)
+def muskelbunt_intro_ferdig(navn):
+    return "    Utmerket {}! Du finner vårt kontor opp inn der. Ser deg der!\n".format(navn)
 
 #Troll:
 def troll_q1(navn):

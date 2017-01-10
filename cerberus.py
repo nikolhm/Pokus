@@ -83,6 +83,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
 def angrip(spiller, fiende, inv, klasser, spellbook):
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
+        skadeTatt = spiller.hp()
 
         #tur angir at det er brukeren sin tur til å handle.
         tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
@@ -121,6 +122,10 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 fiende.kp(-50)
             else:
                 spiller.angrepet(fiende)
+
+            #progresserer Smertedreper-quest.
+            if klasser.questlog(4).hent_quest(6).startet():
+                klasser.questlog(4).hent_quest(6).progresser(spiller.hp() - skadeTatt)
 
             #gir beskjed om karakteren døde
             if spiller.dead():

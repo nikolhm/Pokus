@@ -978,6 +978,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
 
             target = fiende
             for i in range(len(fiender)):
+                skadeTatt = spiller.hp()
                 fiende = fiender[i]
                 #oppholdt
                 if fiende.oppholdt():
@@ -1122,13 +1123,13 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                         fiende.kp(-50)
                     else:
                         spiller.angrepet(fiende)
-                #Kraftige Klara - Duell
-                elif fiende.navn() == "Kraftige Klara":
+                #Kraftige Kari - Duell
+                elif fiende.navn() == "Kraftige Kari":
                     if fiende.kp() >= 50 and randint(1, 7) != 1:
                         fiende.kp(-50)
                         fiende.a(500)
-                        print("Kraftige Klara varmet opp musklene!")
-                        print("Kraftige Klara fikk 500 angrepspoeng.")
+                        print("Kraftige Kari varmet opp musklene!")
+                        print("Kraftige Kari fikk 500 angrepspoeng.")
                     else:
                         spiller.angrepet(fiende)
                 #Teite Tim - Duell
@@ -1213,6 +1214,10 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                     if spiller.fuglelukt():
                         print("\n\n    Pàn Tú rynker på nesen og synes du lukter... Fugleaktig.\n")
                         input("Ikke bry deg om det og trykk enter for å fortsette\n> ")
+
+                #progresserer Smertedreper-quest
+                if klasser.questlog(4).hent_quest(6).startet():
+                    klasser.questlog(4).hent_quest(6).progresser(skadeTatt - spiller.hp())
 
                 #gir beskjed om karakteren døde
                 if spiller.dead():
@@ -1504,10 +1509,10 @@ def generer_duellant(nr, spiller):
         loot.legg_til_item(item, 1)
         fiende = Fiende("Smidige Sandra", "menneske", loot, a=450, hp=2700, d=400, kp=450, bonusKp=10)
     elif nr == 3:
-        item = Item("Klaras hansker", "gloves", a=80, d=50, xHp=70)
-        item.sett_loot_tekst("Kraftige Klara sine hansker")
+        item = Item("Karis hansker", "gloves", a=80, d=50, xHp=70)
+        item.sett_loot_tekst("Kraftige Kari sine hansker")
         loot.legg_til_item(item, 1)
-        fiende = Fiende("Kraftige Klara", "menneske", loot, a=1200, hp=2337, d=-1200, kp=50)
+        fiende = Fiende("Kraftige Kari", "menneske", loot, a=1200, hp=2337, d=-1200, kp=50)
     elif nr == 4:
         item = Item("Teit ting", "trinket", a=45, xHp=50, xKp=40, ekstraKp=5)
         item.sett_loot_tekst("Teite Tims teite ting")
@@ -1917,7 +1922,7 @@ def banditt_quest(qlog, spiller):
     ferdigDesk = banditt_dq10_ferdig(navn)
     dq10 = Quest(desk, ferdigDesk, 1, 1, "Onde Olga", tilgjengelig=False)
     dq10.legg_til_reward(xp=8000, gull=3000, a=50, kp=10)
-    dq10.legg_til_progresjonTekst("Kraftige Klara overvunnet: ")
+    dq10.legg_til_progresjonTekst("Kraftige Kari overvunnet: ")
     dq10.legg_til_svarTekst("\nEr du klar for duellringen?     (ja/nei)\n> ")
     qlog.legg_til_quest(dq10)
 

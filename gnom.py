@@ -153,7 +153,7 @@ def generer_gnom(spiller, gnomevakter, goingToGaute):
 
     #Når man har kommet forbi 5 vakter, møter karakteren Gaute Gnom.
     elif goingToGaute and gnomevakter == 5:
-        fiende = Fiende("Gaute Gnom den Grusomme", "gnom", loot, 5000, 230, 150)
+        fiende = Fiende("Gaute Gnom den Grusomme", "gnom", loot, 5000, 230, 150, kp=50)
         gauteLoot(loot)
         gauteDialog(spiller)
 
@@ -321,7 +321,11 @@ def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, 
 
         #Om fienden ikke er død, angriper den.
         elif not tur:
-            spiller.angrepet(fiende)
+            skade = spiller.angrepet(fiende)
+
+            #progresserer smertedreper-quest
+            if klasser.questlog(4).hent_quest(6).startet():
+                klasser.questlog(4).hent_quest(6).progresser(skade)
 
             #gir beskjed om karakteren døde
             if spiller.dead():

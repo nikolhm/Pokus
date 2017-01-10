@@ -28,6 +28,8 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
         lagre = False
         guri = False
         smertedreper = False
+        klartenker = False
+        muskelbunt = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -65,6 +67,14 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
 
             if inn == "o" and qlog.hent_quest(6).ferdig():
                 smertedreper = True
+                valg = True
+
+            if inn == "i" and qlog.hent_quest(8).ferdig():
+                klartenker = True
+                valg = True
+
+            if inn == "h" and qlog.hent_quest(9).ferdig():
+                muskelbunt = True
                 valg = True
 
         while quest:
@@ -237,7 +247,7 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                     elif inv.penger() >= 8000:
                         print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
                         print("    en smertedreper, kan du melde deg ut av den foreningen du for øyeblikket er ")
-                        print("    medlem i og komme tilbake senere!")
+                        print("    medlem i og komme tilbake senere!\n")
                         smertedreper = False
                         pause()
                     else:
@@ -246,6 +256,134 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                         pause()
                 else:
                     smertedreper = False
+
+        while klartenker:
+            medlem = spiller.spesialisering() == "Klartenker"
+            print(" "*4 + "Velkommen {}til de Klartenkendes Forening!".format("tilbake " * int(medlem)).center(65 + 20*int(not medlem), "-"))
+            if medlem:
+                print("\n    Som medlem tilbyr vi deg internpriser på konsentrasjonspulver!")
+                print("\n    Konsentrasjonspulver   +700kp                  2500g (k)")
+                print("    Meld deg ut            Fjerner spesialisering   500g (u)")
+                print("\nDu har", inv.penger(), "gullstykker. Skriv 'f' eller 'ferdig' for å dra tilbake.")
+                inn = input("Hva vil du gjøre?\n> ").lower().strip()
+                if inn in {"f", "ferdig"}:
+                    klartenker = False
+                elif inn == "k":
+                    if inv.penger() >= 2500:
+                        inv.legg_til_item(Item("Konsentrasjonspulver", "restoring", kp=700))
+                        inv.penger(-2500)
+                        print("Du kjøpte en stripe konsentrasjonspulver for 2500 gullstykker.")
+                    else:
+                        print("Du har ikke råd!")
+                    pause()
+                elif inn == "u":
+                    print("De Klartenkendes Forening krever 500 i gebyr for papirarbeid.")
+                    inn = input("Er du sikker på at du vil melde deg ut? \nDu må betale ny medlemsavgift om du vil melde deg inn igjen.   (ja/nei)\n> ").lower().strip()
+                    if inn in {"j", "ja", "sure"}:
+                        if inv.penger() >= 500:
+                            inv.penger(-500)
+                            spiller.spesialisering(False)
+                            spiller.hev_kp(-250)
+                            print("Du har meldt deg ut av Foreningen for Klartenkere.")
+                            klartenker = False
+                            inv.fjern_spesialiserte_items("Klartenker")
+                            pause()
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+            else:
+                print("\n    Dersom du er fremtidsrettet nok til å bli medlem av foreningen vår, vil du ha tilgang ")
+                print("    til en eksklusiv trylleformel som regenererer ekstra konsentrasjonspoeng over tid! Og ")
+                print("    om dette i seg selv ikke har overbevist deg om at klartenkere helt klart triumferer")
+                print("    alle andre spesialiseringer, vil du og få en permanent bonus på 250 konsentrasjonspoeng,")
+                print("    samt tilgang til prima-kvalitets pulver som får konsentrasjonen din rett opp igjen,")
+                print("    selvfølgelig til en ekstra god pris! I tillegg til dette vil du og ha mulighet til å")
+                print("    bruke ting du finner på din ferd som kun en klartenker vil vite hvordan skal brukes!")
+                print("\nDu har", inv.penger(), "gullstykker.")
+                inn = input("Vil du bli en klartenker?\n> ").lower().strip()
+                if inn in {"ja", "j", "yes", "ja!", "hell yes!"}:
+                    if inv.penger() >= 8000 and not spiller.spesialisering():
+                        inv.penger(-8000)
+                        spiller.spesialisering("Klartenker")
+                        spiller.hev_kp(250)
+                        print("\nGratulerer! Du er nå offisielt en Klartenker!\n")
+                        pause()
+                    elif inv.penger() >= 8000:
+                        print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
+                        print("    en klartenker, kan du melde deg ut av den foreningen du for øyeblikket er ")
+                        print("    medlem i og komme tilbake senere!\n")
+                        klartenker = False
+                        pause()
+                    else:
+                        print("Du har ikke nok gullstykker til å betale medlemsavgiften!")
+                        klartenker = False
+                        pause()
+                else:
+                    klartenker = False
+
+        while muskelbunt:
+            medlem = spiller.spesialisering() == "Muskelbunt"
+            print(" "*4 + "Velkommen {}til Muskelbunters Fellesforening!".format("tilbake " * int(medlem)).center(65 + 20*int(not medlem), "-"))
+            if medlem:
+                print("\n    Som medlem tilbyr vi deg internpriser på tryllepulver!")
+                print("\n    Tryllepulver           -700hp                  1300g (t)")
+                print("    Meld deg ut            Fjerner spesialisering   500g (u)")
+                print("\nDu har", inv.penger(), "gullstykker. Skriv 'f' eller 'ferdig' for å dra tilbake.")
+                inn = input("Hva vil du gjøre?\n> ").lower().strip()
+                if inn in {"f", "ferdig"}:
+                    muskelbunt = False
+                elif inn == "t":
+                    if inv.penger() >= 1300:
+                        inv.legg_til_item(Item("Tryllepulver", "damaging", hp=700))
+                        inv.penger(-1300)
+                        print("Du kjøpte en neve tryllepulver for 1300 gullstykker.")
+                    else:
+                        print("Du har ikke råd!")
+                    pause()
+                elif inn == "u":
+                    print("Muskelbunters Fellesforening krever 500 i gebyr for papirarbeid.")
+                    inn = input("Er du sikker på at du vil melde deg ut? \nDu må betale ny medlemsavgift om du vil melde deg inn igjen.   (ja/nei)\n> ").lower().strip()
+                    if inn in {"j", "ja", "sure"}:
+                        if inv.penger() >= 500:
+                            inv.penger(-500)
+                            spiller.spesialisering(False)
+                            spiller.hev_a(-190)
+                            print("Du har meldt deg ut av Muskelbunters Fellesforening.")
+                            muskelbunt = False
+                            inv.fjern_spesialiserte_items("Muskelbunt")
+                            pause()
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+            else:
+                print("\n    Om du blir medlem av foreningen vår vil du nyte goder du senere vil finne ut du ikke")
+                print("    ikke kan være foruten! Som medlem av Muskelbunters Fellesforening har du tilgang til")
+                print("    en trylleformel som gjør angrepene dine sterkere i 3 runder! I tillegg til dette vil")
+                print("    du få en permanent bonus på 190 angrepspoeng, samt tilgang til vårt interne lager av")
+                print("    tryllepulver til innkjøpspris. Som en muskelbunt vil du og ha kunnskapen du trenger ")
+                print("    for å benytte deg av utstyr som krever muskelbunt-spesialisering, OG du får en")
+                print("    relativ bonus på alle angrep gjort med sverd!")
+                print("\nDu har", inv.penger(), "gullstykker.")
+                inn = input("Vil du bli en muskelbunt?\n> ").lower().strip()
+                if inn in {"ja", "j", "yes", "ja!", "hell yes!"}:
+                    if inv.penger() >= 8000 and not spiller.spesialisering():
+                        inv.penger(-8000)
+                        spiller.spesialisering("Muskelbunt")
+                        spiller.hev_a(190)
+                        print("\nGratulerer! Du er nå offisielt en muskelbunt!\n")
+                        pause()
+                    elif inv.penger() >= 8000:
+                        print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
+                        print("    en klartenker, kan du melde deg ut av den foreningen du for øyeblikket er ")
+                        print("    medlem i og komme tilbake senere!\n")
+                        muskelbunt = False
+                        pause()
+                    else:
+                        print("Du har ikke nok gullstykker til å betale medlemsavgiften!")
+                        muskelbunt = False
+                        pause()
+                else:
+                    muskelbunt = False
 
     if ferdig:
         return verdenskart(spiller)
@@ -500,6 +638,8 @@ def garg_kart(qlog):
     Møtehallen (q)             Diskuter angrepsstrategi i møtehallen""")
     if qlog.hent_qLog()[6].ferdig():
         print("    Opp trappen (o)            Besøk hovedkontoret til Foreningen for Smertedrepere")
+    if qlog.hent_qLog()[8].ferdig():
+        print("    Inn gangen (i)             Besøk hovedkontoret til de Klartenkendes Forening")
     if qlog.hent_qLog()[1].startet():
         print("    Fangekjelleren (a)         Dra til fangekjelleren og finn skjulte skatter!")
     if qlog.hent_qLog()[2].startet():
@@ -631,11 +771,11 @@ def garg_quest(qlog, spiller):
     q6.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q6)
 
-    #q7
-    desk = garg_q7(navn)
-    ferdigDesk = garg_q7_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 25000, 25, "Simon Smertedreper")
-    q.legg_til_reward(xp=10000, gull=5000, d=50)
+    #smertedreper-quest
+    desk = smertedreper_intro(navn)
+    ferdigDesk = smertedreper_intro_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 25000, 20, "Simon Smertedreper")
+    q.legg_til_reward(xp=10000, gull=5000, d=50, hp=50)
     q.legg_til_progresjonTekst("Helsepoeng mistet: ")
     q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Smertedreper?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
@@ -652,3 +792,21 @@ def garg_quest(qlog, spiller):
     bq1.legg_til_alt_desk("Vil du myrde kosebamsen mens Besynderlige Berit ser på?\n> ")
     bq1.legg_til_alt_reward(ep=3)
     qlog.legg_til_quest(bq1)
+
+    #klartenker-quest
+    desk = klartenker_intro(navn)
+    ferdigDesk = klartenker_intro_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 15000, 20, "Klara Klartenker")
+    q.legg_til_reward(xp=10000, gull=5000, kp=50)
+    q.legg_til_progresjonTekst("Konsentrajsonspoeng brukt: ")
+    q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Klartenker?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #muskelbunt-quest
+    desk = muskelbunt_intro(navn)
+    ferdigDesk = muskelbunt_intro_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 25000, 20, "Maja Muskelbunt")
+    q.legg_til_reward(xp=10000, gull=5000, a=50)
+    q.legg_til_progresjonTekst("Helsepoeng tatt: ")
+    q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Muskelbunt?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
