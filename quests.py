@@ -233,6 +233,7 @@ def garg_bq1(navn):
 def garg_bq1_ferdig(navn):
     return "    Bamse!!! Gi meg bamse!\n"
 
+#Spesialiseringsquests
 def smertedreper_intro(navn):
     return """    Hei {}!
     Si meg, hva vet du om smertedrepernes vakre kunst? Ingenting?
@@ -257,11 +258,11 @@ def klartenker_intro(navn):
     er det som gjør oss magikere til magikere, og uten den ligger vi tynt an!
 
     Vi i de Klartenkendes Forening rekrutterer nye medlemmer, men for å søke om
-    å bli medlem krever vi at du har brukt minst 15000 konsentrasjonspoeng!
+    å bli medlem krever vi at du har brukt minst 12500 konsentrasjonspoeng!
 
-    -- Bruk 15000 konsentrasjonspoeng.""".format(navn)
+    -- Bruk 12500 konsentrasjonspoeng.""".format(navn)
 def klartenker_intro_ferdig(navn):
-    return "    Flott! Du finner vårt hovedkontor der borte. Snakkes der!"
+    return "    Flott! Du finner vårt hovedkontor der borte. Snakkes der!\n"
 
 def muskelbunt_intro(navn):
     return """    Hei {}!
@@ -271,9 +272,9 @@ def muskelbunt_intro(navn):
     sist er det vanlige angrep som avgjør en kamp.
 
     Vi i de Muskelbunters Forening rekrutterer nye medlemmer, men for å søke om
-    å bli medlem krever vi at du har tatt 40000 helsepoeng fra fiender!
+    å bli medlem krever vi at du har tatt minst 75000 helsepoeng fra fiender!
 
-    -- Ta 40000 helsepoeng fra fiender.""".format(navn)
+    -- Ta 75000 helsepoeng fra fiender.""".format(navn)
 def muskelbunt_intro_ferdig(navn):
     return "    Utmerket {}! Du finner vårt kontor opp inn der. Ser deg der!\n".format(navn)
 
@@ -737,7 +738,7 @@ def banditt_dq9_ferdig(navn):
 
 def banditt_dq10(navn):
     return "    Denne gangen skal du nok få deg en utfordring " + navn + """!
-    Kraftige Klara er sterkere enn folk flest, men sikter dårlig med slagene sine.
+    Kraftige Kari er sterkere enn folk flest, men sikter dårlig med slagene sine.
     Selv om hun er kraftig nok til å slå deg ut med noen få slag, så tåler hun ikke
     så mye selv. Noen godt plasserte angrep burde gjøre susen, og om du i tillegg
     klarer å oppholde henne så hun ikke kan angripe deg, er duellen over på null

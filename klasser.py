@@ -665,7 +665,7 @@ class Spiller:
         for item in inv.itemListe():
             if item.bruker():
                 self.bytt_stats(item.statliste(), [0, 0, 0, 0, 0])
-        stats = [self._sex, self._navn, self._xHp, self._hp, self._kp, self._xKp, \
+        stats = [self._navn, self._sex, self._xHp, self._hp, self._kp, self._xKp, \
         self._ekstraKp, self._a, self._d, self._xXp, self._xp, self._spesialisering, \
         self._sted, int(self._fuglelukt), self._lvl, int(self._firstSave), \
         self._goodPoints, self._evilPoints, self._kartListe]
@@ -1769,6 +1769,8 @@ class Spellbook:
     def reset(self):
         if self._solidifiserCD:
             self._spiller.hev_d(-self._solidifiserMengde)
+        if self._forsterkCD:
+            self._spiller.hev_a(-self._forsterkMengde)
         self._utforsk = False
         self._utforskRunder = 0
         self._lys = False
