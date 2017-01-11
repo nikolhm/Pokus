@@ -285,20 +285,52 @@ def troll_q1(navn):
     har vi blitt vant til det, men de har blitt mer og mer uredde i det siste.
     De har til og med gått så nærme som å pisse på bålet gjennom pipa. Vet du
     hvor mye ammoniak det der lukter!? Uansett, skjønner vi at for å sette litt
-    brems på selvsikkerheten deres, bør vi true dem litt. Jeg tenker et lite
-    folkemord bør gjøre dem litt redde. Gå ut og drep 25 troll. Menn, kvinner
-    og barn. Det er ikke så vanskelig. Man ser ikke forskjell på dem uansett!
+    brems på selvsikkerheten deres, bør vi true dem litt. De begynner å nærme
+    seg området rundt hytta. La dem kjenne at de må holde seg unna tilholdsstedet
+    vårt, fordi vi er farlige. De kommer ikke til å le når 25 av dem blir utryddet
+    utenfor og ikke kommer seg hjem.
 
-    -- Myrd 25 troll uten nåde."""
+    -- Myrd 25 troll."""
+
 def troll_q1_ferdig(navn):
     return "    Tusen takk, " + navn + """!
     Det er så fint å kjenne en magiker som ikke bøyer til slike ubrukelige ting
-    som "moral og etikk". Det er oss eller dem. De angriper oss uansett om de er
-    kvinner eller barn og da må vi beskytte oss selv. Jeg lurer på hvorfor de gjør
-    det i det første uansett...
+    som "moral og etikk". Det er oss eller dem. De angriper oss og da må vi beskytte
+    oss selv: Det er så enkelt. Jeg lurer på hvorfor de gjør det i det første uansett...
     """
 
 def troll_q2(navn):
+    return "    Hei, " + navn + """!
+    Jeg hørte du hjalp Rolf med å ta ned noen voldsomme troll nær hytta. Jeg har
+    ansvaret her for å forske på trollene og finne ut hvordan de funker. På grunn
+    av innsikten min i både fysiologien til troll og psykologien, så brukes jeg
+    ofte som strategisk troll-ekspert. Vi skjønner nå at en faksjon av trollene
+    har bygd seg en hule ikke langt herifra, som de bruker til å sende soldater
+    til området rundt hytta. Som en ekspert vet jeg at grunnen til dette er trollenes
+    overtroiske og paranoide tenkning. De tror at magi er overordnet alle levende
+    skapnigner, bortsett fra lederen deres. Trollkongen har blitt sagt å ha magiske
+    evner. Vi er ikke så sikre på det, det kan hende det bare er et rykte.
+
+    Vi trenger noen til å gå ned til hulen for å stoppe disse fanatiske trollene.
+    For å gjøre dette vil jeg gi deg noen ladninger med svart pulver. Du må sette
+    dem i riktige posisjoner rundt i hulen, slik at eksplosjonen ødelegger basen
+    deres. Vær forsiktig! Hver gang troll setter opp en hule, er det alltid en beta
+    som kommer med. Betaene er troll direkte under Kongen. De er store, kraftige, men
+    verst for deg: de har ekstremt god luktesans. Hvis betaen oppdager deg, må
+    du forberede deg på at troll kommer til å bli kastet mot deg. Du kan vente deg
+    minst 3 troll per gang du må gjennom. Det er enda verre om betaen finner deg.
+    Han er ikke en fiende å ta lett på. Hvis du er heldig, får du satt alle 5 ladninger
+    på plass før du blir oppdaget."""
+
+def troll_q2_ferdig(navn):
+    return "    Vakkert arbeid, " + navn + """!
+    Det er nok ikke lenge før de setter opp en ny operasjonsbase, gitt at de ikke
+    kommer til å gi opp før lederen deres er ute av spill. Det er slik de fungerer.
+    Uten lederen så har de ikke et mål i livet. Det er litt som maur. De er avhengige
+    av Dronningen. Kongen har ekstremt mye makt over trollene hans. Vi har prøvd å
+    finne ham veldig lenge, men trollene vet å holde ham så gjemt som mulig..."""
+
+def troll_q3(navn):
     return "    Hei, pssst! " + navn + """!
     Det er meg! Zip! Ikke vær lurt av forkledningen min. Jeg må late som jeg er en
     gammel trollmann for å komme inn i badstua. Trollmennene her er sjåvinistiske
@@ -313,7 +345,7 @@ def troll_q2(navn):
     noen informasjon om lederen av trollene. Vi vet overraskende lite om ham...
 
     -- Dra ned i minen og drep et digert troll."""
-def troll_q2_ferdig(navn):
+def troll_q3_ferdig(navn):
     return "    Hei, " + navn + """!
     Så du fant et skriv på trollet? Det er veldig vanskelig å lese trollsk, men
     jeg kan tyde hovedpunktene, med manglende nøyaktighet. Det står noe i duren
@@ -324,7 +356,7 @@ def troll_q2_ferdig(navn):
     ned dit. Det er visst, for farlig med faren for steinras... For noen pyser!
     """
 
-def troll_q3(navn):
+def troll_q4(navn):
     return "    Hei, " + navn + """!
     Nå som vi vet hvor trollkongen er kan vi ta ham ned. Du må likevel være
     forsiktig. Jeg har hørt at han har veldig sterk magi. Du vet aldri hva han
