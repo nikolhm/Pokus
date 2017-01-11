@@ -1351,6 +1351,15 @@ def generer_shroom(spiller):
     item.sett_loot_tekst("et par soppgift-skjermende vernehansker")
     loot.legg_til_item(item, 1)
 
+    item = Item("Vibrerende stein", "trinket", ekstraKp=randint(6, 8 + int(spiller.lvl() / 10)), \
+    xKp=60 + randint(0, spiller.lvl() * 2), xHp=randint(10, spiller.lvl()), spesialisering="Klartenker")
+    loot.legg_til_item(item, 1)
+
+    item = Item("Kosestøvler", "shoes", a=70 + randint(spiller.lvl() - 10, spiller.lvl() + int(spiller.lvl() / 2)), \
+    d=30 + randint(0, round(spiller.lvl() / 10)) * 10, xHp=randint(40, 40 + spiller.lvl()), spesialisering="Muskelbunt")
+    item.sett_loot_tekst("et par kosestøvler")
+    loot.legg_til_item(item, 1)
+
     skrivSopp(fiende.navn())
     print(spiller.navn(), "har møtt en", fiende.navn() + "!")
     return fiende
@@ -1455,8 +1464,17 @@ def generer_tre(spiller):
     item = Item("Tretopp", "hat", d=170 + randint(0, int(spiller.lvl() / 2)) * 10, \
     xHp=100 + randint(0, round(spiller.lvl() / 4) * 10), spesialisering="Smertedreper")
     item.sett_loot_tekst("en tretopp som kan brukes som en hatt")
-    loot.legg_til_item(item, 3)
+    loot.legg_til_item(item, 2)
 
+    item = Item("Skarp kvist", "weapon", a=250 + randint(0, spiller.lvl()) * 5, \
+    xHp=randint(0, int(spiller.lvl() / 10)) * 5, d=randint(0, 1) * 10, spesialisering="Muskelbunt", blade=True)
+    loot.legg_til_item(item, 2)
+
+    item = Item("Fuglerede", "hat", d=randint(3, 7) * 10, xHp=randint(4, 10) * 10, \
+    xKp=randint(int(((spiller.lvl() / 10) * 2) - 1), int(((spiller.lvl() / 10) * 2) + 1)) * 10, \
+    ekstraKp=randint(0, int(spiller.lvl() / 10)), spesialisering="Klartenker")
+    item.sett_loot_tekst("et fuglerede")
+    loot.legg_til_item(item, 2)
     return fiende
 
 def generer_gnom(spiller):

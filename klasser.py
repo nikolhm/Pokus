@@ -1971,7 +1971,7 @@ class Inventory:
                 s = item.statliste()
                 t = item.statlisteTekst()
                 stats = [str(t[i] + ":" + str(s[i]) + ", ") * int(bool(s[i])) for i in range(len(s))]
-                print("    {:36} {:30} {:>5}g {:>4}".format(\
+                print("    {:36} {:35} {:>5}g {:>4}".format(\
                 "{} {}{}".format(item.navn(), "**bruker**"*int(item.bruker()), "*sparer*"*int(item.spar())), \
                 "{}{}{}{}{}{}{}{}".format(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7]).strip(", "),\
                 item.verdi(), "(" + str(x) + ")"))
