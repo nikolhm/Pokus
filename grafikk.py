@@ -639,6 +639,33 @@ def skrivGargylslott():
                               `-'            `---._  /   \\
                                                    `(     )""")
 
+def skrivFontene():
+    clear_screen()
+    grafikk = """
+                          .      .       .       .
+  .   .       .          .      . .      .         .          .    .
+         .       .         .    .   .         .         .            .
+    .   .    .       .         . . .        .        .     .    .
+ .          .   .       .       . .      .        .  .              .
+      .  .    .  .       .     . .    .       . .      .   .        .
+ .   .       .    . .      .    . .   .      .     .          .     .
+    .            .    .     .   . .  .     .   .               .
+     .               .  .    .  . . .    .  .                 .
+                        . .  .  . . .  . .
+                            . . . . . .
+                              . . . .
+                               I . I
+                 _______________III_______________
+                /    .       .       .       .    \\
+               ( ~~~ .  ~~~  .  ~~~  .  ~~~  . ~~~ )
+                 \SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS/
+                    \ ======================= /
+                        \SSSSSSSSSSSSSSSSS/
+                     ________\       /________
+                    (=+=+=+=+=+=+=+=+=+=+=+=+=)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~"""
+    print(insertColor(grafikk, {".":blue, "S+":yellow, "I_\\/~()":gray, "=":brown}))
+
 def skrivStatue():
     if platform.system() == "Windows":
         os.system("cls")

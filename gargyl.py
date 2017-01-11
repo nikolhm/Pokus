@@ -413,7 +413,7 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
     qlog = klasser.questlog(4)
     sQlog = klasser.questlog(6)
     while True:
-        clear_screen()
+        skrivFontene()
         intro_kart(klasser)
         inn = input("\nHvor vil du dra?\n> ").lower()
 
