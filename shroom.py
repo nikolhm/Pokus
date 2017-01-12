@@ -1818,7 +1818,7 @@ def skog_quest(qlog, spiller):
     bq.legg_til_svarTekst("Vil du gi informasjonen til Simon Sporfinner?   (ja/nei)\n> ")
     bq.legg_til_ekstra_tekst(shroom_bq2_tekst())
     bq.legg_til_alt_desk("Vil du drepe Simon Sporfinner på gøy?\n> ")
-    bq.legg_til_alt_ektra_tekst("Du drepte Simon Sporfinner. Alle er for opptatt til å merke noe.")
+    bq.legg_til_alt_ekstra_tekst("Du drepte Simon Sporfinner. Alle er for opptatt til å merke noe.")
     item = Item("Sporerstøvler", "shoes", a=-20, d=130, xHp=30)
     bq.legg_til_alt_reward(ep=3, xp=14000, item=item)
     qlog.legg_til_quest(bq)
@@ -1838,7 +1838,7 @@ def skog_quest(qlog, spiller):
     bq.legg_til_svarTekst("Vil du gi den magiske soppen til Rotete Randi?   (ja/nei)\n> ")
     bq.legg_til_ekstra_tekst(shroom_bq3_tekst())
     bq.legg_til_alt_desk("Vil du tvinge den magiske soppen til å adlyde deg istedenfor?\n> ")
-    bq.legg_til_alt_ektra_tekst(shroom_bq3_tekst())
+    bq.legg_til_alt_ekstra_tekst(shroom_bq3_tekst())
     bq.legg_til_alt_reward(ep=3, xp=14000)
     qlog.legg_til_quest(bq)
 

@@ -362,6 +362,9 @@ def troll_q4(navn):
     forsiktig. Jeg har hørt at han har veldig sterk magi. Du vet aldri hva han
     har opp ermet...
     """
+def troll_q4_ferdig(navn):
+    return """    Kjempebra {}! Nå kan jeg endelig ta av meg dette skjegget og dra hjem!
+    Dra tilbake til borgen og rapporter om vår suksess til Vassle!""".format(navn)
 
 def troll_bq1(navn):
     return ""

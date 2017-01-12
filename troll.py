@@ -76,6 +76,10 @@ def troll_loop(spiller, inv, klasser, spellbook):
             else:
                 quest = False
 
+            #oppdaterer vasslequests
+            if qlog.hent_quest(3).ferdig():
+                vassleQlog.hent_quest(0).progresser()
+
         while gaaTilButikk:
             klasser.butikk(1).interaksjon(inv)
             gaaTilButikk = False
@@ -89,7 +93,6 @@ def troll_loop(spiller, inv, klasser, spellbook):
             if fjell and qlog.hent_quest(0).startet():
                 qlog.hent_quest(0).progresser()
 
-        #Denne løkken lagrer spillet.
         while lagre:
             minnestein(spiller, inv, klasser)
             lagre = False
@@ -126,7 +129,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
                         skrivStortTroll()
                         print(spiller.navn(), "har blitt funnet av betaen!")
                         loot = Loot()
-                        fiende = Fiende("Beta", "troll", loot, 1000, 200, 200, kp=150)
+                        fiende = Fiende("Beta", "troll", loot, 3000, 200, 200, kp=150)
                         fiende.return_loot().legg_til_item(500, 100)
                         skriv_ut(spiller, fiende)
                         if not angrip(spiller, fiende, inv, klasser, spellbook):
@@ -165,7 +168,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             print(spiller.navn(), "har møtt et en beta!")
             loot = Loot()
             item = Item("Trollskriv", "trinket")
-            fiende = Fiende("Beta", "troll", loot, 1000, 200, 200, kp=150)
+            fiende = Fiende("Beta", "troll", loot, 3000, 200, 200, kp=150)
             fiende.return_loot().legg_til_item(500, 100)
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
@@ -181,7 +184,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             item = Item("Trollkongens stav", "weapon", a=100, kp=75)
             loot.legg_til_item(item, 50)
             loot.legg_til_item(3000, 50)
-            fiende = Fiende("Trollkongen", "trollmagiker", loot, 6500, 450, 250, kp=250, bonusKp=5, weapon=100)
+            fiende = Fiende("Trollkongen", "troll", loot, 6500, 450, 250, kp=250, bonusKp=5, weapon=100)
             trollkongeDialog(spiller)
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
@@ -292,10 +295,17 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
         elif not tur:
             if fiende.race() == "troll" and fiende.kp() >= 80 and not randint(0, 10):
                 print(fiende.navn() + fiende.ending(), "kastet Forsterk!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(250, 300)), \
-                "hp, og forbereder seg på et kraftig slag!")
-                fiende.kp(-80)
-                fiende.a(450)
+                if fiende.navn() not in {"Beta", "Trollkongen"}:
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(250, 300)), \
+                    "hp, og forbereder seg på et kraftig slag!")
+                    fiende.kp(-80)
+                    fiende.a(450)
+                else:
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(300, 400)), \
+                    "hp, og forbereder seg på et kraftig slag!")
+                    fiende.kp(-80)
+                    fiende.a(600)
+
                 forsterkCD = 2
             elif fiende.kp() >= 50 and randint(0, 4) == 1 and not forsterkCD:
                 print(fiende.navn() + fiende.ending(), "kastet Restituer!")
@@ -329,7 +339,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 def generer_troll(spiller):
     loot = Loot()
     fiende = Fiende(navn="Troll", race="troll", loot=loot, \
-    hp=20 + 20 * randint(1, spiller.lvl()), \
+    hp=120 + 40 * randint(1, spiller.lvl()), \
     a=20 + randint(0, 10 * spiller.lvl()), \
     d=30 + randint(0, 10 * spiller.lvl()), \
     kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="et")
@@ -464,8 +474,8 @@ def trollQuest(qlog, spiller):
     qlog.legg_til_quest(q3)
 
     #q4
-    desk4 = quests.troll_q4(navn)
-    ferdigDesk4 = "Kjempebra " + navn + "! Nå kan jeg endelig ta av meg dette skjegget og dra hjem!"
+    desk4 = troll_q4(navn)
+    ferdigDesk4 = troll_q4_ferdig(navn)
     q4 = Quest(desk4, ferdigDesk4, 1, 16, "Zip", tilgjengelig=False)
     q4.legg_til_reward(xp=10000, gull=1000)
     q4.legg_til_progresjonTekst("Trollkongen bekjempet: ")
