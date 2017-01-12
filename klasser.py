@@ -2042,7 +2042,10 @@ class Inventory:
 
         #Troll
         qListeTroll = self._klasser.questlog(2).hent_qLog()
-        if not qListeTroll[1].ferdig() and qListeTroll[1].progresjon() != 0:
+        if not qListeTroll[1].sjekk_ferdig() and qListeTroll[1].startet():
+            print("Du har {} eksplosiv{} ladning{}.".format(5 - qListeTroll[1].progresjon(), \
+            "e" * int(qListeTroll[1].progresjon() != 4), "er" * int(qListeTroll[1].progresjon() != 4)))
+        if not qListeTroll[2].ferdig() and qListeTroll[2].progresjon() != 0:
             print("Du har et trollsk dokument.")
 
         #Gargyl

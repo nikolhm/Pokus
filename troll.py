@@ -1,6 +1,7 @@
 """
-                *~ Troll- expansion ~*
-
+            *~ Pokus expansion 1.1 - Troll ~*
+                           av
+                     Nikolas Martin
 """
 #Start med å importere alle de nødvendige delfilene.
 from klasser import *
@@ -47,7 +48,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
                 lagre = True
                 valg = True
 
-            if inn == "b" and qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
+            if inn == "b" and qlog.hent_quest(1).startet() and not qlog.hent_quest(1).sjekk_ferdig():
                 base = True
                 valg = True
 
@@ -89,57 +90,34 @@ def troll_loop(spiller, inv, klasser, spellbook):
             lagre = False
 
         while base:
-            print("""   Trollmennene armerer deg 5 ladninger svart pulver og formler for å sette
-    ladninger og sprenge dem.
-
-    Du sniker deg inn i hulen og kommer deg til stedet du skal plassere den første
-    ladningen.""")
-
-            betaUte = False # Beta har blitt bekjempet.
-            oppdaget = False # Du har ikke blitt oppdaget.
-            gsOppdaget = 0 # Ganger siden du har blitt oppdaget.
-
-            spoer = ""
-            while spoer.lower() not in {"ja", "j"}:
-                spoer = input("Vil du sette ladningen?").lower()
-            print("    Du planter den første ladningen og kommer deg unna.")
-
-            seq = ["andre", "tredje", "fjerde", "femte"]
-
-            for x in range(4):
-                if oppdaget == True:
-                    print(" Trollene løper etter deg!!!\n")
-                print("    Du har kommet deg til plasseringen for den", seq[x], "ladningen.")
-                spoer = ""
-                while spoer.lower() not in {"ja", "j"}:
-                    spoer = input("Vil du sette ladningen?").lower()
-                oppdagRisk = randint(0, 4)
-                if oppdagRisk == 4 and not oppdaget:
-                    oppdaget = True
-                    print("    Du har blitt oppdaget! Betaen lukter deg!")
-
-                if not oppdaget and not betaUte:
-                    print("    Du planter den", seq[x], "ladningen og kommer deg unna.")
-                elif oppdaget and not betaUte:
-                    if gsOppdaget == 0:
-                        for x in range(3):
+            gsOppdaget = 0
+            clear_screen()
+            print("\n    Du sniker deg mot den hemmelige basen til trollene.\n")
+            print("    Trollmennene armerer deg 5 ladninger svart pulver og formler for å sette")
+            print("    ladninger og sprenge dem.\n")
+            pause()
+            print("\n    Du sniker deg inn i hulen og kommer deg til stedet du skal plassere den første")
+            print("    ladningen.\n")
+            seq = ["første", "andre", "tredje", "fjerde", "femte"]
+            for x in range(5):
+                input("Trykk enter for å plassere den {} ladningen\n> ".format(seq[x]))
+                if not randint(0, 1):
+                    #oppdaget gang 1 og 2
+                    if gsOppdaget < 2:
+                        print("Du er blitt oppdaget! En klynge med troll kommer løpende mot deg!")
+                        input("Trykk enter for å slåss for livet\n> ")
+                        for y in range(3 + (2 * gsOppdaget)):
                             fiende = generer_troll(spiller)
                             skriv_ut(spiller, fiende)
                             if not angrip(spiller, fiende, inv, klasser, spellbook):
                                 base = False
+                                qlog.hent_quest(1).reset_progresjon()
                                 break
-                        gsOppdaget += 1
+                            clear_screen()
+                            print("")
 
-                    if gsOppdaget == 1:
-                        for x in range(5):
-                            fiende = generer_troll(spiller)
-                            skriv_ut(spiller, fiende)
-                            if not angrip(spiller, fiende, inv, klasser, spellbook):
-                                base = False
-                                break
-                        gsOppdaget += 1
-
-                    if gsOppdaget == 2:
+                    #oppdaget gang 3: Betaen
+                    elif gsOppdaget == 2:
                         skrivStortTroll()
                         print(spiller.navn(), "har blitt funnet av betaen!")
                         loot = Loot()
@@ -148,9 +126,25 @@ def troll_loop(spiller, inv, klasser, spellbook):
                         skriv_ut(spiller, fiende)
                         if not angrip(spiller, fiende, inv, klasser, spellbook):
                             base = False
+                            qlog.hent_quest(1).reset_progresjon()
                             break
-                        else:
-                            betaUte = True
+                        clear_screen()
+                        print("")
+                    gsOppdaget += 1
+
+                #neste runde
+                if not base: break
+                print("    Du planter den", seq[x], "ladningen og kommer deg unna.\n")
+                qlog.hent_quest(1).progresser()
+
+            #Alle ladninger er satt
+            if not base: break
+            print("\n\nDu har satt alle ladningene, og er klar til å sprenge hulen!\n")
+            input("Trykk enter for å sprenge hulen\n> ")
+            print("\n" + spiller.navn(), "sprengte hulen! Du drar tilbake til hytten.\n")
+            pause()
+            qlog.hent_quest(1).progresser_liste(0)
+            base = False
 
         while cave:
             for x in range(5):
@@ -159,6 +153,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
                     cave = False
                     break
+            if not cave: break
 
             # Betaen
             skrivStortTroll()
@@ -169,7 +164,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             fiende.return_loot().legg_til_item(500, 100)
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
-                qlog.hent_quest(1).progresser()
+                qlog.hent_quest(2).progresser()
                 print("\n*Du har nå et dokument på trollsk. Kanskje det har informasjon om trollkongen?*\n")
             while input("* Trykk enter for å fortsette *\n") != "":
                 pass
@@ -179,7 +174,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         while helvete:
             skrivTrollBoss()
             loot = Loot()
-            item = Item("Trollkongens stav", "weapon", a=200, kp=200)
+            item = Item("Trollkongens stav", "weapon", a=100, kp=75)
             loot.legg_til_item(item, 50)
             loot.legg_til_item(3000, 50)
             fiende = Fiende("Trollkongen", "trollmagiker", loot, 2500, 300, 250, kp=100, bonusKp=5, weapon=60)
@@ -189,7 +184,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         burde egentlig blitt lagt til en egen prosedyre.\n""")
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
-                qlog.hent_quest(2).progresser()
+                qlog.hent_quest(3).progresser()
 
             helvete = False
 
@@ -331,7 +326,7 @@ def trollKart(qlog):
     Fjellet (m)                Gå på fjelltur og forsvar deg mot perverse troll
     Butikken (k)               Kjøp det du trenger hos "Fe Fi Fo - Familiebutikk"
     Badstua (q)                Se om de rynkete gamle trollmennene trenger noe hjelp""")
-    if qlog.hent_qLog()[1].startet() and not qlog.hent_qLog()[1].ferdig():
+    if qlog.hent_qLog()[1].startet() and not qlog.hent_qLog()[1].sjekk_ferdig():
         print("    Hulen (b)                  Snik deg inn den hemmelige basen til trollene!")
     if qlog.hent_qLog()[2].startet() and not qlog.hent_qLog()[2].ferdig():
         print("    Minen (c)                  Invader det mørke, dype hjemmet til trollfolket!")
@@ -355,11 +350,11 @@ def trollButikk(butikk):
     vare = Vare(item, 500, "k")
     butikk.legg_til_vare(vare)
 
-    item = Item("Tryllestav", "weapon", a=200, xKp=45)
+    item = Item("Tryllestav", "weapon", a=85, xKp=45)
     vare = Vare(item, 3000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Sverd", "weapon", a=300, xHp=20)
+    item = Item("Sverd", "weapon", a=150, xHp=20)
     vare = Vare(item, 9000, "v")
     butikk.legg_til_vare(vare)
 
@@ -382,10 +377,12 @@ def trollQuest(qlog, spiller):
     #q2
     desk2 = quests.troll_q2(navn)
     ferdigDesk2 = quests.troll_q2_ferdig(navn)
-    q2 = Quest(desk2, ferdigDesk2, 25, 15, "Senile Sverre", tilgjengelig=False)
+    q2 = Quest(desk2, ferdigDesk2, 5, 15, "Senile Sverre", tilgjengelig=False)
     q2.legg_til_reward(xp=5000, gull=4000, settTilgjengelig=True, settTilgjengeligIndeks=2)
-    q2.legg_til_progresjonTekst("Hule sprengt: ")
+    q2.legg_til_progresjonTekst("Ladninger satt: ")
     q2.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    q2.legg_til_progresjon(1)
+    q2.legg_til_progresjonTekstListe("Hule sprengt: ", 0)
     qlog.legg_til_quest(q2)
 
     #q3
@@ -394,7 +391,7 @@ def trollQuest(qlog, spiller):
     desk3 = quests.troll_q3(navn)
     ferdigDesk3 = quests.troll_q3_ferdig(navn)
     q3 = Quest(desk3, ferdigDesk3, 1, 16, "Zip", tilgjengelig=False)
-    item = Item("Trollskjegg", "beard", xKp=80, ekstraKp=20)
+    item = Item("Trollskjegg", "beard", xKp=60, ekstraKp=4)
     q3.legg_til_reward(xp=1000, gull=2500, item=item, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Digert troll drept: ")
     q3.legg_til_svarTekst("\nVil du drepe det store trollet?    (ja/nei)\n> ")
@@ -406,5 +403,5 @@ def trollQuest(qlog, spiller):
     q4 = Quest(desk4, ferdigDesk4, 1, 16, "Zip", tilgjengelig=False)
     q4.legg_til_reward(xp=5000, gull=2000)
     q4.legg_til_progresjonTekst("Trollkongen bekjempet: ")
-    q4.legg_til_svarTekst("\nTa ned Trollkongen!    (ja/nei)\n> ")
+    q4.legg_til_svarTekst("\nVil du ta ned Trollkongen?    (ja/nei)\n> ")
     qlog.legg_til_quest(q4)

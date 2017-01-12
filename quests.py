@@ -284,14 +284,13 @@ def troll_q1(navn):
     Det er uhyre mange troll rundt i dette området. Ettersom tiden har gått
     har vi blitt vant til det, men de har blitt mer og mer uredde i det siste.
     De har til og med gått så nærme som å pisse på bålet gjennom pipa. Vet du
-    hvor mye ammoniak det der lukter!? Uansett, skjønner vi at for å sette litt
+    hvor mye ammoniak det der lukter!? Uansett skjønner vi at for å sette litt
     brems på selvsikkerheten deres, bør vi true dem litt. De begynner å nærme
     seg området rundt hytta. La dem kjenne at de må holde seg unna tilholdsstedet
     vårt, fordi vi er farlige. De kommer ikke til å le når 25 av dem blir utryddet
     utenfor og ikke kommer seg hjem.
 
     -- Myrd 25 troll."""
-
 def troll_q1_ferdig(navn):
     return "    Tusen takk, " + navn + """!
     Det er så fint å kjenne en magiker som ikke bøyer til slike ubrukelige ting
@@ -321,14 +320,13 @@ def troll_q2(navn):
     minst 3 troll per gang du må gjennom. Det er enda verre om betaen finner deg.
     Han er ikke en fiende å ta lett på. Hvis du er heldig, får du satt alle 5 ladninger
     på plass før du blir oppdaget."""
-
 def troll_q2_ferdig(navn):
     return "    Vakkert arbeid, " + navn + """!
     Det er nok ikke lenge før de setter opp en ny operasjonsbase, gitt at de ikke
     kommer til å gi opp før lederen deres er ute av spill. Det er slik de fungerer.
     Uten lederen så har de ikke et mål i livet. Det er litt som maur. De er avhengige
     av Dronningen. Kongen har ekstremt mye makt over trollene hans. Vi har prøvd å
-    finne ham veldig lenge, men trollene vet å holde ham så gjemt som mulig..."""
+    finne ham veldig lenge, men trollene vet å holde ham så gjemt som mulig...\n"""
 
 def troll_q3(navn):
     return "    Hei, pssst! " + navn + """!
@@ -353,7 +351,7 @@ def troll_q3_ferdig(navn):
     alt i form av vemmeligheter. Det er helt frastøtende! Likeve *blæææh* ser
     jeg at trollet fikk ordre om å *surt oppstøt* til Helvetesgapet. Det må være
     der Trollkongen befinner seg. Jeg har hørt at ingen av gamlingene tør å gå
-    ned dit. Det er visst, for farlig med faren for steinras... For noen pyser!
+    ned dit. Det er visst for farlig med faren for steinras... For noen pyser!
     """
 
 def troll_q4(navn):
@@ -477,7 +475,7 @@ def shroom_q5_ferdig(navn):
 def shroom_q6(navn):
     return """    Shrooms?
     Jeg har aldri hørt om noe slikt før, men om forvokste sopper nå
-    besitter magiske evner, er situasjonen blitt værre enn først antatt. Vi må
+    besitter magiske evner, er situasjonen blitt verre enn først antatt. Vi må
     tenke strategisk her og ikke gjøre noe forhastet. Målet vårt er å utgjevne
     den magiske ubalansen, som helt sikkert er opphavet til disse 'shroomsene'
     og alle de andre levende skapningene i skogen som ikke burde være levende.
@@ -738,7 +736,7 @@ def banditt_dq7(navn):
     og ære finner du nok ikke her, men du får muligheten til å vinne en
     fin slump gullstykker! Hvis du vinner da selvfølgelig, skulle du dø
     eller flykte før motstanderen er beseiret, mister du pengene som er
-    krevd for deltakelse. Det koster 500 per kamp; desto værre odds, desto
+    krevd for deltakelse. Det koster 500 per kamp; desto verre odds, desto
     større vinnerlønn til deg.
 
     Siden du er ny her, starter du nederst på rangstigen. Om du takker ja,

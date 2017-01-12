@@ -444,7 +444,7 @@ def gnomequest(qlog, spiller):
     bq1.legg_til_progresjonTekst("Magisk sopp funnet: ")
     bq1.legg_til_svarTekst("Vil du gi den magiske soppen til Rotete Randi?   (ja/nei)\n> ")
     bq1.legg_til_alt_desk("Vil du fortære soppen foran ansiktet hennes?\n> ")
-    bq1.legg_til_alt_reward(ep=3, ekstraKp=1, xp=3000)
+    bq1.legg_til_alt_reward(ep=3, ekstraKp=2, xp=3000)
     qlog.legg_til_quest(bq1)
 
     #bq2
