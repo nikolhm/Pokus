@@ -373,7 +373,7 @@ def troll_bq1(navn):
     fikk jeg litt problemer når jeg dro ut i skogen med en "venninne" og noe viagrooma-rot, hvis du
     skjønner hva jeg mener! Jeg tok med "Trolling Stones"-albumet mitt og må ha mistet det! Det er
     ekstremt vanskelig å få tak i de albumene! Trollene må ha funnet det innen nå. Jeg skjønner kanskje
-    at de kommer til å nyte det også, men jeg er helt avhengig av "Trolling Stones". Jeg må ha det tilbake!"""
+    at de kommer til å nyte det også, men jeg er helt avhengig av "Trolling Stones". Jeg må ha det tilbake!\n"""
 def troll_bq1_ferdig(navn):
     return "    Har du funnet albumet mitt?! Vær så snill, gi det tilbake! Jeg gjør hva som helst!\n"
 
