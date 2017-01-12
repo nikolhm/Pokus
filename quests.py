@@ -367,9 +367,15 @@ def troll_q4_ferdig(navn):
     Dra tilbake til borgen og rapporter om vår suksess til Vassle!""".format(navn)
 
 def troll_bq1(navn):
-    return ""
+    return """    Har du noen gang hørt Rock&Troll-musikk?! Det er det beste jeg noen gang har hørt!
+    Trozzy Ozbourne, "The Trolling Stones", "Stone Zeppelin", "(Huldra's) Kiss", "Boomerang Rapido",
+    Troll Dylan, Elvis Trollsley... Jeg klarer meg ikke en eneste dag uten å ha hørt på dem! Likevel
+    fikk jeg litt problemer når jeg dro ut i skogen med en "venninne" og noe viagrooma-rot, hvis du
+    skjønner hva jeg mener! Jeg tok med "Trolling Stones"-albumet mitt og må ha mistet det! Det er
+    ekstremt vanskelig å få tak i de albumene! Trollene må ha funnet det innen nå. Jeg skjønner kanskje
+    at de kommer til å nyte det også, men jeg er helt avhengig av "Trolling Stones". Jeg må ha det tilbake!"""
 def troll_bq1_ferdig(navn):
-    return ""
+    return "Har du funnet albumet mitt?! Vær så snill, gi det tilbake! Jeg gjør hva som helst!"
 
 #Shroom:
 def shroom_q1(navn):
