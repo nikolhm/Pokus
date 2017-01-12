@@ -410,12 +410,15 @@ def trollQuest(qlog, spiller):
     #bq1
     deskBq1 = troll_bq1(navn)
     ferdigDeskBq1 = troll_bq1_ferdig(navn)
-    bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Ekle Erik", bonus=True, resetIfDead=True)
-    item = Item("Superspiss hatt", "hat", xHp=70, d=55)
+    bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Tonedøve Tord", bonus=True, resetIfDead=True)
+    item = Item("Tung gitar", "weapon", a=70, d=50, blade=True)
     bq1.legg_til_reward(gull=300, ekstraKp=1, item=item, gp=2)
-    bq1.legg_til_ekstra_tekst("Tusen takk " + spiller.navn() + "! Tusen hjertelig takk! Endelig er jeg gjenforent med min kjære sopp!\n")
-    bq1.legg_til_progresjonTekst("Magisk sopp funnet: ")
-    bq1.legg_til_svarTekst("Vil du gi den magiske soppen til Rotete Randi?   (ja/nei)\n> ")
-    bq1.legg_til_alt_desk("Vil du fortære soppen foran ansiktet hennes?\n> ")
-    bq1.legg_til_alt_reward(ep=3, ekstraKp=2, xp=3000)
+    bq1.legg_til_ekstra_tekst("Tusen takk " + spiller.navn() + """! Jeg vet ikke hva jeg skulle gjort uten denne himmelske lyden!
+Ta gitaren min! Jeg er ikke så flink til å spille uansett...\n""")
+    bq1.legg_til_progresjonTekst('"Trolling Stones"-album funnet: ')
+    bq1.legg_til_svarTekst("Vil du gi albumet til Tonedøve Tord?   (ja/nei)\n> ")
+    bq1.legg_til_alt_desk("Vil du brenne CD-en med det kristne gnomkorets julemusikk?\n> ")
+    bq1.legg_til_alt_reward(gull=300, ekstraKp=1, item=item, ep=2)
+    bq1.legg_til_alt_ekstra_tekst("Tusen takk " + spiller.navn() + """! Jeg vet ikke hva jeg skulle gjort uten denne himmelske lyden!
+Ta gitaren min! Jeg er ikke så flink til å spille uansett...\n""")
     qlog.legg_til_quest(bq1)
