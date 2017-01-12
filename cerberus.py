@@ -31,6 +31,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
         hule = False
         klartenker = False
         south = False
+        cerberus = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -66,6 +67,10 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
                 hule = True
                 valg = True
                 south = True
+
+            if inn == "c" and qlog.hent_quest(4).startet():
+                cerberus = True
+                valg = True
 
         while quest:
             #Merk at oppdrag_tilgjengelige() er en funksjon med returverdi.
@@ -145,6 +150,23 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
             hule = False
             south = False
 
+        while cerberus:
+            print(spiller.navn(), "drar innover mot kjernen til vulkanen.\n")
+            pause()
+            for x in range(2):
+                fiende = generer_hellhound(spiller)
+                if not angrip(spiller, fiende, inv, klasser, spellbook):
+                    cerberus = False
+                    break
+                print(spiller.navn(), "går dypere inn mot vulkanens kjerne.\n")
+                pause()
+            if not cerberus: break
+            cerberusDialog(spiller)
+            fiende = generer_cerberus(spiller)
+            if angrip(spiller, fiende, inv, klasser, spellbook):
+                qlog.hent_quest(4).progresser()
+            cerberus = False
+
         while klartenker:
             medlem = spiller.spesialisering() == "Klartenker"
             print(" "*4 + "Velkommen {}til de Klartenkendes Forening!".format("tilbake " * int(medlem)).center(65 + 20*int(not medlem), "-"))
@@ -217,6 +239,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
 def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
     qlog = klasser.questlog(3)
     skriv_ut(spiller, fiende)
+    hoder = 1 + 2 * int(fiende.navn() == "Cerberus")
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
         skadeTatt = spiller.hp()
@@ -252,44 +275,51 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
             if hule:
                 print(spiller.navn(), "mistet", spiller.mist_kp(randint(15, 30)), "kp fra krystallene.")
 
-            if fiende.kp() >= 90 and (not randint(0, 5) or intro) and not fiende.burning() and fiende.race() == "cerberus":
-                if randint(0, 1):
-                    print(fiende.navn() + fiende.ending(), "satte fyr på seg selv!")
-                    fiende.a(50)
-                    fiende.d(70)
-                    fiende.sett_burning()
+            if hoder == 3 and fiende.hp() / fiende.xHp() <= 2/3 and randint(1, 10) >= 4 \
+            or hoder == 2 and fiende.hp() / fiende.xHp() <= 1/3 and randint(1, 10) >= 4:
+                print(fiende.navn(), "mistet et hode!")
+                hoder -= 1
+
+            for x in range(hoder):
+                if fiende.oppholdt():
+                    print(fiende.navn() + fiende.ending(), "er oppholdt.")
+                elif fiende.kp() >= 90 and (not randint(0, 5) or intro) and not fiende.burning() and fiende.race() == "cerberus":
+                    if randint(0, 1):
+                        print(fiende.navn() + fiende.ending(), "satte fyr på seg selv!")
+                        fiende.a(50)
+                        fiende.d(70)
+                        fiende.sett_burning()
+                    else:
+                        print(fiende.navn() + fiende.ending(), "satte fyr på", spiller.navn() + "!")
+                        print(spiller.navn(), "mistet", spiller.mist_liv(round(spiller.xHp() * 0.05)), "liv fra flammene.")
+                        spiller.sett_burning(CD=3, dmg=round(spiller.xHp() * 0.05))
+                    fiende.kp(-90)
+
+                elif fiende.kp() >= 50 and randint(0, 100) == 1:
+                    print(fiende.navn() + fiende.ending(), "kastet Restituer!")
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(90, 110)), "hp!")
+                    fiende.kp(-50)
                 else:
-                    print(fiende.navn() + fiende.ending(), "satte fyr på", spiller.navn() + "!")
-                    print(spiller.navn(), "mistet", spiller.mist_liv(round(spiller.xHp() * 0.05)), "liv fra flammene.")
-                    spiller.sett_burning(CD=3, dmg=round(spiller.xHp() * 0.05))
-                fiende.kp(-90)
+                    spiller.angrepet(fiende)
 
-            elif fiende.kp() >= 50 and randint(0, 100) == 1:
-                print(fiende.navn() + fiende.ending(), "kastet Restituer!")
-                print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(90, 110)), "hp!")
-                fiende.kp(-50)
-            else:
-                spiller.angrepet(fiende)
+                #progresserer Smertedreper-quest.
+                if klasser.questlog(4).hent_quest(6).startet():
+                    klasser.questlog(4).hent_quest(6).progresser(spiller.hp() - skadeTatt)
 
-            #progresserer Smertedreper-quest.
-            if klasser.questlog(4).hent_quest(6).startet():
-                klasser.questlog(4).hent_quest(6).progresser(spiller.hp() - skadeTatt)
-
-            #gir beskjed om karakteren døde
-            if spiller.dead():
-                input("\nDu døde! Trykk enter for å fortsette\n> ")
-                spellbook.reset()
-                write_player_died(spiller, "forskningslaben")
-                player_died(spiller, inv, klasser)
-                return False
+                #gir beskjed om karakteren døde
+                if spiller.dead():
+                    input("\nDu døde! Trykk enter for å fortsette\n> ")
+                    spellbook.reset()
+                    write_player_died(spiller, "forskningslaben")
+                    player_died(spiller, inv, klasser)
+                    return False
 
             #skriver ut hp og kp til karakteren og hp til fienden til neste runde.
-            else:
-                spiller.kons()
-                fiende.gen_kons()
-                skriv_ut(spiller, fiende)
-                if fiende.burning():
-                    print(fiende.navn() + fiende.ending(), "brenner!")
+            spiller.kons()
+            fiende.gen_kons()
+            skriv_ut(spiller, fiende)
+            if fiende.burning():
+                print(fiende.navn() + fiende.ending(), "brenner!")
 
 def generer_vulkan_fiende(spiller):
     tall = randint(1, 10)
@@ -328,15 +358,14 @@ def generer_beta(spiller, nr):
 
 def generer_cerberus(spiller):
     loot = Loot()
-    fiende = Fiende(navn="Cerberus", race="cerberus", loot=loot, \
-    hp=120 + 40 * randint(1, spiller.lvl()), \
-    a=20 + randint(0, 10 * spiller.lvl()), \
-    d=30 + randint(0, 10 * spiller.lvl()), \
-    kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
+    fiende = Fiende("Cerberus", "cerberus", loot, hp=7500, a=150, d=150, kp=350, bonusKp=7)
     dynamiskLoot(loot, fiende, spiller)
     skrivCerberus()
-    print("\n" + spiller.navn(), "har møtt på en cerberus!")
+    print("\n" + spiller.navn(), "har møtt på Cerberus!")
     return fiende
+
+def cerberusDialog(spiller):
+    return ""
 
 def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
@@ -395,6 +424,8 @@ def cerberus_kart(qlog):
         print("    Nord-krystallhulen (h)     Dra til den nordlige krystallhulen")
     if qlog.hent_qLog()[3].startet():
         print("    Sør-krystallhulen (s)      Dra til den sørlige krystallhulen")
+    if qlog.hent_qLog()[4].startet():
+        print("    Kjernen til vulkanen (c)   Ferd inn mot kjernen av vulkanen og konfronter Cerberus")
     if qlog.hent_qLog()[5].ferdig():
         print("    Ned kjelleren (n)          Besøk hovedkontoret til de Klartenkendes Forening")
     print("    Minnesteinen (l)           Lagre sjelen din i Obsidians lokale minnestein")
@@ -465,7 +496,7 @@ def cerberusQuest(qlog, spiller):
     q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
     q.legg_til_reward(xp=7000, gull=800, settTilgjengelig=True, settTilgjengeligIndeks=4)
     q.legg_til_progresjonTekst("Duppeditt i den nordlige krystallhulen plassert: ")
-    q.legg_til_svarTekst("\nKan du plassere duppedittene?    (ja/nei)\n> ")
+    q.legg_til_svarTekst("\nKan du plassere duppedingsene?    (ja/nei)\n> ")
     q.legg_til_progresjon(1)
     q.legg_til_progresjonTekstListe("Duppeditt i den sørlige krystallhulen plassert: ", 0)
     qlog.legg_til_quest(q)
