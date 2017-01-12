@@ -117,9 +117,6 @@ else:
 
     #spiller.sett_sted_tilgjengelig(0)
     spiller.sett_sted_tilgjengelig(1)
-    spiller.sett_sted_tilgjengelig(2)
-    spiller.sett_sted_tilgjengelig(3)
-    spiller.sett_sted_tilgjengelig(4)
 
 while True:
 

@@ -406,7 +406,7 @@ def trollKart(qlog):
         print("    Helvetesgapet (h)          Konfronter trollkongen!")
     if qlog.hent_qLog()[4].ferdig():
         print("    Nabodimensjonshytten (n)   Transporter deg til Muskelbunters Fellesforenings hovedkontor")
-    print("    Minnesteinen (l)           Lagre sjelen din i borgens lokale minnestein")
+    print("    Minnesteinen (l)           Lagre sjelen din i hyttens lokale minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 def trollButikk(butikk):

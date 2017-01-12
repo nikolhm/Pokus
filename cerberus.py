@@ -28,7 +28,9 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
         gaaTilButikk = False
         vulkan = False
         lagre = False
+        hule = False
         klartenker = False
+        south = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -56,6 +58,15 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
                 klartenker = True
                 valg = True
 
+            if inn == "h" and qlog.hent_quest(2).startet():
+                hule = True
+                valg = True
+
+            if inn == "s" and qlog.hent_quest(3).startet():
+                hule = True
+                valg = True
+                south = True
+
         while quest:
             #Merk at oppdrag_tilgjengelige() er en funksjon med returverdi.
             inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "utenfor stallen").lower()
@@ -76,15 +87,63 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
             lagre = False
 
         while vulkan:
-            tall = randint(1, 10)
-            if tall == 1:
-                fiende = generer_gnom(spiller, 0, False)
-            elif tall <= 5:
-                fiende = generer_troll(spiller)
-            else:
-                fiende = generer_hellhound(spiller)
-
+            fiende = generer_vulkan_fiende(spiller)
             vulkan = angrip(spiller, fiende, inv, klasser, spellbook)
+
+        while hule:
+            clear_screen()
+            if south:
+                print("\n    {} drar mot den sørlige krystallhulen.\n".format(spiller.navn()))
+            else:
+                print("\n    {} drar mot {}krystallhulen.\n".format(\
+                spiller.navn(), "den nordlige " * int(qlog.hent_quest(3).startet())))
+            pause()
+            for x in range(randint(3, 6)):
+                if not angrip(spiller, generer_vulkan_fiende(spiller), inv, klasser, spellbook):
+                    hule = False
+                    south = False
+                    break
+            if not hule: break
+            clear_screen()
+            print("\n    " + spiller.navn(), "har nådd frem til hulen!\n")
+            if not qlog.hent_quest(3).startet():
+                print("    Du ser deg rundt. Det er krystaller overalt i hulen, og det virker som om de ")
+                print("    gjør helveteshundene sterkere! Du ser en gedigen krystall i enden av hulen, ")
+                print("    kanskje Forsker Frederikk er interessert i den? Du begir deg mot den.\n")
+            else:
+                print("    Du begir deg innover mot senteret av hulen.\n")
+            pause()
+            for x in range(randint(4, 5)):
+                if not angrip(spiller, generer_hellhound(spiller, sterk=True), inv, klasser, spellbook, hule=True):
+                    hule = False
+                    south = False
+                    break
+            if not hule: break
+            clear_screen()
+            if not qlog.hent_quest(2).sjekk_ferdig():
+                print("\n    " + spiller.navn(), "har fått tak i den gedigne krystallen!")
+                print("    Du drar tilbake til forsknigslaben.\n")
+                qlog.hent_quest(2).progresser()
+                pause()
+                hule = False
+                south = False
+                break
+            elif not qlog.hent_quest(3).progresjon() and qlog.hent_quest(3).startet() and not south or\
+            not qlog.hent_quest(3).progresjon_liste()[0] and qlog.hent_quest(3).startet() and south:
+                print("    Du er i posisjon til å utplassere duppedingsen!")
+            if angrip(spiller, generer_beta(spiller, 1 + int(south)), inv, klasser, spellbook, hule=True) \
+            and (qlog.hent_quest(3).startet() and not qlog.hent_quest(3).progresjon() and not south or \
+            not qlog.hent_quest(3).progresjon_liste()[0] and qlog.hent_quest(3).startet() and south):
+                if south:
+                    qlog.hent_quest(3).progresser_liste(0)
+                    south = False
+                else:
+                    qlog.hent_quest(3).progresser()
+                print("    minoritetsladningsbærer-hvadetnåvarigjen er suksessfullt plassert!\n")
+                print("    Du drar tilbake til forskningslaben.\n")
+                pause()
+            hule = False
+            south = False
 
         while klartenker:
             medlem = spiller.spesialisering() == "Klartenker"
@@ -155,7 +214,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
     if ferdig:
         return verdenskart(spiller)
 
-def angrip(spiller, fiende, inv, klasser, spellbook, intro=False):
+def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
     qlog = klasser.questlog(3)
     skriv_ut(spiller, fiende)
     while True:
@@ -179,15 +238,20 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False):
             spellbook.reset()
 
             #progresserer quests
-            if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).sjekk_ferdig() and not randint(0, 3):
-                print("Denne hunden er merket! Du drar den med deg tilbake til forskningslaben.")
+            if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).sjekk_ferdig() \
+            and not randint(0, 3) and fiende.navn() == "Helveteshund":
+                print("Denne hunden er merket med Obsidian-logo! Du drar den med deg tilbake til forskningslaben.")
                 pause()
+                qlog.hent_quest(1).progresser()
                 return False
 
             input("Trykk enter for å fortsette\n> ")
             return True
 
         elif not tur:
+            if hule:
+                print(spiller.navn(), "mistet", spiller.mist_kp(randint(15, 30)), "kp fra krystallene.")
+
             if fiende.kp() >= 90 and (not randint(0, 5) or intro) and not fiende.burning() and fiende.race() == "cerberus":
                 if randint(0, 1):
                     print(fiende.navn() + fiende.ending(), "satte fyr på seg selv!")
@@ -227,16 +291,39 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False):
                 if fiende.burning():
                     print(fiende.navn() + fiende.ending(), "brenner!")
 
-def generer_hellhound(spiller, intro=False):
+def generer_vulkan_fiende(spiller):
+    tall = randint(1, 10)
+    if tall == 1:
+        fiende = generer_gnom(spiller, 0, False)
+    elif tall <= 5:
+        fiende = generer_troll(spiller)
+    else:
+        fiende = generer_hellhound(spiller)
+    return fiende
+
+def generer_hellhound(spiller, sterk=False):
     loot = Loot()
     fiende = Fiende(navn="Helveteshund", race="cerberus", loot=loot, \
-    hp=120 + 40 * randint(1, spiller.lvl()) + 300 * int(intro), \
+    hp=120 + 40 * randint(1, spiller.lvl()) + 400 * int(sterk), \
     a=20 + randint(0, 10 * spiller.lvl()), \
-    d=30 + randint(0, 10 * spiller.lvl()) + 100 * int(intro), \
-    kp=50 + randint(0, 3 * spiller.lvl()) + 40 * int(intro), bonusKp=2, ending="en")
+    d=30 + randint(0, 10 * spiller.lvl()) + 120 * int(sterk), \
+    kp=50 + randint(0, 3 * spiller.lvl()) + 50 * int(sterk), bonusKp=2, ending="en")
     dynamiskLoot(loot, fiende, spiller)
     skrivHellhound()
     print("\n" + spiller.navn(), "har møtt på en helveteshund!")
+    return fiende
+
+def generer_beta(spiller, nr):
+    loot = Loot()
+    navn = ["Churchill", "Roosevelt"]
+    fiende = Fiende(navn[nr - 1], "cerberus", loot, \
+    hp=2600 + randint(0, 2) * 100, \
+    d=170 + randint(0, 3) * 10, \
+    a=180 + randint(0, 3) * 10, \
+    kp=190 + randint(0, 3) * 10, bonusKp=5 + randint(0, 1))
+    loot.legg_til_item(randint(500, 700), 25)
+    skrivHellhound(nr)
+    print(spiller.navn(), "har møtt", navn[nr - 1] + "!")
     return fiende
 
 def generer_cerberus(spiller):
@@ -298,12 +385,19 @@ def bossLoot(loot):
 def cerberus_kart(qlog):
     skrivVulkan()
     print("""
-    Velkommen til hulen! Her er stedene du kan dra:
+    Velkommen til forskningslaben Obsidian! Her er stedene du kan dra:
     Vulkanen (v)               Dra til vulkanen og sloss mot helvetes søte biskevisker
     Butikken (k)               Kjøp det du trenger hos "Smolderbrødrenes Smie"
     Forskningslaben (q)        Se om ved forskningslaben utenfor trenger din hjelp""")
+    if qlog.hent_qLog()[2].startet() and not qlog.hent_qLog()[2].ferdig():
+        print("    Krystallhulen (h)          Dra til krystallhulen og undersøk")
+    if qlog.hent_qLog()[3].startet():
+        print("    Nord-krystallhulen (h)     Dra til den nordlige krystallhulen")
+    if qlog.hent_qLog()[3].startet():
+        print("    Sør-krystallhulen (s)      Dra til den sørlige krystallhulen")
     if qlog.hent_qLog()[5].ferdig():
         print("    Ned kjelleren (n)          Besøk hovedkontoret til de Klartenkendes Forening")
+    print("    Minnesteinen (l)           Lagre sjelen din i Obsidians lokale minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 def cerberusButikk(butikk):
@@ -340,46 +434,49 @@ def cerberusQuest(qlog, spiller):
     desk = cerberus_q1(navn)
     ferdigDesk = cerberus_q1_ferdig(navn)
     q = Quest(desk, ferdigDesk, 5, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=3500, gull=200)
-    q.legg_til_progresjonTekst("Nedkjøl brukt: ")
+    q.legg_til_reward(xp=3500, gull=200, settTilgjengelig=True, settTilgjengeligIndeks=1)
+    q.legg_til_progresjonTekst("Fiender nedkjølt: ")
     q.legg_til_svarTekst("\nEr du klar for å prøve ut formelen?    (ja/nei)\n> ")
+    q.legg_til_ekstra_tekst(navn + " lærte seg Nedkjøl (n) med 100% treffsikkerhet!")
     qlog.legg_til_quest(q)
 
     #q2
     desk = cerberus_q2(navn)
     ferdigDesk = cerberus_q2_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=5000, gull=400)
-    q.legg_til_progresjonTekst("Hunder dratt tilbake: ")
+    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk", tilgjengelig=False)
+    q.legg_til_reward(xp=3000, gull=400, settTilgjengelig=True, settTilgjengeligIndeks=2)
+    q.legg_til_progresjonTekst("Hunder slept tilbake: ")
     q.legg_til_svarTekst("\nVil du hjelpe oss hente tilbake hundene?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 
     #q3
     desk = cerberus_q3(navn)
     ferdigDesk = cerberus_q3_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=5000, gull=400)
-    q.legg_til_progresjonTekst("Fiender bekjempet: ")
-    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
+    q.legg_til_reward(xp=4000, settTilgjengelig=True, settTilgjengeligIndeks=3)
+    q.legg_til_progresjonTekst("Hule utforsket: ")
+    q.legg_til_svarTekst("\nVil du dra til krystallhulen og utforske?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 
 
     #q4
     desk = cerberus_q4(navn)
     ferdigDesk = cerberus_q4_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=5000, gull=400)
-    q.legg_til_progresjonTekst("Fiender bekjempet: ")
-    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
+    q.legg_til_reward(xp=7000, gull=800, settTilgjengelig=True, settTilgjengeligIndeks=4)
+    q.legg_til_progresjonTekst("Duppeditt i den nordlige krystallhulen plassert: ")
+    q.legg_til_svarTekst("\nKan du plassere duppedittene?    (ja/nei)\n> ")
+    q.legg_til_progresjon(1)
+    q.legg_til_progresjonTekstListe("Duppeditt i den sørlige krystallhulen plassert: ", 0)
     qlog.legg_til_quest(q)
 
     #q5
     desk = cerberus_q5(navn)
     ferdigDesk = cerberus_q5_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=5000, gull=400)
-    q.legg_til_progresjonTekst("Fiender bekjempet: ")
-    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
+    q.legg_til_reward(xp=10000, gull=1000)
+    q.legg_til_progresjonTekst("Cerberus bekjempet: ")
+    q.legg_til_svarTekst("\nEr du magikeren til å bringe ned den mektige Cerberus?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 
     #klartenker-quest
@@ -395,7 +492,7 @@ def cerberusQuest(qlog, spiller):
     desk = "yo"
     ferdigDesk = "sweet"
     q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=5000, gull=400)
+    q.legg_til_reward(xp=5000, gull=700)
     q.legg_til_progresjonTekst("Fiender bekjempet: ")
     q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
