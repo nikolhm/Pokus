@@ -263,6 +263,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         return verdenskart(spiller)
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
+    qlog = klasser.questlog(2)
     forsterkCD = 0
     while True:
 
@@ -286,7 +287,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 
             #progresserer bonusquest - Rock&Troll
             if not randint(0, 49) and not qlog.hent_quest(5).sjekk_ferdig():
-                print(spiller.navn(), "fant et Rock&Troll-album! Kanskje noen i hytten hører på slikt?")
+                print(spiller.navn(), 'fant et "Trolling Stones"-album! Kanskje noen i hytten hører på slikt?')
                 qlog.hent_quest(5).progresser()
 
             input("Trykk enter for å fortsette\n> ")

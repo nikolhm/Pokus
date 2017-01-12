@@ -2047,6 +2047,8 @@ class Inventory:
             "e" * int(qListeTroll[1].progresjon() != 4), "er" * int(qListeTroll[1].progresjon() != 4)))
         if not qListeTroll[2].ferdig() and qListeTroll[2].progresjon() != 0:
             print("Du har et trollsk dokument.")
+        if not qListeTroll[5].ferdig() and qListeTroll[5].progresjon():
+            print('Du har et "Trolling Stones"-abum.')
 
         #Gargyl
         qListeGargyl = self._klasser.questlog(4).hent_qLog()
