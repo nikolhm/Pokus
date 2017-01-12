@@ -1274,6 +1274,7 @@ class Spellbook:
 
     def skriv_spellbook(self):
         gnomeqlog = self._klasser.questlog(1)
+        cerberusqlog = self._klasser.questlog(3)
         gargyllog = self._klasser.questlog(4)
         ekspedisjonslog = self._klasser.questlog(6)
         bandittlog = self._klasser.questlog(7)
@@ -1311,7 +1312,7 @@ class Spellbook:
             print("konsentrer energi (ke)   stjeler {} helsepoeng\n\
                          Krever 150 konsentrasjonspoeng, tryllestav gir ekstra effekt.".format(\
                          300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp()))
-        if True: #trollog.hent_quest(x).ferdig():
+        if cerberusqlog.hent_quest(0).startet():
             print("nedkjøl (n)              Slukker tilstedeværende flammer.\n\
                          Krever 70 konsentrasjonspoeng.")
         if gargyllog.hent_quest(4).ferdig():
@@ -1529,7 +1530,7 @@ class Spellbook:
         return True
 
     def freeze(self, fiende):
-        if True: #quest er fullført
+        if self._klasser.questlog(3).hent_quest(0).startet():
             if self._spiller.kp() >= 70 and (fiende.burning() or self._spiller.burning()[0]):
                 print(self._spiller.navn(), "kastet Nedkjøl!")
                 self._spiller.bruk_kons(70)
@@ -1541,6 +1542,10 @@ class Spellbook:
                 if self._spiller.burning()[0]:
                     print(self._spiller.navn(), "er ikke lenger brennende.")
                     self._spiller.sett_burning(0, 0)
+
+                #progresserer quest
+                self._klasser.questlog(3).hent_quest(0).progresser()
+                
                 return False
 
             #ingen som brenner

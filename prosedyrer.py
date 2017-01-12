@@ -676,7 +676,7 @@ def krypt(filnavn):
 
     with open(filnavn, "w", encoding="UTF-8") as fil:
         fil.write(tekst)
-
+#krypt(docFolder + "\\pokus_saves\\Sverre.sav")
 def dekrypt(filnavn):
     ingentingInteressant = "hunGunIcorN"
     skalSkrive =  []

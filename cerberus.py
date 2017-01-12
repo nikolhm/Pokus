@@ -13,9 +13,13 @@ from gnom import generer_gnom
 
 #Mainloop:
 def cerberus_loop(spiller, inv, klasser, spellbook):
-    qlog = klasser.questlog(2)
+    qlog = klasser.questlog(3)
 
     ferdig = False
+    if not qlog.hent_quest(0).startet():
+        fiende = generer_hellhound(spiller, True)
+        ferdig = not angrip(spiller, fiende, inv, klasser, spellbook, True)
+
     while not ferdig:
         cerberus_kart(qlog)
 
@@ -23,8 +27,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
         quest = False
         gaaTilButikk = False
         vulkan = False
-        questInstans1 = False
-        questInstans2 = False
+        lagre = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -44,6 +47,9 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
                 vulkan = True
                 valg = True
 
+            if inn == "l":
+                lagre = True
+                valg = True
 
         while quest:
             #Merk at oppdrag_tilgjengelige() er en funksjon med returverdi.
@@ -60,6 +66,10 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
             klasser.butikk(2).interaksjon(inv)
             gaaTilButikk = False
 
+        while lagre:
+            minnestein(spiller, inv, klasser)
+            lagre = False
+
         while vulkan:
             tall = randint(1, 10)
             if tall == 1:
@@ -74,7 +84,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
     if ferdig:
         return verdenskart(spiller)
 
-def angrip(spiller, fiende, inv, klasser, spellbook):
+def angrip(spiller, fiende, inv, klasser, spellbook, intro=False):
     qlog = klasser.questlog(3)
     skriv_ut(spiller, fiende)
     while True:
@@ -98,7 +108,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             spellbook.reset()
 
             #progresserer quests
-            if qlog.hent_quest(0).startet() and not qlog.hent_quest(0).sjekk_ferdig() and not randint(0, 3):
+            if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).sjekk_ferdig() and not randint(0, 3):
                 print("Denne hunden er merket! Du drar den med deg tilbake til forskningslaben.")
                 pause()
                 return False
@@ -107,7 +117,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
-            if fiende.kp() >= 90 and not randint(0, 10) and not fiende.burning() and fiende.race() == "cerberus":
+            if fiende.kp() >= 90 and (not randint(0, 10) or intro) and not fiende.burning() and fiende.race() == "cerberus":
                 if randint(0, 1):
                     print(fiende.navn() + fiende.ending(), "satte fyr på seg selv!")
                     fiende.a(50)
@@ -146,13 +156,13 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 if fiende.burning():
                     print(fiende.navn() + fiende.ending(), "brenner!")
 
-def generer_hellhound(spiller):
+def generer_hellhound(spiller, intro=False):
     loot = Loot()
     fiende = Fiende(navn="Helveteshund", race="cerberus", loot=loot, \
-    hp=120 + 40 * randint(1, spiller.lvl()), \
+    hp=120 + 40 * randint(1, spiller.lvl()) + 300 * int(intro), \
     a=20 + randint(0, 10 * spiller.lvl()), \
-    d=30 + randint(0, 10 * spiller.lvl()), \
-    kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
+    d=30 + randint(0, 10 * spiller.lvl()) + 100 * int(intro), \
+    kp=50 + randint(0, 3 * spiller.lvl()) + 40 * int(intro), bonusKp=2, ending="en")
     dynamiskLoot(loot, fiende, spiller)
     skrivHellhound()
     print("\n" + spiller.navn(), "har møtt på en helveteshund!")
@@ -208,7 +218,8 @@ def dynamiskLoot(loot, fiende, spiller):
     kp = randint(1, 5) * 5
     ekp = int(randint(0, 10 + spiller.lvl()) / 10)
     item = Item("Brennende øyne", "trinket", xHp=hp, xKp=kp, ekstraKp=ekp)
-    loot.legg_til_item(item, 5)
+    item.sett_loot_tekst("et par brennende øyne")
+    loot.legg_til_item(item, 4)
 
 def bossLoot(loot):
     loot.legg_til_item(500, 50)
@@ -252,10 +263,18 @@ def cerberusButikk(butikk):
 def cerberusQuest(qlog, spiller):
     navn = spiller.navn()
 
-    desk1 = ""
-    ferdigDesk1 = ""
-    q1 = Quest(desk1, ferdigDesk1, 5, 15, "Turi Testquest-holder")
-    q1.legg_til_reward(xp=5000, gull=2000)
-    q1.legg_til_progresjonTekst("Fiender bekjempet: ")
-    q1.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
-    qlog.legg_til_quest(q1)
+    desk = cerberus_q1(navn)
+    ferdigDesk = cerberus_q1_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 5, 15, "Forsker Frederikk")
+    q.legg_til_reward(xp=4000, gull=200)
+    q.legg_til_progresjonTekst("Nedkjøl brukt: ")
+    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    desk = ""
+    ferdigDesk = ""
+    q = Quest(desk, ferdigDesk, 5, 15, "Turi Testquest-holder")
+    q.legg_til_reward(xp=5000, gull=2000)
+    q.legg_til_progresjonTekst("Fiender bekjempet: ")
+    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)

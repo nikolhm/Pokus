@@ -377,6 +377,32 @@ def troll_bq1(navn):
 def troll_bq1_ferdig(navn):
     return "    Har du funnet albumet mitt?! Vær så snill, gi det tilbake! Jeg gjør hva som helst!\n"
 
+#Cerberus
+def cerberus_q1(navn):
+    return ""
+def cerberus_q1_ferdig(navn):
+    return ""
+
+def cerberus_q2(navn):
+    return ""
+def cerberus_q2_ferdig(navn):
+    return ""
+
+def cerberus_q3(navn):
+    return ""
+def cerberus_q3_ferdig(navn):
+    return ""
+
+def cerberus_q4(navn):
+    return ""
+def cerberus_q4_ferdig(navn):
+    return ""
+
+def cerberus_q5(navn):
+    return ""
+def cerberus_q5_ferdig(navn):
+    return ""
+
 #Shroom:
 def shroom_q1(navn):
     return "    Hei " + navn + """!
