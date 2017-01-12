@@ -179,6 +179,14 @@ def troll_loop(spiller, inv, klasser, spellbook):
             cave = False
 
         while helvete:
+            for x in range(2):
+                fiende = generer_troll(spiller, True)
+                skriv_ut(spiller, fiende)
+                if not angrip(spiller, fiende, inv, klasser, spellbook):
+                    helvete = False
+                    break
+            if not helvete: break
+
             skrivTrollBoss()
             loot = Loot()
             item = Item("Trollkongens stav", "weapon", a=100, kp=75)
@@ -340,12 +348,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                         else:
                             fiende.a(-450)
 
-def generer_troll(spiller):
+def generer_troll(spiller, sterk=False):
     loot = Loot()
     fiende = Fiende(navn="Troll", race="troll", loot=loot, \
-    hp=120 + 40 * randint(1, spiller.lvl()), \
-    a=20 + randint(0, 10 * spiller.lvl()), \
-    d=30 + randint(0, 10 * spiller.lvl()), \
+    hp=120 + 40 * randint(1, spiller.lvl()) + 250 * int(sterk), \
+    a=20 + randint(0, 10 * spiller.lvl()) + 40 * int(sterk), \
+    d=30 + randint(0, 10 * spiller.lvl()) + 40 * int(sterk), \
     kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="et")
     dynamiskLoot(loot, fiende, spiller)
     skrivTroll()
