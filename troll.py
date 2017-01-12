@@ -147,7 +147,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             base = False
 
         while cave:
-            for x in range(5):
+            for x in range(randint(3, 10)):
                 fiende = generer_troll(spiller)
                 skriv_ut(spiller, fiende)
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
@@ -157,7 +157,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
             # Betaen
             skrivStortTroll()
-            print(spiller.navn(), "har møtt et enormt troll!")
+            print(spiller.navn(), "har møtt et en beta!")
             loot = Loot()
             item = Item("Trollskriv", "trinket")
             fiende = Fiende("Beta", "troll", loot, 1000, 200, 200, kp=150)
@@ -179,9 +179,11 @@ def troll_loop(spiller, inv, klasser, spellbook):
             loot.legg_til_item(3000, 50)
             fiende = Fiende("Trollkongen", "trollmagiker", loot, 2500, 300, 250, kp=100, bonusKp=5, weapon=60)
 
-            print("        " + spiller.navn(), """har møtt sisteboss! Han forklarer alt,
-        korrupsjonen av trollene osv. Han snakker så lenge at det
-        burde egentlig blitt lagt til en egen prosedyre.\n""")
+            print("""   Det er du! Du som drepte så mange av mine barn ved hytta!
+    Du som sprengte vesthulen! Du som tok ned to av mine næreste! Du som
+    angrep minen! Jeg har ventet på en hvilken som helst sjanse til å finne
+    deg, ta deg og rive ut alle innvollene dine! Vel, det trengte jeg ikke
+    å gjøre. Du kom til meg! Du kommer aldri til å slippe unna!\n""")
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
                 qlog.hent_quest(3).progresser()
