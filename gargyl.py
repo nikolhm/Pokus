@@ -68,10 +68,6 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                 smertedreper = True
                 valg = True
 
-            if inn == "i" and qlog.hent_quest(8).ferdig():
-                klartenker = True
-                valg = True
-
         while quest:
             #Merk at oppdrag_tilgjengelige() er en funksjon med returverdi.
             inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "møtehallen").lower()
@@ -251,72 +247,6 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                         pause()
                 else:
                     smertedreper = False
-
-        while klartenker:
-            medlem = spiller.spesialisering() == "Klartenker"
-            print(" "*4 + "Velkommen {}til de Klartenkendes Forening!".format("tilbake " * int(medlem)).center(65 + 20*int(not medlem), "-"))
-            if medlem:
-                print("\n    Som medlem tilbyr vi deg internpriser på konsentrasjonspulver!")
-                print("\n    Konsentrasjonspulver   +700kp                  2500g (k)")
-                print("    Meld deg ut            Fjerner spesialisering   500g (u)")
-                print("\nDu har", inv.penger(), "gullstykker. Skriv 'f' eller 'ferdig' for å dra tilbake.")
-                inn = input("Hva vil du gjøre?\n> ").lower().strip()
-                if inn in {"f", "ferdig"}:
-                    klartenker = False
-                elif inn == "k":
-                    if inv.penger() >= 2500:
-                        inv.legg_til_item(Item("Konsentrasjonspulver", "restoring", kp=700))
-                        inv.penger(-2500)
-                        print("Du kjøpte en stripe konsentrasjonspulver for 2500 gullstykker.")
-                    else:
-                        print("Du har ikke råd!")
-                    pause()
-                elif inn == "u":
-                    print("De Klartenkendes Forening krever 500 i gebyr for papirarbeid.")
-                    inn = input("Er du sikker på at du vil melde deg ut? \nDu må betale ny medlemsavgift om du vil melde deg inn igjen.   (ja/nei)\n> ").lower().strip()
-                    if inn in {"j", "ja", "sure"}:
-                        if inv.penger() >= 500:
-                            inv.penger(-500)
-                            spiller.spesialisering(False)
-                            spiller.hev_kp(-250)
-                            print("Du har meldt deg ut av Foreningen for Klartenkere.")
-                            klartenker = False
-                            inv.fjern_spesialiserte_items("Klartenker")
-                            pause()
-                        else:
-                            print("Du har ikke råd!")
-                            pause()
-            else:
-                print("\n    Dersom du er fremtidsrettet nok til å bli medlem av foreningen vår, vil du ha tilgang ")
-                print("    til en eksklusiv trylleformel som regenererer ekstra konsentrasjonspoeng over tid! Og ")
-                print("    om dette i seg selv ikke har overbevist deg om at klartenkere helt klart triumferer")
-                print("    alle andre spesialiseringer, vil du og få en permanent bonus på 250 konsentrasjonspoeng,")
-                print("    samt tilgang til prima-kvalitets pulver som får konsentrasjonen din rett opp igjen,")
-                print("    selvfølgelig til en ekstra god pris! I tillegg til dette vil du og ha mulighet til å")
-                print("    bruke ting du finner på din ferd som kun en klartenker vil vite hvordan skal brukes!")
-                print("    Det eneste du trenger å gjøre, er å betale en minimal medlemsavgift på 8000 gullstykker, ")
-                print("    et skikkelig kupp!")
-                print("\nDu har", inv.penger(), "gullstykker.")
-                inn = input("Vil du bli en klartenker?\n> ").lower().strip()
-                if inn in {"ja", "j", "yes", "ja!", "hell yes!"}:
-                    if inv.penger() >= 8000 and not spiller.spesialisering():
-                        inv.penger(-8000)
-                        spiller.spesialisering("Klartenker")
-                        spiller.hev_kp(250)
-                        print("\nGratulerer! Du er nå offisielt en Klartenker!\n")
-                        pause()
-                    elif inv.penger() >= 8000:
-                        print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
-                        print("    en klartenker, kan du melde deg ut av den foreningen du for øyeblikket er ")
-                        print("    medlem i og komme tilbake senere!\n")
-                        klartenker = False
-                        pause()
-                    else:
-                        print("Du har ikke nok gullstykker til å betale medlemsavgiften!")
-                        klartenker = False
-                        pause()
-                else:
-                    klartenker = False
 
     if ferdig:
         return verdenskart(spiller)
@@ -571,8 +501,6 @@ def garg_kart(qlog):
     Møtehallen (q)             Diskuter angrepsstrategi i møtehallen""")
     if qlog.hent_qLog()[6].ferdig():
         print("    Opp trappen (o)            Besøk hovedkontoret til Foreningen for Smertedrepere")
-    if qlog.hent_qLog()[8].ferdig():
-        print("    Inn gangen (i)             Besøk hovedkontoret til de Klartenkendes Forening")
     if qlog.hent_qLog()[1].startet():
         print("    Fangekjelleren (a)         Dra til fangekjelleren og finn skjulte skatter!")
     if qlog.hent_qLog()[2].startet():
@@ -725,12 +653,3 @@ def garg_quest(qlog, spiller):
     bq1.legg_til_alt_desk("Vil du myrde kosebamsen mens Besynderlige Berit ser på?\n> ")
     bq1.legg_til_alt_reward(ep=3)
     qlog.legg_til_quest(bq1)
-
-    #klartenker-quest
-    desk = klartenker_intro(navn)
-    ferdigDesk = klartenker_intro_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 12500, 20, "Klara Klartenker")
-    q.legg_til_reward(xp=10000, gull=5000, kp=50)
-    q.legg_til_progresjonTekst("Konsentrajsonspoeng brukt: ")
-    q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Klartenker?    (ja/nei)\n> ")
-    qlog.legg_til_quest(q)

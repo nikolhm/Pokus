@@ -323,8 +323,8 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         spellbook.tankeboble()
 
     #progresserer klartenker-quest. Avgjør hvor mye kp som er brukt.
-    if klasser.questlog(4).hent_quest(8).startet() and kp - spiller.kp() > 0:
-        klasser.questlog(4).hent_quest(8).progresser(kp - spiller.kp())
+    if klasser.questlog(3).hent_quest(5).startet() and kp - spiller.kp() > 0:
+        klasser.questlog(3).hent_quest(5).progresser(kp - spiller.kp())
 
     #progresserer muskelbunt-quest. Avgjør hvor mye hp som er tatt fra fienden.
     if klasser.questlog(2).hent_quest(4).startet():
@@ -676,7 +676,7 @@ def krypt(filnavn):
 
     with open(filnavn, "w", encoding="UTF-8") as fil:
         fil.write(tekst)
-#krypt(docFolder + "\\pokus_saves\\Sverre.sav")
+
 def dekrypt(filnavn):
     ingentingInteressant = "hunGunIcorN"
     skalSkrive =  []

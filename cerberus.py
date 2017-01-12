@@ -18,7 +18,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
     ferdig = False
     if not qlog.hent_quest(0).startet():
         fiende = generer_hellhound(spiller, True)
-        ferdig = not angrip(spiller, fiende, inv, klasser, spellbook, True)
+        ferdig = not angrip(spiller, fiende, inv, klasser, spellbook, intro=True)
 
     while not ferdig:
         cerberus_kart(qlog)
@@ -28,6 +28,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
         gaaTilButikk = False
         vulkan = False
         lagre = False
+        klartenker = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -49,6 +50,10 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
 
             if inn == "l":
                 lagre = True
+                valg = True
+
+            if inn == "i" and qlog.hent_quest(5).ferdig():
+                klartenker = True
                 valg = True
 
         while quest:
@@ -81,6 +86,72 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
 
             vulkan = angrip(spiller, fiende, inv, klasser, spellbook)
 
+        while klartenker:
+            medlem = spiller.spesialisering() == "Klartenker"
+            print(" "*4 + "Velkommen {}til de Klartenkendes Forening!".format("tilbake " * int(medlem)).center(65 + 20*int(not medlem), "-"))
+            if medlem:
+                print("\n    Som medlem tilbyr vi deg internpriser på konsentrasjonspulver!")
+                print("\n    Konsentrasjonspulver   +700kp                  2500g (k)")
+                print("    Meld deg ut            Fjerner spesialisering   500g (u)")
+                print("\nDu har", inv.penger(), "gullstykker. Skriv 'f' eller 'ferdig' for å dra tilbake.")
+                inn = input("Hva vil du gjøre?\n> ").lower().strip()
+                if inn in {"f", "ferdig"}:
+                    klartenker = False
+                elif inn == "k":
+                    if inv.penger() >= 2500:
+                        inv.legg_til_item(Item("Konsentrasjonspulver", "restoring", kp=700))
+                        inv.penger(-2500)
+                        print("Du kjøpte en stripe konsentrasjonspulver for 2500 gullstykker.")
+                    else:
+                        print("Du har ikke råd!")
+                    pause()
+                elif inn == "u":
+                    print("De Klartenkendes Forening krever 500 i gebyr for papirarbeid.")
+                    inn = input("Er du sikker på at du vil melde deg ut? \nDu må betale ny medlemsavgift om du vil melde deg inn igjen.   (ja/nei)\n> ").lower().strip()
+                    if inn in {"j", "ja", "sure"}:
+                        if inv.penger() >= 500:
+                            inv.penger(-500)
+                            spiller.spesialisering(False)
+                            spiller.hev_kp(-250)
+                            print("Du har meldt deg ut av Foreningen for Klartenkere.")
+                            klartenker = False
+                            inv.fjern_spesialiserte_items("Klartenker")
+                            pause()
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+            else:
+                print("\n    Dersom du er fremtidsrettet nok til å bli medlem av foreningen vår, vil du ha tilgang ")
+                print("    til en eksklusiv trylleformel som regenererer ekstra konsentrasjonspoeng over tid! Og ")
+                print("    om dette i seg selv ikke har overbevist deg om at klartenkere helt klart triumferer")
+                print("    alle andre spesialiseringer, vil du og få en permanent bonus på 250 konsentrasjonspoeng,")
+                print("    samt tilgang til prima-kvalitets pulver som får konsentrasjonen din rett opp igjen,")
+                print("    selvfølgelig til en ekstra god pris! I tillegg til dette vil du og ha mulighet til å")
+                print("    bruke ting du finner på din ferd som kun en klartenker vil vite hvordan skal brukes!")
+                print("    Det eneste du trenger å gjøre, er å betale en minimal medlemsavgift på 8000 gullstykker, ")
+                print("    et skikkelig kupp!")
+                print("\nDu har", inv.penger(), "gullstykker.")
+                inn = input("Vil du bli en klartenker?\n> ").lower().strip()
+                if inn in {"ja", "j", "yes", "ja!", "hell yes!"}:
+                    if inv.penger() >= 8000 and not spiller.spesialisering():
+                        inv.penger(-8000)
+                        spiller.spesialisering("Klartenker")
+                        spiller.hev_kp(250)
+                        print("\nGratulerer! Du er nå offisielt en Klartenker!\n")
+                        pause()
+                    elif inv.penger() >= 8000:
+                        print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
+                        print("    en klartenker, kan du melde deg ut av den foreningen du for øyeblikket er ")
+                        print("    medlem i og komme tilbake senere!\n")
+                        klartenker = False
+                        pause()
+                    else:
+                        print("Du har ikke nok gullstykker til å betale medlemsavgiften!")
+                        klartenker = False
+                        pause()
+                else:
+                    klartenker = False
+
     if ferdig:
         return verdenskart(spiller)
 
@@ -95,7 +166,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False):
         tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
 
         if inn == "f" or inn == "flykt":
-            print(spiller.navn(), "drar tilbake til stallen.")
+            print(spiller.navn(), "drar tilbake til forskningslaben.")
             return False
 
         #Her sjekkes om fienden er død. Om så, får karakteren loot og xp.
@@ -117,7 +188,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False):
             return True
 
         elif not tur:
-            if fiende.kp() >= 90 and (not randint(0, 10) or intro) and not fiende.burning() and fiende.race() == "cerberus":
+            if fiende.kp() >= 90 and (not randint(0, 5) or intro) and not fiende.burning() and fiende.race() == "cerberus":
                 if randint(0, 1):
                     print(fiende.navn() + fiende.ending(), "satte fyr på seg selv!")
                     fiende.a(50)
@@ -144,7 +215,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False):
             if spiller.dead():
                 input("\nDu døde! Trykk enter for å fortsette\n> ")
                 spellbook.reset()
-                write_player_died(spiller, "stallen")
+                write_player_died(spiller, "forskningslaben")
                 player_died(spiller, inv, klasser)
                 return False
 
@@ -228,9 +299,11 @@ def cerberus_kart(qlog):
     skrivVulkan()
     print("""
     Velkommen til hulen! Her er stedene du kan dra:
-    Vulkanen (v)               Dra til vulkanen og sloss mot helvetes søte biskevisker :)
+    Vulkanen (v)               Dra til vulkanen og sloss mot helvetes søte biskevisker
     Butikken (k)               Kjøp det du trenger hos "Smolderbrødrenes Smie"
     Forskningslaben (q)        Se om ved forskningslaben utenfor trenger din hjelp""")
+    if qlog.hent_qLog()[5].ferdig():
+        print("    Ned kjelleren (n)          Besøk hovedkontoret til de Klartenkendes Forening")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 def cerberusButikk(butikk):
@@ -263,18 +336,66 @@ def cerberusButikk(butikk):
 def cerberusQuest(qlog, spiller):
     navn = spiller.navn()
 
+    #q1
     desk = cerberus_q1(navn)
     ferdigDesk = cerberus_q1_ferdig(navn)
     q = Quest(desk, ferdigDesk, 5, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=4000, gull=200)
+    q.legg_til_reward(xp=3500, gull=200)
     q.legg_til_progresjonTekst("Nedkjøl brukt: ")
+    q.legg_til_svarTekst("\nEr du klar for å prøve ut formelen?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q2
+    desk = cerberus_q2(navn)
+    ferdigDesk = cerberus_q2_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
+    q.legg_til_reward(xp=5000, gull=400)
+    q.legg_til_progresjonTekst("Hunder dratt tilbake: ")
+    q.legg_til_svarTekst("\nVil du hjelpe oss hente tilbake hundene?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q3
+    desk = cerberus_q3(navn)
+    ferdigDesk = cerberus_q3_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
+    q.legg_til_reward(xp=5000, gull=400)
+    q.legg_til_progresjonTekst("Fiender bekjempet: ")
     q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 
-    desk = ""
-    ferdigDesk = ""
-    q = Quest(desk, ferdigDesk, 5, 15, "Turi Testquest-holder")
-    q.legg_til_reward(xp=5000, gull=2000)
+
+    #q4
+    desk = cerberus_q4(navn)
+    ferdigDesk = cerberus_q4_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
+    q.legg_til_reward(xp=5000, gull=400)
+    q.legg_til_progresjonTekst("Fiender bekjempet: ")
+    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #q5
+    desk = cerberus_q5(navn)
+    ferdigDesk = cerberus_q5_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
+    q.legg_til_reward(xp=5000, gull=400)
+    q.legg_til_progresjonTekst("Fiender bekjempet: ")
+    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #klartenker-quest
+    desk = klartenker_intro(navn)
+    ferdigDesk = klartenker_intro_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 12500, 20, "Klara Klartenker")
+    q.legg_til_reward(xp=10000, gull=5000, kp=50)
+    q.legg_til_progresjonTekst("Konsentrajsonspoeng brukt: ")
+    q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Klartenker?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
+
+    #bq1
+    desk = "yo"
+    ferdigDesk = "sweet"
+    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
+    q.legg_til_reward(xp=5000, gull=400)
     q.legg_til_progresjonTekst("Fiender bekjempet: ")
     q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)

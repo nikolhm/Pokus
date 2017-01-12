@@ -1532,8 +1532,11 @@ class Spellbook:
     def freeze(self, fiende):
         if self._klasser.questlog(3).hent_quest(0).startet():
             if self._spiller.kp() >= 70 and (fiende.burning() or self._spiller.burning()[0]):
-                print(self._spiller.navn(), "kastet Nedkjøl!")
                 self._spiller.bruk_kons(70)
+                print(self._spiller.navn(), "kastet Nedkjøl!")
+                if not self._klasser.questlog(3).hent_quest(0).ferdig() and not randint(0, 1):
+                    print("Nedkjøl-formelen slo feil!")
+                    return False
                 if fiende.burning():
                     print(fiende.navn() + fiende.ending(), "er ikke lenger brennende.")
                     fiende.sett_burning(0)
@@ -1545,7 +1548,7 @@ class Spellbook:
 
                 #progresserer quest
                 self._klasser.questlog(3).hent_quest(0).progresser()
-                
+
                 return False
 
             #ingen som brenner
