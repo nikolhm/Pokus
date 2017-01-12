@@ -361,6 +361,11 @@ def troll_q4(navn):
     har opp ermet...
     """
 
+def troll_bq1(navn):
+    return ""
+def troll_bq1_ferdig(navn):
+    return ""
+
 #Shroom:
 def shroom_q1(navn):
     return "    Hei " + navn + """!

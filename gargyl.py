@@ -624,14 +624,14 @@ def gargylLoot(loot, fiende, spiller):
 def guriLoot(loot):
     loot.legg_til_item(2000, 25)
 
-    item = Item("Steinsko", "shoes", xHp=-30, d=100, lvl=19)
+    item = Item("Steinsko", "shoes", xHp=-30, d=100, lvl=20)
     item.sett_loot_tekst("et par sko av stein")
     loot.legg_til_item(item, 25)
 
-    item = Item("Stein-hatt", "hat", xHp=-30, d=125, lvl=19)
+    item = Item("Stein-hatt", "hat", xHp=-30, d=125, lvl=20)
     loot.legg_til_item(item, 25)
 
-    item = Item("Krystallkule", "trinket", xHp=125, lvl=19)
+    item = Item("Krystallkule", "trinket", xHp=125, lvl=20)
     loot.legg_til_item(item, 25)
 
 def garg_kart(qlog):

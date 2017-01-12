@@ -1,7 +1,7 @@
 """
             *~ Pokus expansion 1.1 - Troll ~*
-                           av
-                     Nikolas Martin
+                            av
+                   Nikolas Hemer Martin
 """
 #Start med å importere alle de nødvendige delfilene.
 from klasser import *
@@ -272,18 +272,19 @@ def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
     loot.legg_til_item(tall, 60)
 
-    item = Item("Tryllepulver", "damaging", dmg=100)
+    dmg = 150 + randint(0, int(spiller.lvl() / 2.5)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
     item.sett_loot_tekst("en håndfull tryllepulver")
-    loot.legg_til_item(item, 17)
+    loot.legg_til_item(item, 10)
 
     kpkp = int(randint(1, spiller.lvl()) /10) *25 + 100
     item = Item("Konsentrasjonspulver", "restoring", kp=kpkp)
     item.sett_loot_tekst("en stripe konsentrasjonspulver")
-    loot.legg_til_item(item, 8)
+    loot.legg_til_item(item, 10)
 
-    tdhp = randint(1, spiller.lvl()) * 5 + 145
+    tdhp = randint(1, spiller.lvl()) * 5 + 175
     item = Item("Trolldrikk", "restoring", hp=tdhp)
-    loot.legg_til_item(item, 13)
+    loot.legg_til_item(item, 15)
 
     a = randint(0, 4 * spiller.lvl())
     xKp = randint(0, 3 * spiller.lvl())
@@ -295,16 +296,14 @@ def dynamiskLoot(loot, fiende, spiller):
     item.sett_loot_tekst("et sverd")
     loot.legg_til_item(item, 5)
 
-    xHp = randint(0, 4 * spiller.lvl())
-    d = randint(0, 2 * spiller.lvl())
-    item = Item("Spiss Hatt", "hat", xHp=xHp, d=d)
-    loot.legg_til_item(item, 5)
-
     loot.legg_til_item(500, 50)
 
-    item = Item("Trollhode", "hat", xHp=70, d=60)
+    xHp = randint(15, 4 * spiller.lvl())
+    d = randint(15, 2 * spiller.lvl())
+    item = Item("Trollhode", "hat", xHp=xHp, d=d)
     item.sett_loot_tekst("et trollhode")
-    loot.legg_til_item(item, 25)
+    loot.legg_til_item(item, 5)
+
 
     item = Item("Trollskinn-kjole", "robe", xHp=20, d=100)
     loot.legg_til_item(item, 25)
@@ -338,28 +337,28 @@ def trollKart(qlog):
 def trollButikk(butikk):
     butikk.legg_til_hadeTekst("\nVelkommen tilbake! Og pass deg for troll!\n")
 
-    item = Item("Tryllepulver", "damaging", dmg=100)
-    vare = Vare(item, 50, "t")
+    item = Item("Tryllepulver", "damaging", dmg=250)
+    vare = Vare(item, 300, "t")
     butikk.legg_til_vare(vare)
 
     item = Item("Trolldrikk", "restoring", hp=300)
     vare = Vare(item, 400, "d")
     butikk.legg_til_vare(vare)
 
-    item = Item("Konsentrasjonspulver", "restoring", kp=200)
+    item = Item("Konsentrasjonspulver", "restoring", kp=150)
     vare = Vare(item, 500, "k")
     butikk.legg_til_vare(vare)
 
     item = Item("Tryllestav", "weapon", a=85, xKp=45)
-    vare = Vare(item, 3000, "w")
+    vare = Vare(item, 2000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Sverd", "weapon", a=150, xHp=20)
-    vare = Vare(item, 9000, "v")
+    item = Item("Sverd", "weapon", a=90, xHp=20)
+    vare = Vare(item, 2500, "v")
     butikk.legg_til_vare(vare)
 
-    item = Item("Falskt skjegg", "beard", xKp=30, ekstraKp=3)
-    vare = Vare(item, 1100, "g")
+    item = Item("Fjellstøvler", "shoes", xKp=30, d=40)
+    vare = Vare(item, 2800, "ø")
     butikk.legg_til_vare(vare)
 
 def trollQuest(qlog, spiller):
@@ -405,3 +404,16 @@ def trollQuest(qlog, spiller):
     q4.legg_til_progresjonTekst("Trollkongen bekjempet: ")
     q4.legg_til_svarTekst("\nVil du ta ned Trollkongen?    (ja/nei)\n> ")
     qlog.legg_til_quest(q4)
+
+    #bq1
+    deskBq1 = troll_bq1(navn)
+    ferdigDeskBq1 = troll_bq1_ferdig(navn)
+    bq1 = Quest(deskBq1, ferdigDeskBq1, 1, 1, "Ekle Erik", bonus=True, resetIfDead=True)
+    item = Item("Superspiss hatt", "hat", xHp=70, d=55)
+    bq1.legg_til_reward(gull=300, ekstraKp=1, item=item, gp=2)
+    bq1.legg_til_ekstra_tekst("Tusen takk " + spiller.navn() + "! Tusen hjertelig takk! Endelig er jeg gjenforent med min kjære sopp!\n")
+    bq1.legg_til_progresjonTekst("Magisk sopp funnet: ")
+    bq1.legg_til_svarTekst("Vil du gi den magiske soppen til Rotete Randi?   (ja/nei)\n> ")
+    bq1.legg_til_alt_desk("Vil du fortære soppen foran ansiktet hennes?\n> ")
+    bq1.legg_til_alt_reward(ep=3, ekstraKp=2, xp=3000)
+    qlog.legg_til_quest(bq1)

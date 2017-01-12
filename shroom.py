@@ -1398,7 +1398,7 @@ def generer_smaatt(spiller):
 def generer_liten_sopp(spiller):
     loot = Loot()
     item = Item("Fotsopp", "shoes", d=randint(30, spiller.lvl()*4), xKp=60)
-    loot.legg_til_item(item, 20)
+    loot.legg_til_item(item, 15)
     loot.legg_til_item(randint(90, 350), 92)
     skrivSopp("liten")
     print(spiller.navn(), "har møtt på en liten sopp!")
