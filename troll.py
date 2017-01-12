@@ -25,6 +25,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         cave = False
         helvete = False
         lagre = False
+        muskelbunt = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -58,6 +59,10 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
             if inn == "h" and qlog.hent_quest(3).startet():
                 helvete = True
+                valg = True
+
+            if inn == "n" and qlog.hent_quest(4).ferdig():
+                muskelbunt = True
                 valg = True
 
         while quest:
@@ -170,25 +175,86 @@ def troll_loop(spiller, inv, klasser, spellbook):
                 pass
             cave = False
 
-        "Quest nummer 3 skal slå en boss, og er satt i egen instans."
         while helvete:
             skrivTrollBoss()
             loot = Loot()
             item = Item("Trollkongens stav", "weapon", a=100, kp=75)
             loot.legg_til_item(item, 50)
             loot.legg_til_item(3000, 50)
-            fiende = Fiende("Trollkongen", "trollmagiker", loot, 2500, 300, 250, kp=100, bonusKp=5, weapon=60)
-
-            print("""   Det er du! Du som drepte så mange av mine barn ved hytta!
-    Du som sprengte vesthulen! Du som tok ned to av mine næreste! Du som
-    angrep minen! Jeg har ventet på en hvilken som helst sjanse til å finne
-    deg, ta deg og rive ut alle innvollene dine! Vel, det trengte jeg ikke
-    å gjøre. Du kom til meg! Du kommer aldri til å slippe unna!\n""")
+            fiende = Fiende("Trollkongen", "trollmagiker", loot, 6500, 450, 250, kp=250, bonusKp=5, weapon=100)
+            trollkongeDialog(spiller)
             skriv_ut(spiller, fiende)
             if angrip(spiller, fiende, inv, klasser, spellbook):
                 qlog.hent_quest(3).progresser()
 
             helvete = False
+
+        while muskelbunt:
+            medlem = spiller.spesialisering() == "Muskelbunt"
+            print(" "*4 + "Velkommen {}til Muskelbunters Fellesforening!".format("tilbake " * int(medlem)).center(65 + 20*int(not medlem), "-"))
+            if medlem:
+                print("\n    Som medlem tilbyr vi deg internpriser på tryllepulver!")
+                print("\n    Tryllepulver           -700hp                  1300g (t)")
+                print("    Meld deg ut            Fjerner spesialisering   500g (u)")
+                print("\nDu har", inv.penger(), "gullstykker. Skriv 'f' eller 'ferdig' for å dra tilbake.")
+                inn = input("Hva vil du gjøre?\n> ").lower().strip()
+                if inn in {"f", "ferdig"}:
+                    muskelbunt = False
+                elif inn == "t":
+                    if inv.penger() >= 1300:
+                        inv.legg_til_item(Item("Tryllepulver", "damaging", dmg=700))
+                        inv.penger(-1300)
+                        print("Du kjøpte en neve tryllepulver for 1300 gullstykker.")
+                    else:
+                        print("Du har ikke råd!")
+                    pause()
+                elif inn == "u":
+                    print("Muskelbunters Fellesforening krever 500 i gebyr for papirarbeid.")
+                    inn = input("Er du sikker på at du vil melde deg ut? \nDu må betale ny medlemsavgift om du vil melde deg inn igjen.   (ja/nei)\n> ").lower().strip()
+                    if inn in {"j", "ja", "sure"}:
+                        if inv.penger() >= 500:
+                            inv.penger(-500)
+                            spiller.spesialisering(False)
+                            spiller.hev_a(-160)
+                            print("Du har meldt deg ut av Muskelbunters Fellesforening.")
+                            muskelbunt = False
+                            inv.fjern_spesialiserte_items("Muskelbunt")
+                            pause()
+                        else:
+                            print("Du har ikke råd!")
+                            pause()
+            else:
+                print("\n    Om du blir medlem av foreningen vår vil du nyte goder du senere vil finne ut du ikke")
+                print("    kan være foruten! Som medlem av Muskelbunters Fellesforening har du tilgang til en ")
+                print("    trylleformel som gjør angrepene dine sterkere i 3 runder! I tillegg til dette vil du ")
+                print("    få en permanent bonus på 160 angrepspoeng, samt tilgang til vårt interne lager av")
+                print("    tryllepulver til innkjøpspris. Som en muskelbunt vil du og ha kunnskapen du trenger ")
+                print("    til å benytte deg av utstyr som krever muskelbunt-spesialisering, OG du får en")
+                print("    relativ bonus på alle angrep gjort med sverd! Her er ditt livs største mulighet, alt")
+                print("    til medlemsavgift på ynkelige 10000 gullstykker! Vet du hva, side jeg liker deg så")
+                print("    godt skal du faktisk få medlemsskap for bare 8000 gullstykker, spesialpris kun for")
+                print("    deg! Her er ingen unnskyldning.")
+                print("\nDu har", inv.penger(), "gullstykker.")
+                inn = input("Vil du bli en muskelbunt?\n> ").lower().strip()
+                if inn in {"ja", "j", "yes", "ja!", "hell yes!"}:
+                    if inv.penger() >= 8000 and not spiller.spesialisering():
+                        inv.penger(-8000)
+                        spiller.spesialisering("Muskelbunt")
+                        spiller.hev_a(160)
+                        print("\nGratulerer! Du er nå offisielt en muskelbunt!\n")
+                        pause()
+                    elif inv.penger() >= 8000:
+                        print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
+                        print("    en klartenker, kan du melde deg ut av den foreningen du for øyeblikket er ")
+                        print("    medlem i og komme tilbake senere!\n")
+                        muskelbunt = False
+                        pause()
+                    else:
+                        print("Du har ikke nok gullstykker til å betale medlemsavgiften!")
+                        muskelbunt = False
+                        pause()
+                else:
+                    muskelbunt = False
 
     if ferdig:
         return verdenskart(spiller)
@@ -214,6 +280,12 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
             spellbook.reset()
+
+            #progresserer bonusquest - Rock&Troll
+            if not randint(0, 49) and not qlog.hent_quest(5).sjekk_ferdig():
+                print(spiller.navn(), "fant et Rock&Troll-album! Kanskje noen i hytten hører på slikt?")
+                qlog.hent_quest(5).progresser()
+
             input("Trykk enter for å fortsette\n> ")
             return True
 
@@ -261,13 +333,9 @@ def generer_troll(spiller):
     a=20 + randint(0, 10 * spiller.lvl()), \
     d=30 + randint(0, 10 * spiller.lvl()), \
     kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="et")
-
-    "Setter fiendens loot i en egen prosedyre."
     dynamiskLoot(loot, fiende, spiller)
-    print("\n" + spiller.navn(), "har møtt på et troll!")
-
-    "Om det finnes ascii-art til fienden, printes den ut her."
     skrivTroll()
+    print("\n" + spiller.navn(), "har møtt på et troll!")
     return fiende
 
 def dynamiskLoot(loot, fiende, spiller):
@@ -298,27 +366,16 @@ def dynamiskLoot(loot, fiende, spiller):
     item.sett_loot_tekst("et sverd")
     loot.legg_til_item(item, 5)
 
-    loot.legg_til_item(500, 50)
-
     xHp = randint(15, 4 * spiller.lvl())
     d = randint(15, 2 * spiller.lvl())
     item = Item("Trollhode", "hat", xHp=xHp, d=d)
     item.sett_loot_tekst("et trollhode")
     loot.legg_til_item(item, 5)
 
-
-    item = Item("Trollskinn-kjole", "robe", xHp=20, d=100)
-    loot.legg_til_item(item, 25)
-
-def statiskLoot(loot):
-    loot.legg_til_item(500, 50)
-
-    item = Item("Trollhode", "hat", xHp=70, d=60)
-    item.sett_loot_tekst("et trollhode")
-    loot.legg_til_item(item, 25)
-
-    item = Item("Trollskinn-kjole", "robe", xHp=20, d=100)
-    loot.legg_til_item(item, 25)
+    xHp = randint(0, 2 * spiller.lvl())
+    d = int(randint(0, 4 * spiller.lvl()) /10) *10
+    item = Item("Trollskinn-kjole", "robe", xHp=xHp, d=d)
+    loot.legg_til_item(item, 5)
 
 def trollKart(qlog):
     skrivHytte()
@@ -333,6 +390,8 @@ def trollKart(qlog):
         print("    Minen (c)                  Invader det mørke, dype hjemmet til trollfolket!")
     if qlog.hent_qLog()[3].startet():
         print("    Helvetesgapet (h)          Konfronter trollkongen!")
+    if qlog.hent_qLog()[4].ferdig():
+        print("    Nabodimensjonshytten (n)   Transporter deg til Muskelbunters Fellesforenings hovedkontor")
     print("    Minnesteinen (l)           Lagre sjelen din i borgens lokale minnestein")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
@@ -363,23 +422,31 @@ def trollButikk(butikk):
     vare = Vare(item, 2800, "ø")
     butikk.legg_til_vare(vare)
 
+def trollkongeDialog(spiller):
+    navn = spiller.navn()
+    print("""   Det er du! Du som drepte så mange av mine barn ved hytta!
+    Du som sprengte vesthulen! Du som tok ned to av mine næreste! Du som
+    angrep minen! Jeg har ventet på en hvilken som helst sjanse til å finne
+    deg, ta deg og rive ut alle innvollene dine! Vel, det trengte jeg ikke
+    å gjøre. Du kom til meg! Du kommer aldri til å slippe unna!\n""")
+
 def trollQuest(qlog, spiller):
     navn = spiller.navn()
 
     #q1
-    desk1 = quests.troll_q1(navn)
-    ferdigDesk1 = quests.troll_q1_ferdig(navn)
+    desk1 = troll_q1(navn)
+    ferdigDesk1 = troll_q1_ferdig(navn)
     q1 = Quest(desk1, ferdigDesk1, 25, 15, "Rolf Rynkerumpe")
-    q1.legg_til_reward(xp=5000, gull=2000, settTilgjengelig=True, settTilgjengeligIndeks=1)
+    q1.legg_til_reward(xp=3000, gull=500, settTilgjengelig=True, settTilgjengeligIndeks=1)
     q1.legg_til_progresjonTekst("Troll slaktet: ")
     q1.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     qlog.legg_til_quest(q1)
 
     #q2
-    desk2 = quests.troll_q2(navn)
-    ferdigDesk2 = quests.troll_q2_ferdig(navn)
+    desk2 = troll_q2(navn)
+    ferdigDesk2 = troll_q2_ferdig(navn)
     q2 = Quest(desk2, ferdigDesk2, 5, 15, "Senile Sverre", tilgjengelig=False)
-    q2.legg_til_reward(xp=5000, gull=4000, settTilgjengelig=True, settTilgjengeligIndeks=2)
+    q2.legg_til_reward(xp=3500, gull=700, settTilgjengelig=True, settTilgjengeligIndeks=2)
     q2.legg_til_progresjonTekst("Ladninger satt: ")
     q2.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
     q2.legg_til_progresjon(1)
@@ -387,13 +454,11 @@ def trollQuest(qlog, spiller):
     qlog.legg_til_quest(q2)
 
     #q3
-    """Her skal tre forskjellige fiender bekjempes. Hver har sin egen progresjon.
-    Ved fullførelse av dette questet, skal det neste questet settes tilgjengelig (Quest-chains)."""
-    desk3 = quests.troll_q3(navn)
-    ferdigDesk3 = quests.troll_q3_ferdig(navn)
+    desk3 = troll_q3(navn)
+    ferdigDesk3 = troll_q3_ferdig(navn)
     q3 = Quest(desk3, ferdigDesk3, 1, 16, "Zip", tilgjengelig=False)
-    item = Item("Trollskjegg", "beard", xKp=60, ekstraKp=4)
-    q3.legg_til_reward(xp=1000, gull=2500, item=item, settTilgjengelig=True, settTilgjengeligIndeks=3)
+    item = Item("Trollskjegg", "beard", xKp=30, ekstraKp=2)
+    q3.legg_til_reward(xp=5000, gull=800, item=item, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Digert troll drept: ")
     q3.legg_til_svarTekst("\nVil du drepe det store trollet?    (ja/nei)\n> ")
     qlog.legg_til_quest(q3)
@@ -402,10 +467,19 @@ def trollQuest(qlog, spiller):
     desk4 = quests.troll_q4(navn)
     ferdigDesk4 = "Kjempebra " + navn + "! Nå kan jeg endelig ta av meg dette skjegget og dra hjem!"
     q4 = Quest(desk4, ferdigDesk4, 1, 16, "Zip", tilgjengelig=False)
-    q4.legg_til_reward(xp=5000, gull=2000)
+    q4.legg_til_reward(xp=10000, gull=1000)
     q4.legg_til_progresjonTekst("Trollkongen bekjempet: ")
     q4.legg_til_svarTekst("\nVil du ta ned Trollkongen?    (ja/nei)\n> ")
     qlog.legg_til_quest(q4)
+
+    #muskelbunt-quest
+    desk = muskelbunt_intro(navn)
+    ferdigDesk = muskelbunt_intro_ferdig(navn)
+    q = Quest(desk, ferdigDesk, 75000, 20, "Maja Muskelbunt")
+    q.legg_til_reward(xp=10000, gull=5000, a=50)
+    q.legg_til_progresjonTekst("Helsepoeng tatt: ")
+    q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Muskelbunt?    (ja/nei)\n> ")
+    qlog.legg_til_quest(q)
 
     #bq1
     deskBq1 = troll_bq1(navn)

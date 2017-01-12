@@ -276,7 +276,8 @@ def muskelbunt_intro(navn):
 
     -- Ta 75000 helsepoeng fra fiender.""".format(navn)
 def muskelbunt_intro_ferdig(navn):
-    return "    Utmerket {}! Du finner vårt kontor opp inn der. Ser deg der!\n".format(navn)
+    return """    Utmerket {}! Du finner vårt kontor i nabodimensjonen vår. Det er en portal
+    ved utedoen som tar deg rett dit. Ser deg der!\n""".format(navn)
 
 #Troll:
 def troll_q1(navn):

@@ -326,8 +326,9 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     if klasser.questlog(4).hent_quest(8).startet() and kp - spiller.kp() > 0:
         klasser.questlog(4).hent_quest(8).progresser(kp - spiller.kp())
 
-    if klasser.questlog(4).hent_quest(9).startet():
-        klasser.questlog(4).hent_quest(9).progresser(fHp - fiende.hp())
+    #progresserer muskelbunt-quest. Avgjør hvor mye hp som er tatt fra fienden.
+    if klasser.questlog(2).hent_quest(4).startet():
+        klasser.questlog(2).hent_quest(4).progresser(fHp - fiende.hp())
 
     return tur
 
