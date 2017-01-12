@@ -8,6 +8,8 @@ from klasser import *
 from grafikk import *
 from quests import *
 from prosedyrer import *
+from troll import generer_troll
+from gnom import generer_gnom
 
 #Mainloop:
 def cerberus_loop(spiller, inv, klasser, spellbook):
@@ -15,7 +17,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
 
     ferdig = False
     while not ferdig:
-        enhjorning_kart(qlog)
+        cerberus_kart(qlog)
 
         valg = False
         quest = False
@@ -42,13 +44,6 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
                 vulkan = True
                 valg = True
 
-            if inn == "1" and qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
-                questInstans1 = True
-                valg = True
-
-            if inn == "2" and qlog.hent_quest(2).startet():
-                questInstans2 = True
-                valg = True
 
         while quest:
             #Merk at oppdrag_tilgjengelige() er en funksjon med returverdi.
@@ -66,21 +61,22 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
             gaaTilButikk = False
 
         while vulkan:
-            if randint(1, 2) == 1:
-                fiende = generer_enhjorning(spiller)
+            tall = randint(1, 10)
+            if tall == 1:
+                fiende = generer_gnom(spiller, 0, False)
+            elif tall <= 5:
+                fiende = generer_troll(spiller)
             else:
-                fiende = generer_fisk(spiller)
+                fiende = generer_hellhound(spiller)
 
-            skriv_ut(spiller, fiende)
             vulkan = angrip(spiller, fiende, inv, klasser, spellbook)
-
-            if vulkan and qlog.hent_quest(0).startet():
-                qlog.hent_quest(0).progresser()
 
     if ferdig:
         return verdenskart(spiller)
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
+    qlog = klasser.questlog(3)
+    skriv_ut(spiller, fiende)
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
         skadeTatt = spiller.hp()
@@ -100,11 +96,18 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             spiller.gi_xp(fiende.xp())
             fiende.loot(spiller, inv)
             spellbook.reset()
+
+            #progresserer quests
+            if qlog.hent_quest(0).startet() and not qlog.hent_quest(0).sjekk_ferdig() and not randint(0, 3):
+                print("Denne hunden er merket! Du drar den med deg tilbake til forskningslaben.")
+                pause()
+                return False
+
             input("Trykk enter for å fortsette\n> ")
             return True
 
         elif not tur:
-            if fiende.kp() >= 90 and not randint(0, 10) and not fiende.burning() and True: #fiende.race() == "cerberus":
+            if fiende.kp() >= 90 and not randint(0, 10) and not fiende.burning() and fiende.race() == "cerberus":
                 if randint(0, 1):
                     print(fiende.navn() + fiende.ending(), "satte fyr på seg selv!")
                     fiende.a(50)
@@ -143,44 +146,47 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 if fiende.burning():
                     print(fiende.navn() + fiende.ending(), "brenner!")
 
-def generer_enhjorning(spiller):
+def generer_hellhound(spiller):
     loot = Loot()
-    fiende = Fiende(navn="Enhjørning", race="enhjørning", loot=loot, \
-    hp=20 + 20 * randint(1, spiller.lvl()), \
+    fiende = Fiende(navn="Helveteshund", race="cerberus", loot=loot, \
+    hp=120 + 40 * randint(1, spiller.lvl()), \
     a=20 + randint(0, 10 * spiller.lvl()), \
     d=30 + randint(0, 10 * spiller.lvl()), \
     kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
-
     dynamiskLoot(loot, fiende, spiller)
-    print("\n" + spiller.navn(), "har møtt på en enhjørning!")
-
-    skrivEnhjorning()
+    skrivHellhound()
+    print("\n" + spiller.navn(), "har møtt på en helveteshund!")
     return fiende
 
-def generer_fisk(spiller):
+def generer_cerberus(spiller):
     loot = Loot()
-    fiende = Fiende("Fisk", "fisk", loot, 700, 200, 150, weapon=50, ending="en")
-    statiskLoot(loot)
-    print("\n" + spiller.navn(), "har møtt på en kampklar fisk!")
-    skrivFisk()
+    fiende = Fiende(navn="Cerberus", race="cerberus", loot=loot, \
+    hp=120 + 40 * randint(1, spiller.lvl()), \
+    a=20 + randint(0, 10 * spiller.lvl()), \
+    d=30 + randint(0, 10 * spiller.lvl()), \
+    kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="en")
+    dynamiskLoot(loot, fiende, spiller)
+    skrivCerberus()
+    print("\n" + spiller.navn(), "har møtt på en cerberus!")
     return fiende
 
 def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
     loot.legg_til_item(tall, 60)
 
-    item = Item("Tryllepulver", "damaging", dmg=100)
+    dmg = 150 + randint(0, int(spiller.lvl() / 2.5)) * 25
+    item = Item("Tryllepulver", "damaging", dmg=dmg)
     item.sett_loot_tekst("en håndfull tryllepulver")
-    loot.legg_til_item(item, 17)
+    loot.legg_til_item(item, 10)
 
     kpkp = int(randint(1, spiller.lvl()) /10) *25 + 100
     item = Item("Konsentrasjonspulver", "restoring", kp=kpkp)
     item.sett_loot_tekst("en stripe konsentrasjonspulver")
-    loot.legg_til_item(item, 8)
+    loot.legg_til_item(item, 10)
 
-    tdhp = randint(1, spiller.lvl()) * 5 + 145
+    tdhp = randint(1, spiller.lvl()) * 5 + 175
     item = Item("Trolldrikk", "restoring", hp=tdhp)
-    loot.legg_til_item(item, 13)
+    loot.legg_til_item(item, 15)
 
     a = randint(0, 4 * spiller.lvl())
     xKp = randint(0, 3 * spiller.lvl())
@@ -192,32 +198,28 @@ def dynamiskLoot(loot, fiende, spiller):
     item.sett_loot_tekst("et sverd")
     loot.legg_til_item(item, 5)
 
-    xHp = randint(0, 4 * spiller.lvl())
-    d = randint(0, 2 * spiller.lvl())
-    item = Item("Spiss Hatt", "hat", xHp=xHp, d=d)
+    xKp = randint(0, 2 * spiller.lvl())
+    d = randint(0, 3 * spiller.lvl())
+    item = Item("Flammende hansker", "gloves", xKp=xKp, d=d)
+    item.sett_loot_tekst("et par flammende hansker")
     loot.legg_til_item(item, 5)
 
-def statiskLoot(loot):
+    hp = randint(0, 4) * 5
+    kp = randint(1, 5) * 5
+    ekp = int(randint(0, 10 + spiller.lvl()) / 10)
+    item = Item("Brennende øyne", "trinket", xHp=hp, xKp=kp, ekstraKp=ekp)
+    loot.legg_til_item(item, 5)
+
+def bossLoot(loot):
     loot.legg_til_item(500, 50)
 
-    item = Item("Fiskehode", "hat", xHp=70, d=60)
-    item.sett_loot_tekst("et fiskehode")
-    loot.legg_til_item(item, 25)
-
-    item = Item("Fiskeskjell-kjole", "robe", xHp=20, d=100)
-    loot.legg_til_item(item, 25)
-
-def enhjorning_kart(qlog):
+def cerberus_kart(qlog):
     skrivVulkan()
     print("""
     Velkommen til hulen! Her er stedene du kan dra:
     Vulkanen (v)               Dra til vulkanen og sloss mot helvetes søte biskevisker :)
     Butikken (k)               Kjøp det du trenger hos "Smolderbrødrenes Smie"
-    Utenfor (q)                Se om noen utenfor trenger din hjelp""")
-    """if qlog.hent_qLog()[1].startet() and not qlog.hent_qLog()[1].ferdig():
-        print("    Quest-sted 1 (1)           Dra til quest-instans nummer 1!")
-    if qlog.hent_qLog()[2].startet():
-        print("    Quest-sted 2 (2)           Dra til quest-instans nummer 2!")"""
+    Forskningslaben (q)        Se om ved forskningslaben utenfor trenger din hjelp""")
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 def cerberusButikk(butikk):
