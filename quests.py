@@ -424,7 +424,7 @@ def cerberus_q2_ferdig(navn):
     """
 
 def cerberus_q3(navn):
-    return "    Eureka, " + navn + """!
+    return "    Eureka, " + navn + """!!!
     Vi har funnet "Cerberus"!!! Signalene leder tilbake til en krystallhule ikke
     langt herifra. Den første gruppen med speidere vi sendte har ikke rapportert
     tilbake. Når vi sendte gruppe #2 fant de de forbrente likene til gruppe #1.
@@ -434,7 +434,7 @@ def cerberus_q3(navn):
 
     -- Underforsk krystallhulen."""
 def cerberus_q3_ferdig(navn):
-    return """Hæææ!!!
+    return """    Hæææ!!!
     Var ikke "Cerberus" i hulen!? Er du sikker på at den ikke slapp unna, du
     inkompetente nek! Jeg skal passe på at Vassle aldri kaller på dine tjenester
     igjen! Her har jeg gjort min banebrytene forskning og vært på forkanten av
@@ -448,10 +448,46 @@ def cerberus_q3_ferdig(navn):
     lære nok om denne krystallen for å finne plasseringen til "Cerberus"!
     """
 
+# minoritetsladningsbærerdiffusjonskoeffisientmålingsapparatur
+
 def cerberus_q4(navn):
-    return ""
+    return "    " + navn + """!!! Min favorittmagiker!
+    Jeg har jobbet hardt og enestående bra på å finne en måte å bruke krystallen
+    til å lokalisere "Cerberus". Det hadde tatt årevis for alle som ikke har mitt
+    geni, men jeg har funnet en strategi!
+
+    1) Først innså jeg at det var noe rart som skjedde når jeg plasserte andre
+    krystaller i nærheten av den store krystallen. De hadde endret farge i komplett
+    synkronitet. På den måten kunne jeg se at de alle var forbundet. Fra dette begynte
+    forskningen min på den utrolige Keezzller-Bong-effekten som krystallene stråler.
+    De er forbundet i en type bethorgatansk vis. Konfigurasjonen er helt absurd,
+    men fascinerende! Jeg husker jeg drømte om slike beta-dismaliserte Krack-Baller
+    svingninger når jeg ikke ble invitert til Senile Sverres bursdagfest i tredjeåret
+    på magikerskolen... på en krogo-partisan måte finnes det ingen forbindelse mellom...
+    og ingen elsker pseudo-euretiske kvaliteter like mye som meg!... IKKE SOV, HØR
+    PÅ GENIET MITT!!!
+
+    2) Det andre jeg innså var at jeg kunne bruke minoritetsladningsbærerdiffusjonskoeffisientmålingsapparaturer
+    til å måle disse diminutive forskjellene i mellom avstanden må krystallene når
+    de plasseres lenger vekk fra hverandre. Det krevde en del arbeid, men det førte
+    til min nye oppfinnelse! Det er en enkel minoritetsladningsbærerdiffusjonskoeffisientmålingsapparatur
+    som sammler og sammenligner enorme mengder atomære data i samtid ved hjelp
+    eksperimentell kvantesammenfiltring. Ikke noe fancy eller utstående, men det
+    får jobben gjort!
+
+    Kort sagt så trenger jeg at du plasserer to av mine nettopp navngitte
+    frederikk-krystallkvantesammenfiltringsminoritetsladningsbærerdiffusjonskoeffisientmålingsapparaturer
+    helt på insiden av to forskjellig krystallhuler på motsatte sider av vulkanen.
+    Den tredje plasserer jeg her i laboratoriet. På den måten kan vi triangulere
+    posisjonen til "Cerberus" og få oss et ordentlig forskningsprosjekt.
+
+    -- Plasser 2 minoritetsladningsbærer-hvadetnåvarigjen."""
 def cerberus_q4_ferdig(navn):
-    return ""
+    return "    " + navn + """!!! Du er tilbake!
+    Dataene strømmer inn! Nå som frederikk-krystallkvantesammenfiltringsminoritetsladningsbærerdiffusjonskoeffisientmålingsapparaturene
+    er satt inn i riktige posisjoner får vi så klart perfekte og dynamisk live
+    informasjon om "Cerberus" sine koordinater! Jeg gjør aldri feil. 
+    """
 
 def cerberus_q5(navn):
     return ""
