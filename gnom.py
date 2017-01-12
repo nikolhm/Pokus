@@ -95,6 +95,12 @@ def gnomeloop(spiller, inv, klasser, spellbook):
                     print("\nDu må skrive et tall!\n")
             else:
                 spir = False
+                if vassleQlog.hent_quest(0).startet():
+                    spiller.sett_sted_tilgjengelig(2)
+                if vassleQlog.hent_quest(1).startet():
+                    spiller.sett_sted_tilgjengelig(3)
+                if vassleQlog.hent_quest(2).startet():
+                    spiller.sett_sted_tilgjengelig(4)
                 if vassleQlog.hent_quest(3).startet():
                     spiller.sett_sted_tilgjengelig(5)
 
@@ -156,9 +162,6 @@ def generer_gnom(spiller, gnomevakter, goingToGaute):
         fiende = Fiende("Gaute Gnom den Grusomme", "gnom", loot, 5000, 230, 150, kp=50)
         gauteLoot(loot)
         gauteDialog(spiller)
-
-    #Skriver ut statsene til fienden og karakteren før kampen har startet til orientering.
-    skriv_ut(spiller, fiende)
 
     return fiende
 
@@ -253,6 +256,9 @@ def gauteLoot(loot):
 
 #Angrepsløkken mot gnomene. Inkluderer gnomevakter og Gaute Gnom den Grusomme.
 def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, spellbook):
+    #Skriver ut statsene til fienden og karakteren før kampen har startet til orientering.
+    skriv_ut(spiller, fiende)
+
     run = False
     angrep = True
     while angrep:

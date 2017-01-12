@@ -1534,7 +1534,7 @@ class Spellbook:
             if self._spiller.kp() >= 70 and (fiende.burning() or self._spiller.burning()[0]):
                 self._spiller.bruk_kons(70)
                 print(self._spiller.navn(), "kastet Nedkjøl!")
-                if not self._klasser.questlog(3).hent_quest(0).ferdig() and not randint(0, 1):
+                if not self._klasser.questlog(3).hent_quest(0).ferdig() and not randint(0, 2):
                     print("Nedkjøl-formelen slo feil!")
                     return False
                 if fiende.burning():

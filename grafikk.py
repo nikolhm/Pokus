@@ -1540,7 +1540,8 @@ def skrivSkilt():
             /,\.||/;._.
            `           `""")
 
-def skrivHellhound():
+def skrivHellhound(nr=0):
+    farger = [red, Fore.GREEN + Style.BRIGHT, Fore.CYAN + Style.BRIGHT]
     clear_screen()
     print("""              /\\     /\\
              / |\\   /| \\
@@ -1557,7 +1558,7 @@ def skrivHellhound():
              \\        /
               \\      /
                \\    /
-                \\__/   nhm""".format(red, reset))
+                \\__/   nhm""".format(farger[nr], reset))
 
 def skrivCerberus():
     clear_screen()
