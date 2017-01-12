@@ -441,7 +441,7 @@ class Quest:
     def legg_til_ekstra_tekst(self, tekst):
         self._ekstraTekst = tekst
 
-    def legg_til_alt_ektra_tekst(self, tekst):
+    def legg_til_alt_ekstra_tekst(self, tekst):
         self._altEkstraTekst = tekst
 
     def legg_til_progresjon(self, xProgresjon):

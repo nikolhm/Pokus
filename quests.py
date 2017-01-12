@@ -276,7 +276,8 @@ def muskelbunt_intro(navn):
 
     -- Ta 75000 helsepoeng fra fiender.""".format(navn)
 def muskelbunt_intro_ferdig(navn):
-    return "    Utmerket {}! Du finner vårt kontor opp inn der. Ser deg der!\n".format(navn)
+    return """    Utmerket {}! Du finner vårt kontor i nabodimensjonen vår. Det er en portal
+    ved utedoen som tar deg rett dit. Ser deg der!\n""".format(navn)
 
 #Troll:
 def troll_q1(navn):
@@ -361,6 +362,9 @@ def troll_q4(navn):
     forsiktig. Jeg har hørt at han har veldig sterk magi. Du vet aldri hva han
     har opp ermet...
     """
+def troll_q4_ferdig(navn):
+    return """    Kjempebra {}! Nå kan jeg endelig ta av meg dette skjegget og dra hjem!
+    Dra tilbake til borgen og rapporter om vår suksess til Vassle!""".format(navn)
 
 def troll_bq1(navn):
     return """    Har du noen gang hørt Rock&Troll-musikk?! Det er det beste jeg noen gang har hørt!

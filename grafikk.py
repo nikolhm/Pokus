@@ -664,7 +664,7 @@ def skrivFontene():
                      ________\       /________
                     (=+=+=+=+=+=+=+=+=+=+=+=+=)
                      ~~~~~~~~~~~~~~~~~~~~~~~~~"""
-    print(insertColor(grafikk, {".":blue, "S+":yellow, "I_\\/~()":gray, "=":brown}))
+    print(insertColor(grafikk, {".":blue + Style.BRIGHT, "S+":brown, "=I_\\/~()":gray,}))
 
 def skrivStatue():
     if platform.system() == "Windows":

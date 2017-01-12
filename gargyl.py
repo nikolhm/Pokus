@@ -29,7 +29,6 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
         guri = False
         smertedreper = False
         klartenker = False
-        muskelbunt = False
         while not valg:
             inn = input("Hvor vil du gå?\n> ").lower()
 
@@ -71,10 +70,6 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
 
             if inn == "i" and qlog.hent_quest(8).ferdig():
                 klartenker = True
-                valg = True
-
-            if inn == "h" and qlog.hent_quest(9).ferdig():
-                muskelbunt = True
                 valg = True
 
         while quest:
@@ -322,73 +317,6 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                         pause()
                 else:
                     klartenker = False
-
-        while muskelbunt:
-            medlem = spiller.spesialisering() == "Muskelbunt"
-            print(" "*4 + "Velkommen {}til Muskelbunters Fellesforening!".format("tilbake " * int(medlem)).center(65 + 20*int(not medlem), "-"))
-            if medlem:
-                print("\n    Som medlem tilbyr vi deg internpriser på tryllepulver!")
-                print("\n    Tryllepulver           -700hp                  1300g (t)")
-                print("    Meld deg ut            Fjerner spesialisering   500g (u)")
-                print("\nDu har", inv.penger(), "gullstykker. Skriv 'f' eller 'ferdig' for å dra tilbake.")
-                inn = input("Hva vil du gjøre?\n> ").lower().strip()
-                if inn in {"f", "ferdig"}:
-                    muskelbunt = False
-                elif inn == "t":
-                    if inv.penger() >= 1300:
-                        inv.legg_til_item(Item("Tryllepulver", "damaging", dmg=700))
-                        inv.penger(-1300)
-                        print("Du kjøpte en neve tryllepulver for 1300 gullstykker.")
-                    else:
-                        print("Du har ikke råd!")
-                    pause()
-                elif inn == "u":
-                    print("Muskelbunters Fellesforening krever 500 i gebyr for papirarbeid.")
-                    inn = input("Er du sikker på at du vil melde deg ut? \nDu må betale ny medlemsavgift om du vil melde deg inn igjen.   (ja/nei)\n> ").lower().strip()
-                    if inn in {"j", "ja", "sure"}:
-                        if inv.penger() >= 500:
-                            inv.penger(-500)
-                            spiller.spesialisering(False)
-                            spiller.hev_a(-160)
-                            print("Du har meldt deg ut av Muskelbunters Fellesforening.")
-                            muskelbunt = False
-                            inv.fjern_spesialiserte_items("Muskelbunt")
-                            pause()
-                        else:
-                            print("Du har ikke råd!")
-                            pause()
-            else:
-                print("\n    Om du blir medlem av foreningen vår vil du nyte goder du senere vil finne ut du ikke")
-                print("    kan være foruten! Som medlem av Muskelbunters Fellesforening har du tilgang til en ")
-                print("    trylleformel som gjør angrepene dine sterkere i 3 runder! I tillegg til dette vil du ")
-                print("    få en permanent bonus på 160 angrepspoeng, samt tilgang til vårt interne lager av")
-                print("    tryllepulver til innkjøpspris. Som en muskelbunt vil du og ha kunnskapen du trenger ")
-                print("    til å benytte deg av utstyr som krever muskelbunt-spesialisering, OG du får en")
-                print("    relativ bonus på alle angrep gjort med sverd! Her er ditt livs største mulighet, alt")
-                print("    til medlemsavgift på ynkelige 10000 gullstykker! Vet du hva, side jeg liker deg så")
-                print("    godt skal du faktisk få medlemsskap for bare 8000 gullstykker, spesialpris kun for")
-                print("    deg! Her er ingen unnskyldning.")
-                print("\nDu har", inv.penger(), "gullstykker.")
-                inn = input("Vil du bli en muskelbunt?\n> ").lower().strip()
-                if inn in {"ja", "j", "yes", "ja!", "hell yes!"}:
-                    if inv.penger() >= 8000 and not spiller.spesialisering():
-                        inv.penger(-8000)
-                        spiller.spesialisering("Muskelbunt")
-                        spiller.hev_a(160)
-                        print("\nGratulerer! Du er nå offisielt en muskelbunt!\n")
-                        pause()
-                    elif inv.penger() >= 8000:
-                        print("\n    Du har allerede en spesialisering! Men frykt ikke, ønsker du likevel å bli ")
-                        print("    en klartenker, kan du melde deg ut av den foreningen du for øyeblikket er ")
-                        print("    medlem i og komme tilbake senere!\n")
-                        muskelbunt = False
-                        pause()
-                    else:
-                        print("Du har ikke nok gullstykker til å betale medlemsavgiften!")
-                        muskelbunt = False
-                        pause()
-                else:
-                    muskelbunt = False
 
     if ferdig:
         return verdenskart(spiller)
@@ -645,8 +573,6 @@ def garg_kart(qlog):
         print("    Opp trappen (o)            Besøk hovedkontoret til Foreningen for Smertedrepere")
     if qlog.hent_qLog()[8].ferdig():
         print("    Inn gangen (i)             Besøk hovedkontoret til de Klartenkendes Forening")
-    if qlog.hent_qLog()[9].ferdig():
-        print("    Bort til høyre (h)         Besøk hovedkontoret til Muskelbunters Fellesforening")
     if qlog.hent_qLog()[1].startet():
         print("    Fangekjelleren (a)         Dra til fangekjelleren og finn skjulte skatter!")
     if qlog.hent_qLog()[2].startet():
@@ -807,13 +733,4 @@ def garg_quest(qlog, spiller):
     q.legg_til_reward(xp=10000, gull=5000, kp=50)
     q.legg_til_progresjonTekst("Konsentrajsonspoeng brukt: ")
     q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Klartenker?    (ja/nei)\n> ")
-    qlog.legg_til_quest(q)
-
-    #muskelbunt-quest
-    desk = muskelbunt_intro(navn)
-    ferdigDesk = muskelbunt_intro_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 75000, 20, "Maja Muskelbunt")
-    q.legg_til_reward(xp=10000, gull=5000, a=50)
-    q.legg_til_progresjonTekst("Helsepoeng tatt: ")
-    q.legg_til_svarTekst("\nØnsker du å søke om å spesialisere deg som Muskelbunt?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
