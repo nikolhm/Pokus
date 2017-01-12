@@ -375,7 +375,7 @@ def troll_bq1(navn):
     ekstremt vanskelig å få tak i de albumene! Trollene må ha funnet det innen nå. Jeg skjønner kanskje
     at de kommer til å nyte det også, men jeg er helt avhengig av "Trolling Stones". Jeg må ha det tilbake!"""
 def troll_bq1_ferdig(navn):
-    return "Har du funnet albumet mitt?! Vær så snill, gi det tilbake! Jeg gjør hva som helst!"
+    return "    Har du funnet albumet mitt?! Vær så snill, gi det tilbake! Jeg gjør hva som helst!\n"
 
 #Shroom:
 def shroom_q1(navn):
