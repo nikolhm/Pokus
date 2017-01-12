@@ -486,13 +486,23 @@ def cerberus_q4_ferdig(navn):
     return "    " + navn + """!!! Du er tilbake!
     Dataene strømmer inn! Nå som frederikk-krystallkvantesammenfiltringsminoritetsladningsbærerdiffusjonskoeffisientmålingsapparaturene
     er satt inn i riktige posisjoner får vi så klart perfekte og dynamisk live
-    informasjon om "Cerberus" sine koordinater! Jeg gjør aldri feil. 
+    informasjon om "Cerberus" sine koordinater! Jeg gjør aldri feil.
     """
 
 def cerberus_q5(navn):
-    return ""
+    return "    Nå, " + navn + """, skal alt det harde arbeidet mitt bære resultater!
+    Vi har konstant kunnskap om hvor vi kan finne Cerberus, men alle skvadronene
+    jeg har sendt til å fange den har endt opp fritert. Jeg tviler på at du kan
+    få til dette, så uerfaren som du er, men jeg har ikke flere bønder, så vel vel.
+
+    Jeg sender deg med en skvadron til å fange "Cerberus", men du får ta ned monsteret
+    selv. Skvadronene har dannet en jævla fagforening. De gidder ikke "å bli behandlet
+    som prøvekaniner". Likevel gjør ikke du noe så tåpelig, så gå dø eller vinn!
+    Helst vinn, så klart, men da må jeg betale deg...
+
+    -- Fang Cerberus."""
 def cerberus_q5_ferdig(navn):
-    return ""
+    return "Takk. Du er ferdig. Ta pengene dine og dra til Vassle med historier om geniet mitt."
 
 #Shroom:
 def shroom_q1(navn):
