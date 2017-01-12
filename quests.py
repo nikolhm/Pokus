@@ -379,7 +379,7 @@ def troll_bq1_ferdig(navn):
 
 #Cerberus
 def cerberus_q1(navn):
-    return "Hei, " + navn + """!
+    return "    Hei, " + navn + """!
     Velkommen til Obsidian Forskningslab. Jeg er Dr. Frederikk.
     Vi er her for å undersøke opphavet til de voldelige hundene som har dukket opp
     i området. Alt vi har fått vite gjennom rykter er at hundene blir ledet av en
@@ -395,7 +395,8 @@ def cerberus_q1(navn):
     å mestre, men fra det jeg har hørt fra gode gamle Vassle, er du et naturtalent.
     Jeg tror du bare trenger å øve på å kaste formelen fem ganger før du kan bruke det
     uten problemer.
-    """
+
+    -- Slukk ilden til 5 helveteshunder."""
 def cerberus_q1_ferdig(navn):
     return "    Utrolig, " + navn + """!
     Vassle sa du var en flink magiker, men det var en vits når jeg sa at du kunne
@@ -403,7 +404,7 @@ def cerberus_q1_ferdig(navn):
     med 75% treffsikkerhet!"""
 
 def cerberus_q2(navn):
-    return "Greit, " + navn + """!
+    return "    Greit, " + navn + """!
     Nå som du har lært deg å forsvare deg mot disse nye og uforutsigbare fiendene
     har vi et oppdrag for deg. Grunnet de telepatiske evnene til "Cerberus" har
     tre helveteshunder flyktet forskningslaben. Vi har merket at lederen er meget
@@ -414,17 +415,38 @@ def cerberus_q2(navn):
     Vi var på kanten av en stor oppdagelse når de slapp ut bakdøra. Vi trenger
     de bikkjene! Gå rundt vulkanen og finn forskningseksemplarene. De burde ha
     en Obsidian-logo brent inn i hofta.
-    """
+
+    -- Finn 3 helveteshunder med en Obsidian-logo på hofta"""
 def cerberus_q2_ferdig(navn):
-    return "Strålende arbeid" + navn + """!
+    return "    Strålende arbeid" + navn + """!
     Endelig kan vi spore de signalene tilbake! Vi trenger litt kalibrering og vi
     må tweeke litt på algoritmene, men vi er på grensen av et massivt gjennombrudd!
     """
 
 def cerberus_q3(navn):
-    return ""
+    return "    Eureka, " + navn + """!
+    Vi har funnet "Cerberus"!!! Signalene leder tilbake til en krystallhule ikke
+    langt herifra. Den første gruppen med speidere vi sendte har ikke rapportert
+    tilbake. Når vi sendte gruppe #2 fant de de forbrente likene til gruppe #1.
+
+    Dette er vår sjanse til å undersøke og tilpasse kreftene til "Cerberus".
+    Gå inn i den hulen og hent meg "Cerberus"!
+
+    -- Underforsk krystallhulen."""
 def cerberus_q3_ferdig(navn):
-    return ""
+    return """Hæææ!!!
+    Var ikke "Cerberus" i hulen!? Er du sikker på at den ikke slapp unna, du
+    inkompetente nek! Jeg skal passe på at Vassle aldri kaller på dine tjenester
+    igjen! Her har jeg gjort min banebrytene forskning og vært på forkanten av
+    menneskeheten, mens du bare har gått rundt og slått ut noen søte små valper,
+    så kan du ikke engang finne meg et ordentlig eksemplar!? Fjern deg frå synet mitt!
+
+    Å! Så du fant noe annet i hulen... En krystall... Denne er interressant...
+
+    Kjempebra arbeid, """ + navn + """! Jeg skjønner hvorfor Vassle har så gode ting å si
+    om deg! Det er så godt å være rundt kompetente profesjonelle! Jeg tror jeg kan
+    lære nok om denne krystallen for å finne plasseringen til "Cerberus"!
+    """
 
 def cerberus_q4(navn):
     return ""
