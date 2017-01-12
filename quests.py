@@ -339,10 +339,11 @@ def troll_q3(navn):
     Likevel må jeg finne ut hva de vet om trollene. Jeg har overhørt noe prat om
     å dra ned til den gamle minen å rydde ut noen av de sterkere trollene. Disse
     gamle fjertene snakker om å gjøre det, men de bare snakker og snakker og gjør
-    niks. Kan du gå ned i minen og drepe et digert troll? Jeg tror du kan finne
-    noen informasjon om lederen av trollene. Vi vet overraskende lite om ham...
+    niks. Kan du gå ned i minen og drepe en beta? Jeg tror det kan være mulig at
+    du kan finne informasjon om hvor Trollkongen gjemmer seg. Trollkongen sender
+    alltid ut ordre gjennom betaene og de har ikke så god hukommelse.
 
-    -- Dra ned i minen og drep et digert troll."""
+    -- Dra ned i minen og drep en beta."""
 def troll_q3_ferdig(navn):
     return "    Hei, " + navn + """!
     Så du fant et skriv på trollet? Det er veldig vanskelig å lese trollsk, men
