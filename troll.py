@@ -301,7 +301,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                     fiende.kp(-80)
                     fiende.a(450)
                 else:
-                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(300, 400)), \
+                    print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(300, 500)), \
                     "hp, og forbereder seg på et kraftig slag!")
                     fiende.kp(-80)
                     fiende.a(600)
@@ -334,7 +334,10 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
                 if forsterkCD > 0:
                     forsterkCD -= 1
                     if forsterkCD == 0:
-                        fiende.a(-450)
+                        if fiende.navn() in {"Beta", "Trollkongen"}:
+                            fiende.a(-600)
+                        else:
+                            fiende.a(-450)
 
 def generer_troll(spiller):
     loot = Loot()
