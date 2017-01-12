@@ -379,14 +379,47 @@ def troll_bq1_ferdig(navn):
 
 #Cerberus
 def cerberus_q1(navn):
-    return ""
+    return "Hei, " + navn + """!
+    Velkommen til Obsidian Forskningslab. Jeg er Dr. Frederikk.
+    Vi er her for å undersøke opphavet til de voldelige hundene som har dukket opp
+    i området. Alt vi har fått vite gjennom rykter er at hundene blir ledet av en
+    trehodet hund, som vi har valgt å kalle "Cerberus". Selv om denne informasjonen
+    ikke er helt solid, så har vi kunnet bekrefte at hundene blir ledet telepatisk
+    av et ukjent vesen. Ellers har vi ikke gjort mye fremgang, untatt i forhold til
+    forsvar mot disse hundene.
+
+    Du har kanskje lagt merke til at de er immune mot ild og varme. De setter ofte
+    fyr på seg selv for å øke angrepsstyrke og å skremme bort fiender. Det er vanskelig
+    å kjempe mot en fiende som brenner. Derfor har vi utviklet en formel for å slukke
+    flammene. Vi har valgt å kalle formelen for "Nedkjøl". Den krever litt øvelse for
+    å mestre, men fra det jeg har hørt fra gode gamle Vassle, er du et naturtalent.
+    Jeg tror du bare trenger å øve på å kaste formelen fem ganger før du kan bruke det
+    uten problemer.
+    """
 def cerberus_q1_ferdig(navn):
-    return ""
+    return "    Utrolig, " + navn + """!
+    Vassle sa du var en flink magiker, men det var en vits når jeg sa at du kunne
+    mestre det på fem ganger! Mesteparten av forskerne her brukte måneder på å treffe
+    med 75% treffsikkerhet!"""
 
 def cerberus_q2(navn):
-    return ""
+    return "Greit, " + navn + """!
+    Nå som du har lært deg å forsvare deg mot disse nye og uforutsigbare fiendene
+    har vi et oppdrag for deg. Grunnet de telepatiske evnene til "Cerberus" har
+    tre helveteshunder flyktet forskningslaben. Vi har merket at lederen er meget
+    intellegent og kan se alt som undersåttene kan se.
+
+    De hundene var del av et klassifisert forskningsprosjekt, som har som mål å
+    spore de telepatiske signalene fra undersåttene tilbake til "Cerberus".
+    Vi var på kanten av en stor oppdagelse når de slapp ut bakdøra. Vi trenger
+    de bikkjene! Gå rundt vulkanen og finn forskningseksemplarene. De burde ha
+    en Obsidian-logo brent inn i hofta.
+    """
 def cerberus_q2_ferdig(navn):
-    return ""
+    return "Strålende arbeid" + navn + """!
+    Endelig kan vi spore de signalene tilbake! Vi trenger litt kalibrering og vi
+    må tweeke litt på algoritmene, men vi er på grensen av et massivt gjennombrudd!
+    """
 
 def cerberus_q3(navn):
     return ""
