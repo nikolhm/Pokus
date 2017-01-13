@@ -406,7 +406,21 @@ def generer_cerberus(spiller):
     return fiende
 
 def cerberusDialog(spiller):
-    return ""
+    print("""    Endelig har du kommet! Jeg har ventet deg lenge! Jeg har sett deg
+    gjennom øynene til Roosevelt og Churchill; gjennom alle i skaret. Du har kommet
+    mot meg som en ustoppelig kraft; en skjebne jeg ikke kan unslippe. Jeg lurer
+    på hva du tror du er: Hvordan du ser deg selv. Jeg undrer meg om at alt du gjør
+    i ditt hode er heroisk. Det er få ting som separerer en helt og en skurk.
+    Begge tror de gjør det rette.
+    """)
+    pause()
+    print("""    Du skal få betale for alt du har gjort mot familien min. Alt du
+    har gjort mot meg! Jeg følte det når du kuttet strupen på flere titall av
+    skaret mitt. Du kan ikke tenke deg smerten av å leve etter å føle død.
+    Den som kom før deg var noen av en annen natur. Han så livet med et perspektiv
+    som gjør ham til min velgjører. Han har gitt meg sjansen til å hevne brødrene mine.
+    Du slipper ikke unna.
+    """)
 
 def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
