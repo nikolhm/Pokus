@@ -35,7 +35,7 @@ bdist_dmg_options = {"volume_label": "Pokus", "applications_shortcut": True}
 base = None
 
 setup(  name="Pokus",
-        version = "1.3",
+        version = "2.0",
         options = {"build_exe": build_exe_options,
                    "bdist_msi": bdist_msi_options,
                    #"bdist_mac": bdist_mac_options,
