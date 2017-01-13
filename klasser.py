@@ -890,6 +890,8 @@ class Spiller:
     #Fjerner ting i inventory og setter starterstatsene til å være lavere enn vanlig.
     def die(self, inv):
         inv.reset()
+        self._burningCD = 0
+        self._burnDmg = 0
         self._hp = int(self._xHp/3)
         self._kp = int(self._xKp/4)
         self._fuglelukt = True
@@ -2057,6 +2059,18 @@ class Inventory:
             print("Du har et trollsk dokument.")
         if not qListeTroll[5].ferdig() and qListeTroll[5].progresjon():
             print('Du har et "Trolling Stones"-abum.')
+
+        #Cerberus
+        qListeCerberus = self._klasser.questlog(3).hent_qLog()
+        if not qListeCerberus[2].ferdig() and qListeCerberus[2].progresjon():
+            print("Du har en gedigen krystall.")
+        if not qListeCerberus[3].ferdig() and qListeCerberus[3].startet() \
+        and not (qListeCerberus[3].progresjon() and qListeCerberus[3].progresjon_liste()[0]):
+            print("Du har {} av Forsker Frederikks teknologiske duppedingser.".format(\
+            2 - (qListeCerberus[3].progresjon() + qListeCerberus[3].progresjon_liste()[0])))
+        if not qListeCerberus[6].ferdig() and qListeCerberus[6].progresjon():
+            print("Du har {} seksjon{} med forskningsresultater om trollskjegg.".format(\
+            qListeCerberus[6].progresjon(), "er" * int(qListeCerberus[6].progresjon() > 1)))
 
         #Gargyl
         qListeGargyl = self._klasser.questlog(4).hent_qLog()

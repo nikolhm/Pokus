@@ -272,6 +272,10 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
                 qlog.hent_quest(1).progresser()
                 return False
 
+            if not qlog.hent_quest(6).sjekk_ferdig() and not randint(0, 7) and fiende.race() == "troll":
+                print("Du fant en seksjon fra noen forskningsresultater på trollet! Hvem kan det være sitt?")
+                qlog.hent_quest(6).progresser()
+
             input("Trykk enter for å fortsette\n> ")
             return True
 
@@ -341,7 +345,7 @@ def generer_hellhound(spiller, sterk=False):
     hp=120 + 40 * randint(1, spiller.lvl()) + 400 * int(sterk), \
     a=20 + randint(0, 10 * spiller.lvl()), \
     d=30 + randint(0, 10 * spiller.lvl()) + 120 * int(sterk), \
-    kp=50 + randint(0, 3 * spiller.lvl()) + 50 * int(sterk), bonusKp=2, ending="en")
+    kp=90 + randint(0, 2 * spiller.lvl()) + 50 * int(sterk), bonusKp=2, ending="en")
     dynamiskLoot(loot, fiende, spiller)
     skrivHellhound()
     print("\n" + spiller.navn(), "har møtt på en helveteshund!")
@@ -371,7 +375,7 @@ def generer_beta(spiller, nr):
     loot.legg_til_item(item, 25)
 
     item = Item("Kjærlighetslapp", "trinket", d=randint(0, 1) * 10, \
-    xKp=randint(2, 4) * 10, ekstraKp=randint(2, 2 + lvl / 10))
+    xKp=randint(2, 4) * 10, ekstraKp=randint(2, 2 + int(lvl / 10)))
     loot.legg_til_item(item, 25)
 
     skrivHellhound(nr)
@@ -386,12 +390,16 @@ def generer_cerberus(spiller):
     #loot
     loot.legg_til_item(3000, 25)
 
-    item = Item("Treegget sverd", "weapon", a=randint(15, 20 + int(lvl / 10)), xHp=-10, xKp=-10, blade=True)
+    item = Item("Treegget sverd", "weapon", a=randint(15, 17 + int(lvl / 10)), xHp=-10, xKp=-10, blade=True)
     item.sett_loot_tekst("et treegget sverd")
     loot.legg_til_item(item, 25)
 
-    item = Item("Hundeskinnshatt", "hat")
+    item = Item("Hundeskinnshatt", "hat", a=20, xHp=150, d=70)
+    loot.legg_til_item(item, 25)
 
+    item = Item("Ctøvler", "shoes", d=50, xHp=50, a=30)
+    item.sett_loot_tekst("et par ctøvler")
+    loot.legg_til_item(item, 25)
 
     skrivCerberus()
     print("\n" + spiller.navn(), "har møtt på Cerberus!")
@@ -465,7 +473,7 @@ def cerberus_kart(qlog):
     print("    Ut i verden (f)            Viser deg kart over alle stedene du kan dra\n")
 
 def cerberusButikk(butikk):
-    butikk.legg_til_hadeTekst("\nLykke til bror!\n")
+    butikk.legg_til_hadeTekst("\nIkke brenn deg der ute!\n")
 
     item = Item("Tryllepulver", "damaging", dmg=250)
     vare = Vare(item, 300, "t")
@@ -539,8 +547,8 @@ def cerberusQuest(qlog, spiller):
     ferdigDesk = cerberus_q5_ferdig(navn)
     q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
     q.legg_til_reward(xp=10000, gull=1000)
-    q.legg_til_progresjonTekst("Cerberus bekjempet: ")
-    q.legg_til_svarTekst("\nEr du magikeren til å bringe ned den mektige Cerberus?    (ja/nei)\n> ")
+    q.legg_til_progresjonTekst("Cerberus fanget: ")
+    q.legg_til_svarTekst("\nEr du magikeren til å bringe inn den mektige Cerberus?    (ja/nei)\n> ")
     qlog.legg_til_quest(q)
 
     #klartenker-quest
@@ -555,8 +563,15 @@ def cerberusQuest(qlog, spiller):
     #bq1
     desk = cerberus_bq1(navn)
     ferdigDesk = cerberus_bq1_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
-    q.legg_til_reward(xp=5000, gull=700)
-    q.legg_til_progresjonTekst("Fiender bekjempet: ")
-    q.legg_til_svarTekst("\nVil du hjelpe oss?    (ja/nei)\n> ")
+    q = Quest(desk, ferdigDesk, 5, 1, "Marinbiolog Marie", bonus=True, resetIfDead=True)
+    item = Item("Tang", "beard", xKp=65, ekstraKp=4)
+    q.legg_til_reward(xp=5000, item=item, gp=2)
+    q.legg_til_progresjonTekst("Seksjoner funnet: ")
+    q.legg_til_svarTekst("\nVil du gi forskningsresultatene til Marie?    (ja/nei)\n> ")
+    q.legg_til_ekstra_tekst("Tusen takk " + navn + "! Nå kan jeg endelig dra tilbake til hytten min!\n" + \
+    "Her har du skjegget mitt som takk!")
+    q.legg_til_alt_desk("Vil du gi forskningsresultatene til Forsker Frederikk og la ham ta æren istedenfor?\n> ")
+    q.legg_til_alt_ekstra_tekst("Du gir forskningsresultatene til Forsker Frederikk. \n " + \
+    "Marinbiolog Marie ser sitt livs verk bli stjelt foran øynene hennes. \nForsker Frederikk gir deg en god slump gullstykker.")
+    q.legg_til_alt_reward(xp=5000, gull=2500, ep=3)
     qlog.legg_til_quest(q)

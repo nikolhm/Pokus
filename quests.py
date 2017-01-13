@@ -233,52 +233,6 @@ def garg_bq1(navn):
 def garg_bq1_ferdig(navn):
     return "    Bamse!!! Gi meg bamse!\n"
 
-#Spesialiseringsquests
-def smertedreper_intro(navn):
-    return """    Hei {}!
-    Si meg, hva vet du om smertedrepernes vakre kunst? Ingenting?
-    La meg gi deg en kort introduksjon: Vi i Foreningen for Smertedrepere har som
-    filosofi at det å ta skade slett ikke er en svakhet, men en lærdom, en lekse,
-    kunnskap man kan ta med seg videre i livet! Men for å lære noe som helst av smerten
-    må man tåle den først. Derfor spesialiserer vi oss innen kunsten å tåle så mye
-    skade som mulig!
-
-    Vi i Foreningen for Smertedrepere rekrutterer nye medlemmer, men vi har strenge
-    medlemmskrav. Alle som søker, må ha mistet minst 25000 helsepoeng fra fiender!
-
-    -- Mist 25000 helsepoeng fra fiender.""".format(navn)
-def smertedreper_intro_ferdig(navn):
-    return "    Utmerket {}! Du finner vårt kontor opp trappen fra hovedhallen. Ser deg der!\n".format(navn)
-
-def klartenker_intro(navn):
-    return """    Hei {}!
-    Har du hørt om klartenkere før? Klartenkere er oss som er helt klar i hodet,
-    spesielt etter en god stripe konsentrasjonspulver! Vi konsentrerer oss om
-    konsentrasjon, og mener det er essensen av suksess i enhver kamp. Konsentrason
-    er det som gjør oss magikere til magikere, og uten den ligger vi tynt an!
-
-    Vi i de Klartenkendes Forening rekrutterer nye medlemmer, men for å søke om
-    å bli medlem krever vi at du har brukt minst 12500 konsentrasjonspoeng!
-
-    -- Bruk 12500 konsentrasjonspoeng.""".format(navn)
-def klartenker_intro_ferdig(navn):
-    return "    Flott! Du finner vårt hovedkontor der borte. Snakkes der!\n"
-
-def muskelbunt_intro(navn):
-    return """    Hei {}!
-    Hvilket forhold har du til muskelbunter? Vi er ikke så skumle som vi høres
-    ut, men definitivt så farlige som vi høres ut! Vi i Muskelbunters Felles-
-    forening mener at trylletriks er hendig å ha opp ermet, men til syvende og
-    sist er det vanlige angrep som avgjør en kamp.
-
-    Vi i de Muskelbunters Forening rekrutterer nye medlemmer, men for å søke om
-    å bli medlem krever vi at du har tatt minst 75000 helsepoeng fra fiender!
-
-    -- Ta 75000 helsepoeng fra fiender.""".format(navn)
-def muskelbunt_intro_ferdig(navn):
-    return """    Utmerket {}! Du finner vårt kontor i nabodimensjonen vår. Det er en portal
-    ved utedoen som tar deg rett dit. Ser deg der!\n""".format(navn)
-
 #Troll:
 def troll_q1(navn):
     return "    Hei, " + navn + """!
@@ -401,7 +355,7 @@ def cerberus_q1_ferdig(navn):
     return "    Utrolig, " + navn + """!
     Vassle sa du var en flink magiker, men det var en vits når jeg sa at du kunne
     mestre det på fem ganger! Mesteparten av forskerne her brukte måneder på å treffe
-    med 75% treffsikkerhet!"""
+    med 75% treffsikkerhet!\n"""
 
 def cerberus_q2(navn):
     return "    Greit, " + navn + """!
@@ -500,12 +454,12 @@ def cerberus_q5(navn):
 
     -- Fang Cerberus."""
 def cerberus_q5_ferdig(navn):
-    return "    Takk. Du er ferdig. Ta pengene dine og dra til Vassle med historier om geniet mitt."
+    return "    Takk. Du er ferdig. Ta pengene dine og dra til Vassle med historier om geniet mitt.\n"
 
 def cerberus_bq1(navn):
     return "    Hei, " + navn + """!
     Du lurer kanskje hva en marinbiolog gjør her ute på et sted uten vann. Det lurer
-    jeg også på... Herr Overtrollmann Vassle har valgt å sette den fremste ekspert
+    jeg også på... Herr Overtrollmann Vassle har valgt å sette den fremste eksperten
     hans på akvatiske mikro-organismer på et sted hvor vann fordamper nesten umiddelbart.
 
     Det gir ikke så mye mening for meg, men jeg tror jeg har akkurat det jeg trenger
@@ -514,7 +468,7 @@ def cerberus_bq1(navn):
 
     Jeg oppdaget at den grønne, slimete og elastiske gørra som troll dekker seg
     med faktisk er alger! De lever i symbiose med trollene! Det er den største
-    oppdagelsen i  livet mitt!... Ikke spør hvordan jeg fant det ut...
+    oppdagelsen i  livet mitt! Ikke spør hvordan jeg fant det ut...
 
     Jeg utførte min egen forskning på egen tid i hemmelighet fra Frederikk. Jeg
     hadde konkrete og repliserbare bevis! Så kom trollene... De snek seg inn i
@@ -523,9 +477,57 @@ def cerberus_bq1(navn):
     å komme meg ut herifra! De har nok spredt sidene rundt vulkanen. Vær så snill,
     hjelp meg finne livsverket mitt!
 
-     -- Finn 5 seksjoner av forskningsmateriale."""
+     -- Finn 5 seksjoner av forskningsmateriale.\n"""
 def cerberus_bq1_ferdig(navn):
-    return "    Du fant det! Jeg trodde jeg måtte starte fra bunnen av!"
+    return "    Du fant det! Jeg trodde jeg måtte starte fra bunnen av!\n"
+
+#Spesialiseringsquests
+def smertedreper_intro(navn):
+    return """    Hei {}!
+    Si meg, hva vet du om smertedrepernes vakre kunst? Ingenting?
+    La meg gi deg en kort introduksjon: Vi i Foreningen for Smertedrepere har som
+    filosofi at det å ta skade slett ikke er en svakhet, men en lærdom, en lekse,
+    kunnskap man kan ta med seg videre i livet! Men for å lære noe som helst av smerten
+    må man tåle den først. Derfor spesialiserer vi oss innen kunsten å tåle så mye
+    skade som mulig!
+
+    Vi i Foreningen for Smertedrepere rekrutterer nye medlemmer, men vi har strenge
+    medlemmskrav. Alle som søker, må ha mistet minst 25000 helsepoeng fra fiender!
+
+    -- Mist 25000 helsepoeng fra fiender.""".format(navn)
+def smertedreper_intro_ferdig(navn):
+    return "    Utmerket {}! Du finner vårt kontor opp trappen fra hovedhallen. Ser deg der!\n".format(navn)
+
+def klartenker_intro(navn):
+    return """    Hei {}!
+    Har du hørt om klartenkere før? Klartenkere er oss som er helt klar i hodet,
+    spesielt etter en god stripe konsentrasjonspulver! Vi konsentrerer oss om
+    konsentrasjon, og mener det er essensen av suksess i enhver kamp. Konsentrason
+    er det som gjør oss magikere til magikere, og uten den ligger vi tynt an!
+
+    Vi i de Klartenkendes Forening rekrutterer nye medlemmer, men for å søke om
+    å bli medlem krever vi at du har brukt minst 12500 konsentrasjonspoeng!
+
+    -- Bruk 12500 konsentrasjonspoeng.""".format(navn)
+def klartenker_intro_ferdig(navn):
+    return """    Flott! Du finner vårt hovedkontor ned kjelleren fra forskningslaben.
+    Der driver vi litt... forskning på si. Vi produserer iallefall helt kanon konsentrasjonspulver!
+    Snakkes der!\n"""
+
+def muskelbunt_intro(navn):
+    return """    Hei {}!
+    Hvilket forhold har du til muskelbunter? Vi er ikke så skumle som vi høres
+    ut, men definitivt så farlige som vi høres ut! Vi i Muskelbunters Felles-
+    forening mener at trylletriks er hendig å ha opp ermet, men til syvende og
+    sist er det vanlige angrep som avgjør en kamp.
+
+    Vi i de Muskelbunters Forening rekrutterer nye medlemmer, men for å søke om
+    å bli medlem krever vi at du har tatt minst 75000 helsepoeng fra fiender!
+
+    -- Ta 75000 helsepoeng fra fiender.""".format(navn)
+def muskelbunt_intro_ferdig(navn):
+    return """    Utmerket {}! Du finner vårt kontor i nabodimensjonen vår. Det er en portal
+    ved utedoen som tar deg rett dit. Ser deg der!\n""".format(navn)
 
 #Shroom:
 def shroom_q1(navn):
@@ -1016,7 +1018,7 @@ def vassle_cerberus_ferdig(navn):
     og helveteshundene fra å benytte seg av det, og få kontroll på den selv, er
     dette et stort skritt i vår kamp for overlevelse! Likevel er det høyst
     urovekkende å høre om denne magikeren. Men det får vi ta siden, det har
-    oppstått en ny ubalanse, og denne gangen truer det magi-borgen direkte! """
+    oppstått en ny ubalanse, og denne gangen truer det magi-borgen direkte!\n"""
 
 def vassle_gargyl(navn):
     return "    Hei " + navn + """!

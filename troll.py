@@ -302,7 +302,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             return True
 
         elif not tur:
-            if fiende.race() == "troll" and fiende.kp() >= 80 and not randint(0, 10):
+            if fiende.oppholdt():
+                print(fiende.navn() + fiende.ending(), "er oppholdt.")
+            elif fiende.race() == "troll" and fiende.kp() >= 80 and not randint(0, 10):
                 print(fiende.navn() + fiende.ending(), "kastet Forsterk!")
                 if fiende.navn() not in {"Beta", "Trollkongen"}:
                     print(fiende.navn() + fiende.ending(), "restorerte", fiende.restorer(randint(250, 300)), \
@@ -351,9 +353,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
 def generer_troll(spiller, sterk=False):
     loot = Loot()
     fiende = Fiende(navn="Troll", race="troll", loot=loot, \
-    hp=120 + 40 * randint(1, spiller.lvl()) + 250 * int(sterk), \
+    hp=120 + 40 * randint(1, spiller.lvl()) + 500 * int(sterk), \
     a=20 + randint(0, 10 * spiller.lvl()) + 40 * int(sterk), \
-    d=30 + randint(0, 10 * spiller.lvl()) + 40 * int(sterk), \
+    d=30 + randint(0, 10 * spiller.lvl()) + 60 * int(sterk), \
     kp=50 + randint(0, 3 * spiller.lvl()), bonusKp=2, ending="et")
     dynamiskLoot(loot, fiende, spiller)
     skrivTroll()
