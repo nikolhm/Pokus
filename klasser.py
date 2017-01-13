@@ -1890,6 +1890,19 @@ class Inventory:
         if self.bytt(item):
             return item
 
+    def swap(self):
+        gammelItem = None
+        nyItem = None
+        for item in self._weapons:
+            if item.bruker():
+                gammelItem = item
+            if item.spar():
+                nyItem = item
+        if gammelItem and nyItem:
+            self.bytt(nyItem)
+        else:
+            print("Du har ikke valgt to våpen å bytte mellom!")
+
     def check_requirements(self, item):
         ok = True
         lvl = False

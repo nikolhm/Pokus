@@ -160,6 +160,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         except IndexError:
             print("Ugyldig kategori")
 
+    #swap
+    if inn == "swap" or inn == "sw":
+        inv.swap()
+
     #viser stats
     elif inn == "e" or inn == "egenskaper":
         spiller.stats()
