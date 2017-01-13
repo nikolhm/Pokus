@@ -180,11 +180,14 @@ def intro_loop(spiller, inv, klasser, spellbook):
 def sti(spiller, inv, klasser, spellbook):
     vassleQlog = klasser.questlog(5)
     shroomQlog = klasser.questlog(6)
+    bandittQlog = klasser.questlog(7)
     while True:
         if vassleQlog.hent_quest(3).progresjon():
             skrivBaal()
         #Sti 1
         print("\nStien deler seg")
+        if sum([int(bandittQlog.hent_quest(x).startet()) for x in range(len(bandittQlog.hent_qLog()))]):
+            print("Du mener å huske veien til banditt-leiren var HØYRE VENSTRE HØYRE.\n")
         valg1 = input("Hvor vil du gå? (h/v)\n> ")
         while valg1.lower() not in {"h", "v", "høyre", "venstre"}:
             valg1 = input("Hvor vil du gå? Skriv 'høyre' eller 'venstre':\n> ")

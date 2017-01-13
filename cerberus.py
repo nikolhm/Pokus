@@ -421,6 +421,7 @@ def cerberusDialog(spiller):
     som gjør ham til min velgjører. Han har gitt meg sjansen til å hevne brødrene mine.
     Du slipper ikke unna.
     """)
+    pause()
 
 def dynamiskLoot(loot, fiende, spiller):
     tall = round(10 + fiende.xp() / 10)
