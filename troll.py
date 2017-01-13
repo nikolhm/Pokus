@@ -78,7 +78,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
             #oppdaterer vasslequests
             if qlog.hent_quest(3).ferdig():
-                vassleQlog.hent_quest(0).progresser()
+                klasser.questlog(5).hent_quest(0).progresser()
 
         while gaaTilButikk:
             klasser.butikk(1).interaksjon(inv)
@@ -189,7 +189,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
             skrivTrollBoss()
             loot = Loot()
-            item = Item("Trollkongens stav", "weapon", a=100, kp=75)
+            item = Item("Trollkongens stav", "weapon", a=110, kp=80)
             loot.legg_til_item(item, 50)
             loot.legg_til_item(3000, 50)
             fiende = Fiende("Trollkongen", "troll", loot, 6500, 450, 250, kp=250, bonusKp=5, weapon=100)
@@ -448,7 +448,7 @@ def trollButikk(butikk):
 
 def trollkongeDialog(spiller):
     navn = spiller.navn()
-    print("""   Det er du! Du som drepte så mange av mine barn ved hytta!
+    print("""\n    Det er du! Du som drepte så mange av mine barn ved hytta!
     Du som sprengte vesthulen! Du som tok ned to av mine næreste! Du som
     angrep minen! En magiker tusen ganger bedre enn deg har gitt meg magiske
     evner, og jeg kommer ikke til å skuffen ham nå. Jeg har ventet på en
@@ -482,7 +482,7 @@ def trollQuest(qlog, spiller):
     #q3
     desk3 = troll_q3(navn)
     ferdigDesk3 = troll_q3_ferdig(navn)
-    q3 = Quest(desk3, ferdigDesk3, 1, 16, "Zip", tilgjengelig=False)
+    q3 = Quest(desk3, ferdigDesk3, 1, 17, "Zip", tilgjengelig=False)
     item = Item("Trollskjegg", "beard", xKp=30, ekstraKp=2)
     q3.legg_til_reward(xp=5000, gull=800, item=item, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q3.legg_til_progresjonTekst("Digert troll drept: ")
@@ -492,7 +492,7 @@ def trollQuest(qlog, spiller):
     #q4
     desk4 = troll_q4(navn)
     ferdigDesk4 = troll_q4_ferdig(navn)
-    q4 = Quest(desk4, ferdigDesk4, 1, 16, "Zip", tilgjengelig=False)
+    q4 = Quest(desk4, ferdigDesk4, 1, 18, "Zip", tilgjengelig=False)
     q4.legg_til_reward(xp=10000, gull=1000)
     q4.legg_til_progresjonTekst("Trollkongen bekjempet: ")
     q4.legg_til_svarTekst("\nVil du ta ned Trollkongen?    (ja/nei)\n> ")

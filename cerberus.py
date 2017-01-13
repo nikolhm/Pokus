@@ -529,7 +529,7 @@ def cerberusQuest(qlog, spiller):
     #q2
     desk = cerberus_q2(navn)
     ferdigDesk = cerberus_q2_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk", tilgjengelig=False)
+    q = Quest(desk, ferdigDesk, 3, 16, "Forsker Frederikk", tilgjengelig=False)
     q.legg_til_reward(xp=3000, gull=400, settTilgjengelig=True, settTilgjengeligIndeks=2)
     q.legg_til_progresjonTekst("Hunder slept tilbake: ")
     q.legg_til_svarTekst("\nVil du hjelpe oss hente tilbake hundene?    (ja/nei)\n> ")
@@ -538,7 +538,7 @@ def cerberusQuest(qlog, spiller):
     #q3
     desk = cerberus_q3(navn)
     ferdigDesk = cerberus_q3_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
+    q = Quest(desk, ferdigDesk, 1, 17, "Forsker Frederikk", tilgjengelig=False)
     q.legg_til_reward(xp=4000, settTilgjengelig=True, settTilgjengeligIndeks=3)
     q.legg_til_progresjonTekst("Hule utforsket: ")
     q.legg_til_svarTekst("\nVil du dra til krystallhulen og utforske?    (ja/nei)\n> ")
@@ -548,7 +548,7 @@ def cerberusQuest(qlog, spiller):
     #q4
     desk = cerberus_q4(navn)
     ferdigDesk = cerberus_q4_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
+    q = Quest(desk, ferdigDesk, 1, 17, "Forsker Frederikk", tilgjengelig=False)
     q.legg_til_reward(xp=7000, gull=800, settTilgjengelig=True, settTilgjengeligIndeks=4)
     q.legg_til_progresjonTekst("Duppeditt i den nordlige krystallhulen plassert: ")
     q.legg_til_svarTekst("\nKan du plassere duppedingsene?    (ja/nei)\n> ")
@@ -559,7 +559,7 @@ def cerberusQuest(qlog, spiller):
     #q5
     desk = cerberus_q5(navn)
     ferdigDesk = cerberus_q5_ferdig(navn)
-    q = Quest(desk, ferdigDesk, 1, 15, "Forsker Frederikk", tilgjengelig=False)
+    q = Quest(desk, ferdigDesk, 1, 18, "Forsker Frederikk", tilgjengelig=False)
     q.legg_til_reward(xp=10000, gull=1000)
     q.legg_til_progresjonTekst("Cerberus fanget: ")
     q.legg_til_svarTekst("\nEr du magikeren til å bringe inn den mektige Cerberus?    (ja/nei)\n> ")

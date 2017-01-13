@@ -318,7 +318,7 @@ def troll_q4(navn):
     """
 def troll_q4_ferdig(navn):
     return """    Kjempebra {}! Nå kan jeg endelig ta av meg dette skjegget og dra hjem!
-    Dra tilbake til borgen og rapporter om vår suksess til Vassle!""".format(navn)
+    Dra tilbake til borgen og rapporter om vår suksess til Vassle!\n""".format(navn)
 
 def troll_bq1(navn):
     return """    Har du noen gang hørt Rock&Troll-musikk?! Det er det beste jeg noen gang har hørt!
