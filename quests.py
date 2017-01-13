@@ -500,12 +500,32 @@ def cerberus_q5(navn):
 
     -- Fang Cerberus."""
 def cerberus_q5_ferdig(navn):
-    return "Takk. Du er ferdig. Ta pengene dine og dra til Vassle med historier om geniet mitt."
+    return "    Takk. Du er ferdig. Ta pengene dine og dra til Vassle med historier om geniet mitt."
 
 def cerberus_bq1(navn):
-    return ""
+    return "    Hei, " + navn + """!
+    Du lurer kanskje hva en marinbiolog gjør her ute på et sted uten vann. Det lurer
+    jeg også på... Herr Overtrollmann Vassle har valgt å sette den fremste ekspert
+    hans på akvatiske mikro-organismer på et sted hvor vann fordamper nesten umiddelbart.
+
+    Det gir ikke så mye mening for meg, men jeg tror jeg har akkurat det jeg trenger
+    for å overbevise Hans Ærede Overtrollmann Vassle om å bli overført til et annet
+    sted. Hvilket som helst annet sted!
+
+    Jeg oppdaget at den grønne, slimete og elastiske gørra som troll dekker seg
+    med faktisk er alger! De lever i symbiose med trollene! Det er den største
+    oppdagelsen i  livet mitt!... Ikke spør hvordan jeg fant det ut...
+
+    Jeg utførte min egen forskning på egen tid i hemmelighet fra Frederikk. Jeg
+    hadde konkrete og repliserbare bevis! Så kom trollene... De snek seg inn i
+    laboratoriet, fordi de ser på alle typer undersøkelse eller forskning på dem
+    som farlig og unaturlig. Nå har de stjålet arbeidet mitt, som jeg trenger for
+    å komme meg ut herifra! De har nok spredt sidene rundt vulkanen. Vær så snill,
+    hjelp meg finne livsverket mitt!
+
+     -- Finn 5 seksjoner av forskningsmateriale."""
 def cerberus_bq1_ferdig(navn):
-    return ""
+    return "    Du fant det! Jeg trodde jeg måtte starte fra bunnen av!"
 
 #Shroom:
 def shroom_q1(navn):
