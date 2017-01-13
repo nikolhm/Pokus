@@ -83,6 +83,10 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
             else:
                 quest = False
 
+            #progresserer Vasslequest
+            if qlog.hent_quest(4).ferdig():
+                klasser.questlog(5).hent_quest(1).progresser()
+
         while gaaTilButikk:
             klasser.butikk(2).interaksjon(inv)
             gaaTilButikk = False
@@ -344,6 +348,7 @@ def generer_hellhound(spiller, sterk=False):
     return fiende
 
 def generer_beta(spiller, nr):
+    lvl = spiller.lvl()
     loot = Loot()
     navn = ["Churchill", "Roosevelt"]
     fiende = Fiende(navn[nr - 1], "cerberus", loot, \
@@ -351,15 +356,43 @@ def generer_beta(spiller, nr):
     d=170 + randint(0, 3) * 10, \
     a=180 + randint(0, 3) * 10, \
     kp=190 + randint(0, 3) * 10, bonusKp=5 + randint(0, 1))
+
+    #loot
     loot.legg_til_item(randint(500, 700), 25)
+
+    item = Item("Helvetesbriller", "beard", d=randint(0, 3)*10, \
+    xKp=randint(20, 40 + lvl), ekstraKp=randint(2, 1 + int(lvl / 5)))
+    item.sett_loot_tekst("et par briller fra helvete")
+    loot.legg_til_item(item, 25)
+
+    item = Item("Ledende hatt", "hat", d=randint(6, 9 + int(lvl / 10)) * 10, \
+    xHp=randint(8, 12 + int(lvl/10)) * 10)
+    item.sett_loot_tekst("en hatt for semi-ledere")
+    loot.legg_til_item(item, 25)
+
+    item = Item("Kjærlighetslapp", "trinket", d=randint(0, 1) * 10, \
+    xKp=randint(2, 4) * 10, ekstraKp=randint(2, 2 + lvl / 10))
+    loot.legg_til_item(item, 25)
+
     skrivHellhound(nr)
     print(spiller.navn(), "har møtt", navn[nr - 1] + "!")
     return fiende
 
 def generer_cerberus(spiller):
+    lvl = spiller.lvl()
     loot = Loot()
     fiende = Fiende("Cerberus", "cerberus", loot, hp=7500, a=150, d=150, kp=350, bonusKp=7)
-    dynamiskLoot(loot, fiende, spiller)
+
+    #loot
+    loot.legg_til_item(3000, 25)
+
+    item = Item("Treegget sverd", "weapon", a=randint(15, 20 + int(lvl / 10)), xHp=-10, xKp=-10, blade=True)
+    item.sett_loot_tekst("et treegget sverd")
+    loot.legg_til_item(item, 25)
+
+    item = Item("Hundeskinnshatt", "hat")
+
+
     skrivCerberus()
     print("\n" + spiller.navn(), "har møtt på Cerberus!")
     return fiende
@@ -434,28 +467,28 @@ def cerberus_kart(qlog):
 def cerberusButikk(butikk):
     butikk.legg_til_hadeTekst("\nLykke til bror!\n")
 
-    item = Item("Tryllepulver", "damaging", dmg=100)
-    vare = Vare(item, 50, "t")
+    item = Item("Tryllepulver", "damaging", dmg=250)
+    vare = Vare(item, 300, "t")
     butikk.legg_til_vare(vare)
 
     item = Item("Trolldrikk", "restoring", hp=300)
     vare = Vare(item, 400, "d")
     butikk.legg_til_vare(vare)
 
-    item = Item("Konsentrasjonspulver", "restoring", kp=250)
-    vare = Vare(item, 1000, "k")
+    item = Item("Konsentrasjonspulver", "restoring", kp=150)
+    vare = Vare(item, 500, "k")
     butikk.legg_til_vare(vare)
 
-    item = Item("Generisk stav", "weapon", a=100, xKp=55)
-    vare = Vare(item, 2000, "w")
+    item = Item("Tryllestav", "weapon", a=60, xKp=45)
+    vare = Vare(item, 1000, "w")
     butikk.legg_til_vare(vare)
 
-    item = Item("Vulkansverd", "weapon", a=300, blade=True)
-    vare = Vare(item, 1000, "v")
+    item = Item("Vulkansverd", "weapon", a=140, xHp=30, blade=True)
+    vare = Vare(item, 6500, "v")
     butikk.legg_til_vare(vare)
 
-    item = Item("Runkehansker", "gloves", xKp=80, xHp=80)
-    vare = Vare(item, 4500, "h")
+    item = Item("Frysehansker", "gloves", xKp=10, xHp=30, d=20)
+    vare = Vare(item, 3500, "h")
     butikk.legg_til_vare(vare)
 
 def cerberusQuest(qlog, spiller):
@@ -520,8 +553,8 @@ def cerberusQuest(qlog, spiller):
     qlog.legg_til_quest(q)
 
     #bq1
-    desk = "yo"
-    ferdigDesk = "sweet"
+    desk = cerberus_bq1(navn)
+    ferdigDesk = cerberus_bq1_ferdig(navn)
     q = Quest(desk, ferdigDesk, 3, 15, "Forsker Frederikk")
     q.legg_til_reward(xp=5000, gull=700)
     q.legg_til_progresjonTekst("Fiender bekjempet: ")

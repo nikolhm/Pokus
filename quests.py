@@ -448,8 +448,6 @@ def cerberus_q3_ferdig(navn):
     lære nok om denne krystallen for å finne plasseringen til "Cerberus"!
     """
 
-# minoritetsladningsbærerdiffusjonskoeffisientmålingsapparatur
-
 def cerberus_q4(navn):
     return "    " + navn + """!!! Min favorittmagiker!
     Jeg har jobbet hardt og enestående bra på å finne en måte å bruke krystallen
@@ -503,6 +501,11 @@ def cerberus_q5(navn):
     -- Fang Cerberus."""
 def cerberus_q5_ferdig(navn):
     return "Takk. Du er ferdig. Ta pengene dine og dra til Vassle med historier om geniet mitt."
+
+def cerberus_bq1(navn):
+    return ""
+def cerberus_bq1_ferdig(navn):
+    return ""
 
 #Shroom:
 def shroom_q1(navn):
@@ -957,15 +960,18 @@ def vassle_troll(navn):
     til å utslette menneskeheten, og dessuten finne ut hvorfor de har
     fått magiske evner i utgangspunktet.
 
-    Jeg har sendt ut ... til fjellhytta for å utforske ubalansen som har
+    Jeg har sendt ut Zip til fjellhytta for å utforske ubalansen som har
     oppstått i fjellkjeden der. Området er kjent for å være en typisk
-    samleplass for troll. Kan du hjelpe ... i å finne og rette opp
+    samleplass for troll. Kan du hjelpe Zip i å finne og rette opp
     ubalansen der?
 
-    -- Hjelp ... å finne og rette opp ubalansen med fjellhytta."""
+    -- Hjelp Zip å finne og rette opp ubalansen med fjellhytta."""
 def vassle_troll_ferdig(navn):
     return "    Du har vært en uvurderlig hjelp " + navn + """!
-    Dette du sier er rart... stuff stuff stuff"""
+    Dette du sier om en magiker som støtter trollene er urovekkende,
+    men vi har dessverre ikke tid til å undersøke dette nå. En ny krise
+    har oppstått, denne gangen mye nærmere oss! En stor ubalanse har
+    oppstått midt inne i skogen her, og det truer magi-borgen!\n"""
 
 def vassle_cerberus(navn):
     return "    Hei " + navn + """!
@@ -976,15 +982,21 @@ def vassle_cerberus(navn):
     til å utslette menneskeheten, og dessuten finne ut hvorfor de har
     fått magiske evner i utgangspunktet.
 
-    Jeg har sendt ut ... til vulkanen for å utforske ubalansen som har
-    oppstått der. Det har blitt sett svære hunder med opptil flere hoder
-    i den regionen før, så vær klar! Kan du hjelpe ... i å finne og rette
-    opp ubalansen der?
+    Jeg har sendt ut Forsker Frederikk til vulkanen for å utforske ubalansen
+    som har oppstått der. Stedet pleide å være fullt av troll, men Dr. Frederikk
+    har rapportert om at svære brennende hunder har blitt mer og mer dominerende
+    der i det siste. I tillegg virker de koordinerte, noe som ikke er vanlig
+    oppførsel for slike hunder. Kan du hjelpe Forsker Frederikk i å finne og
+    rette opp ubalansen der?
 
-    -- Hjelp ... å finne og rette opp ubalansen med vulkanen."""
+    -- Hjelp Forsker Frederikk å finne og rette opp ubalansen med vulkanen."""
 def vassle_cerberus_ferdig(navn):
-    return "    Du har vært en uvurderlig hjelp " + navn + """!
-    Dette du sier er rart... stuff stuff stuff"""
+    return "    Tusen takk for at du har holdt ut Forsker Frederikk så langt " + navn + """!
+    Dette med telepati er virkelig spennende saker, om vi kan både stoppe Cerberus
+    og helveteshundene fra å benytte seg av det, og få kontroll på den selv, er
+    dette et stort skritt i vår kamp for overlevelse! Likevel er det høyst
+    urovekkende å høre om denne magikeren. Men det får vi ta siden, det har
+    oppstått en ny ubalanse, og denne gangen truer det magi-borgen direkte! """
 
 def vassle_gargyl(navn):
     return "    Hei " + navn + """!

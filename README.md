@@ -5,7 +5,7 @@ Det er et hobby-prosjekt og setter ut for å være så useriøst som mulig. Mål
 
 ## Installering:
 
-Vi har laget installere på nettsiden vår: https://pokus.org/ for Windows, MAC OS X og Linux.
+Vi har laget installere på nettsiden vår: https://pokus.org/ for Windows og Linux 64.
 Instruksjoner ligger på nettsiden. Alternativt kan det kjøres fra kildekoden.
 
 ## Instruksjoner for kjøring av kildekode:

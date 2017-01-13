@@ -69,7 +69,6 @@ def gargyl_loop(spiller, inv, klasser, spellbook):
                 valg = True
 
         while quest:
-            #Merk at oppdrag_tilgjengelige() er en funksjon med returverdi.
             inn = qlog.oppdrag_tilgjengelige(spiller.lvl(), "møtehallen").lower()
             if inn != "f" and inn != "ferdig":
                 try:
@@ -549,7 +548,7 @@ def garg_butikk(butikk):
     butikk.legg_til_vare(vare)
 
     item = Item("falskt skjegg", "beard", xKp=30, ekstraKp=3)
-    vare = Vare(item, 1100, "g")
+    vare = Vare(item, 2600, "g")
     butikk.legg_til_vare(vare)
 
 def guri_dialog(spiller):

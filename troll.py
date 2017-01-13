@@ -440,9 +440,11 @@ def trollkongeDialog(spiller):
     navn = spiller.navn()
     print("""   Det er du! Du som drepte så mange av mine barn ved hytta!
     Du som sprengte vesthulen! Du som tok ned to av mine næreste! Du som
-    angrep minen! Jeg har ventet på en hvilken som helst sjanse til å finne
-    deg, ta deg og rive ut alle innvollene dine! Vel, det trengte jeg ikke
-    å gjøre. Du kom til meg! Du kommer aldri til å slippe unna!\n""")
+    angrep minen! En magiker tusen ganger bedre enn deg har gitt meg magiske
+    evner, og jeg kommer ikke til å skuffen ham nå. Jeg har ventet på en
+    hvilken som helst sjanse til å finne deg, ta deg og rive ut alle
+    innvollene dine! Vel, det trengte jeg ikke å gjøre. Du kom til meg!
+    Du kommer aldri til å slippe unna!\n""")
 
 def trollQuest(qlog, spiller):
     navn = spiller.navn()
