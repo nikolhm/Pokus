@@ -109,7 +109,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             seq = ["første", "andre", "tredje", "fjerde", "femte"]
             for x in range(5):
                 input("Trykk enter for å plassere den {} ladningen\n> ".format(seq[x]))
-                if not randint(0, 1):
+                if randint(0, 10) >= 3:
                     #oppdaget gang 1 og 2
                     if gsOppdaget < 2:
                         print("Du er blitt oppdaget! En klynge med troll kommer løpende mot deg!")

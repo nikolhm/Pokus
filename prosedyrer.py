@@ -274,9 +274,12 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     elif inn == "f" or inn == "flykt":
         spellbook.reset()
 
+    elif inn in {"juks", "j2", "j3", "j4", "juks2", "juks3", "juks4", "j"}:
+        print("Juksemaker!", spiller.navn(), "mistet", spiller.mist_liv(10), "liv!")
+
     #Intet spill er komplett uten en juksekode. Dessuten særdeles
     #brukbart for å teste programmet. Dreper en fiende på første forsøk.
-    elif inn == "j" or inn == "juks":
+    """elif inn == "j" or inn == "juks":
         fiende.angrepet(100042)
 
     #Juksekode nr. 2: når ønsket lvl.
@@ -298,7 +301,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     #Juksekode nr. 4: Restorerer liv og kp til fullt.
     elif inn == "j4" or inn == "juks4":
         spiller.restorer(100000)
-        spiller.restorer_kp(10000)
+        spiller.restorer_kp(10000)"""
 
     #aktiverer Lys
     if not tur and spellbook.lys():
