@@ -243,7 +243,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
                 print("    til å benytte deg av utstyr som krever muskelbunt-spesialisering, OG du får en")
                 print("    relativ bonus på alle angrep gjort med sverd! Her er ditt livs største mulighet, alt")
                 print("    til medlemsavgift på ynkelige 10000 gullstykker! Vet du hva, side jeg liker deg så")
-                print("    godt skal du faktisk få medlemsskap for bare 8000 gullstykker, spesialpris kun for")
+                print("    godt skal du faktisk få medlemskap for bare 8000 gullstykker, spesialpris kun for")
                 print("    deg! Her er ingen unnskyldning.")
                 print("\nDu har", inv.penger(), "gullstykker.")
                 inn = input("Vil du bli en muskelbunt?\n> ").lower().strip()

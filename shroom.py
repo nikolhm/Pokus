@@ -718,8 +718,12 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
             til den åpne plassen nord for her. Kan du dra opp dit og rydde
             vekk eventuelle fiendtlige shrooms?\n""")
                 if input("Vil du dra nord til sendebudet?       (ja/nei)\n> ").lower() in {"ja", "j"}:
+                    fortsett = False
                     for x in range(4):
-                        if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook): continue
+                        if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook):
+                            fortsett = False
+                            break
+                    if not fortsett: continue
                     skrivBanditt()
                     print("""\n
   Bjarte Banditt: """ + navn + "? " + navn + """, er det deg?
@@ -1540,7 +1544,7 @@ def generer_duellant(nr, spiller):
         loot.legg_til_item(item, 1)
         fiende = Fiende("Teite Tim", "snik", loot, a=550, hp=6666, d=500, kp=700, bonusKp=12)
     elif nr == 5:
-        item = Item("Ondskap", "trinket", a=-200, d=-200, xHp=-230, xKp=500, ekstraKp=13)
+        item = Item("Ondskap", "trinket", a=-200, d=-200, xHp=-230, xKp=500, ekstraKp=11)
         item.sett_loot_tekst("Ondskap")
         loot.legg_til_item(item, 1)
         fiende = Fiende("Onde Olga", "gargyl", loot, a=2000, hp=5734, d=666, kp=1000, bonusKp=20, weapon=450)

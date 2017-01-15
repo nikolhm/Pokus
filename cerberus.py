@@ -55,7 +55,7 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
                 lagre = True
                 valg = True
 
-            if inn == "i" and qlog.hent_quest(5).ferdig():
+            if inn == "n" and qlog.hent_quest(5).ferdig():
                 klartenker = True
                 valg = True
 
