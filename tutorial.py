@@ -121,7 +121,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
     inn = input("Hva vil du gjøre?\n> ").lower()
     while inn != "b" and inn != "bytt":
         inn = input("Skriv 'b' eller 'bytt', deretter nummeret på kategorien 'Våpen', så våpenet du vil bytte til.\n> ").lower()
-    while inv.har_type("weapon").blade():
+    while not inv.har_type("weapon") or inv.har_type("weapon").blade():
         kategorier()
         try:
             kategori = int(input("Hvilken kategori vil du bytte innenfor?\n> "))
@@ -141,7 +141,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
             None
         except IndexError:
             print("Ugyldig kategori")
-        if inv.har_type("weapon").blade():
+        if not inv.har_type("weapon") or inv.har_type("weapon").blade():
             print("Skriv nummeret på kategorien 'Våpen', så våpenet du vil bytte til.")
             input("Trykk enter for å fortsette\n> ")
     print("""\n    ~Strålende! Du la kanskje merke til at det sto 'a' og  et tall ved
