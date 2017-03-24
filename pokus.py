@@ -6,7 +6,8 @@
 try:
     from colorama import *
 except ImportError:
-     install("colorama")
+    from install import install
+    install("colorama")
 init()
 from klasser import *
 from random import randint
