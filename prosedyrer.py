@@ -1,8 +1,6 @@
 from grafikk import *
-from os import listdir
-from os import system
-import platform
-import sys
+from os import listdir, system
+import platform, sys
 if platform.system() == "Windows":
     from uuid import UUID
     import knownpaths
@@ -403,7 +401,7 @@ def write_player_died(spiller, sted):
     En noe fortumlet""", spiller.navn(), """våkner opp forslått, men trygg og
     med noenlunde stabil mental helse opp i""", sted + ".\n")
     input("    Trykk enter for å fortsette\n    > ")
-#Koden din er ikke godt nok kommentert. Hilsen Lilly :)
+
 def finn_stats(item):
     statliste = item.statliste()
     totalStats = sum([int(bool(s)) for s in statliste])
@@ -432,6 +430,8 @@ if platform.system() == "Windows":
     docFolder = knownpaths.get_path(UUID('{FDD39AD0-238F-46AF-ADB4-6C85480369C7}'))
 else:
     docFolder = ""
+    if "Save" not in listdir():
+        os.system("mkdir Save")
 
 def minnestein(spiller, inv, klasser):
     pris = 100

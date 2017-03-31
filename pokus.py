@@ -12,14 +12,7 @@ init()
 from klasser import *
 from random import randint
 from grafikk import *
-import tutorial
-import gnom
-import troll
-import cerberus
-import gargyl
-import shroom
-import example_expansion
-import os
+import tutorial, gnom, troll, cerberus, gargyl, shroom, example_expansion, os
 
 skrivTittel()
 input("Trykk enter for å fortsette\n> ")
