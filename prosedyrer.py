@@ -65,6 +65,7 @@ def hjelp():
     oppdrag (eller q)            gir deg hvilke oppdrag du er på
     flykt (eller f)              tar deg tilbake til borgen
     poeng (eller p)              viser deg din moral
+    swap (eller sw)              bytter mellom sverd og stav
     hjelp (eller h)              gir deg denne listen med kommandoer
     ---------------------------------------------------------------------------
     """)

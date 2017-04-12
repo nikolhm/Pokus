@@ -1517,7 +1517,7 @@ class Spellbook:
     def konsentrer_energi(self, fiende):
         qlog = self._klasser.questlog(1)
         if qlog.hent_quest(4).ferdig():
-            if self._spiller.kons_igjen() >= 150:
+            if self._spiller.kons_igjen() >= 150 and self._inv.har_type("weapon") and not self._inv.har_type("weapon").blade():
                 self._spiller.bruk_kons(150)
                 print(self._spiller.navn(), "kastet Konsentrer Energi!")
                 if fiende.untouchable():
@@ -1526,9 +1526,10 @@ class Spellbook:
                     skadeGjort = fiende.mist_liv(300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp())
                 print(self._spiller.navn(), "fikk", self._spiller.restorer(skadeGjort), "liv.")
                 return False
+            elif self._spiller.kons_igjen() >= 150:
+                print("Du trenger en tryllestav!")
             else:
                 print("Du har ikke nok konsentrasjonspoeng!")
-                return True
         return True
 
     def freeze(self, fiende):
@@ -1900,6 +1901,7 @@ class Inventory:
                 nyItem = item
         if gammelItem and nyItem:
             self.bytt(nyItem)
+            print("Du byttet til", nyItem.navn())
         else:
             print("Du har ikke valgt to våpen å bytte mellom!")
 
