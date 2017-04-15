@@ -287,10 +287,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     elif inn == "f" or inn == "flykt":
         spellbook.reset(flykt=True)
 
-    # elif inn in {"juks", "j2", "j3", "j4", "juks2", "juks3", "juks4", "j"}:
-    #     print("Juksemaker!", spiller.navn(), "mistet", spiller.mist_liv(10), "liv!")
+    elif inn in {"juks", "j2", "j3", "j4", "juks2", "juks3", "juks4", "j"}:
+        print("Juksemaker!", spiller.navn(), "mistet", spiller.mist_liv(10), "liv!")
 
-    #Intet spill er komplett uten en juksekode. Dessuten særdeles
+    """#Intet spill er komplett uten en juksekode. Dessuten særdeles
     #brukbart for å teste programmet. Dreper en fiende på første forsøk.
     elif inn == "j" or inn == "juks":
         fiende.angrepet(100042)
@@ -316,7 +316,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         spiller.restorer(100000)
         spiller.restorer_kp(10000)
         spellbook.reset(True)
-        skriv_ut(spiller, fiender, spellbook, allierte=allierte)
+        skriv_ut(spiller, fiender, spellbook, allierte=allierte)"""
 
     #aktiverer Lys
     if not tur and spellbook.lys():
@@ -601,11 +601,20 @@ def lagre(spiller, inv, klasser, nr=0):
         lagreListe.append("Inventory\n")
         lagreListe.append(str(inv.penger()) + "\n")
         itemListe = inv.itemListe()
+
+        #spar
+        for item in itemListe:
+            if item.spar(): break
+            else: item = None
+        if item:
+            itemListe.remove(item)
+            itemListe.insert(0, item)
+
         for item in itemListe:
             infListe = [item.navn(), item.type()]
             for stat in item.statliste():
                 infListe.append(str(stat))
-            infListe.append(str(int(item.bruker())))
+            infListe.append(str(int(item.bruker() or item.spar())))
             infListe.append(item.spesialisering())
             infListe.append(str(item.lvl()))
             infListe.append(str(int(item.blade())))
