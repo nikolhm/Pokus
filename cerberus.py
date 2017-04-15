@@ -242,14 +242,13 @@ def cerberus_loop(spiller, inv, klasser, spellbook):
 
 def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
     qlog = klasser.questlog(3)
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
     hoder = 1 + 2 * int(fiende.navn() == "Cerberus")
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
-        skadeTatt = spiller.hp()
 
         #tur angir at det er brukeren sin tur til å handle.
-        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
+        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)[0]
 
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til forskningslaben.")
@@ -276,10 +275,15 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
                 print("Du fant en seksjon fra noen forskningsresultater på trollet! Hvem kan det være sitt?")
                 qlog.hent_quest(6).progresser()
 
+            if not randint(0, 59) and not klasser.questlog(2).hent_quest(5).sjekk_ferdig() and fiende.race() == "troll":
+                print(spiller.navn(), 'fant et "Trolling Stones"-album! Kanskje noen i hytten hører på slikt?')
+                klasser.questlog(2).hent_quest(5).progresser()
+
             input("Trykk enter for å fortsette\n> ")
             return True
 
         elif not tur:
+            skadeTatt = spiller.hp()
             if hule:
                 print(spiller.navn(), "mistet", spiller.mist_kp(randint(15, 30)), "kp fra krystallene.")
 
@@ -312,7 +316,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
 
                 #progresserer Smertedreper-quest.
                 if klasser.questlog(4).hent_quest(6).startet():
-                    klasser.questlog(4).hent_quest(6).progresser(spiller.hp() - skadeTatt)
+                    klasser.questlog(4).hent_quest(6).progresser(skadeTatt - spiller.hp())
 
                 #gir beskjed om karakteren døde
                 if spiller.dead():
@@ -325,7 +329,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, intro=False, hule=False):
             #skriver ut hp og kp til karakteren og hp til fienden til neste runde.
             spiller.kons()
             fiende.gen_kons()
-            skriv_ut(spiller, fiende)
+            skriv_ut(spiller, [fiende], spellbook)
             if fiende.burning():
                 print(fiende.navn() + fiende.ending(), "brenner!")
 

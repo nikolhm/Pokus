@@ -316,12 +316,12 @@ def slottsgaard_loop(spiller, inv, klasser, spellbook):
 
 def angrip(spiller, fiende, inv, klasser, spellbook):
     qlog = klasser.questlog(4)
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
     tur = True
     while True:
         inn = input("\nHva vil du gjøre?\n> ").lower()
 
-        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
+        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)[0]
 
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til slottet.")
@@ -378,7 +378,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             else:
                 spiller.kons()
                 fiende.gen_kons()
-                skriv_ut(spiller, fiende)
+                skriv_ut(spiller, [fiende], spellbook)
 
 def generer_statue(spiller):
     loot = Loot()

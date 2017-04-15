@@ -718,7 +718,7 @@ def oppBakkenLoop(spiller, inv, klasser, spellbook):
             til den åpne plassen nord for her. Kan du dra opp dit og rydde
             vekk eventuelle fiendtlige shrooms?\n""")
                 if input("Vil du dra nord til sendebudet?       (ja/nei)\n> ").lower() in {"ja", "j"}:
-                    fortsett = False
+                    fortsett = True
                     for x in range(4):
                         if not angrip(spiller, generer_shroom(spiller), inv, klasser, spellbook):
                             fortsett = False
@@ -808,10 +808,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
     sQlog = klasser.questlog(6)
     bQlog = klasser.questlog(7)
     fiender = [fiende] + fiender
-    if alliert: alliert.skriv_ut()
-    skriv_ut(spiller, fiende)
-    for f in fiender[1:]:
-        f.skriv_ut()
+    skriv_ut(spiller, fiender, spellbook, allierte=[alliert])
     uCD = 0 #utforsk CoolDown
     bundetCD = 0
     pantu = False
@@ -825,7 +822,8 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
             kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=tur, fiender=fiender, allierte=[alliert])
         else:
             inn = input("\nHva vil du gjøre?\n> ").lower()
-            tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook, fiender=fiender, allierte=[alliert])
+            tur, allierte = kommandoer(inn, spiller, fiende, inv, klasser, spellbook, fiender=fiender, allierte=[alliert])
+            if allierte: alliert = allierte[0]
 
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til leiren.")
@@ -845,17 +843,6 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                 if inn in {"fiende {}".format(x+1), "fiende{}".format(x+1), str(x+1), fiender[x].navn().lower()}:
                     fiende = fiender[x]
                     print("Du angriper nå", fiender[x].navn())
-
-        if inn in {"tillkall sopp", "sopp", "tilkall", "ts"} and sQlog.hent_quest(13).ferdig() \
-        and spiller.kp() >= 350:
-            if alliert:
-                print("Du har allerede en alliert i denne kampen!")
-            else:
-                alliert = Fiende("Psilocybe Semilanceata", "alliert", Loot(), hp=500, a=300, d=300, kp=800, bonusKp=22, ending="en")
-                print(spiller.navn(), "tilkalte en magisk sopp til å hjelpe i kampen!")
-                spiller.bruk_kons(350)
-                tur = False
-                kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=tur, fiender=fiender, allierte=[alliert])
 
         #alliert gjør sin tur
         target = fiende
@@ -1250,13 +1237,9 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
             bundetCD -= 1
             spiller.kons()
             fiende = target
-            if alliert:
-                alliert.gen_kons()
-                alliert.skriv_ut()
-            spiller.skriv_ut()
-            for f in fiender:
-                f.gen_kons()
-                f.skriv_ut()
+            if alliert: alliert.gen_kons()
+            for f in fiender: f.gen_kons()
+            skriv_ut(spiller, fiender, spellbook, allierte=[alliert])
             if bundetCD > 0:
                 input("Trykk enter for å fortsette\n> ")
 

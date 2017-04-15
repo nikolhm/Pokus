@@ -87,7 +87,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         while fjell:
             fiende = generer_troll(spiller)
 
-            skriv_ut(spiller, fiende)
+            skriv_ut(spiller, [fiende], spellbook)
             fjell = angrip(spiller, fiende, inv, klasser, spellbook)
 
             if fjell and qlog.hent_quest(0).startet():
@@ -116,7 +116,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
                         input("Trykk enter for å slåss for livet\n> ")
                         for y in range(3 + (2 * gsOppdaget)):
                             fiende = generer_troll(spiller)
-                            skriv_ut(spiller, fiende)
+                            skriv_ut(spiller, [fiende], spellbook)
                             if not angrip(spiller, fiende, inv, klasser, spellbook):
                                 base = False
                                 qlog.hent_quest(1).reset_progresjon()
@@ -131,7 +131,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
                         loot = Loot()
                         fiende = Fiende("Beta", "troll", loot, 3000, 200, 200, kp=150)
                         fiende.return_loot().legg_til_item(500, 100)
-                        skriv_ut(spiller, fiende)
+                        skriv_ut(spiller, [fiende], spellbook)
                         if not angrip(spiller, fiende, inv, klasser, spellbook):
                             base = False
                             qlog.hent_quest(1).reset_progresjon()
@@ -157,7 +157,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         while cave:
             for x in range(randint(3, 10)):
                 fiende = generer_troll(spiller)
-                skriv_ut(spiller, fiende)
+                skriv_ut(spiller, [fiende], spellbook)
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
                     cave = False
                     break
@@ -170,7 +170,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
             item = Item("Trollskriv", "trinket")
             fiende = Fiende("Beta", "troll", loot, 3000, 200, 200, kp=150)
             fiende.return_loot().legg_til_item(500, 100)
-            skriv_ut(spiller, fiende)
+            skriv_ut(spiller, [fiende], spellbook)
             if angrip(spiller, fiende, inv, klasser, spellbook):
                 qlog.hent_quest(2).progresser()
                 print("\n*Du har nå et dokument på trollsk. Kanskje det har informasjon om trollkongen?*\n")
@@ -181,7 +181,7 @@ def troll_loop(spiller, inv, klasser, spellbook):
         while helvete:
             for x in range(2):
                 fiende = generer_troll(spiller, True)
-                skriv_ut(spiller, fiende)
+                skriv_ut(spiller, [fiende], spellbook)
                 if not angrip(spiller, fiende, inv, klasser, spellbook):
                     helvete = False
                     break
@@ -189,12 +189,12 @@ def troll_loop(spiller, inv, klasser, spellbook):
 
             skrivTrollBoss()
             loot = Loot()
-            item = Item("Trollkongens stav", "weapon", a=110, kp=80)
+            item = Item("Trollkongens stav", "weapon", a=110, xKp=80)
             loot.legg_til_item(item, 50)
             loot.legg_til_item(3000, 50)
             fiende = Fiende("Trollkongen", "troll", loot, 6500, 450, 250, kp=250, bonusKp=5, weapon=100)
             trollkongeDialog(spiller)
-            skriv_ut(spiller, fiende)
+            skriv_ut(spiller, [fiende], spellbook)
             if angrip(spiller, fiende, inv, klasser, spellbook):
                 qlog.hent_quest(3).progresser()
 
@@ -278,7 +278,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
         inn = input("\nHva vil du gjøre?\n> ").lower()
 
         #tur angir at det er brukeren sin tur til å handle.
-        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
+        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)[0]
 
         if inn == "f" or inn == "flykt":
             print(spiller.navn(), "drar tilbake til hytta.")
@@ -341,7 +341,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook):
             else:
                 spiller.kons()
                 fiende.gen_kons()
-                skriv_ut(spiller, fiende)
+                skriv_ut(spiller, [fiende], spellbook)
                 if forsterkCD > 0:
                     forsterkCD -= 1
                     if forsterkCD == 0:

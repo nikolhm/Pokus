@@ -257,7 +257,7 @@ def gauteLoot(loot):
 #Angrepsløkken mot gnomene. Inkluderer gnomevakter og Gaute Gnom den Grusomme.
 def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, spellbook):
     #Skriver ut statsene til fienden og karakteren før kampen har startet til orientering.
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
 
     run = False
     angrep = True
@@ -265,7 +265,7 @@ def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, 
         inn = input("\nHva vil du gjøre?\n> ").lower()
 
         #tur angir at det er brukeren sin tur til å handle.
-        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)
+        tur = kommandoer(inn, spiller, fiende, inv, klasser, spellbook)[0]
 
         #Løper fra kampen. Går ut av begge løkkene, og drar tilbake til borgen.
         #Om man var på vei til grotten til Gaute Gnom, mistes progresjonen.
@@ -346,7 +346,7 @@ def attack_gnom(spiller, fiende, inv, qlog, goingToGaute, gnomevakter, klasser, 
             else:
                 spiller.kons()
                 fiende.gen_kons()
-                skriv_ut(spiller, fiende)
+                skriv_ut(spiller, [fiende], spellbook)
 
     liste = [run, goingToGaute, gnomevakter]
     return liste

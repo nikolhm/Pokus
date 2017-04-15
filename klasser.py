@@ -867,6 +867,8 @@ class Spiller:
                 print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Utforsk! (u)")
             if self._lvl == 23:
                 print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Opphold! (o)")
+            if self._lvl == 30:
+                print(self._navn, "har lært et nytt trylletriks! Du kan nå bruke Mediter! (m)")
 
         #Skulle man miste xp, kan man potensielt miste en lvl.
         while self._xp < 0:
@@ -906,8 +908,7 @@ class Spiller:
         return self._xXp
 
     #Skriver ut karakterens hp/xHp og kp/xKp. Dette skjer hver runde så brukeren
-    #alltid er oppdatert på hvor mange hp og kp som gjenstår. Dette er det nærmeste
-    #jeg kommer en "health bar" / "energy bar" med terminal-grafikk.
+    #alltid er oppdatert på hvor mange hp og kp som gjenstår.
     def skriv_ut(self):
         print(self._navn, " HP: ", self._hp, "/" + Style.BRIGHT + Fore.RED, \
         self._xHp, Style.RESET_ALL,  ", KP: ", self._kp, "/" + \
@@ -1273,6 +1274,10 @@ class Spellbook:
         self._tankebobleCD = 0
         self._forsterkCD = 0
         self._forsterkMengde = 0
+        self._CDdict = {"Restituer":0, "Vind":0, "Super Restituer":0, "Konsentrer Energi":0, \
+                        "Nedkjøl":0, "Kjøttifiser":0, "Utforsk":0, "Opphold":0, "Distraher":0, \
+                        "Lys":0, "Korrupsjon":0, "Solidifiser":0, "Forsterk":0, "Tankeboble":0, \
+                        "Mediter":0, "Tilkall Sopp":0}
 
     def skriv_spellbook(self):
         gnomeqlog = self._klasser.questlog(1)
@@ -1295,7 +1300,7 @@ class Spellbook:
                          40 + self._spiller.lvl() * 4 + self._inv.hent_weaponKp()))
         if self._spiller.lvl() >= 5:
             print("vind (eller v)           tryller frem et kraftig vindkast ({} skade).\n\
-                         Krever tryllestav og 100 konsentrasjonspoeng.".format(\
+                         Krever tryllestav og 90 konsentrasjonspoeng.".format(\
                          round(self._inv.hent_weaponA() * 1.5) + 150 + 150 * int(gnomeqlog.hent_quest(3).ferdig())))
         if self._spiller.lvl() >= 10:
             print("super restituer (sr)     gir deg {} helsepoeng\n\
@@ -1308,6 +1313,10 @@ class Spellbook:
             print("opphold (o)              fienden kan ikke angripe for {} runder.\n\
                          Krever 250 konsentrasjonspoeng.".format(\
                          2 + int(ekspedisjonslog.hent_quest(6).ferdig())))
+        if self._spiller.lvl() >= 30:
+            print("mediter (m)              minsker ventetiden på formler med {} runder.\n\
+                         Krever 100 konsentrasjonspoeng, nivå gir større effekt".format(\
+                         int((self._spiller.lvl() - 16) / 7)))
 
         #Disse spesialangrepet krever å ha fullført et bestemt quest.
         if gnomeqlog.hent_quest(4).ferdig():
@@ -1334,11 +1343,11 @@ class Spellbook:
             print("solidifiser (so)         gir deg {} defensivpoeng i 4 runder.\n\
                          Krever 65 konsentrasjonspoeng. Nivå og tryllestav gir ekstra effekt.".format(\
                          250 + round((self._inv.hent_weaponA() + self._inv.hent_weaponKp()) / 2) + \
-                         self._spiller.lvl() * 10))
+                         self._spiller.lvl() * 8))
 
         if self._spiller.spesialisering() == "Klartenker":
             print("tankeboble (ta)          gir deg {} konsentrasjonspoeng i 3 runder.\n\
-                         Krever 100 konsentrasjonspoeng. Nivå og kp gir ekstra effekt.".format(\
+                         Krever 60 konsentrasjonspoeng. Nivå og kp gir ekstra effekt.".format(\
                          50 + (self._spiller.lvl() - 20) * 4 + round(self._spiller.xKp() / 75)))
 
         if self._spiller.spesialisering() == "Muskelbunt":
@@ -1355,6 +1364,48 @@ class Spellbook:
             print("korrupsjon (ko)          Gjør fienden korrupt og tar {} liv {}i 3 runder.\n\
                          Krever 120 konsentrasjonspoeng. Ondhetsbonus og a gir ekstra effekt.".format(\
                          round(self._spiller.a() / 5) + eb * 10, ("og " + str(eb*2) + " kp ")*int(eb >= 10)))
+
+    def skriv_spell_status(self, fiender, allierte):
+        forkortelser = {"r":"Restituer", "v":"Vind", "sr":"Super Restituer", "ke":"Konsentrer Energi", \
+                        "n":"Nedkjøl", "kj":"Kjøttifiser", "u":"Utforsk", "o":"Opphold", "di":"Distraher", \
+                        "l":"Lys", "ko":"Korrupsjon", "so":"Solidifiser", "fo":"Forsterk", "ta":"Tankeboble", \
+                        "m":"Mediter", "ts":"Tilkall Sopp"}
+        liste = []
+        lvl = self._spiller.lvl()
+        if lvl >= 3: liste.append(("r", 50))
+        if lvl >= 5: liste.append(("v", 90))
+        if lvl >= 10: liste.append(("sr", 100))
+        if self._klasser.questlog(1).hent_quest(4).ferdig(): liste.append(("ke", 150))
+        if self._klasser.questlog(3).hent_quest(0).startet(): liste.append(("n", 70))
+        if self._klasser.questlog(4).hent_quest(4).ferdig(): liste.append(("kj", 85))
+        if lvl >= 17: liste.append(("u", 195))
+        if lvl >= 23: liste.append(("o", 250))
+        if self._klasser.questlog(7).hent_quest(3).startet(): liste.append(("di", 140))
+        if self._klasser.questlog(6).hent_quest(14).ferdig(): liste.append(("l", 120))
+        if self._klasser.questlog(6).hent_quest(15).ferdig(): liste.append(("ko", 120))
+        if self._spiller.spesialisering() == "Smertedreper": liste.append(("so", 65))
+        if self._spiller.spesialisering() == "Muskelbunt": liste.append(("fo", 70))
+        if self._spiller.spesialisering() == "Klartenker": liste.append(("ta", 60))
+        if lvl >= 30: liste.append(("m", 100))
+        if self._klasser.questlog(6).hent_quest(13).ferdig() \
+        and self._spiller.hentSted() == "shroom": liste.append(("ts", 350))
+
+        tekst = ""
+        stav = self._inv.har_type("weapon") and not self._inv.har_type("weapon").blade()
+        sverd = self._inv.har_type("weapon") and self._inv.har_type("weapon").blade()
+        for spell in liste:
+            klar = not self._CDdict[forkortelser[spell[0]]] and self._spiller.kp() >= spell[1]
+            if (spell[0] == "v" or spell[0] == "sr" or spell[0] == "ke") and not stav: klar = False
+            elif spell[0] == "u" and not sverd: klar = False
+            elif spell[0] == "n" and not (bool(sum([f.burning() for f in fiender])) or self._spiller.burning()[0]): klar = False
+            elif spell[0] == "kj" and not (sum([f.race() == "gargyl" or f.race() == "stein" for f in fiender])): klar = False
+            elif spell[0] == "m" and not sum([self._CDdict[spell] for spell in self._CDdict]): klar = False
+            elif spell[0] == "ts" and allierte and allierte[0]: klar = False
+
+            if klar: tekst += Fore.GREEN
+            else: tekst += Fore.RED
+            tekst += spell[0] + " "
+        if tekst: print(tekst + Style.RESET_ALL)
 
     def tryllepulver(self, fiende):
         tempListe = []
@@ -1437,7 +1488,8 @@ class Spellbook:
             return True
 
     def restituer(self):
-        if self._spiller.lvl() >= 3 and self._spiller.kons_igjen() >= 50:
+        if self._req("Restituer", 3, 50):
+        #if self._spiller.lvl() >= 3 and self._spiller.kons_igjen() >= 50:
             self._spiller.bruk_kons(50)
             r = self._spiller.restorer(40 + self._spiller.lvl() * 4 + self._inv.hent_weaponKp())
             print("Du kastet Restituer!")
@@ -1448,76 +1500,51 @@ class Spellbook:
             if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
                 qlog.hent_quest(1).progresser(r)
 
+            self._CDdict["Restituer"] = 2
             return False
-
-        #ikke nok kp
-        elif self._spiller.lvl() >= 3:
-            print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
     def vind(self, fiende):
-        if self._spiller.lvl() >= 5 and self._spiller.kons_igjen() >= 100 and self._inv.har_type("weapon"):
-            if not self._inv.har_type("weapon").blade():
-                self._spiller.bruk_kons(100)
+        if self._req("Vind", 5, 90, stav=True):
+            self._spiller.bruk_kons(90)
 
-                #etter fullførelse av quest tar dette angrepet 150 ekstra liv.
-                qlog = self._klasser.questlog(1)
-                print(self._spiller.navn(), "kastet Vindkast!")
-                if fiende.untouchable():
-                    fiende.mist_liv(0)
-                else:
-                    fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 150 + 150 * int(qlog.hent_quest(3).ferdig()))
-
-                #oppdaterer quest-variabel
-                if qlog.hent_quest(3).startet() and not qlog.hent_quest(3).ferdig():
-                    qlog.hent_quest(3).progresser()
-                return False
-
+            #etter fullførelse av quest tar dette angrepet 150 ekstra liv.
+            qlog = self._klasser.questlog(1)
+            print(self._spiller.navn(), "kastet Vindkast!")
+            if fiende.untouchable():
+                fiende.mist_liv(0)
             else:
-                print("Du trenger en tryllestav!")
+                fiende.mist_liv(round(self._inv.hent_weaponA() * 1.5) + 150 + 150 * int(qlog.hent_quest(3).ferdig()))
 
-        #man trenger en tryllestav for å bruke dette angrepet.
-        elif self._spiller.lvl() >= 5 and not self._inv.har_type("weapon"):
-            print("Du trenger en tryllestav!")
+            #oppdaterer quest-variabel
+            if qlog.hent_quest(3).startet() and not qlog.hent_quest(3).ferdig():
+                qlog.hent_quest(3).progresser()
 
-        #ikke nok kp
-        elif self._spiller.lvl() >= 5 and self._spiller.kons_igjen() < 100:
-            print("Du har ikke nok konsentrasjonspoeng!")
-
+            self._CDdict["Vind"] = 3
+            return False
         return True
 
     def super_restituer(self):
-        if self._spiller.lvl() >= 10 and self._spiller.kons_igjen() >= 100 and self._inv.har_type("weapon"):
-            if not self._inv.har_type("weapon").blade():
-                self._spiller.bruk_kons(100)
-                r = self._spiller.restorer(140 + self._spiller.lvl() * 8 + self._inv.hent_weaponKp())
-                print("Du kastet super restituer!")
-                print(self._spiller.navn(), "restituerte", r, "helsepoeng.")
+        if self._req("Super Restituer", 10, 100, stav=True):
+            self._spiller.bruk_kons(100)
+            r = self._spiller.restorer(140 + self._spiller.lvl() * 8 + self._inv.hent_weaponKp())
+            print("Du kastet super restituer!")
+            print(self._spiller.navn(), "restituerte", r, "helsepoeng.")
 
-                #oppdaterer quest-variabel
-                qlog = self._klasser.questlog(1)
-                if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
-                    qlog.hent_quest(1).progresser(r)
-                if qlog.hent_quest(4).startet() and not qlog.hent_quest(4).ferdig():
-                    qlog.hent_quest(4).progresser()
-                return False
+            #oppdaterer quest-variabel
+            qlog = self._klasser.questlog(1)
+            if qlog.hent_quest(1).startet() and not qlog.hent_quest(1).ferdig():
+                qlog.hent_quest(1).progresser(r)
+            if qlog.hent_quest(4).startet() and not qlog.hent_quest(4).ferdig():
+                qlog.hent_quest(4).progresser()
 
-            else:
-                print("Du trenger en tryllestav!")
-
-        #krever tryllestav
-        elif self._spiller.lvl() >= 10 and not self._inv.har_type("weapon"):
-            print("Du trenger en tryllestav!")
-
-        #Ikke nok kp
-        elif self._spiller.lvl() >= 10 and self._spiller.kons_igjen() < 100:
-            print("Du har ikke nok konsentrasjonspoeng!")
+            self._CDdict["Super Restituer"] = 3
+            return False
         return True
 
     def konsentrer_energi(self, fiende):
         qlog = self._klasser.questlog(1)
-        if qlog.hent_quest(4).ferdig():
-            if self._spiller.kons_igjen() >= 150 and self._inv.har_type("weapon") and not self._inv.har_type("weapon").blade():
+        if self._req("Konsentrer Energi", 11, 150, stav=True, liste=[qlog.hent_quest(4).ferdig()]):
                 self._spiller.bruk_kons(150)
                 print(self._spiller.navn(), "kastet Konsentrer Energi!")
                 if fiende.untouchable():
@@ -1525,16 +1552,13 @@ class Spellbook:
                 else:
                     skadeGjort = fiende.mist_liv(300 + self._inv.hent_weaponA() + self._inv.hent_weaponKp())
                 print(self._spiller.navn(), "fikk", self._spiller.restorer(skadeGjort), "liv.")
+                self._CDdict["Konsentrer Energi"] = 9
                 return False
-            elif self._spiller.kons_igjen() >= 150:
-                print("Du trenger en tryllestav!")
-            else:
-                print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
     def freeze(self, fiende):
-        if self._klasser.questlog(3).hent_quest(0).startet():
-            if self._spiller.kp() >= 70 and (fiende.burning() or self._spiller.burning()[0]):
+        if self._req("Nedkjøl", 16, 70, liste=[self._klasser.questlog(3).hent_quest(0).startet()]):
+            if fiende.burning() or self._spiller.burning()[0]:
                 self._spiller.bruk_kons(70)
                 print(self._spiller.navn(), "kastet Nedkjøl!")
                 if not self._klasser.questlog(3).hent_quest(0).ferdig() and not randint(0, 2):
@@ -1551,22 +1575,16 @@ class Spellbook:
 
                 #progresserer quest
                 self._klasser.questlog(3).hent_quest(0).progresser()
-
                 return False
 
-            #ingen som brenner
-            elif self._spiller.kp() >= 70:
-                print("Det er ingen som brenner!")
-
-            #ikke nok kp
             else:
-                print("Du har ikke nok konsentrasjonspoeng!")
+                print("Det er ingen som brenner!")
         return True
 
     def meatify(self, fiende):
         qlog = self._klasser.questlog(4)
-        if qlog.hent_quest(4).ferdig():
-            if self._spiller.kons_igjen() >= 85 and fiende.race() == "gargyl":
+        if self._req("Kjøttifiser", 16, 85, liste=[qlog.hent_quest(4).ferdig()]):
+            if fiende.race() == "gargyl":
                 self._spiller.bruk_kons(85)
                 print(self._spiller.navn(), "kastet Kjøttifiser!")
                 if fiende.untouchable():
@@ -1577,7 +1595,7 @@ class Spellbook:
                     fiende.set_untouchable(False, -6)
                 return False
 
-            elif self._spiller.kons_igjen() >= 85 and fiende.race() == "stein":
+            elif fiende.race() == "stein":
                 self._spiller.bruk_kons(85)
                 print(self._spiller.navn(), "kastet Kjøttifiser!")
                 print("Du gjorde steinen om til en velsmakende kjøttbolle.")
@@ -1586,31 +1604,24 @@ class Spellbook:
                 print(self._spiller.navn(), "fikk", self._spiller.restorer(skade), "liv.")
                 return False
 
-            elif self._spiller.kons_igjen() >= 85:
-                print("Denne fienden er ikke forsteinet.")
             else:
-                print("Du har ikke nok konsentrasjonspoeng!")
+                print("Denne fienden er ikke forsteinet.")
         return True
 
     def brukUtforsk(self):
-        if self._spiller.lvl() >= 17 and self._spiller.kons_igjen() >= 195 and self._inv.har_type("weapon"):
-            if self._inv.har_type("weapon").blade():
-                self._spiller.bruk_kons(195)
-                print(self._spiller.navn(), "kastet Utforsk!")
-                self._utforsk = True
-                self._utforskRunder = 4
+        if self._req("Utforsk", 17, 195, sverd=True):
+            self._spiller.bruk_kons(195)
+            print(self._spiller.navn(), "kastet Utforsk!")
+            self._utforsk = True
+            self._utforskRunder = 4
 
-                #Oppdaterer qlog
-                bandittQlog = self._klasser.questlog(7)
-                if bandittQlog.hent_quest(1).startet():
-                    bandittQlog.hent_quest(1).progresser()
-                return False
-            else:
-                print("Du trenger et sverd!")
-        elif self._spiller.lvl() >= 17 and self._spiller.kons_igjen() >= 195:
-            print("Du trenger et sverd!")
-        elif self._spiller.lvl() >= 17:
-            print("Du har ikke nok konsentrasjonspoeng!")
+            #Oppdaterer qlog
+            bandittQlog = self._klasser.questlog(7)
+            if bandittQlog.hent_quest(1).startet():
+                bandittQlog.hent_quest(1).progresser()
+
+            self._CDdict["Utforsk"] = 8
+            return False
         return True
 
     def utforsk(self):
@@ -1623,9 +1634,13 @@ class Spellbook:
         return utforsk
 
     def brukOpphold(self, fiende):
-        if self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 250 and not fiende.untouchable():
+        if self._req("Opphold", 23, 250):
             self._spiller.bruk_kons(250)
             print(self._spiller.navn(), "kastet Opphold!")
+            self._CDdict["Opphold"] = 7
+            if fiende.untouchable():
+                print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
+                return False
             fiende.opphold(1)
             if self._klasser.questlog(6).hent_quest(6).ferdig():
                 fiende.opphold(2)
@@ -1633,46 +1648,35 @@ class Spellbook:
             and self._klasser.questlog(6).hent_quest(6).startet():
                 self._klasser.questlog(6).hent_quest(6).progresser()
             return False
-        elif self._spiller.lvl() >= 23 and self._spiller.kons_igjen() >= 250 and fiende.untouchable():
-            print(fiende.navn() + fiende.ending(), "er ikke oppholdt.")
-            self._spiller.bruk_kons(250)
-            return False
-        elif self._spiller.lvl() >= 23:
-            print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
     def distraher(self, fiende):
-        if self._klasser.questlog(7).hent_quest(3).startet():
-            if self._spiller.kons_igjen() >= 140:
-                self._spiller.bruk_kons(140)
-                mengde = 200 + round(self._spiller.d()/15) + self._inv.hent_weaponKp()
-                print(self._spiller.navn(), "kastet Distraher!")
-                if fiende.kp() < mengde:
-                    mengde = fiende.kp()
-                if fiende.untouchable():
-                    mengde = 0
-                fiende.kp(-mengde)
-                print(fiende.navn() + fiende.ending(), "mistet", mengde, "kp")
+        if self._req("Distraher", 16, 140, liste=[self._klasser.questlog(7).hent_quest(3).startet()]):
+            self._spiller.bruk_kons(140)
+            mengde = 200 + round(self._spiller.d()/15) + self._inv.hent_weaponKp()
+            print(self._spiller.navn(), "kastet Distraher!")
+            if fiende.kp() < mengde:
+                mengde = fiende.kp()
+            if fiende.untouchable():
+                mengde = 0
+            fiende.kp(-mengde)
+            print(fiende.navn() + fiende.ending(), "mistet", mengde, "kp")
 
-                #quest
-                self._klasser.questlog(7).hent_quest(3).progresser()
+            #quest
+            self._klasser.questlog(7).hent_quest(3).progresser()
 
-                return False
-            else:
-                print("Du har ikke nok konsentrasjonspoeng!")
+            self._CDdict["Distraher"] = 5
+            return False
         return True
 
     def bruk_lys(self):
-        if self._klasser.questlog(6).hent_quest(14).ferdig() and self._spiller.kons_igjen() >= 120:
+        if self._req("Lys", 20, 120, liste=[self._klasser.questlog(6).hent_quest(14).ferdig()]):
             print("Du kastet Lys!")
             self._lysRunder = 3
             self._lys = True
             self._spiller.bruk_kons(120)
+            self._CDdict["Lys"] = 7
             return False
-
-        #Ikke nok kp
-        elif self._klasser.questlog(6).hent_quest(14).ferdig():
-            print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
     def lys(self):
@@ -1685,7 +1689,7 @@ class Spellbook:
         return lys
 
     def korrupsjon(self, fiende):
-        if self._klasser.questlog(6).hent_quest(15).ferdig() and self._spiller.kons_igjen() >= 120:
+        if self._req("Korrupsjon", 20, 120, liste=[self._klasser.questlog(6).hent_quest(15).ferdig()]):
             print("Du kastet Korrupsjon!")
             gp = self._spiller.good_points()
             ep = self._spiller.evil_points()
@@ -1696,29 +1700,20 @@ class Spellbook:
             else:
                 fiende.sett_bleeding(3, hp=skade, kp=evilBonus*2*int(evilBonus >= 10))
             self._spiller.bruk_kons(120)
+            self._CDdict["Korrupsjon"] = 7
             return False
-
-        #Ikke nok kp
-        elif self._klasser.questlog(6).hent_quest(15).ferdig():
-            print("Du har ikke nok konsentrasjonspoeng!")
         return True
 
     def brukSolidifiser(self):
-        if self._spiller.spesialisering() == "Smertedreper":
-            if self._spiller.kp() >= 65 and not self._solidifiserCD:
-                self._solidifiserMengde = 250 + round((self._inv.hent_weaponA() + self._inv.hent_weaponKp()) / 2) + self._spiller.lvl() * 10
-                print(self._spiller.navn(), "kastet Solidifiser!")
-                print(self._spiller.navn(), "fikk", self._solidifiserMengde, "defensivpoeng.")
-                self._spiller.hev_d(self._solidifiserMengde)
-                self._solidifiserCD = 5
-                self._spiller.bruk_kons(65)
-                return False
-            #fremdeles aktiv
-            elif self._spiller.kp() >= 65:
-                print("Solidifiser er fremdeles aktiv!")
-            #ikke nok kp
-            else:
-                print("Du har ikke nok konsentrasjonspoeng!")
+        if self._req("Solidifiser", 20, 65, liste=[(self._spiller.spesialisering() == "Smertedreper")]):
+            self._solidifiserMengde = 250 + round((self._inv.hent_weaponA() + self._inv.hent_weaponKp()) / 2) + self._spiller.lvl() * 8
+            print(self._spiller.navn(), "kastet Solidifiser!")
+            print(self._spiller.navn(), "fikk", self._solidifiserMengde, "defensivpoeng.")
+            self._spiller.hev_d(self._solidifiserMengde)
+            self._solidifiserCD = 5
+            self._spiller.bruk_kons(65)
+            self._CDdict["Solidifiser"] = 14
+            return False
         return True
 
     def solidifiserCD(self, fiende, fiender):
@@ -1732,21 +1727,15 @@ class Spellbook:
                 self._solidifiserCD = 0
 
     def brukForsterk(self):
-        if self._spiller.spesialisering() == "Muskelbunt":
-            if self._spiller.kp() >= 70 and not self._forsterkCD:
-                self._forsterkMengde = 200 + round(self._inv.hent_weaponA() * 1.2) + self._spiller.lvl() * 3
-                print(self._spiller.navn(), "kastet Forsterk!")
-                print(self._spiller.navn(), "fikk", self._forsterkMengde, "angrepspoeng.")
-                self._spiller.hev_a(self._forsterkMengde)
-                self._forsterkCD = 4
-                self._spiller.bruk_kons(70)
-                return False
-            #fremdeles aktiv
-            elif self._spiller.kp() >= 70:
-                print("Forsterk er fremdeles aktiv!")
-            #ikke nok kp
-            else:
-                print("Du har ikke nok konsentrasjonspoeng!")
+        if self._req("Forsterk", 20, 70, liste=[(self._spiller.spesialisering() == "Muskelbunt")]):
+            self._forsterkMengde = 200 + round(self._inv.hent_weaponA() * 1.2) + self._spiller.lvl() * 3
+            print(self._spiller.navn(), "kastet Forsterk!")
+            print(self._spiller.navn(), "fikk", self._forsterkMengde, "angrepspoeng.")
+            self._spiller.hev_a(self._forsterkMengde)
+            self._forsterkCD = 4
+            self._spiller.bruk_kons(70)
+            self._CDdict["Forsterk"] = 12
+            return False
         return True
 
     def forsterkCD(self, fiende, fiender):
@@ -1760,14 +1749,12 @@ class Spellbook:
                 self._forsterkCD = 0
 
     def brukTankeboble(self):
-        if self._spiller.spesialisering() == "Klartenker":
-            if self._spiller.kp() >= 100:
-                print(self._spiller.navn(), "kastet Tankeboble!")
-                self._spiller.bruk_kons(100)
-                self._tankebobleCD = 3
-                return False
-            else:
-                print("Du har ikke nok konsentrasjonspoeng!")
+        if self._req("Tankeboble", 20, 60, liste=[self._spiller.spesialisering() == "Klartenker"]):
+            print(self._spiller.navn(), "kastet Tankeboble!")
+            self._spiller.bruk_kons(60)
+            self._tankebobleCD = 3
+            self._CDdict["Tankeboble"] = 12
+            return False
         return True
 
     def tankeboble(self):
@@ -1777,7 +1764,28 @@ class Spellbook:
             print(self._spiller.navn(), "fikk", self._spiller.restorer_kp(mengde), "kp fra tankeboblen.")
         return self._tankebobleCD
 
-    def reset(self):
+    def mediter(self):
+        if self._req("Mediter", 30, 100, \
+        kravDict={sum([self._CDdict[spell] for spell in self._CDdict]):"Alle trylleformlene er klare for bruk!"}):
+            print(self._spiller.navn(), "kastet Mediter!")
+            self._spiller.bruk_kons(100)
+            for x in range(int((self._spiller.lvl() - 16) / 7)): self.progresser()
+            self._CDdict["Mediter"] = 8
+            return False
+        return True
+
+    def tilkall_sopp(self, allierte):
+        if self._req("Tilkall Sopp", 25, 350, liste=[self._klasser.questlog(6).hent_quest(13).ferdig(), \
+        self._spiller.hentSted() == "shroom"], kravDict={not allierte: "Du har allerede en alliert i denne kampen!"}):
+            self._spiller.bruk_kons(350)
+            print(self._spiller.navn(), "tilkalte en magisk sopp til å hjelpe i kampen!")
+            allierte.append(Fiende("Psilocybe Semilanceata", "alliert", Loot(), \
+            hp=500, a=300, d=300, kp=800, bonusKp=22, ending="en"))
+            self._CDdict["Tilkall Sopp"] = 15
+            return False, allierte
+        return True, allierte
+
+    def reset(self, flykt=False):
         if self._solidifiserCD:
             self._spiller.hev_d(-self._solidifiserMengde)
         if self._forsterkCD:
@@ -1789,6 +1797,44 @@ class Spellbook:
         self._solidifiserCD = 0
         self._solidifiserMengde = 0
         self._tankebobleCD = 0
+        if flykt:
+            for spell in self._CDdict:
+                self._CDdict[spell] = 0
+
+    def progresser(self):
+        for spell in self._CDdict:
+            if self._CDdict[spell]: self._CDdict[spell] -= 1
+
+    def _req(self, navn, lvl, kp, stav=False, sverd=False, liste=[], kravDict={}):
+        if self._spiller.lvl() < lvl: return False
+
+        for boolsk in liste:
+            if not boolsk: return False
+
+        if self._CDdict[navn]:
+            print("{} trenger {} runde{} før den kan brukes igjen!".format(\
+            navn, self._CDdict[navn], "r" * (self._CDdict[navn] != 1)))
+            return False
+
+        if stav:
+            if not self._inv.har_type("weapon") or self._inv.har_type("weapon").blade():
+                print("Du trenger en tryllestav!")
+                return False
+        elif sverd:
+            if not self._inv.har_type("weapon") or not self._inv.har_type("weapon").blade():
+                print("Du trenger et sverd!")
+                return False
+
+        if self._spiller.kp() < kp:
+            print("Du har ikke nok konsentrasjonspoeng!")
+            return False
+
+        for krav in kravDict:
+            if not krav:
+                print(kravDict[krav])
+                return False
+
+        return True
 
 class Inventory:
     def __init__(self, spiller, klasser):

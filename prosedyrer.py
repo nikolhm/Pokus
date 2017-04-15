@@ -99,9 +99,12 @@ def kategorier():
     ~ - - - - - - - - - - - - - - - - - ~""")
 
 #Tar spiller og fiende som parametre. Skriver ut stats hver runde.
-def skriv_ut(s, f):
-    s.skriv_ut()
-    f.skriv_ut()
+def skriv_ut(spiller, fiender, spellbook, allierte=[]):
+    print()
+    spellbook.skriv_spell_status(fiender, allierte)
+    liste = allierte + [spiller] + fiender
+    for karakter in liste:
+        if karakter: karakter.skriv_ut()
 
 def pause():
     input("Trykk enter for å fortsette\n> ")
@@ -111,7 +114,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     fHp = fiende.hp()
 
     if not fiender:
-        fiender.append(fiende)
+        fiender = [fiende]
     #gir xp
     if inn == "xp" or inn == "erfaringspoeng":
         spiller.xp()
@@ -256,29 +259,40 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     elif inn == "l" or inn == "lys":
         tur = spellbook.bruk_lys()
 
-    #kaser Korrupsjon. Krever formel kjøpt og 10 op.
+    #kaster Korrupsjon. Krever formel kjøpt og 10 op.
     elif inn == "ko" or inn == "korrupsjon":
         tur = spellbook.korrupsjon(fiende)
+
+    #kaster Mediter. Krever lvl 30.
+    elif inn == "m" or inn == "mediter":
+        tur = spellbook.mediter()
+
+    #kaster Tilkall Sopp. Krever quest og shroom som sted.
+    elif inn in {"tilkall sopp", "sopp", "tilkall", "ts"}:
+        tur, allierte = spellbook.tilkall_sopp([a for a in allierte if a])
 
     #gir liste over kommandoer.
     elif inn == "h" or inn == "hjelp":
         hjelp()
 
     #spilleren gjør ingenting.
-    elif inn == "ingenting":
+    elif inn == "ingenting" or inn == "nada":
         print(spiller.navn(), "gjør ingenting.")
         tur = False
 
+    elif inn == "skriv ut":
+        skriv_ut(spiller, fiender, spellbook, allierte=allierte)
+
     #resetter spellbook om man flykter fra en kamp.
     elif inn == "f" or inn == "flykt":
-        spellbook.reset()
+        spellbook.reset(flykt=True)
 
-    elif inn in {"juks", "j2", "j3", "j4", "juks2", "juks3", "juks4", "j"}:
-        print("Juksemaker!", spiller.navn(), "mistet", spiller.mist_liv(10), "liv!")
+    # elif inn in {"juks", "j2", "j3", "j4", "juks2", "juks3", "juks4", "j"}:
+    #     print("Juksemaker!", spiller.navn(), "mistet", spiller.mist_liv(10), "liv!")
 
     #Intet spill er komplett uten en juksekode. Dessuten særdeles
     #brukbart for å teste programmet. Dreper en fiende på første forsøk.
-    """elif inn == "j" or inn == "juks":
+    elif inn == "j" or inn == "juks":
         fiende.angrepet(100042)
 
     #Juksekode nr. 2: når ønsket lvl.
@@ -300,7 +314,9 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     #Juksekode nr. 4: Restorerer liv og kp til fullt.
     elif inn == "j4" or inn == "juks4":
         spiller.restorer(100000)
-        spiller.restorer_kp(10000)"""
+        spiller.restorer_kp(10000)
+        spellbook.reset(True)
+        skriv_ut(spiller, fiender, spellbook, allierte=allierte)
 
     #aktiverer Lys
     if not tur and spellbook.lys():
@@ -309,8 +325,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         mengde = round((((gp + 0.01) / (gp + ep + 0.001)) * gp * 100) / 5)
         print(spiller.navn(), "restorerte", spiller.restorer(mengde), "liv fra lyset!")
         for a in allierte:
-            if a:
-                print(a.navn(), "restorerte", a.restorer(mengde), "liv fra", spiller.navn() + "s lys!")
+            if a: print(a.navn(), "restorerte", a.restorer(mengde), "liv fra", spiller.navn() + "s lys!")
 
     #akiverer korrupsjon
     if not tur and fiende.bleeding() > 0:
@@ -327,6 +342,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
         spellbook.solidifiserCD(fiende, fiender)
         spellbook.forsterkCD(fiende, fiender)
         spellbook.tankeboble()
+        spellbook.progresser()
 
     #progresserer klartenker-quest. Avgjør hvor mye kp som er brukt.
     if klasser.questlog(3).hent_quest(5).startet() and kp - spiller.kp() > 0:
@@ -336,7 +352,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
     if klasser.questlog(2).hent_quest(4).startet():
         klasser.questlog(2).hent_quest(4).progresser(fHp - fiende.hp())
 
-    return tur
+    return tur, allierte
 
 def player_died(spiller, inv, klasser):
     spiller.die(inv)
