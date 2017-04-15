@@ -72,7 +72,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
     fiende = Fiende("Nusselig ekorn", "dyr", loot, 30, 10, 0)
     skriv_ekorn1()
     print("\n" + navn, "har møtt et nusselig ekorn!")
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
 
     while not fiende.dead():
         inn = input("\nHva vil du gjøre?\n> ").lower()
@@ -81,7 +81,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
                 for qlogs in klasser.alle_questlogger():
                     qlogs.skriv_ut(spiller)
             inn = input("\nSkriv 'a' eller 'angrip' for å angripe\n> ").lower()
-        angrip_fiende(spiller, fiende, inv)
+        angrip_fiende(spiller, fiende, inv, spellbook)
     print("--------------------------------------------------------------------"+\
     "\nDu vant!", fiende.navn() + fiende.ending(), "er overvunnet!",spiller.navn(),"får",fiende.xp(),"erfaringspoeng.")
     spiller.gi_xp(fiende.xp())
@@ -167,7 +167,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
     skriv_ekorn2()
     print(navn, "har møtt et grufullt ekorn!\n")
     print("\n    ~Det ser ut til at du får teste teorien i praksis! Så beleilig...~\n")
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
     while not fiende.dead():
         inn = input("\nHva vil du gjøre?\n> ").lower()
         while inn != "a" and inn != "angrip":
@@ -176,7 +176,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
             if inn == "i" or inn == "inventar":
                 inv.skriv_inv()
             inn = input("\nSkriv 'a' eller 'angrip' for å angripe\n> ").lower()
-        angrip_fiende(spiller, fiende, inv)
+        angrip_fiende(spiller, fiende, inv, spellbook)
     print("--------------------------------------------------------------------"+\
     "\nDu vant!", fiende.navn() + fiende.ending(), "er overvunnet!",spiller.navn(),"får",fiende.xp(),"erfaringspoeng.")
     spiller.gi_xp(fiende.xp())
@@ -214,7 +214,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
     fiende = Fiende("Mistenkelig ekorn", "dyr", loot, 15, 3, 4)
     skriv_ekorn1()
     print("\n" + navn, "har møtt et Mistenkelig ekorn!")
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
     while not fiende.dead():
         inn = input("\nHva vil du gjøre?\n> ").lower()
         while inn != "a" and inn != "angrip":
@@ -223,7 +223,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
             if inn == "i" or inn == "inventar":
                 inv.skriv_inv()
             inn = input("\nSkriv 'a' eller 'angrip' for å angripe\n> ").lower()
-        angrip_fiende(spiller, fiende, inv)
+        angrip_fiende(spiller, fiende, inv, spellbook)
     print("--------------------------------------------------------------------"+\
     "\nDu vant!", fiende.navn() + fiende.ending(), "er overvunnet!",spiller.navn(),"får",fiende.xp(),"erfaringspoeng.")
     spiller.gi_xp(fiende.xp())
@@ -252,7 +252,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
     ~Siden du ikke har lært noen trylleformler enda, er det kun tryllepulver du
     kan bruke mot ekornet. Bruk tryllepulver ved å skrive 't' eller 'tryllepulver'!~\n""")
 
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
     while not fiende.dead():
         inn = input("\nHva vil du gjøre?\n> ").lower()
         while inn != "a" and inn != "angrip" and inn != "t" and inn != "tryllepulver":
@@ -266,7 +266,7 @@ fra er grovt brent, og har et stort hull i taket. """ + navn + " ser seg rundt.\
         if inn == "t" or inn == "tryllepulver":
             spellbook.tryllepulver(fiende)
         else:
-            angrip_fiende(spiller, fiende, inv)
+            angrip_fiende(spiller, fiende, inv, spellbook)
     print("--------------------------------------------------------------------"+\
     "\nDu vant!", fiende.navn() + fiende.ending(), "er overvunnet!",spiller.navn(),"får",fiende.xp(),"erfaringspoeng.")
     spiller.gi_xp(fiende.xp())
@@ -291,7 +291,7 @@ skog.""", navn, "finner Overtrollmann Vassle på toppen av et spir høyt \nover 
 
     return "gnom"
 
-def angrip_fiende(spiller, fiende, inv):
+def angrip_fiende(spiller, fiende, inv, spellbook):
     weapon = inv.har_type("weapon")
     if weapon and weapon.blade():
         fiende.angrepet(spiller.a(), inv.hent_weaponA())
@@ -302,7 +302,7 @@ def angrip_fiende(spiller, fiende, inv):
     if spiller.dead():
         spiller.restorer(60)
         print("Zip restorerte 60 hp på", spiller.navn(), "ved magi!")
-    skriv_ut(spiller, fiende)
+    skriv_ut(spiller, [fiende], spellbook)
 
 def tutorial_quest(qlog, spiller):
     desk1 = "    Zip: OK, jeg skal vise deg hva du skal gjøre underveis, bare gå!\n"
