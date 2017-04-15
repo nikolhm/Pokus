@@ -1112,15 +1112,23 @@ class Fiende:
     def bleeding(self):
         return self._bleedingCD
 
-    def korrupt(self):
+    def korrupt(self, allierte, target=False):
         if self._bleedingCD > 0:
             self._bleedingCD -= 1
             hpSkade = self.mist_liv(self._bleedingHp, True)
-            kpSkade = self.mist_kp(self._bleedingKp, True)
+            if target: kpSkade = self.mist_kp(self._bleedingKp, True)
+            else: kpSkade = 0
+
             if hpSkade:
-                print(self.navn() + self.ending(), "mistet", hpSkade, "hp av korrupsjonen!")
-            if kpSkade:
-                print(self.navn() + self.ending(), "mistet", kpSkade, "kp av korrupsjonen!")
+                print("{} mistet {} hp {}av korrupsjonen!".format(self.navn() + self.ending(), hpSkade, \
+                "og {} kp ".format(kpSkade) * int(bool(kpSkade))))
+                if target:
+                    for a in allierte:
+                        stjelteHp = a.restorer(int(hpSkade / 2))
+                        stjelteKp = a.restorer_kp(kpSkade)
+                        if stjelteHp: print("{} fikk {} hp {}av {}s korrupsjon!".format(\
+                        a.navn(), stjelteHp, "og {} kp ".format(stjelteKp) * int(bool(stjelteKp)), self._navn))
+
         elif self._bleedingCD < 0:
             self._bleedingCD += 1
 
@@ -1179,6 +1187,14 @@ class Fiende:
             return x
         else:
             return hp
+
+    def restorer_kp(self, kp):
+        self._kp += kp
+        if self._kp > self._xKp:
+            x = kp - (self._kp - self._xKp)
+            self._kp = self._xKp
+            return x
+        return kp
 
     #Angir om fienden er død.
     def dead(self):
@@ -1334,9 +1350,11 @@ class Spellbook:
                          Krever 140 konsentrasjonspoeng. Tryllestav og d gir ekstra effekt.".format(\
                          200 + round(self._spiller.d()/15) + self._inv.hent_weaponKp()))
         if ekspedisjonslog.hent_quest(13).ferdig() and self._spiller.hentSted() == "shroom":
-            print("tilkall sopp (ts)        tilkaller en magisk sopp til å kjempe ved din side.\n\
+            print("tilkall sopp (ts)        tilkaller en magisk sopp til å kjempe ved din side med \n\
+                         følgende egenskaper: hp {}, kp {}, a {} og d {}. Dine egenskaper gir ekstra effekt.\n\
                          Krever 350 konsentrasjonspoeng. Forsvinner etter hver kamp og kan \n\
-                         kun brukes ved ekspedijonsleiren.")
+                         kun brukes ved ekspedijonsleiren.".format(500 + int(self._spiller.xHp() / 20), \
+                         700 + int(self._spiller.xKp() / 20), 300 + int(self._spiller.a() / 20), 300 + int(self._spiller.d() / 20)))
 
         #Disse spesialangrepene krever spesialisering.
         if self._spiller.spesialisering() == "Smertedreper":
@@ -1361,9 +1379,11 @@ class Spellbook:
                          Krever 120 konsentrasjonspoeng. Godhetsbonus gir ekstra effekt.".format(\
                          round((((gp + 0.01) / (gp + ep + 0.001)) * gp * 100) / 5)))
         if ekspedisjonslog.hent_quest(15).ferdig():
-            print("korrupsjon (ko)          Gjør fienden korrupt og tar {} liv {}i 3 runder.\n\
-                         Krever 120 konsentrasjonspoeng. Ondhetsbonus og a gir ekstra effekt.".format(\
-                         round(self._spiller.a() / 5) + eb * 10, ("og " + str(eb*2) + " kp ")*int(eb >= 10)))
+            print("korrupsjon (ko)          Gjør fiender korrupt og tar {0} liv {1}i 3 runder.\n\
+                         Stjeler {2} hp {1}fra hovedmålet, Krever 120 konsentrasjonspoeng.\n\
+                         Ondhetsbonus og angrepspoeng gir ekstra effekt.".format(\
+                         round(self._spiller.a() / 5) + eb * 10, ("og " + str(eb*2) + " kp ")*int(eb >= 10), \
+                         int((round(self._spiller.a() / 5) + eb * 10) / 2)))
 
     def skriv_spell_status(self, fiender, allierte):
         forkortelser = {"r":"Restituer", "v":"Vind", "sr":"Super Restituer", "ke":"Konsentrer Energi", \
@@ -1688,17 +1708,18 @@ class Spellbook:
             self._lys = False
         return lys
 
-    def korrupsjon(self, fiende):
+    def korrupsjon(self, fiender):
         if self._req("Korrupsjon", 20, 120, liste=[self._klasser.questlog(6).hent_quest(15).ferdig()]):
             print("Du kastet Korrupsjon!")
             gp = self._spiller.good_points()
             ep = self._spiller.evil_points()
             evilBonus = round(((ep + 0.1) / (gp + ep + 0.01)) * ep)
             skade = round(self._spiller.a() / 5) + evilBonus * 10
-            if fiende.untouchable():
-                print(fiende.navn() + fiende.ending(), "ble ikke korrupt.")
-            else:
-                fiende.sett_bleeding(3, hp=skade, kp=evilBonus*2*int(evilBonus >= 10))
+            for fiende in fiender:
+                if fiende.untouchable():
+                    print(fiende.navn() + fiende.ending(), "ble ikke korrupt.")
+                else:
+                    fiende.sett_bleeding(3, hp=skade, kp=evilBonus*2*int(evilBonus >= 10))
             self._spiller.bruk_kons(120)
             self._CDdict["Korrupsjon"] = 7
             return False
@@ -1780,7 +1801,11 @@ class Spellbook:
             self._spiller.bruk_kons(350)
             print(self._spiller.navn(), "tilkalte en magisk sopp til å hjelpe i kampen!")
             allierte.append(Fiende("Psilocybe Semilanceata", "alliert", Loot(), \
-            hp=500, a=300, d=300, kp=800, bonusKp=22, ending="en"))
+            hp=500 + int(self._spiller.xHp() / 20), \
+            a=300 + int(self._spiller.a() / 20), \
+            d=300 + int(self._spiller.d() / 20), \
+            kp=700 + int(self._spiller.xKp() / 20), \
+            bonusKp=22 + int(self._spiller.ekstraKp() / 20), ending="en"))
             self._CDdict["Tilkall Sopp"] = 15
             return False, allierte
         return True, allierte

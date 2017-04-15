@@ -261,7 +261,7 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
 
     #kaster Korrupsjon. Krever formel kjøpt og 10 op.
     elif inn == "ko" or inn == "korrupsjon":
-        tur = spellbook.korrupsjon(fiende)
+        tur = spellbook.korrupsjon(fiender)
 
     #kaster Mediter. Krever lvl 30.
     elif inn == "m" or inn == "mediter":
@@ -328,8 +328,10 @@ def kommandoer(inn, spiller, fiende, inv, klasser, spellbook, tur=True, allierte
             if a: print(a.navn(), "restorerte", a.restorer(mengde), "liv fra", spiller.navn() + "s lys!")
 
     #akiverer korrupsjon
-    if not tur and fiende.bleeding() > 0:
-        fiende.korrupt()
+    if not tur and sum([f.bleeding() > 0 for f in fiender]):
+        for f in fiender:
+            if f == fiende: fiende.korrupt([a for a in allierte if a] + [spiller], target=True)
+            else: f.korrupt([a for a in allierte if a] + [spiller])
 
     #aktiverer burning
     if not tur and spiller.burning()[0]:

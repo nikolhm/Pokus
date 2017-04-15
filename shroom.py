@@ -481,7 +481,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                     pause()
                 else:
                     print("\n{}    For en rett pris, kan din ondhet gi deg følgende fordeler:".format(red))
-                    print("    Lotusføtter          hp:-200, d:-110, a:135     32000g (l)")
+                    print("    Lotusføtter          hp:200, d:110, a:235       32000g (l)")
                     if not sQlog.hent_quest(15).ferdig():
                         print("    Korrupsjon           Trylleformel               25000g (ko)")
                     print(reset + "\ndu har", inv.penger(), "gullstykker.")
@@ -489,7 +489,7 @@ def banditt_loop(spiller, inv, klasser, spellbook):
                     if inn in {"lotusføtter", "l"}:
                         if inv.penger() >= 32000:
                             inv.penger(-32000)
-                            inv.legg_til_item(Item("Lotusføtter", "shoes", d=-110, xHp=-200, a=135), True)
+                            inv.legg_til_item(Item("Lotusføtter", "shoes", d=110, xHp=200, a=235), True)
                             input("Du bandt føttene dine. Trykk enter for å fortsette\n> ")
                         else:
                             print("Du har ikke råd!")
@@ -869,7 +869,7 @@ def angrip(spiller, fiende, inv, klasser, spellbook, alliert=None, fiender=[]):
                 alliert.kp(-150)
             elif alliert.kp() >= 130 and not randint(0, 10):
                 print(alliert.navn() + alliert.ending(), "kastet Full Kraft!")
-                fiende.mist_liv(alliert.a())
+                fiende.mist_liv(alliert.a() * 2)
                 alliert.kp(-130)
             else:
                 print(alliert.navn(), "angrep", fiende.navn() + fiende.ending() + ".")
