@@ -626,11 +626,10 @@ class Quest:
 
 class Spiller:
     #Oppretter alle variablene som trengs i klassen i konstruktøren.
-    def __init__(self, navn_og_sex):
+    def __init__(self, navn):
         #hp = helsepoeng, kp xHp = max hp, kp = konsentrasjonspoeng (mana/energy)
         #a = angrep, d = defensiv, xp = erfaringspoeng (experience points), xXp = total xp
-        self._navn = navn_og_sex[0]
-        self._sex = navn_og_sex[1]
+        self._navn = navn
         self._xHp = 100
         self._hp = 100
         self._kp = 60
@@ -665,7 +664,7 @@ class Spiller:
         for item in inv.itemListe():
             if item.bruker():
                 self.bytt_stats(item.statliste(), [0, 0, 0, 0, 0])
-        stats = [self._navn, self._sex, self._xHp, self._hp, self._kp, self._xKp, \
+        stats = [self._navn, self._xHp, self._hp, self._kp, self._xKp, \
         self._ekstraKp, self._a, self._d, self._xXp, self._xp, self._spesialisering, \
         self._sted, int(self._fuglelukt), self._lvl, int(self._firstSave), \
         self._goodPoints, self._evilPoints, self._kartListe]
@@ -747,10 +746,6 @@ class Spiller:
     #både "du" og karakterens navn blir brukt i spillet.
     def navn(self):
         return self._navn
-
-    #Generelt er spillet kjønnsnøytralt.
-    def sex(self):
-        return self._sex
 
     #Returnerer lvl
     def lvl(self):
