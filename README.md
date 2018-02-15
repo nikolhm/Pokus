@@ -3,11 +3,6 @@ Velkommen til Pokus!
 Pokus er et tekstbasert fantasy-spill utviklet for moro skyld av studenter på Instituttet for Informatikk ved UiO.
 Det er et hobby-prosjekt og setter ut for å være så useriøst som mulig. Målet for spillet er å være gøy for de som spiller det og å gi erfaring til de som lager det.
 
-## Installering:
-
-Vi har laget installere på nettsiden vår: https://pokus.org/ for Windows og Linux 64.
-Instruksjoner ligger på nettsiden. Alternativt kan det kjøres fra kildekoden.
-
 ## Instruksjoner for kjøring av kildekode:
 
 1. Last ned og installer [Python 3](https://www.python.org/downloads/) (helst versjon 3.5), eller bruk en tidligere installasjon.
