@@ -1,5 +1,5 @@
 from grafikk import *
-from os import listdir, system
+from os import listdir, system, path, makedirs
 import platform, sys
 if platform.system() == "Windows":
     from uuid import UUID
@@ -446,7 +446,9 @@ def finn_stats(item):
 #Prosedyrer og funksjoner knyttet til lagring og lasting av filer:
 
 if platform.system() == "Windows":
-    docFolder = knownpaths.get_path(UUID('{FDD39AD0-238F-46AF-ADB4-6C85480369C7}'))
+    docFolder = os.path.dirname(os.path.realpath(__file__))
+    if not os.path.exists(docFolder + "\\pokus_saves"):
+        os.makedirs(docFolder + "\\pokus_saves")
 else:
     docFolder = ""
     if "Save" not in listdir():
@@ -648,14 +650,13 @@ def last_navn(filnavn):
     dekrypt(filnavn)
     with open(filnavn) as fil:
         linje = fil.readline()
-        return fil.readline().strip().split(",")[:2]
+        return fil.readline().strip().split(",")[0]
 
 def last_fil(spiller, inv, klasser, filnavn):
     with open(filnavn) as fil:
         linje = fil.readline()
         linje = fil.readline().strip()
         spillerInf = linje.split(",")
-        spillerInf.pop(0)
         spillerInf.pop(0)
         linje = fil.readline().strip()
         kartliste = linje.split(",")
