@@ -1,9 +1,9 @@
-from grafikk import *
+import os, platform, sys
 from os import listdir, system, path, makedirs
-import platform, sys
 if platform.system() == "Windows":
     from uuid import UUID
     import knownpaths
+from grafikk import skrivGravstein
 
 #Verdenskart.
 def verdenskart(spiller):

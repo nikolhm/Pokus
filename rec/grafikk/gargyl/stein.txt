@@ -1,0 +1,21 @@
+{1}                   ooo OOO OOO ooo
+               oOO                 OOo
+           oOO                         OOo
+        oOO                               OOo
+      oOO                                   OOo
+    oOO                                       OOo
+   oOO                                         OOo
+  oOO      {0}   __                  ___    {1}       OOo
+ oOO       {0}   \ \_____      _____/ /   {1}          OOo
+ oOO       {0}    \______\    /______/    {1}          OOo
+ oOO                                             OOo
+ oOO                                             OOo
+ oOO                                             OOo
+  oOO               ___________                 OOo
+   oOO            /             \              OOo
+    oOO         /                 \           OOo;;;;
+      oOO                                   OOo;;;;;;;;;
+        oO                                OOo;;;;;;;;;;;;;
+           oOO                         OOo;;;;;;;;;;;;;;;;;;;;
+               oOO                 OOo;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   ooo OOO OOO ooo;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;nhm{2}

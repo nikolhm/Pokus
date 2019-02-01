@@ -1,0 +1,10 @@
+               ,aaaaaa.                             ,aaaaaa.                              ,aaaaaa.                               ,aaaaaa.
+            ,aaabbbbbbaaa.                        ,aaabbbbbbaaa.                        ,aaabbbbbbaaa.                        ,aaabbbbbbaaa.
+         ,aaabbbccccccbbbaaa.                  ,aaabbbccccccbbbaaa.                  ,aaabbbccccccbbbaaa.                  ,aaabbbccccccbbbaaa.
+       ,aabbbcccddddddcccbbbaa.              ,aabbbcccddddddcccbbbaa.              ,aabbbcccddddddcccbbbaa.              ,aabbbcccddddddcccbbbaa.
+     ,aabbcccddd'    'dddcccbbaa.          ,aabbcccddd'    'dddcccbbaa.          ,aabbcccddd'    'dddcccbbaa.          ,aabbcccddd'    'dddcccbbaa.
+   ,aabbccddd'          'dddccbbaa.      ,aabbccddd'          'dddccbbaa.      ,aabbccddd'          'dddccbbaa.      ,aabbccddd'          'dddccbbaa.
+  ,abbccdd'                'ddccbba.    ,abbccdd'                'ddccbba.    ,abbccdd'                'ddccbba.    ,abbccdd'                'ddccbba.
+ ,abccdd'                    'ddccba.  ,abccdd'                    'ddccba.  ,abccdd'                    'ddccba.  ,abccdd'                    'ddccba.
+,abcdd'                        'ddcba.,abcdd'                        'ddcba.,abcdd'                        'ddcba.,abcdd'                        'ddcba.
+abccd'                          'dccbaabccd'                          'dccbaabccd'                          'dccbaabccd'                          'dccba
