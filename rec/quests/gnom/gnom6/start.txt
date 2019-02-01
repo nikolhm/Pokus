@@ -1,0 +1,11 @@
+    Hei {navn}!
+    Mitt navn er Symmetriske Sara! Disse gnomene har herjet i skogene rundt borgen vår
+    lenge nok, men uansett hvor mange vi kverter dukker det stadig opp fler! Det
+    er helt sikkert på grunn av Gaute Gnom den Grusomme, og nå har vi endelig
+    funnet ut hvor han klekker sine grusomme planer fra! Det viser seg at Gaute
+    holder til i en hule dypt inne i skogen, godt beskyttet av sine beste Gnomevakter.
+    Er du helten vi trenger? Er du modig nok til å vandre gjennom skogen til den
+    skjulte hulen til Gaute Gnom den Grusomme? Om du er det, vær på vakt!
+    Gaute er en gnom utenom det vanlige, et beist større og styggere enn noe annet!
+
+    -- Bekjemp Gaute Gnom den Grusomme

@@ -1,0 +1,3 @@
+    Supert {navn}!
+    Med denne teknikken skal man kunne skade gnomen man slåss mot samtidig
+    som man helbreder seg selv! Ja, jeg er et geni!\n

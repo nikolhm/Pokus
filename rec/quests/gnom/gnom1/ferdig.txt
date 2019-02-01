@@ -1,0 +1,3 @@
+    Takk for hjelpen {navn}!
+    Dessverre ser det ut til at gnomene fortsetter å herje så lenge
+    Gaute Gnom den Grusomme er her. Kanskje Symmetriske Sara har løsningen?\n
