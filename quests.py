@@ -101,101 +101,34 @@ def garg_bq1_ferdig(navn):
 
 #Troll:
 def troll_q1(navn):
-    return "    Hei, " + navn + """!
-    Det er uhyre mange troll rundt i dette området. Ettersom tiden har gått
-    har vi blitt vant til det, men de har blitt mer og mer uredde i det siste.
-    De har til og med gått så nærme som å pisse på bålet gjennom pipa. Vet du
-    hvor mye ammoniak det der lukter!? Uansett skjønner vi at for å sette litt
-    brems på selvsikkerheten deres, bør vi true dem litt. De begynner å nærme
-    seg området rundt hytta. La dem kjenne at de må holde seg unna tilholdsstedet
-    vårt, fordi vi er farlige. De kommer ikke til å le når 25 av dem blir utryddet
-    utenfor og ikke kommer seg hjem.
+    return hentQuest('troll/troll1/start').format(navn=navn)
 
-    -- Myrd 25 troll."""
 def troll_q1_ferdig(navn):
-    return "    Tusen takk, " + navn + """!
-    Det er så fint å kjenne en magiker som ikke bøyer til slike ubrukelige ting
-    som "moral og etikk". Det er oss eller dem. De angriper oss og da må vi beskytte
-    oss selv: Det er så enkelt. Jeg lurer på hvorfor de gjør det i det første uansett...
-    """
+    return hentQuest('troll/troll1/ferdig').format(navn=navn)
 
 def troll_q2(navn):
-    return "    Hei, " + navn + """!
-    Jeg hørte du hjalp Rolf med å ta ned noen voldsomme troll nær hytta. Jeg har
-    ansvaret her for å forske på trollene og finne ut hvordan de funker. På grunn
-    av innsikten min i både fysiologien til troll og psykologien, så brukes jeg
-    ofte som strategisk troll-ekspert. Vi skjønner nå at en faksjon av trollene
-    har bygd seg en hule ikke langt herifra, som de bruker til å sende soldater
-    til området rundt hytta. Som en ekspert vet jeg at grunnen til dette er trollenes
-    overtroiske og paranoide tenkning. De tror at magi er overordnet alle levende
-    skapnigner, bortsett fra lederen deres. Trollkongen har blitt sagt å ha magiske
-    evner. Vi er ikke så sikre på det, det kan hende det bare er et rykte.
+    return hentQuest('troll/troll2/start').format(navn=navn)
 
-    Vi trenger noen til å gå ned til hulen for å stoppe disse fanatiske trollene.
-    For å gjøre dette vil jeg gi deg noen ladninger med svart pulver. Du må sette
-    dem i riktige posisjoner rundt i hulen, slik at eksplosjonen ødelegger basen
-    deres. Vær forsiktig! Hver gang troll setter opp en hule, er det alltid en beta
-    som kommer med. Betaene er troll direkte under Kongen. De er store, kraftige, men
-    verst for deg: de har ekstremt god luktesans. Hvis betaen oppdager deg, må
-    du forberede deg på at troll kommer til å bli kastet mot deg. Du kan vente deg
-    minst 3 troll per gang du må gjennom. Det er enda verre om betaen finner deg.
-    Han er ikke en fiende å ta lett på. Hvis du er heldig, får du satt alle 5 ladninger
-    på plass før du blir oppdaget."""
 def troll_q2_ferdig(navn):
-    return "    Vakkert arbeid, " + navn + """!
-    Det er nok ikke lenge før de setter opp en ny operasjonsbase, gitt at de ikke
-    kommer til å gi opp før lederen deres er ute av spill. Det er slik de fungerer.
-    Uten lederen så har de ikke et mål i livet. Det er litt som maur. De er avhengige
-    av Dronningen. Kongen har ekstremt mye makt over trollene hans. Vi har prøvd å
-    finne ham veldig lenge, men trollene vet å holde ham så gjemt som mulig...\n"""
+    return hentQuest('troll/troll2/ferdig').format(navn=navn)
 
 def troll_q3(navn):
-    return "    Hei, pssst! " + navn + """!
-    Det er meg! Zip! Ikke vær lurt av forkledningen min. Jeg må late som jeg er en
-    gammel trollmann for å komme inn i badstua. Trollmennene her er sjåvinistiske
-    relikker med foreldete verdier. Hvis jeg ikke later som jeg er mann, blir jeg
-    bare ignorert. "Lag meg en sandwich, heks!" "Jeg har lyst til å dyppe staven
-    min i det der, hvis du skjønner hva jeg mener!" De er absolutt motbydelige!
+    return hentQuest('troll/troll3/start').format(navn=navn)
 
-    Likevel må jeg finne ut hva de vet om trollene. Jeg har overhørt noe prat om
-    å dra ned til den gamle minen å rydde ut noen av de sterkere trollene. Disse
-    gamle fjertene snakker om å gjøre det, men de bare snakker og snakker og gjør
-    niks. Kan du gå ned i minen og drepe en beta? Jeg tror det kan være mulig at
-    du kan finne informasjon om hvor Trollkongen gjemmer seg. Trollkongen sender
-    alltid ut ordre gjennom betaene og de har ikke så god hukommelse.
-
-    -- Dra ned i minen og drep en beta."""
 def troll_q3_ferdig(navn):
-    return "    Hei, " + navn + """!
-    Så du fant et skriv på trollet? Det er veldig vanskelig å lese trollsk, men
-    jeg kan tyde hovedpunktene, med manglende nøyaktighet. Det står noe i duren
-    av... *spyr* Å nei! For helvete! Hva er galt med dem?! Trollene skriver
-    alt i form av vemmeligheter. Det er helt frastøtende! Likeve *blæææh* ser
-    jeg at trollet fikk ordre om å *surt oppstøt* til Helvetesgapet. Det må være
-    der Trollkongen befinner seg. Jeg har hørt at ingen av gamlingene tør å gå
-    ned dit. Det er visst for farlig med faren for steinras... For noen pyser!
-    """
+    return hentQuest('troll/troll3/ferdig').format(navn=navn)
 
 def troll_q4(navn):
-    return "    Hei, " + navn + """!
-    Nå som vi vet hvor trollkongen er kan vi ta ham ned. Du må likevel være
-    forsiktig. Jeg har hørt at han har veldig sterk magi. Du vet aldri hva han
-    har opp ermet...
-    """
+    return hentQuest('troll/troll4/start').format(navn=navn)
+
 def troll_q4_ferdig(navn):
-    return """    Kjempebra {}! Nå kan jeg endelig ta av meg dette skjegget og dra hjem!
-    Dra tilbake til borgen og rapporter om vår suksess til Vassle!\n""".format(navn)
+    return hentQuest('troll/troll4/ferdig').format(navn=navn)
 
 def troll_bq1(navn):
-    return """    Har du noen gang hørt Rock&Troll-musikk?! Det er det beste jeg noen gang har hørt!
-    Trozzy Ozbourne, "The Trolling Stones", "Stone Zeppelin", "(Huldra's) Kiss", "Boomerang Rapido",
-    Troll Dylan, Elvis Trollsley... Jeg klarer meg ikke en eneste dag uten å ha hørt på dem! Likevel
-    fikk jeg litt problemer når jeg dro ut i skogen med en "venninne" og noe viagrooma-rot, hvis du
-    skjønner hva jeg mener! Jeg tok med "Trolling Stones"-albumet mitt og må ha mistet det! Det er
-    ekstremt vanskelig å få tak i de albumene! Trollene må ha funnet det innen nå. Jeg skjønner kanskje
-    at de kommer til å nyte det også, men jeg er helt avhengig av "Trolling Stones". Jeg må ha det tilbake!\n"""
+    return hentQuest('troll/bonus/bonus1/start')
+
 def troll_bq1_ferdig(navn):
-    return "    Har du funnet albumet mitt?! Vær så snill, gi det tilbake! Jeg gjør hva som helst!\n"
+    return hentQuest('troll/bonus/bonus1/ferdig')
 
 #Cerberus
 def cerberus_q1(navn):

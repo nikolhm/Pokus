@@ -1,0 +1,5 @@
+    Hei, {navn}!
+    Nå som vi vet hvor trollkongen er kan vi ta ham ned. Du må likevel være
+    forsiktig. Jeg har hørt at han har veldig sterk magi. Du vet aldri hva han
+    har opp ermet...
+    
