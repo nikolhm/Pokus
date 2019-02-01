@@ -1,0 +1,8 @@
+    Strålende {navn}!
+    Dette skal ta meg rundt 3 sekunder å oversette! Snakk med meg om litt,
+    så skal jeg ha en plan for hvordan vi skal gå videre. Forresten, om du
+    skulle være på jakt etter skatter, tror jeg at hvis du drar ned til
+    fangekjelleren igjen kan du sikkert finne noe av verdi. Jeg kan ikke
+    garantere at loggfører-ormen er villig til å la deg stikke av med det
+    da... Meeen så har jeg også hørt at ormeskinn gir usedvanlig bra
+    defensivbonus.\n

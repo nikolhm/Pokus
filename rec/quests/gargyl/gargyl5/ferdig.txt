@@ -1,0 +1,5 @@
+    Strålende {navn}!
+    Med disse skal jeg kunne lære deg en trygg og brukbar trylleformel for
+    å gjøre stein om til kjøtt! Husk at du kun kan bruke den når fienden
+    består av stein! Etter at du har kastet formelen, skal fienden også ha
+    problem med å bli til stein igjen i iallefall noen få runder etterpå.\n

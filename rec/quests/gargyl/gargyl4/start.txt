@@ -1,0 +1,10 @@
+    {navn}!
+    Du må finne en måte å avverge gargylenes RockNoRoll-magi. Snakk
+    med Kent Kokk, han pleier å kunne koke opp ganske gode steinsupper
+    til kvelds, når det ikke er annet å spise i nærheten. Altså, ikke at
+    man koker suppe på steinene, men spiser steinene. Ganske godt med
+    litt ekstra salt! Kanskje du kan overtale Kent Kokk til å lære deg
+    hans hemmelige trylleformel som gjør steiner spiselige? Jeg skal sende
+    bud på ham, gå og møt ham i slottsgården!
+
+    -- Hør med Kent Kokk om han kan hjelpe.

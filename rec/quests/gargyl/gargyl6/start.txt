@@ -1,0 +1,10 @@
+    Hei {navn}!
+    Det ser ut til at det er gargylene som skaper trøbbel og ubalanse her.
+    Dermed må vi eliminere dem! Jeg har en teori om at det er en sjefsgargyl
+    som leder alle de andre. Om vi bare utsletter denne sjefsgargylen, vil
+    problemet løse seg selv, og vi kan rapportere gode nyheter til Vassle.
+    Denne sjefsgargylen går under navnet Guri Gargyl, og holder seg for seg
+    selv. Vi må prøve å lure henne frem! Hvis du setter i gang med å slakte
+    andre gargyler, burde hun før eller siden dukke opp.
+
+    -- Eliminer Guri Gargyl.
