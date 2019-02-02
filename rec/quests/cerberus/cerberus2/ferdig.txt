@@ -1,0 +1,4 @@
+    Strålende arbeid {navn}!
+    Endelig kan vi spore de signalene tilbake! Vi trenger litt kalibrering og vi
+    må tweeke litt på algoritmene, men vi er på grensen av et massivt gjennombrudd!
+    

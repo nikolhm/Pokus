@@ -1,0 +1,11 @@
+    Nå, {navn}, skal alt det harde arbeidet mitt bære resultater!
+    Vi har konstant kunnskap om hvor vi kan finne Cerberus, men alle skvadronene
+    jeg har sendt til å fange den har endt opp fritert. Jeg tviler på at du kan
+    få til dette, så uerfaren som du er, men jeg har ikke flere bønder, så vel vel.
+
+    Jeg sender deg med en skvadron til å fange "Cerberus", men du får ta ned monsteret
+    selv. Skvadronene har dannet en jævla fagforening. De gidder ikke "å bli behandlet
+    som prøvekaniner". Likevel gjør ikke du noe så tåpelig, så gå dø eller vinn!
+    Helst vinn, så klart, men da må jeg betale deg...
+
+    -- Fang Cerberus.

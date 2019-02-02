@@ -132,153 +132,40 @@ def troll_bq1_ferdig(navn):
 
 #Cerberus
 def cerberus_q1(navn):
-    return "    Hei, " + navn + """!
-    Velkommen til Obsidian Forskningslab. Jeg er Dr. Frederikk.
-    Vi er her for å undersøke opphavet til de voldelige hundene som har dukket opp
-    i området. Alt vi har fått vite gjennom rykter er at hundene blir ledet av en
-    trehodet hund, som vi har valgt å kalle "Cerberus". Selv om denne informasjonen
-    ikke er helt solid, så har vi kunnet bekrefte at hundene blir ledet telepatisk
-    av et ukjent vesen. Ellers har vi ikke gjort mye fremgang, untatt i forhold til
-    forsvar mot disse hundene.
+    return hentQuest('cerberus/cerberus1/start').format(navn=navn)
 
-    Du har kanskje lagt merke til at de er immune mot ild og varme. De setter ofte
-    fyr på seg selv for å øke angrepsstyrke og å skremme bort fiender. Det er vanskelig
-    å kjempe mot en fiende som brenner. Derfor har vi utviklet en formel for å slukke
-    flammene. Vi har valgt å kalle formelen for "Nedkjøl". Den krever litt øvelse for
-    å mestre, men fra det jeg har hørt fra gode gamle Vassle, er du et naturtalent.
-    Jeg tror du bare trenger å øve på å kaste formelen fem ganger før du kan bruke det
-    uten problemer.
-
-    -- Slukk ilden til 5 helveteshunder."""
 def cerberus_q1_ferdig(navn):
-    return "    Utrolig, " + navn + """!
-    Vassle sa du var en flink magiker, men det var en vits når jeg sa at du kunne
-    mestre det på fem ganger! Mesteparten av forskerne her brukte måneder på å treffe
-    med 75% treffsikkerhet!\n"""
+    return hentQuest('cerberus/cerberus1/ferdig').format(navn=navn)
 
 def cerberus_q2(navn):
-    return "    Greit, " + navn + """!
-    Nå som du har lært deg å forsvare deg mot disse nye og uforutsigbare fiendene
-    har vi et oppdrag for deg. Grunnet de telepatiske evnene til "Cerberus" har
-    tre helveteshunder flyktet forskningslaben. Vi har merket at lederen er meget
-    intellegent og kan se alt som undersåttene kan se.
+    return hentQuest('cerberus/cerberus2/start').format(navn=navn)
 
-    De hundene var del av et klassifisert forskningsprosjekt, som har som mål å
-    spore de telepatiske signalene fra undersåttene tilbake til "Cerberus".
-    Vi var på kanten av en stor oppdagelse når de slapp ut bakdøra. Vi trenger
-    de bikkjene! Gå rundt vulkanen og finn forskningseksemplarene. De burde ha
-    en Obsidian-logo brent inn i hofta.
-
-    -- Finn 3 helveteshunder med en Obsidian-logo på hofta"""
 def cerberus_q2_ferdig(navn):
-    return "    Strålende arbeid" + navn + """!
-    Endelig kan vi spore de signalene tilbake! Vi trenger litt kalibrering og vi
-    må tweeke litt på algoritmene, men vi er på grensen av et massivt gjennombrudd!
-    """
+    return hentQuest('cerberus/cerberus2/ferdig').format(navn=navn)
 
 def cerberus_q3(navn):
-    return "    Eureka, " + navn + """!!!
-    Vi har funnet "Cerberus"!!! Signalene leder tilbake til en krystallhule ikke
-    langt herifra. Den første gruppen med speidere vi sendte har ikke rapportert
-    tilbake. Når vi sendte gruppe #2 fant de de forbrente likene til gruppe #1.
+    return hentQuest('cerberus/cerberus3/start').format(navn=navn)
 
-    Dette er vår sjanse til å undersøke og tilpasse kreftene til "Cerberus".
-    Gå inn i den hulen og hent meg "Cerberus"!
-
-    -- Underforsk krystallhulen."""
 def cerberus_q3_ferdig(navn):
-    return """    Hæææ!!!
-    Var ikke "Cerberus" i hulen!? Er du sikker på at den ikke slapp unna, du
-    inkompetente nek! Jeg skal passe på at Vassle aldri kaller på dine tjenester
-    igjen! Her har jeg gjort min banebrytene forskning og vært på forkanten av
-    menneskeheten, mens du bare har gått rundt og slått ut noen søte små valper,
-    så kan du ikke engang finne meg et ordentlig eksemplar!? Fjern deg frå synet mitt!
-
-    Å! Så du fant noe annet i hulen... En krystall... Denne er interressant...
-
-    Kjempebra arbeid, """ + navn + """! Jeg skjønner hvorfor Vassle har så gode ting å si
-    om deg! Det er så godt å være rundt kompetente profesjonelle! Jeg tror jeg kan
-    lære nok om denne krystallen for å finne plasseringen til "Cerberus"!
-    """
+    return hentQuest('cerberus/cerberus3/ferdig').format(navn=navn)
 
 def cerberus_q4(navn):
-    return "    " + navn + """!!! Min favorittmagiker!
-    Jeg har jobbet hardt og enestående bra på å finne en måte å bruke krystallen
-    til å lokalisere "Cerberus". Det hadde tatt årevis for alle som ikke har mitt
-    geni, men jeg har funnet en strategi!
+    return hentQuest('cerberus/cerberus4/start').format(navn=navn)
 
-    1) Først innså jeg at det var noe rart som skjedde når jeg plasserte andre
-    krystaller i nærheten av den store krystallen. De hadde endret farge i komplett
-    synkronitet. På den måten kunne jeg se at de alle var forbundet. Fra dette begynte
-    forskningen min på den utrolige Keezzller-Bong-effekten som krystallene stråler.
-    De er forbundet i en type bethorgatansk vis. Konfigurasjonen er helt absurd,
-    men fascinerende! Jeg husker jeg drømte om slike beta-dismaliserte Krack-Baller
-    svingninger når jeg ikke ble invitert til Senile Sverres bursdagfest i tredjeåret
-    på magikerskolen... på en krogo-partisan måte finnes det ingen forbindelse mellom...
-    og ingen elsker pseudo-euretiske kvaliteter like mye som meg!... IKKE SOV, HØR
-    PÅ GENIET MITT!!!
-
-    2) Det andre jeg innså var at jeg kunne bruke minoritetsladningsbærerdiffusjonskoeffisientmålingsapparaturer
-    til å måle disse diminutive forskjellene i mellom avstanden må krystallene når
-    de plasseres lenger vekk fra hverandre. Det krevde en del arbeid, men det førte
-    til min nye oppfinnelse! Det er en enkel minoritetsladningsbærerdiffusjonskoeffisientmålingsapparatur
-    som sammler og sammenligner enorme mengder atomære data i samtid ved hjelp
-    eksperimentell kvantesammenfiltring. Ikke noe fancy eller utstående, men det
-    får jobben gjort!
-
-    Kort sagt så trenger jeg at du plasserer to av mine nettopp navngitte
-    frederikk-krystallkvantesammenfiltringsminoritetsladningsbærerdiffusjonskoeffisientmålingsapparaturer
-    helt på insiden av to forskjellig krystallhuler på motsatte sider av vulkanen.
-    Den tredje plasserer jeg her i laboratoriet. På den måten kan vi triangulere
-    posisjonen til "Cerberus" og få oss et ordentlig forskningsprosjekt.
-
-    -- Plasser 2 minoritetsladningsbærer-hvadetnåvarigjen."""
 def cerberus_q4_ferdig(navn):
-    return "    " + navn + """!!! Du er tilbake!
-    Dataene strømmer inn! Nå som frederikk-krystallkvantesammenfiltringsminoritetsladningsbærerdiffusjonskoeffisientmålingsapparaturene
-    er satt inn i riktige posisjoner får vi så klart perfekte og dynamisk live
-    informasjon om "Cerberus" sine koordinater! Jeg gjør aldri feil.
-    """
+    return hentQuest('cerberus/cerberus4/ferdig').format(navn=navn)
 
 def cerberus_q5(navn):
-    return "    Nå, " + navn + """, skal alt det harde arbeidet mitt bære resultater!
-    Vi har konstant kunnskap om hvor vi kan finne Cerberus, men alle skvadronene
-    jeg har sendt til å fange den har endt opp fritert. Jeg tviler på at du kan
-    få til dette, så uerfaren som du er, men jeg har ikke flere bønder, så vel vel.
+    return hentQuest('cerberus/cerberus5/start').format(navn=navn)
 
-    Jeg sender deg med en skvadron til å fange "Cerberus", men du får ta ned monsteret
-    selv. Skvadronene har dannet en jævla fagforening. De gidder ikke "å bli behandlet
-    som prøvekaniner". Likevel gjør ikke du noe så tåpelig, så gå dø eller vinn!
-    Helst vinn, så klart, men da må jeg betale deg...
-
-    -- Fang Cerberus."""
 def cerberus_q5_ferdig(navn):
-    return "    Takk. Du er ferdig. Ta pengene dine og dra til Vassle med historier om geniet mitt.\n"
+    return hentQuest('cerberus/cerberus5/ferdig')
 
 def cerberus_bq1(navn):
-    return "    Hei, " + navn + """!
-    Du lurer kanskje hva en marinbiolog gjør her ute på et sted uten vann. Det lurer
-    jeg også på... Herr Overtrollmann Vassle har valgt å sette den fremste eksperten
-    hans på akvatiske mikro-organismer på et sted hvor vann fordamper nesten umiddelbart.
+    return hentQuest('cerberus/bonus/bonus1/start').format(navn=navn)
 
-    Det gir ikke så mye mening for meg, men jeg tror jeg har akkurat det jeg trenger
-    for å overbevise Hans Ærede Overtrollmann Vassle om å bli overført til et annet
-    sted. Hvilket som helst annet sted!
-
-    Jeg oppdaget at den grønne, slimete og elastiske gørra som troll dekker seg
-    med faktisk er alger! De lever i symbiose med trollene! Det er den største
-    oppdagelsen i  livet mitt! Ikke spør hvordan jeg fant det ut...
-
-    Jeg utførte min egen forskning på egen tid i hemmelighet fra Frederikk. Jeg
-    hadde konkrete og repliserbare bevis! Så kom trollene... De snek seg inn i
-    laboratoriet, fordi de ser på alle typer undersøkelse eller forskning på dem
-    som farlig og unaturlig. Nå har de stjålet arbeidet mitt, som jeg trenger for
-    å komme meg ut herifra! De har nok spredt sidene rundt vulkanen. Vær så snill,
-    hjelp meg finne livsverket mitt!
-
-     -- Finn 5 seksjoner av forskningsmateriale.\n"""
 def cerberus_bq1_ferdig(navn):
-    return "    Du fant det! Jeg trodde jeg måtte starte fra bunnen av!\n"
+    return hentQuest('cerberus/bonus/bonus1/ferdig')
 
 #Spesialiseringsquests
 def smertedreper_intro(navn):
@@ -859,6 +746,7 @@ def vassle_shroom(navn):
     hva som har skjedd med ekspedisjonen, og rett opp ubalansen!
 
     -- Finn ekspedisjonen og rett den magiske ubalansen i skogen."""
+
 def vassle_shroom_ferdig(navn):
     return "    Du er en helt " + navn + """!
     Denne magikeren, 'den Barmhjertige' er en pest og en plage og må
