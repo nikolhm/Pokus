@@ -1,0 +1,7 @@
+    Tusen takk {navn}!
+    Med dette problemet løst, har vi en mindre ting å tenke på. Likevel
+    er det urovekkende å høre at det kanskje er en mystisk magiker som står
+    bak det hele. Hva kan motivet være? Noe sier meg at disse problemene
+    ikke vil ta en slutt før vi får stoppet denne magikeren. Men det må
+    vi ta senere, for vi har flere problemer! En stor ubalanse har oppstått
+    midt inne i skogen her, og det truer magi-borgen!\n

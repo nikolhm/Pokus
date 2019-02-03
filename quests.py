@@ -347,98 +347,25 @@ def banditt_dq12_ferdig(navn):
 
 #Overtrollmann Vassles quests:
 def vassle_troll(navn):
-    return "    Hei " + navn + """!
-    Det har oppstått en ubalanse i magien på flere steder i verden.
-    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
-    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
-    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
-    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
-    fått magiske evner i utgangspunktet.
+    return hentQuest('vassle/troll/start').format(navn=navn)
 
-    Jeg har sendt ut Zip til fjellhytta for å utforske ubalansen som har
-    oppstått i fjellkjeden der. Området er kjent for å være en typisk
-    samleplass for troll. Kan du hjelpe Zip i å finne og rette opp
-    ubalansen der?
-
-    -- Hjelp Zip å finne og rette opp ubalansen med fjellhytta."""
 def vassle_troll_ferdig(navn):
-    return "    Du har vært en uvurderlig hjelp " + navn + """!
-    Dette du sier om en magiker som støtter trollene er urovekkende,
-    men vi har dessverre ikke tid til å undersøke dette nå. En ny krise
-    har oppstått, denne gangen mye nærmere oss! En stor ubalanse har
-    oppstått midt inne i skogen her, og det truer magi-borgen!\n"""
+    return hentQuest('vassle/troll/ferdig').format(navn=navn)
 
 def vassle_cerberus(navn):
-    return "    Hei " + navn + """!
-    Det har oppstått en ubalanse i magien på flere steder i verden.
-    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
-    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
-    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
-    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
-    fått magiske evner i utgangspunktet.
+    return hentQuest('vassle/cerberus/start').format(navn=navn)
 
-    Jeg har sendt ut Forsker Frederikk til vulkanen for å utforske ubalansen
-    som har oppstått der. Stedet pleide å være fullt av troll, men Dr. Frederikk
-    har rapportert om at svære brennende hunder har blitt mer og mer dominerende
-    der i det siste. I tillegg virker de koordinerte, noe som ikke er vanlig
-    oppførsel for slike hunder. Kan du hjelpe Forsker Frederikk i å finne og
-    rette opp ubalansen der?
-
-    -- Hjelp Forsker Frederikk å finne og rette opp ubalansen med vulkanen."""
 def vassle_cerberus_ferdig(navn):
-    return "    Tusen takk for at du har holdt ut Forsker Frederikk så langt " + navn + """!
-    Dette med telepati er virkelig spennende saker, om vi kan både stoppe Cerberus
-    og helveteshundene fra å benytte seg av det, og få kontroll på den selv, er
-    dette et stort skritt i vår kamp for overlevelse! Likevel er det høyst
-    urovekkende å høre om denne magikeren. Men det får vi ta siden, det har
-    oppstått en ny ubalanse, og denne gangen truer det magi-borgen direkte!\n"""
+    return hentQuest('vassle/cerberus/ferdig').format(navn=navn)
 
 def vassle_gargyl(navn):
-    return "    Hei " + navn + """!
-    Det har oppstått en ubalanse i magien på flere steder i verden.
-    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
-    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
-    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
-    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
-    fått magiske evner i utgangspunktet.
+    return hentQuest('vassle/gargyl/start').format(navn=navn)
 
-    Jeg har sendt ut Zap til slottet i enden av skogen her for å utforske
-    ubalansen som har oppstått der. Vi er ikke helt sikker på hva som
-    er senter for ubalansen, men vi har hørt merkelige rapporter om
-    livløse objekter komme til live og skade beboerne av slottet der.
-    Dessuten har all kontakt blitt brutt for noen dager siden. Kan du
-    hjelpe Zap i å finne og rette opp ubalansen med slottet?
-
-    -- Hjelp Zap å finne og rette opp ubalansen med slottet."""
 def vassle_gargyl_ferdig(navn):
-    return "    Tusen takk " + navn + """!
-    Med dette problemet løst, har vi en mindre ting å tenke på. Likevel
-    er det urovekkende å høre at det kanskje er en mystisk magiker som står
-    bak det hele. Hva kan motivet være? Noe sier meg at disse problemene
-    ikke vil ta en slutt før vi får stoppet denne magikeren. Men det må
-    vi ta senere, for vi har flere problemer! En stor ubalanse har oppstått
-    midt inne i skogen her, og det truer magi-borgen!\n"""
+    return hentQuest('vassle/gargyl/ferdig').format(navn=navn)
 
 def vassle_shroom(navn):
-    return "    Hei " + navn + """!
-    Det har hendt noe svært mystisk. Et nytt utbrudd av ubalanse
-    innen magien hendte i skogen her mens du var borte. Vi trodde
-    først det var noen av Gaute Gnom den Grusommes mest trofaste
-    følgere som hadde funnet en måte å tilnærme seg magi på, og
-    sendte en liten gruppe for å undersøke saken. Vi har ikke sett
-    dem siden, men det kom nettopp en budskapsrotte med beskjeden
-    "skogen lever". Vi har prøvd å sende rotter tilbake, men ingen
-    har overlevd turen, og nå streiker de igjen grunnet 'for høy
-    yrkesrisiko'. Alt håp henger på dine skuldre """ + navn + """! Finn ut
-    hva som har skjedd med ekspedisjonen, og rett opp ubalansen!
-
-    -- Finn ekspedisjonen og rett den magiske ubalansen i skogen."""
+    return hentQuest('vassle/shroom/start').format(navn=navn)
 
 def vassle_shroom_ferdig(navn):
-    return "    Du er en helt " + navn + """!
-    Denne magikeren, 'den Barmhjertige' er en pest og en plage og må
-    stanses omgåelig! Vær forsiktig med den informasjonen du tilegner
-    deg fra hans agenter, jeg tror vi har å gjøre med en magiker jeg
-    kjente en gang for lenge siden, og han er en manipulerende løgner
-    som benytter alle midler for å oppnå sine egne syke drømmer! Lukk
-    sinnet for hans galne ambisjoner før de går til hodet på deg og.\n"""
+    return hentQuest('vassle/shroom/ferdig').format(navn=navn)

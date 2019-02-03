@@ -1,0 +1,14 @@
+    Hei {navn}!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i utgangspunktet.
+
+    Jeg har sendt ut Zip til fjellhytta for å utforske ubalansen som har
+    oppstått i fjellkjeden der. Området er kjent for å være en typisk
+    samleplass for troll. Kan du hjelpe Zip i å finne og rette opp
+    ubalansen der?
+
+    -- Hjelp Zip å finne og rette opp ubalansen med fjellhytta.

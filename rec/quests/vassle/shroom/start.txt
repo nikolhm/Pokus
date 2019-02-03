@@ -1,0 +1,13 @@
+    Hei {navn}!
+    Det har hendt noe svært mystisk. Et nytt utbrudd av ubalanse
+    innen magien hendte i skogen her mens du var borte. Vi trodde
+    først det var noen av Gaute Gnom den Grusommes mest trofaste
+    følgere som hadde funnet en måte å tilnærme seg magi på, og
+    sendte en liten gruppe for å undersøke saken. Vi har ikke sett
+    dem siden, men det kom nettopp en budskapsrotte med beskjeden
+    "skogen lever". Vi har prøvd å sende rotter tilbake, men ingen
+    har overlevd turen, og nå streiker de igjen grunnet 'for høy
+    yrkesrisiko'. Alt håp henger på dine skuldre {navn}! Finn ut
+    hva som har skjedd med ekspedisjonen, og rett opp ubalansen!
+
+    -- Finn ekspedisjonen og rett den magiske ubalansen i skogen.
