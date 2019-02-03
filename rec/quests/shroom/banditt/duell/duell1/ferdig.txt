@@ -1,0 +1,3 @@
+    Gratulerer med seieren {navn}! Nå skal det sies at Patetiske Patrick
+    aldri har vunnet en eneste kamp før, så det sier ingenting om en
+    spjæling som deg...\n

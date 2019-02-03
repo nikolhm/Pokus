@@ -1,0 +1,6 @@
+    Nok en gang trekkes du mot duellringens vold og hete {navn}!
+    Din neste motstander er en litt tøffere utfordring. Smidige Sandra har lært
+    seg noen smidige triks, hun kan sette deg ut av spill og gjemme seg selv i
+    mørket mens hun slikker sine sår. Ta fra henne konsentrasjonen slik at hun
+    ikke kan gjemme seg noe sted! Om du trenger hjelp til det, snakk med Taktiske
+    Tore.

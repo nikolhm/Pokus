@@ -1,0 +1,3 @@
+    Hei igjen {navn}.
+    Denne gang settes du opp mot Store Sture. Han er en stor kar som tåler en
+    støyt, så hold et øye med dine egne helsepoeng mens du hakker løs!

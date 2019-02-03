@@ -310,79 +310,40 @@ def banditt_q6_ferdig(navn):
      )
 
 def banditt_dq7(navn):
-    return "    Hei " + navn + """!
-    Mitt navn er Onde Olga, og jeg er den som styrer duellringen her.
-    Du ser ut som en kapabel banditt, har du lyst til å teste deg? Heder
-    og ære finner du nok ikke her, men du får muligheten til å vinne en
-    fin slump gullstykker! Hvis du vinner da selvfølgelig, skulle du dø
-    eller flykte før motstanderen er beseiret, mister du pengene som er
-    krevd for deltakelse. Det koster 500 per kamp; desto verre odds, desto
-    større vinnerlønn til deg.
+    return hentQuest('shroom/banditt/duell/duell1/start').format(navn=navn)
 
-    Siden du er ny her, starter du nederst på rangstigen. Om du takker ja,
-    vil du bli satt opp mot Patetiske Patrick. Jeg har ingen tips å gi mot
-    ham."""
 def banditt_dq7_ferdig(navn):
-    return "    Gratulerer med seieren " + navn + """! Nå skal det sies at Patetiske Patrick
-    aldri har vunnet en eneste kamp før, så det sier ingenting om en
-    spjæling som deg...\n"""
+    return hentQuest('shroom/banditt/duell/duell1/ferdig').format(navn=navn)
 
 def banditt_dq8(navn):
-    return "    Hei igjen " + navn + """.
-    Denne gang settes du opp mot Store Sture. Han er en stor kar som tåler en
-    støyt, så hold et øye med dine egne helsepoeng mens du hakker løs!"""
+    return hentQuest('shroom/banditt/duell/duell2/start').format(navn=navn)
+
 def banditt_dq8_ferdig(navn):
-    return """    Store Sture har stamina, men ikke stort med angrepspotensiale. Du
-    får vente til en senere anledning med å vise om du virkelig duger til noe.\n"""
+    return hentQuest('shroom/banditt/duell/duell2/ferdig')
 
 def banditt_dq9(navn):
-    return "    Nok en gang trekkes du mot duellringens vold og hete " + navn + """!
-    Din neste motstander er en litt tøffere utfordring. Smidige Sandra har lært
-    seg noen smidige triks, hun kan sette deg ut av spill og gjemme seg selv i
-    mørket mens hun slikker sine sår. Ta fra henne konsentrasjonen slik at hun
-    ikke kan gjemme seg noe sted! Om du trenger hjelp til det, snakk med Taktiske
-    Tore."""
+    return hentQuest('shroom/banditt/duell/duell3/start').format(navn=navn)
+
 def banditt_dq9_ferdig(navn):
-    return """    Hun kan være en skikkelig utfordring for de fleste, men klarte ikke
-    å beseire deg """ + navn + ". Jeg får disiplinere henne selv i natt.\n"
+    return hentQuest('shroom/banditt/duell/duell3/ferdig').format(navn=navn)
 
 def banditt_dq10(navn):
-    return "    Denne gangen skal du nok få deg en utfordring " + navn + """!
-    Kraftige Kari er sterkere enn folk flest, men sikter dårlig med slagene sine.
-    Selv om hun er kraftig nok til å slå deg ut med noen få slag, så tåler hun ikke
-    så mye selv. Noen godt plasserte angrep burde gjøre susen, og om du i tillegg
-    klarer å oppholde henne så hun ikke kan angripe deg, er duellen over på null
-    komma niks."""
+    return hentQuest('shroom/banditt/duell/duell4/start').format(navn=navn)
+
 def banditt_dq10_ferdig(navn):
-    return "    Du begynner å komme deg " + navn + """, det må være jeg som har god påvirkning
-    på deg. Nå har du bare en duellant igjen før duell-mester tittelen går til deg!\n"""
+    return hentQuest('shroom/banditt/duell/duell4/ferdig').format(navn=navn)
 
 def banditt_dq11(navn):
-    return "    Du er tilbake for en siste kamp " + navn + """!
-    Dette er øyeblikket vi har ventet på, og din siste duellant er:
-    Teite Tim! Og han er langt fra like inkapabel som mange av dine
-    tidligere duellanter. Teite Tim har mangt et triks opp i ermet,
-    bruk det du har lært så langt og gi meg en seier og en ny
-    duell-mester!"""
+    return hentQuest('shroom/banditt/duell/duell5/start').format(navn=navn)
+
 def banditt_dq11_ferdig(navn):
-    return "    Gratulerer " + navn + """!
-    Den nye duell-mesteren er DEG! Og det hele er min fortjeneste! Godt jobbet
-    Onde Olga! Jeg er virkelig av de snedigste, lureste og beste bandittene i
-    denne leiren! Ser deg rundt om kring """ + navn + ", jeg skal feire meg selv!\n"
+    return hentQuest('shroom/banditt/duell/duell5/ferdig').format(navn=navn)
 
 def banditt_dq12(navn):
-    return """    HVA?!?!?
-    Ønsker du å duellere meg? Hvordan våger du! Jeg som har reist deg fra sølen
-    og oppdratt deg som min egen! Jeg har lært deg å duellere slik proffene
-    gjør det, bedre enn proffene gjør det! Og nå snur du ryggen mot meg?
+    return hentQuest('shroom/banditt/duell/duell6/start').format(navn=navn)
 
-    Om det er slik vil ha det; Ta dine siste steg """ + navn + "!"
 def banditt_dq12_ferdig(navn):
-    return """    D- du har beseiret meg! Hvordan er det mulig?
-    Hvem har sendt deg """ + navn + """?
-
-    Fagre Frida altså. Hun er ikke så dum som hun ser ut,
-    kanskje jeg burde gi henne en ny sjanse\n"""
+    return hentQuest('shroom/banditt/duell/duell6/ferdig').format(navn=navn)
 
 #Overtrollmann Vassles quests:
 def vassle_troll(navn):

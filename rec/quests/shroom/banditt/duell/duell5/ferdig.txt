@@ -1,0 +1,4 @@
+    Gratulerer {navn}!
+    Den nye duell-mesteren er DEG! Og det hele er min fortjeneste! Godt jobbet
+    Onde Olga! Jeg er virkelig av de snedigste, lureste og beste bandittene i
+    denne leiren! Ser deg rundt om kring {navn}, jeg skal feire meg selv!\n
