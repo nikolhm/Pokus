@@ -1,0 +1,10 @@
+    Hei igjen {navn}!
+    Det var rett av deg å komme til meg med denne informasjonen. Strategiske
+    Synne bryr seg mest om å utslette shroomsene, men om vi kan kommunisere
+    med noen av dem, kan vi kanskje finne ut hva som egentlig har skjedd her.
+    Dette er informasjon av uvurderlig verdi som er verdt tapene det kan
+    medføre om vi ikke fokuserer på å raskt utslette fienden. Finn Pàn Tú
+    og møt kontakten hennes, koste hva det koste vil. Vi trenger å vite hva
+    som har skjedd her! Og husk, hold et åpent sinn.
+
+    -- Møt kontakten til Pàn Tú.

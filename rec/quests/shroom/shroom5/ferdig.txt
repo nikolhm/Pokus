@@ -1,0 +1,16 @@
+    Du må være {navn}! Mitt navn er Pàn Tú.
+    Jeg har hørt mye om deg, men nå er ikke tiden for hyggelige introduksjoner.
+    Jeg har lokalisert Shroomsenes tilholdsted og tilegnet meg svært verdifull
+    informasjon. Zip sier jeg kan stole på deg, så her er den: Shroomsene er
+    splittet i to leirer. Den ene er fanatisk opptatt av selvdyrkelse, mens
+    den andre ser ut til å være mulig å kommunisere med. Jeg har allerede noen
+    kontakter innad i den leiren, men på grunn av min... menneskelighet, sliter
+    jeg med å få ut informasjon ubemerket.
+
+    Hør her {navn}, dette er svært viktig.
+    Det finnes noen ondskapsfulle sjeler innen våre egne rekker, som konspirerer
+    med fienden og gjør livene våre sure. Rapporter tilbake til Strategiske Synne,
+    men ikke nevn spionasjen eller de to leirene. Snakk med Zip, og bare Zip, når
+    du er klar for å gjøre noe virkelig godt her i verden.
+
+    Vi snakkes. Hold et åpent sinn {navn}.\n

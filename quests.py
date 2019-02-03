@@ -188,261 +188,85 @@ def muskelbunt_intro_ferdig(navn):
 
 #Shroom:
 def shroom_q1(navn):
-    return "    Hei " + navn + """!
-    Virkelig godt å se deg igjen, vi har havnet i en heller uheldig situasjon
-    her. Vassle sendte oss for å undersøke den magiske ubalansen i skogen
-    her, da vi brått ble angrepet av en gjeng banditter. De virket helt fra
-    seg av sinne, og sa at våre magiske eksperimenter hadde gått over streken!
-    Som regel pleier bare en eller to banditter vise seg i disse traktene om
-    gangen, men nå var det mange av dem! Vi har ikke klart å fokusere på
-    oppgaven vår i det hele tatt, siden vi stadig må flykte fra bandittene!
-    Vi har hørt rykter om at bandittene er en del av en organisert kriminal-
-    bande som holder til dypere inn i skogen. Kan du, som den modigste av
-    oss, dra til bandittenes leir og finne ut hvorfor de jakter oss sånn?
+    return hentQuest('shroom/shroom1/start').format(navn=navn)
 
-    En av våre stakkers torturerte rotter sa man burde gå VENSTRE HØYRE
-    VENSTRE i skogen, men er usikker på hvordan stedsansen til torturerte
-    rotter fungerer...
-
-    -- Finn bandittenes hovedleir og stopp angrepene."""
 def shroom_q1_ferdig(navn):
-    return """    Trenger vi ikke bekymre oss lengre for banditt-angrep? Fantastisk!
-    Da kan vi fokusere på oppgaven fremover, og jeg tror Strategiske Synne har
-    et spesielt oppdrag til deg """ + navn + ".\n"
+    return hentQuest('shroom/shroom1/ferdig').format(navn=navn)
 
 def shroom_q2(navn):
-    return "    Akk " + navn + """.
-    Det går ulykkens vei for meg. Jeg er en middelmådig magiker som aldri har
-    fått til noe særlig av det jeg prøver på her i livet. Men så en dag ble
-    jeg spurt om å ta ansvaret for mat og utstyr på en topp-hemmelig ekspedisjon
-    utsendt hit av Overtrollmann Vassle selv! Tenk så Lykkelig jeg ble! Og Tenk
-    og hvor knust jeg ble da jeg fant ut at de skøyerske gnomene har stjålet
-    mesteparten av det. Vi har levd på bark og mose de siste dagene, og min
-    popularitet her i leiren er stadig synkende. Kan du gjøre meg og resten
-    av leiren en stor tjeneste og finne de stjålne forsyningene?
+    return hentQuest('shroom/shroom2/start').format(navn=navn)
 
-    -- Finn 13 stålne forsyninger."""
 def shroom_q2_ferdig(navn):
-    return "    Endelig kan vi spise litt skikkelig mat igjen! Mange mange takk " + navn + """!
-    Kanskje de andre vil se meg i et annet lys nå.\n"""
+    return hentQuest('shroom/shroom2/ferdig').format(navn=navn)
 
 def shroom_q3(navn):
-    return "    Hei " + navn + """!
-    Er ikke denne skogen fantastisk? Trær må være det mest spennende i verden,
-    og i denne delen av skogen har jeg funnet mange flere sorter enn vanlig.
-    Ikke nok med det, men det virker som om de er levende! Det er også grunnen
-    til at jeg trenger hjelp fra deg. Til vanlig katalogiserer jeg alle nye
-    tresorter jeg finner selv, men til tross for min ekstraordinære egenskap
-    til å teleportere meg dit jeg vil, duger jeg ikke når det kommer til kamp.
-    Kan du gi meg 'tamme' eksemplarer av noen av de fascinerende tresortene
-    som pryder denne kanten av skogen?
+    return hentQuest('shroom/shroom3/start').format(navn=navn)
 
-    -- Oppdag et knippe forskjellige tresorter."""
 def shroom_q3_ferdig(navn):
-    return "    Eik, bøk, tre, fire, sort, guffs- Hei " + navn + """!
-    Humm, disse notatene sier lite om trærenes indre komposisjon og
-    under-suverene overlevelseskraft, men de duger! Tenk så interessant,
-    kraftige X-verdier i barkens nedre hjørneparti splittes HVERT sekund
-    for å gjøre plass til et stadig ekspanderende volum, forårsaket av
-    både indre og ytre dragningskraft påkalt av monopolare bio-felt
-    fremdrevet av saktegående motstandsprosesser...
-
-    *Kjedelige Kjell durer på om trær. Du sniker deg unna*\n"""
+    return hentQuest('shroom/shroom3/ferdig').format(navn=navn)
 
 def shroom_q4(navn):
-    return "    Akk " + navn + """.
-    Det var stor jubel i leiren da du returnerte de stjålne forsyningene, men
-    selv med dem kommer vi ikke til å holde lenge. Det vi trenger er noen til
-    å lage mat for oss, en som kan bruke ressursene rundt oss til noe matnyttig.
-    En som Kent Kokk! Vi trenger Kent Kokk! Hvis du noen gang møter på Kent Kokk
-    på dine reiser, kunne du bedt ham komme hit?
+    return hentQuest('shroom/shroom4/start').format(navn=navn)
 
-    -- Finn Kent Kokk og be ham lage mat for ekspedisjonen."""
 def shroom_q4_ferdig(navn):
-    return "    Strålende " + navn + """, virkelig strålende!
-    Med Kent Kokk på laget, kan vi holde ut her så lenge som er krevd av oss!
-    Jeg ser frem til deilige delikatesser de neste dagene. Har hørt noen rykter
-    om at han har fått en ny interesse for steiner, vet du noe om det?\n"""
+    return hentQuest('shroom/shroom4/ferdig').format(navn=navn)
 
 def shroom_q5(navn):
-    return "    " + navn + """!
-    Vi ble sendt her for å utforske en magisk ubalanse lokalisert her i utkanten
-    av vår egen skog. Som du helt sikkert har merket, er ikke alt som det skal
-    her. Trær og andre ting i skogen har fått en egen vilje og er blitt aggresive,
-    i tillegg til at folk her har startet å oppføre seg merkelig. For ikke snakke
-    om alt styret med bandittene! Vi har mye å takke deg for, men vårt arbeid
-    er knapt i gang. Som du har observert, har lignende magiske ubalanser oppstått
-    andre steder også. Fra din beskrivelse virker det som om en magiker står bak
-    disse grufulle gjerningene. At andre enn oss magikere har evne til å utføre
-    magi er farlig og ikke noe vi kan ta lett på. Jeg har sendt fire magikere i
-    forskjellige retninger, og en er enda ikke tilbake. Kan du dra opp bakken
-    og lete etter henne?
+    return hentQuest('shroom/shroom5/start').format(navn=navn)
 
-    -- Let i området opp bakken etter Pàn Tú."""
 def shroom_q5_ferdig(navn):
-    return "    Du må være " + navn + """! Mitt navn er Pàn Tú.
-    Jeg har hørt mye om deg, men nå er ikke tiden for hyggelige introduksjoner.
-    Jeg har lokalisert Shroomsenes tilholdsted og tilegnet meg svært verdifull
-    informasjon. Zip sier jeg kan stole på deg, så her er den: Shroomsene er
-    splittet i to leirer. Den ene er fanatisk opptatt av selvdyrkelse, mens
-    den andre ser ut til å være mulig å kommunisere med. Jeg har allerede noen
-    kontakter innad i den leiren, men på grunn av min... menneskelighet, sliter
-    jeg med å få ut informasjon ubemerket.
-
-    Hør her """ + navn + """, dette er svært viktig.
-    Det finnes noen ondskapsfulle sjeler innen våre egne rekker, som konspirerer
-    med fienden og gjør livene våre sure. Rapporter tilbake til Strategiske Synne,
-    men ikke nevn spionasjen eller de to leirene. Snakk med Zip, og bare Zip, når
-    du er klar for å gjøre noe virkelig godt her i verden.
-
-    Vi snakkes. Hold et åpent sinn """ + navn + ".\n"
+    return hentQuest('shroom/shroom5/ferdig').format(navn=navn)
 
 def shroom_q6(navn):
-    return """    Shrooms?
-    Jeg har aldri hørt om noe slikt før, men om forvokste sopper nå
-    besitter magiske evner, er situasjonen blitt verre enn først antatt. Vi må
-    tenke strategisk her og ikke gjøre noe forhastet. Målet vårt er å utgjevne
-    den magiske ubalansen, som helt sikkert er opphavet til disse 'shroomsene'
-    og alle de andre levende skapningene i skogen som ikke burde være levende.
-    Men om vi leter direkte etter kilden vil shroomsene oppdage målet vårt med
-    en gang, og de virker som en fiende vi ikke bør undervurdere. Derfor trenger
-    vi en distraksjon. Jeg sender et team med gode magikere opp bakken og dypere
-    inn i skogen for å slåss direkte mot shroomsene. Med denne taktikken slår vi
-    to fluer i en smekk, vi får distraksjonen vi trenger, og vi reduserer trusselen
-    for en shroom-invasjon. Jeg trenger at du, som har støtt på disse shroomsene
-    før, er med i feltet og leder ann kampen mot udyrene!
+    return hentQuest('shroom/shroom6/start').format(navn=navn)
 
-    Og en ting til """ + navn + """. Jeg burde kanskje ha advart deg før, men vi er ikke
-    helt sikre på hvor lojaliteten til Pàn Tú ligger. Ta alt hun sier med en klype
-    salt!
-
-    -- Drep 20 shrooms."""
 def shroom_q6_ferdig(navn):
-    return "    Strålende " + navn + """.
-    Kampene fortsetter, men jeg har en viktigere oppgave til deg.\n"""
+    return hentQuest('shroom/shroom6/ferdig').format(navn=navn)
 
 def shroom_q7(navn):
-    return "    Hei der " + navn + """!
-    Dine magiske krefter har økt betraktelig siden sist, men det er alltid
-    rom for forbedring! Er du kjent med formelen Opphold? Den forvirrer
-    fienden i to runder, og gir deg tid til å ta tilbake overtaket i en
-    ellers nedgående kamp. Men, jeg har funnet en metode å gjøre formelen
-    enda mer effektiv på, uten at det krever noe mer konsentrasjon fra deg!
-    Spesielt her ute på ekspedisjonen er det viktig at alle er på sitt beste,
-    men som alltid har jeg mine prinsipper: Ingen skal lære noe de ikke kan
-    kontrollere, slik som det neket Gale Gizly. Opphold fiender 7 ganger, så
-    skal jeg lære deg hvordan formelen blir enda kraftigere!
+    return hentQuest('shroom/shroom7/start').format(navn=navn)
 
-    -- Opphold fiender med formelen Opphold 7 ganger."""
 def shroom_q7_ferdig(navn):
-    return "    Flott " + navn + """!
-    Det er viktig at alle er på sitt ypperste i disse tider. Her er
-    hemmeligheten til å utføre god og effektiv magi...\n"""
+    return hentQuest('shroom/shroom7/ferdig').format(navn=navn)
 
 def shroom_q8(navn):
-    return "    Hei igjen " + navn + """!
-    Det var rett av deg å komme til meg med denne informasjonen. Strategiske
-    Synne bryr seg mest om å utslette shroomsene, men om vi kan kommunisere
-    med noen av dem, kan vi kanskje finne ut hva som egentlig har skjedd her.
-    Dette er informasjon av uvurderlig verdi som er verdt tapene det kan
-    medføre om vi ikke fokuserer på å raskt utslette fienden. Finn Pàn Tú
-    og møt kontakten hennes, koste hva det koste vil. Vi trenger å vite hva
-    som har skjedd her! Og husk, hold et åpent sinn.
+    return hentQuest('shroom/shroom8/start').format(navn=navn)
 
-    -- Møt kontakten til Pàn Tú."""
 def shroom_q8_ferdig(navn):
-    return """    Så de er ikke den Barmhjertiges barn altså. Det forklarer en del!
-    Pàn Tú har forduftet sier du? Kanskje jeg burde dra ut i skogen og... lete
-    etter henne. Ja. Definitivt! Hold et åpent sinn """ + navn + "!\n"
+    return hentQuest('shroom/shroom8/ferdig').format(navn=navn)
 
 def shroom_q9(navn):
-    return "    " + navn + """! Det er krise!
-    Det viser seg at Pàn Tú er en forræder! Hun har brutt all kontakt med oss,
-    og hun var sist sett flyktende innover i shroom-terretorium sammen med en
-    annen skikkelse! Ikke nok med det, men Zip har også sporløst forsvunnet!
-    Zip er en nøkkelbrikke i denne ekspedisjonen, og om Zip er blitt bortført
-    er det svært alvorlig. Om Zip også er en forræder ligger vi tynt an! Fort,
-    dra opp bakken og inn til fronten og finn Zap! Om noen vet noe mer om Zip,
-    må det være Zap.
+    return hentQuest('shroom/shroom9/start').format(navn=navn)
 
-    -- Finn Zap ved fronten og finn ut hva som har skjedd med Zip."""
 def shroom_q9_ferdig(navn):
-    return """    Er Zip også en forræder?! Da ligger vi taktisk svært dårlig an!
-    Stakkars Zap, Zip og Zap har alltid vært en enhet i seg selv!\n"""
+    return hentQuest('shroom/shroom9/ferdig')
 
 def shroom_q10(navn):
-    return "    Tiden er inne " + navn + """, for å gjøre slutt på dette.
-    Vi har en dårlig taktisk posisjon i forhold til fienden, og vi er mange
-    ganger undertallige. Vårt eneste håp er å kutte av kilden deres til magi.
-    Det vil utgjevne den magiske ubalansen her, som var det vi kom for å gjøre,
-    så får de resterende shroomsene leve ut sine liv i dette hjørnet av skogen.
-    Såfremt shroomsene i seg selv ikke besitter evnen til å skape flere magiske
-    kreasjoner, burde det ikke være nødvendig å drepe dem alle. I tillegg har
-    vi ikke ressurser nok til en slik operasjon.
+    return hentQuest('shroom/shroom10/start').format(navn=navn)
 
-    Heldigvis har vi klart å uthente informasjon mens fiendens fokus var ved
-    kampene med fronten. Det viser seg at kilden til deres magi kommer fra et
-    lite tjern, som er senteret av shroom-terretoriumet. Det er en smal sak å
-    forurense tjernet med en standard Kast Hvitløk-formel som alle magikere kan,
-    men å komme bort til det blir utfordringen! Vi har bestemt å sende deg inn
-    alene slik at du kan snike deg ubemerket dit, samtidig som vi sender alle
-    våre magikere til fronten for å avlede oppmerksomheten. Men pass på, De har
-    helt sikkert utstasjonert vakter ved tjernet, som vil ha en stadig påfylling
-    av magiske krefter!
-
-    -- Forurens tjernet i midten av shroom-terretoriumet."""
 def shroom_q10_ferdig(navn):
-    return "    Hurra! Du " + navn + """, må være den dyktigste magikeren vi har!
-    Rapporter tilbake til Overtrollmann Vassle så han får høre om seieren vår!\n"""
+    return hentQuest('shroom/shroom10/ferdig').format(navn=navn)
 
 def shroom_bq1(navn):
-    return """    Salig er du, som får oppleve nærværet deres!
-    Men det er ikke nok, vi må ha mer. MER! Javisst, våre overordnede er ikke
-    fornøyd med vår innsats. Vi må vise mer dedikasjon! MER! Vi trenger noe
-    håndfast vi kan bruke til å tilbe dem på, et totem eller noe slikt!
-    Har du sett noe slikt rundt omkring?
-    """
+    return hentQuest('shroom/bonus/bonus1/start')
+
 def shroom_bq1_ferdig(navn):
-    return """    Fantastisk! Dommedagen er snart på oss, og det er viktig å vise soppen
-    hvilken side vi egentlig står på! Bli med meg """ + navn + ", i et kjapt blodoffer!\n"
+    return hentQuest('shroom/bonus/bonus1/ferdig').format(navn=navn)
 
 def shroom_bq2(navn):
-    return """    Pàn Tú er en forræder!
-    Jeg har blitt satt til oppgaven å administrere en gransking innad i
-    ekspedisjonen, og se etter eventuelle beskjeder noen kan ha hatt fra
-    Pàn Tú eller hennes sammensvorne. Alle bevis er helt sikkert revet opp
-    og kastet i skogen, men om du finner noen biter av lapper eller andre
-    hint, kom rett til meg med det!\n"""
+    return hentQuest('shroom/bonus/bonus2/start')
+
 def shroom_bq2_tekst():
-    return """    Alle korrespondanser ser ut til å omhandle 'den Barmhjertige'.
-    Motivene er uklare, men det virker ikke som om de er direkte i liga med
-    shroomsene. Dette er høyst merkverdig og svært alvorlig, og en sak jeg skal
-    ta opp med Overtrollmann Vassle. Ikke snakk om dette til noen, og helst glem
-    alt som har skjedd!\n"""
+    return hentQuest('shroom/bonus/bonus2/ferdig')
 
 def shroom_bq3(navn):
-    return """    Hei igjen {}!
-    Det har skjedd igjen! Den stakkers magiske sussesoppen min har forsvunnet!
-    Har du sett ham? Vi var bare ute og trente med vennene hans, så plutselig
-    forsvant han! Det er klart slike sopper gjør som de vil, og de må adlydes,
-    ADLYDES! OG TILbes men tenk en slik liten stakkerslig nussesussesopp alene
-    i den store fæle skogen! Noen må finne ham! Jeg er sikker på at om du finner
-    ham, vil han bli så glad at han kan låne deg kreftene sine en gang i blandt!
-    Slike sussesopper som ham har sterke KRAFTIGE USTOPPELIGE krefter som kan
-    komme til god nytte i en kamp!\n""".format(navn)
+    return hentQuest('shroom/bonus/bonus3/start').format(navn=navn)
+
 def shroom_bq3_tekst():
-    return """    Du har nå muligheten til å tilkalle den magiske soppen i kamp!
-    For å gjøre det, skriv 'tilkall sopp' eller bare 'ts'. Soppen vil ikke
-    adlyde deg om du er utenfor denne delen av skogen, og vil ikke komme om
-    du allerede har en alliert ved din side i kamp. Skriv 's' i kamp for å
-    se detaljer.\n"""
+    return hentQuest('shroom/bonus/bonus3/ferdig')
 
 def kjellprat():
-    return """"    ...Trevirksomhets invirkning på utenforstående faktorer aldri vil gjøre
-    opp for skadeområdet innenfor et omfang på en slik biokultur, dessuten har
-    bark-områdene et eget beskyttende lag spesielt for slike metalliske
-    gjenstander, laget nettopp av de øvre grenpartiene på slike typer, noe som
-    også har innvirkning og ringvirkning på trærnes røtter...\n"""
+    return hentQuest('shroom/bonus/kjellprat')
 
 #Shroom: Banditter
 def banditt_q1(navn):

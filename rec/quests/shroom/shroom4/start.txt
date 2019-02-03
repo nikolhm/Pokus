@@ -1,0 +1,8 @@
+    Akk {navn}.
+    Det var stor jubel i leiren da du returnerte de stjålne forsyningene, men
+    selv med dem kommer vi ikke til å holde lenge. Det vi trenger er noen til
+    å lage mat for oss, en som kan bruke ressursene rundt oss til noe matnyttig.
+    En som Kent Kokk! Vi trenger Kent Kokk! Hvis du noen gang møter på Kent Kokk
+    på dine reiser, kunne du bedt ham komme hit?
+
+    -- Finn Kent Kokk og be ham lage mat for ekspedisjonen.
