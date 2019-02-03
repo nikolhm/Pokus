@@ -1,0 +1,2 @@
+    Strålende {navn}.
+    Kampene fortsetter, men jeg har en viktigere oppgave til deg.\n

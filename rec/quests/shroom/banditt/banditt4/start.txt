@@ -1,0 +1,10 @@
+    Jaså {navn}, ikke helt forberedt?
+    Enhver god banditt burde være mentalt tre steg foran byttet. Avledning,
+    overraskelse og illusjoner, dette er mine spesialiteter! Vil du lære å
+    finpusse din egen smidighet, forvirre fiendens sinn og stikke av med de
+    saftigste byttene? Jeg kan vise deg hvordan man senker konsentrasjonen
+    til fienden, se og lær!
+
+    Skriv 'di' eller 'distraher' for å kaste Distraher på fienden!
+
+    -- Distraher fiender 9 ganger.

@@ -1,0 +1,6 @@
+    Denne gangen skal du nok få deg en utfordring {navn}!
+    Kraftige Kari er sterkere enn folk flest, men sikter dårlig med slagene sine.
+    Selv om hun er kraftig nok til å slå deg ut med noen få slag, så tåler hun ikke
+    så mye selv. Noen godt plasserte angrep burde gjøre susen, og om du i tillegg
+    klarer å oppholde henne så hun ikke kan angripe deg, er duellen over på null
+    komma niks.

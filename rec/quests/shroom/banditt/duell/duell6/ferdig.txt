@@ -1,0 +1,5 @@
+    D- du har beseiret meg! Hvordan er det mulig?
+    Hvem har sendt deg {navn}?
+
+    Fagre Frida altså. Hun er ikke så dum som hun ser ut,
+    kanskje jeg burde gi henne en ny sjanse

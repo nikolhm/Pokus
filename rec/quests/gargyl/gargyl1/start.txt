@@ -1,0 +1,11 @@
+    {navn}!
+    Du kommer i grevens tid! Overtrollmann Vassle sendte meg for å undersøke de
+    underlige magiske aktivitetene som omringet slottet her, og jeg forventet
+    å finne et par forskrudde magikere forsøke å tilfredstille sine forskrudde
+    fantasier ved å påkalle en hornet demon eller noe slikt. Det vanlige altså.
+    Men med en gang jeg kom i nærheten av slottet her, ble jeg bombandert av
+    sinte steiner. Ja, steiner! Som var sinte! Hvordan er dette mulig? Det
+    er noe galt her som ikke er rett """ + navn + """! For å komme til bunns i dette, må
+    vi komme oss inn på slottet. Klar en vei for steiner, så vi har fri passasje!
+
+    -- Klar en fri vei til slottet ved å "rydde" bort steiner. 7 burde holde.

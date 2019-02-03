@@ -1,0 +1,16 @@
+    Hei {navn}!
+    Det har oppstått en ubalanse i magien på flere steder i verden.
+    Dette er ikke bra! Om vi magikere ikke kan kontrollere magien, vil
+    andre skapninger kunne dra nytte av den og. Om det skjer er alt håp
+    ute! Vi må kvele magien i disse skapningene før de blir kraftige nok
+    til å utslette menneskeheten, og dessuten finne ut hvorfor de har
+    fått magiske evner i utgangspunktet.
+
+    Jeg har sendt ut Zap til slottet i enden av skogen her for å utforske
+    ubalansen som har oppstått der. Vi er ikke helt sikker på hva som
+    er senter for ubalansen, men vi har hørt merkelige rapporter om
+    livløse objekter komme til live og skade beboerne av slottet der.
+    Dessuten har all kontakt blitt brutt for noen dager siden. Kan du
+    hjelpe Zap i å finne og rette opp ubalansen med slottet?
+
+    -- Hjelp Zap å finne og rette opp ubalansen med slottet.

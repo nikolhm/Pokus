@@ -1,0 +1,7 @@
+    Du er en helt {navn}!
+    Denne magikeren, 'den Barmhjertige' er en pest og en plage og må
+    stanses omgåelig! Vær forsiktig med den informasjonen du tilegner
+    deg fra hans agenter, jeg tror vi har å gjøre med en magiker jeg
+    kjente en gang for lenge siden, og han er en manipulerende løgner
+    som benytter alle midler for å oppnå sine egne syke drømmer! Lukk
+    sinnet for hans galne ambisjoner før de går til hodet på deg og.\n

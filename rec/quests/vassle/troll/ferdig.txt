@@ -1,0 +1,5 @@
+    Du har vært en uvurderlig hjelp {navn}!
+    Dette du sier om en magiker som støtter trollene er urovekkende,
+    men vi har dessverre ikke tid til å undersøke dette nå. En ny krise
+    har oppstått, denne gangen mye nærmere oss! En stor ubalanse har
+    oppstått midt inne i skogen her, og det truer magi-borgen!

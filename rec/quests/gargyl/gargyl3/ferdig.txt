@@ -1,0 +1,1 @@
+    Gargyler? Som blir til stein? Her må noe gjøres {navn}!\n

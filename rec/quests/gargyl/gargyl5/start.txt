@@ -1,0 +1,9 @@
+    Hei {navn}!
+    Steinsupper ja! Det var alltid en klassiker i gode gamle dager. Dessverre
+    er det ganske lenge siden jeg har gjort noe slikt nå, så jeg husker ikke
+    nøyaktig hva det var jeg gjorde... Det er kanskje best om jeg repeterer
+    litt for meg selv før jeg lærer det videre, men til det trenger jeg steiner,
+    og her virker alle steinene noe... motvillige? Kan du gjøre dem mer
+    medgjørlige og samle inn 10 stykk?
+
+    -- Finn 10 steiner.

@@ -1,0 +1,4 @@
+    Hei {navn}!
+    Mitt navn er Rotete Randi! Jeg har mistet den magiske soppen min! Har du sett
+    soppen min? Jeg hadde gitt hatten min for å se min magiske sopp en siste gang!
+    

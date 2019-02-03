@@ -1,0 +1,10 @@
+    Hei {navn}!
+    Hvilket forhold har du til muskelbunter? Vi er ikke så skumle som vi høres
+    ut, men definitivt så farlige som vi høres ut! Vi i Muskelbunters Felles-
+    forening mener at trylletriks er hendig å ha opp ermet, men til syvende og
+    sist er det vanlige angrep som avgjør en kamp.
+
+    Vi i de Muskelbunters Forening rekrutterer nye medlemmer, men for å søke om
+    å bli medlem krever vi at du har tatt minst 75000 helsepoeng fra fiender!
+
+    -- Ta 75000 helsepoeng fra fiender.

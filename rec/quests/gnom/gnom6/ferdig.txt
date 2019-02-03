@@ -1,0 +1,6 @@
+    Hurra! Tusen takk {navn}!
+    Nå er endelig monsteret borte! Borgen er trygg igjen, og skogen vil
+    snart nok bli et rolig og fint sted å være! Igjen, tusen tusen takk!
+    Dine heltedåder har ikke gått umerket hen, Overtrollmann Vassle spurte
+    om deg personlig. Dra opp til kontoret hans og hør hva han har å si!
+    Kontoret ligger i det øverste spiret her i borgen.\n

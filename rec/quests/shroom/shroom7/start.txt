@@ -1,0 +1,12 @@
+    Hei der {navn}!
+    Dine magiske krefter har økt betraktelig siden sist, men det er alltid
+    rom for forbedring! Er du kjent med formelen Opphold? Den forvirrer
+    fienden i to runder, og gir deg tid til å ta tilbake overtaket i en
+    ellers nedgående kamp. Men, jeg har funnet en metode å gjøre formelen
+    enda mer effektiv på, uten at det krever noe mer konsentrasjon fra deg!
+    Spesielt her ute på ekspedisjonen er det viktig at alle er på sitt beste,
+    men som alltid har jeg mine prinsipper: Ingen skal lære noe de ikke kan
+    kontrollere, slik som det neket Gale Gizly. Opphold fiender 7 ganger, så
+    skal jeg lære deg hvordan formelen blir enda kraftigere!
+
+    -- Opphold fiender med formelen Opphold 7 ganger.

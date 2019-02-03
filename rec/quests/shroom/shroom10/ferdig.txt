@@ -1,0 +1,2 @@
+    Hurra! Du {navn}, må være den dyktigste magikeren vi har!
+    Rapporter tilbake til Overtrollmann Vassle så han får høre om seieren vår!\n

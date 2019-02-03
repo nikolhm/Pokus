@@ -1,0 +1,11 @@
+    Akk {navn}.
+    Det går ulykkens vei for meg. Jeg er en middelmådig magiker som aldri har
+    fått til noe særlig av det jeg prøver på her i livet. Men så en dag ble
+    jeg spurt om å ta ansvaret for mat og utstyr på en topp-hemmelig ekspedisjon
+    utsendt hit av Overtrollmann Vassle selv! Tenk så Lykkelig jeg ble! Og Tenk
+    og hvor knust jeg ble da jeg fant ut at de skøyerske gnomene har stjålet
+    mesteparten av det. Vi har levd på bark og mose de siste dagene, og min
+    popularitet her i leiren er stadig synkende. Kan du gjøre meg og resten
+    av leiren en stor tjeneste og finne de stjålne forsyningene?
+
+    -- Finn 13 stålne forsyninger.

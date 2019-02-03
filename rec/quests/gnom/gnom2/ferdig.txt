@@ -1,0 +1,3 @@
+    Glimrende {navn}!
+    Ingen skader på kroppen? Så skuffende, det ser ut til at trylleformelen
+    er uskadelig og kjedelig. Kanskje hvis jeg modifiserer formelen litt?\n

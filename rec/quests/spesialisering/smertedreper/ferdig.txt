@@ -1,0 +1,1 @@
+    Utmerket {navn}! Du finner vårt kontor opp trappen fra hovedhallen. Ser deg der!\n

@@ -1,0 +1,11 @@
+    Hei {navn}!
+    Mitt navn er Mette Merkelig! Velkommen til borgen! Jeg skulle gjerne vist deg rundt,
+    men det er unntakstilstand her på borgen for øyeblikket. Du skjønner det at det har
+    kommet et monster til borgen vår som besudler den fine skogen vår og gjør borgen
+    til et uhyggelig sted å være. Dette monsteret heter Gaute Gnom den Grusomme, og er
+    en gnom av verste sort. Vi har alltid hatt problemer med gnomene i skogen her,
+    men etter Gaute Gnoms ankomst har de vært spesielt aggressive! Jeg trenger din hjelp
+    til å rydde de brysomme gnomene av veien slik at borgen og skogen vår igjen kan bli
+    et harmonisk og magisk sted for alle.
+
+    -- Myrd 10 gnomer.

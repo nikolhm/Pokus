@@ -1,0 +1,6 @@
+    Du er tilbake for en siste kamp {navn}!
+    Dette er øyeblikket vi har ventet på, og din siste duellant er:
+    Teite Tim! Og han er langt fra like inkapabel som mange av dine
+    tidligere duellanter. Teite Tim har mangt et triks opp i ermet,
+    bruk det du har lært så langt og gi meg en seier og en ny
+    duell-mester!

@@ -1,0 +1,6 @@
+    For en lykkedag! Tusen takk {navn}!
+    Onde Olga har startet å vise interesse for meg igjen! Jeg bare vet
+    at vi kommer til å utrette virkelig grufulle ting sammen! Ekte
+    kjærlighet er absolutt en sjelden vare, husk på det {navn}.
+    Vi to fikk aldri en sjanse sammen, men jeg er sikker på at den rette for
+    deg er der ute et sted.\n

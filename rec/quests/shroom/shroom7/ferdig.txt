@@ -1,0 +1,3 @@
+    Flott {navn}!
+    Det er viktig at alle er på sitt ypperste i disse tider. Her er
+    hemmeligheten til å utføre god og effektiv magi...\n

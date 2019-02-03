@@ -1,0 +1,12 @@
+    Hei {navn}!
+    Mitt navn er Onde Olga, og jeg er den som styrer duellringen her.
+    Du ser ut som en kapabel banditt, har du lyst til å teste deg? Heder
+    og ære finner du nok ikke her, men du får muligheten til å vinne en
+    fin slump gullstykker! Hvis du vinner da selvfølgelig, skulle du dø
+    eller flykte før motstanderen er beseiret, mister du pengene som er
+    krevd for deltakelse. Det koster 500 per kamp; desto verre odds, desto
+    større vinnerlønn til deg.
+
+    Siden du er ny her, starter du nederst på rangstigen. Om du takker ja,
+    vil du bli satt opp mot Patetiske Patrick. Jeg har ingen tips å gi mot
+    ham.

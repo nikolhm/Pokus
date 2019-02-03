@@ -1,0 +1,11 @@
+    Hei {navn}!
+    Er ikke denne skogen fantastisk? Trær må være det mest spennende i verden,
+    og i denne delen av skogen har jeg funnet mange flere sorter enn vanlig.
+    Ikke nok med det, men det virker som om de er levende! Det er også grunnen
+    til at jeg trenger hjelp fra deg. Til vanlig katalogiserer jeg alle nye
+    tresorter jeg finner selv, men til tross for min ekstraordinære egenskap
+    til å teleportere meg dit jeg vil, duger jeg ikke når det kommer til kamp.
+    Kan du gi meg 'tamme' eksemplarer av noen av de fascinerende tresortene
+    som pryder denne kanten av skogen?
+
+    -- Oppdag et knippe forskjellige tresorter.

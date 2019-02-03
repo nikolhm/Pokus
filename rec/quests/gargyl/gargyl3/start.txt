@@ -1,0 +1,9 @@
+    OK {navn}!
+    Jeg har nå oversatt loggen fra skriftlig ormtunge. Det viser seg at
+    rett før den magiske ubalansen her oppsto, kom det en kraftig magiker
+    på besøk. Etter besøket, begynte steiner og statuer å komme til live
+    i og rundt slottet. Det ser  ut til at ubalansen har sitt episenter i
+    utkikkstårnet her på slottet. Kan du dra opp og utforske? Og husk, om
+    du møter noe uvanlig, løp vekk og rapporter til meg!
+
+    -- Utforsk utkikkstårnet.

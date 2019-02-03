@@ -1,0 +1,3 @@
+    Fantastisk! Strålende! Godt jobbet {navn}!
+    Dra tilbake til Magi-borgen og rapporter suksessen vår til Overtrollmann
+    Vassle!\n

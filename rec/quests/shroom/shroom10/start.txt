@@ -1,0 +1,20 @@
+    Tiden er inne {navn}, for å gjøre slutt på dette.
+    Vi har en dårlig taktisk posisjon i forhold til fienden, og vi er mange
+    ganger undertallige. Vårt eneste håp er å kutte av kilden deres til magi.
+    Det vil utgjevne den magiske ubalansen her, som var det vi kom for å gjøre,
+    så får de resterende shroomsene leve ut sine liv i dette hjørnet av skogen.
+    Såfremt shroomsene i seg selv ikke besitter evnen til å skape flere magiske
+    kreasjoner, burde det ikke være nødvendig å drepe dem alle. I tillegg har
+    vi ikke ressurser nok til en slik operasjon.
+
+    Heldigvis har vi klart å uthente informasjon mens fiendens fokus var ved
+    kampene med fronten. Det viser seg at kilden til deres magi kommer fra et
+    lite tjern, som er senteret av shroom-terretoriumet. Det er en smal sak å
+    forurense tjernet med en standard Kast Hvitløk-formel som alle magikere kan,
+    men å komme bort til det blir utfordringen! Vi har bestemt å sende deg inn
+    alene slik at du kan snike deg ubemerket dit, samtidig som vi sender alle
+    våre magikere til fronten for å avlede oppmerksomheten. Men pass på, De har
+    helt sikkert utstasjonert vakter ved tjernet, som vil ha en stadig påfylling
+    av magiske krefter!
+
+    -- Forurens tjernet i midten av shroom-terretoriumet.

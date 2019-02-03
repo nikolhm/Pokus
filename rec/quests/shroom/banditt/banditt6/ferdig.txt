@@ -1,0 +1,10 @@
+    Er dette den ekte fingeren til Kjedelige Kjell? Fantastisk {navn}!
+    Dette må jo bety at deres utspekulerte planer om å gjøre skogen levende har
+    kommet til en stopp. Utmerket! Angrep fra skogen vil opphøre, folk vil
+    returnere til normalen, de hersens sopp-fanatikerne vil åpne øynene, kanskje
+    til og med det store treet over oss som plutselig dukket opp vil trekke
+    seg tilbak- {red}Hei {navn}. Vi har ventet på deg. Disse fjolsene er snart under
+    vår kontroll, de vil ikke forstyrre dere lengre. Dette neket tar vi med
+    oss. Vi vil sees igjen {navn}.{reset} Huff da, jeg ble litt svimmel. Uansett, alt
+    vil bli bra fremover, tusen takk! Jeg tror jeg skal ta meg en tur ut i
+    skogen for å feire, jeg fikk plutselig veldig lyst på sopp...

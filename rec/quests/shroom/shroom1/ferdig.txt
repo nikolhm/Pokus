@@ -1,0 +1,3 @@
+    Trenger vi ikke bekymre oss lengre for banditt-angrep? Fantastisk!
+    Da kan vi fokusere på oppgaven fremover, og jeg tror Strategiske Synne har
+    et spesielt oppdrag til deg {navn}.\n

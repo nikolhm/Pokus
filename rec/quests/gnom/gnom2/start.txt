@@ -1,0 +1,9 @@
+    Hei {navn}!
+    Mitt navn er Gale Gizly! Jeg er spesielt interessert i magi som helbreder kroppen!
+    Tenk så fascinerende, alt man trenger er å konsentrere seg litt, så ordner
+    magien resten. Likevel er det mange her som er redd for å bruke slik magi. "unaturlig"
+    kaller de det. Som om vi driver med noe naturlig som helst her. Uansett, jeg trenger
+    en forsøkskanin for å se hvilke konsekvenser det har på kroppen. Kan du restorere
+    totalt 300 helsepoeng på deg selv, og så komme tilbake hit så jeg kan undersøke?
+
+    -- Restorer 300 helsepoeng på deg selv.

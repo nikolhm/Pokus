@@ -1,0 +1,4 @@
+    Utrolig, {navn}!
+    Vassle sa du var en flink magiker, men det var en vits når jeg sa at du kunne
+    mestre det på fem ganger! Mesteparten av forskerne her brukte måneder på å treffe
+    med 75% treffsikkerhet!\n

@@ -1,0 +1,9 @@
+    Hei {navn}!
+    Mitt navn er Fine Fredrikke! Jeg skulle bare ut i skogen for å la resten av verden
+    nyte synet av mitt ytre, da de fordømte gnomene kom ut fra ingensteds og stjal
+    vesken min! Hva skal jeg gjøre? Alle mine magiske sminkesaker lå i den vesken!
+    Hva vil skje med mitt ytre? Jeg kommer til å bli like stygg som deg!
+    Kan du vær så snill hjelpe meg å få tilbake sminkesakene? Gnomene har nok åpnet
+    vesken og fordelt innholdet, så det kan bli vanskelig å finne alt.
+
+    -- Finn 6 sminkeartikler.
