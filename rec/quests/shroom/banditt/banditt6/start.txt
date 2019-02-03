@@ -1,0 +1,14 @@
+    Hvem er du? Du ser ut som en {navn}. Yup, definitivt {navn}.
+    Uansett hvem du er, her er vi alle felles banditter, og i disse harde tidene må
+    vi banditter stå sammen mot de ondskapsfulle magikerne! De har alltid vært en
+    pest og en plage, stanset våre robberier og jaget oss vekk til denne skogen.
+    Men de har aldri direkte angrepet oss før, ikke slik som nå. Vi er ikke helt
+    sikre på hva de har gjort, men denne ellers medgjørlige skogen har i det siste
+    blitt... levende. På et vis. I tillegg har våre medbanditter oppført seg særdeles
+    merkverdig i det siste. Jeg er sikker på at dette er Kjedelige Kjell sitt verk!
+    Han er allerede notorisk for sin evne til å kjede folk til døde, men han er og
+    gal etter alt som har med trær og natur å gjøre. Om bare han hadde vært
+    'ordnet', kunne vi gått tilbake til vår vanlige tilværelse. Kan du ordne saken?
+    Kutt av ham fingeren til bevis!
+
+    -- Kutt av fingeren til Kjedelige Kjell og vis den til Bjarte Banditt.

@@ -1,0 +1,11 @@
+    Hei! Hva heter du? {navn} ja, nettopp!
+    Om du vil diskutere vår angrepsstrategi mot magikerne, må du snakke med
+    Bjarte Banditt. Ellers har jeg et business-forslag som kan være svært gunstig
+    for oss begge, og du ser ut som en som kan hjelpe meg!
+
+    For ikke lenge siden stjelte jeg fire svært verdifulle lommeur. Men det er
+    lite med ære blandt banditter, og noen har robbet dem fra meg mens jeg sov!
+    Kan du banke opp noen banditter og se om du finner de for meg? Jeg har
+    masse gullstykker jeg kan gi deg tilbake!
+
+    -- Finn fire lommeur.
