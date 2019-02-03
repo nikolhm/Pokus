@@ -169,51 +169,22 @@ def cerberus_bq1_ferdig(navn):
 
 #Spesialiseringsquests
 def smertedreper_intro(navn):
-    return """    Hei {}!
-    Si meg, hva vet du om smertedrepernes vakre kunst? Ingenting?
-    La meg gi deg en kort introduksjon: Vi i Foreningen for Smertedrepere har som
-    filosofi at det å ta skade slett ikke er en svakhet, men en lærdom, en lekse,
-    kunnskap man kan ta med seg videre i livet! Men for å lære noe som helst av smerten
-    må man tåle den først. Derfor spesialiserer vi oss innen kunsten å tåle så mye
-    skade som mulig!
+    return hentQuest('spesialisering/smertedreper/start').format(navn=navn)
 
-    Vi i Foreningen for Smertedrepere rekrutterer nye medlemmer, men vi har strenge
-    medlemmskrav. Alle som søker, må ha mistet minst 25000 helsepoeng fra fiender!
-
-    -- Mist 25000 helsepoeng fra fiender.""".format(navn)
 def smertedreper_intro_ferdig(navn):
-    return "    Utmerket {}! Du finner vårt kontor opp trappen fra hovedhallen. Ser deg der!\n".format(navn)
+    return hentQuest('spesialisering/smertedreper/ferdig').format(navn=navn)
 
 def klartenker_intro(navn):
-    return """    Hei {}!
-    Har du hørt om klartenkere før? Klartenkere er oss som er helt klar i hodet,
-    spesielt etter en god stripe konsentrasjonspulver! Vi konsentrerer oss om
-    konsentrasjon, og mener det er essensen av suksess i enhver kamp. Konsentrason
-    er det som gjør oss magikere til magikere, og uten den ligger vi tynt an!
+    return hentQuest('spesialisering/klartenker/start').format(navn=navn)
 
-    Vi i de Klartenkendes Forening rekrutterer nye medlemmer, men for å søke om
-    å bli medlem krever vi at du har brukt minst 12500 konsentrasjonspoeng!
-
-    -- Bruk 12500 konsentrasjonspoeng.""".format(navn)
 def klartenker_intro_ferdig(navn):
-    return """    Flott! Du finner vårt hovedkontor ned kjelleren fra forskningslaben.
-    Der driver vi litt... forskning på si. Vi produserer iallefall helt kanon konsentrasjonspulver!
-    Snakkes der!\n"""
+    return hentQuest('spesialisering/klartenker/ferdig')
 
 def muskelbunt_intro(navn):
-    return """    Hei {}!
-    Hvilket forhold har du til muskelbunter? Vi er ikke så skumle som vi høres
-    ut, men definitivt så farlige som vi høres ut! Vi i Muskelbunters Felles-
-    forening mener at trylletriks er hendig å ha opp ermet, men til syvende og
-    sist er det vanlige angrep som avgjør en kamp.
+    return hentQuest('spesialisering/muskelbunt/start').format(navn=navn)
 
-    Vi i de Muskelbunters Forening rekrutterer nye medlemmer, men for å søke om
-    å bli medlem krever vi at du har tatt minst 75000 helsepoeng fra fiender!
-
-    -- Ta 75000 helsepoeng fra fiender.""".format(navn)
 def muskelbunt_intro_ferdig(navn):
-    return """    Utmerket {}! Du finner vårt kontor i nabodimensjonen vår. Det er en portal
-    ved utedoen som tar deg rett dit. Ser deg der!\n""".format(navn)
+    return hentQuest('spesialisering/muskelbunt/ferdig').format(navn=navn)
 
 #Shroom:
 def shroom_q1(navn):

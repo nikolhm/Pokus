@@ -1,0 +1,2 @@
+    Utmerket {navn}! Du finner vårt kontor i nabodimensjonen vår. Det er en portal
+    ved utedoen som tar deg rett dit. Ser deg der!\n
