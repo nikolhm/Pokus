@@ -454,8 +454,8 @@ def skrivTre(kvist=False):
     trees = [
         ('shroom/tre/tre1', ()),
         ('shroom/tre/tre2', ()),
-        ('shroom/tre/tre3', (b, reset)),
-        ('shroom/tre/tre4', ()),
+        ('shroom/tre/tre3', ()),
+        ('shroom/tre/tre4', (b, reset)),
         ('shroom/tre/tre5', ()),
         ('shroom/tre/tre6', ()),
         ('shroom/tre/tre7', (b, reset)),
